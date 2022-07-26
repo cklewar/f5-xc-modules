@@ -50,7 +50,7 @@ resource "volterra_api_credential" "cred_vk8s" {
   virtual_k8s_name      = volterra_virtual_k8s.vk8s.name
   lifecycle {
     ignore_changes = [name]
-  }s
+  }
 }
 
 resource "local_file" "this_kubeconfig" {

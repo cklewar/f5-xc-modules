@@ -32,3 +32,7 @@ variable "f5xc_tenant" {
 variable "f5xc_namespace" {
   type = string
 }
+
+variable "f5xc_virtual_site_refs" {
+  type = list(string)
+}

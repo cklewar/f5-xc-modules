@@ -17,26 +17,6 @@ resource "volterra_virtual_k8s" "vk8s" {
   }
 }
 
-resource "volterra_virtual_k8s" "vk8s" {
-  name      = "vk8s"
-  namespace = var.f5xc_namespace
-
-  vsite_refs {
-    name      = "virtual-site"
-    namespace = var.f5xc_namespace
-  }
-
-  provisioner "local-exec" {
-    command = "sleep 120s"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "sleep 30s"
-  }
-
-}
-
 resource "local_file" "manifest" {
   content  = local.manifest_content
   filename = format("%s/_output/manifest.yml", path.root)
@@ -71,7 +51,7 @@ resource "null_resource" "apply_creds" {
 resource "null_resource" "apply_manifest" {
   depends_on = [null_resource.apply_creds, local_file.this_kubeconfig, local_file.manifest]
   triggers   = {
-    manifest_sha1 = sha1(local.demo_manifest_content_ams)
+    manifest_sha1 = sha1(local.manifest_content)
   }
   provisioner "local-exec" {
     command     = format("kubectl apply -f _output/demo_ams.yml --namespace=%s", var.f5xc_namespace)

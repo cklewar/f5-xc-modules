@@ -1,0 +1,26 @@
+{
+	"metadata": {
+		"annotations": {},
+		"description": "${interface_description}",
+		"labels": {},
+		"name": "${interface_name}",
+		"namespace": "${namespace}"
+	},
+	"spec": {
+		"tunnel_interface": {
+			"mtu": 1450,
+			"node": "${node_name}",
+			"site_local_network": {},
+			"static_ip": {
+				"node_static_ip": {
+					"ip_address": "${interface_static_ip}"
+				}
+			},
+			"tunnel": {
+				"name": "${tunnel_name}",
+				"namespace": "${namespace}",
+				"tenant": "${tenant}"
+			}
+		}
+	}
+}

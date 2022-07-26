@@ -1,0 +1,216 @@
+{
+	"policy": {
+		"name": "Complete_OWASP_Top_Ten",
+		"description": "A basic, OWASP Top 10 protection items v1.0",
+		"template": {
+			"name": "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
+		},
+		"enforcementMode": "transparent",
+		"protocolIndependent": true,
+		"caseInsensitive": true,
+		"general": {
+			"trustXff": true
+		},
+		"signature-settings": {
+			"signatureStaging": false,
+			"minimumAccuracyForAutoAddedSignatures": "high"
+		},
+		"blocking-settings": {
+			"violations": [{
+					"alarm": true,
+					"block": true,
+					"description": "ASM Cookie Hijacking",
+					"learn": false,
+					"name": "VIOL_ASM_COOKIE_HIJACKING"
+				},
+				{
+					"alarm": true,
+					"block": true,
+					"description": "Access from disallowed User/Session/IP/Device ID",
+					"name": "VIOL_SESSION_AWARENESS"
+				},
+				{
+					"alarm": true,
+					"block": true,
+					"description": "Modified ASM cookie",
+					"learn": true,
+					"name": "VIOL_ASM_COOKIE_MODIFIED"
+				},
+				{
+					"name": "VIOL_LOGIN_URL_BYPASSED",
+					"alarm": true,
+					"block": true,
+					"learn": false
+				},
+				{
+					"alarm": true,
+					"block": true,
+					"description": "XML data does not comply with format settings",
+					"learn": true,
+					"name": "VIOL_XML_FORMAT"
+				},
+				{
+					"name": "VIOL_FILETYPE",
+					"alarm": true,
+					"block": true,
+					"learn": true
+				},
+				{
+					"name": "VIOL_URL",
+					"alarm": true,
+					"block": true,
+					"learn": true
+				},
+				{
+					"name": "VIOL_URL_METACHAR",
+					"alarm": true,
+					"block": true,
+					"learn": true
+				},
+				{
+					"name": "VIOL_PARAMETER_VALUE_METACHAR",
+					"alarm": true,
+					"block": true,
+					"learn": true
+				},
+				{
+					"name": "VIOL_PARAMETER_NAME_METACHAR",
+					"alarm": true,
+					"block": true,
+					"learn": true
+				}
+			],
+			"evasions": [{
+					"description": "Bad unescape",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "Apache whitespace",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "Bare byte decoding",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "IIS Unicode codepoints",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "IIS backslashes",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "%u decoding",
+					"enabled": true,
+					"learn": true
+				},
+				{
+					"description": "Multiple decoding",
+					"enabled": true,
+					"learn": true,
+					"maxDecodingPasses": 3
+				},
+				{
+					"description": "Directory traversals",
+					"enabled": true,
+					"learn": true
+				}
+			]
+		},
+		"session-tracking": {
+			"sessionTrackingConfiguration": {
+				"enableTrackingSessionHijackingByDeviceId": true
+			}
+		},
+		"urls": [{
+				"name": "/trading/auth.php",
+				"method": "POST",
+				"protocol": "https",
+				"type": "explicit"
+			},
+			{
+				"name": "/internal/test.php",
+				"method": "GET",
+				"protocol": "https",
+				"type": "explicit",
+				"isAllowed": false
+			},
+			{
+				"name": "/trading/rest/portfolio.php",
+				"method": "GET",
+				"protocol": "https",
+				"type": "explicit",
+				"urlContentProfiles": [{
+						"headerName": "Content-Type",
+						"headerValue": "text/html",
+						"type": "json",
+						"contentProfile": {
+							"name": "portfolio"
+						}
+					},
+					{
+						"headerName": "*",
+						"headerValue": "*",
+						"type": "do-nothing"
+					}
+				]
+			}
+		],
+		"login-pages": [{
+			"accessValidation": {
+				"headerContains": "302 Found"
+			},
+			"authenticationType": "form",
+			"passwordParameterName": "password",
+			"usernameParameterName": "username",
+			"url": {
+				"name": "/trading/auth.php",
+				"method": "POST",
+				"protocol": "https",
+				"type": "explicit"
+			}
+		}],
+		"login-enforcement": {
+			"authenticatedUrls": [
+				"/trading/index.php"
+			]
+		},
+		"brute-force-attack-preventions": [{
+			"bruteForceProtectionForAllLoginPages": true,
+			"leakedCredentialsCriteria": {
+				"action": "alarm-and-blocking-page",
+				"enabled": true
+			}
+		}],
+		"csrf-protection": {
+			"enabled": true
+		},
+		"csrf-urls": [{
+			"enforcementAction": "verify-csrf-token",
+			"method": "GET",
+			"url": "/trading/index.php"
+		}],
+		"data-guard": {
+			"enabled": true
+		},
+		"xml-profiles": [{
+			"name": "Default",
+			"defenseAttributes": {
+				"allowDTDs": false,
+				"allowExternalReferences": false
+			}
+		}],
+		"json-profiles": [{
+			"name": "portfolio"
+		}],
+		"policy-builder-server-technologies": {
+			"enableServerTechnologiesDetection": true
+		}
+	}
+}

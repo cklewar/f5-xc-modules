@@ -1,0 +1,51 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.27.0",
+		"id": "mytest100000",
+		"label": "ASM_policy_external_URL",
+		"remark": "ASM_policy_external_URL",
+		"Sample_app_sec_02": {
+			"class": "Tenant",
+			"defaultRouteDomain": 0,
+			"HTTP_Service": {
+				"class": "Application",
+				"template": "http",
+				"serviceMain": {
+					"class": "Service_HTTP",
+					"virtualPort": 80,
+					"virtualAddresses": [
+						"192.168.27.199"
+					],
+					"snat": "auto",
+					"pool": "Pool1",
+					"policyWAF": {
+						"use": "WAF_Policy"
+					}
+				},
+				"Pool1": {
+					"class": "Pool",
+					"monitors": [
+						"http"
+					],
+					"members": [{
+							"servicePort": 80,
+							"serverAddresses": [
+								"172.16.29.5"
+							]
+						}
+					]
+				},
+				"WAF_Policy": {
+					"class": "WAF_Policy",
+					"url": "https://raw.githubusercontent.com/cklewar/waf_policy/main/policy.json",
+                    "enforcementMode": "blocking",
+					"ignoreChanges": true
+				}
+			}
+		}
+	}
+}

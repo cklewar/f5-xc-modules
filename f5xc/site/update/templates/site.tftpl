@@ -1,0 +1,17 @@
+{
+	"spec": {
+		"ingress_egress_gw": {
+			"global_network_list": {
+				"global_network_connections": [{
+					"sli_to_global_dr": {
+						"global_vn": {
+							"name": "${global_virtual_network}",
+							"namespace": "${namespace}",
+							"tenant": "${tenant}"
+						}
+					}
+				}]
+			}
+		}
+	}
+}

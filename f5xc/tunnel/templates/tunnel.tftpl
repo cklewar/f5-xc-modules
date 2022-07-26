@@ -1,0 +1,36 @@
+{
+   "metadata":{
+      "annotations":{},
+      "description":"${tunnel_description}",
+      "labels":{},
+      "name":"${tunnel_name}",
+      "namespace":"${namespace}"
+   },
+   "spec":{
+      "local_ip":{
+         "ip_address":{
+            "auto":{},
+            "virtual_network_type":{
+               "site_local":{}
+            }
+         }
+      },
+      "params":{
+         "ipsec":{
+            "ipsec_psk":{
+               "clear_secret_info":{
+                  "url":"string:///${clear_secret}"
+               }
+            }
+         }
+      },
+      "remote_ip":{
+         "ip":{
+            "ipv4":{
+               "addr":"${remote_ip_address}"
+            }
+         }
+      },
+      "tunnel_type":"IPSEC_PSK"
+   }
+}

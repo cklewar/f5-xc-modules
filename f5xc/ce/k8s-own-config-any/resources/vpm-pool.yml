@@ -1,0 +1,32 @@
+Vpm:
+  Roles: ${server_roles}
+  SkipStages: ${skip_stages}
+  ClusterUid: ${cluster_uid}
+  ClusterName: ${cluster_name}
+  ClusterType: ${cluster_type}
+  Token: ${cluster_token}
+  InsideNIC: ${public_nic}
+  PrivateNIC: ${private_nic}
+  PrivateDefaultGw: ${private_default_gw}
+  PrivateVnPrefix: ${private_vn_prefix}
+  CustomerRoute: ${customer_route}
+  Latitude: ${cluster_latitude}
+  Longitude: ${cluster_longitude}
+  MauricePrivateEndpoint: ${maurice_mtls_endpoint}
+  MauriceEndpoint: ${maurice_endpoint}
+  %{~ if length(cluster_labels) > 0 ~}
+  Labels:
+    %{~ for k, v in cluster_labels ~}
+    ${k}: ${v}
+    %{~ endfor ~}
+  %{~ else ~}
+  Labels:
+  %{~ endif ~}
+  CertifiedHardwareEndpoint: ${certified_hardware_endpoint}
+Workload: ${cluster_workload}
+Kubernetes:
+  CloudProvider: ""
+  EtcdClusterServers: [ ]
+  Server: ${service_ip}
+  Images:
+    Hyperkube: ${image_Hyperkube}

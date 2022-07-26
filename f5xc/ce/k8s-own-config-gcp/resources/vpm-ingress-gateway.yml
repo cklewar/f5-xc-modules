@@ -1,0 +1,21 @@
+Vpm:
+  ClusterName: ${cluster_name}
+  ClusterType: ${cluster_type}
+  Token: ${cluster_token}
+  PrivateNIC: ${private_nic}
+  Latitude: ${cluster_latitude}
+  Longitude: ${cluster_longitude}
+  MauricePrivateEndpoint: ${maurice_mtls_endpoint}
+  MauriceEndpoint: ${maurice_endpoint}
+  %{~ if length(cluster_labels) > 0 ~}
+  Labels:
+    %{~ for k, v in cluster_labels ~}
+    ${k}: ${v}
+    %{~ endfor ~}
+  %{~ else ~}
+  Labels:
+  %{~ endif ~}
+  CertifiedHardwareEndpoint: ${certified_hardware_endpoint}
+Kubernetes:
+  EtcdUseTLS: True
+  Server: ${service_ip}

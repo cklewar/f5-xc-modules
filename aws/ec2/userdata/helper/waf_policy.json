@@ -1,0 +1,392 @@
+{
+   "policy" : {
+      "applicationLanguage" : "utf-8",
+      "blocking-settings" : {
+         "evasions" : [
+            {
+               "description" : "Apache whitespace",
+               "enabled" : true
+            },
+            {
+               "description" : "IIS Unicode codepoints",
+               "enabled" : true
+            },
+            {
+               "description" : "Multiple decoding",
+               "enabled" : true,
+               "maxDecodingPasses" : 3
+            },
+            {
+               "description" : "%u decoding",
+               "enabled" : true
+            },
+            {
+               "description" : "Directory traversals",
+               "enabled" : true
+            },
+            {
+               "description" : "Bad unescape",
+               "enabled" : true
+            },
+            {
+               "description" : "Bare byte decoding",
+               "enabled" : true
+            },
+            {
+               "description" : "IIS backslashes",
+               "enabled" : true
+            }
+         ],
+         "violations" : [
+            {
+               "alarm" : true,
+               "block" : true,
+               "name" : "VIOL_ASM_COOKIE_HIJACKING"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_FILETYPE"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "name" : "VIOL_LOGIN_URL_BYPASSED"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_PARAMETER_NAME_METACHAR"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_PARAMETER_VALUE_METACHAR"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_URL"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_URL_METACHAR"
+            },
+            {
+               "alarm" : true,
+               "block" : true,
+               "learn" : true,
+               "name" : "VIOL_XML_FORMAT"
+            }
+         ]
+      },
+      "brute-force-attack-preventions" : [
+         {
+            "bruteForceProtectionForAllLoginPages" : true,
+            "leakedCredentialsCriteria" : {
+               "enabled" : true
+            }
+         }
+      ],
+      "caseInsensitive" : true,
+      "csrf-protection" : {
+         "enabled" : true,
+         "expirationTimeInSeconds" : "disabled",
+         "sslOnly" : false
+      },
+      "csrf-urls" : [
+         {
+            "enforcementAction" : "verify-csrf-token",
+            "method" : "GET",
+            "requiredParameters" : "ignore",
+            "url" : "/",
+            "wildcardOrder" : 1
+         }
+      ],
+      "data-guard" : {
+         "creditCardNumbers" : true,
+         "customPatterns" : false,
+         "enabled" : true,
+         "exceptionPatterns" : false,
+         "fileContentDetection" : false,
+         "lastCcnDigitsToExpose" : 4,
+         "lastSsnDigitsToExpose" : 4,
+         "maskData" : true,
+         "usSocialSecurityNumbers" : true
+      },
+      "description" : "A basic, OWASP Top 10 protection items v1.0",
+      "enablePassiveMode" : false,
+      "enforcementMode" : "blocking",
+      "fullPath" : "/Application_Security_01/HTTP_Service/WAF_Policy",
+      "general" : {
+         "enforcementReadinessPeriod" : 1,
+         "trustXff" : true
+      },
+      "json-profiles" : [
+         {
+            "defenseAttributes" : {
+               "maximumArrayLength" : 1000,
+               "maximumStructureDepth" : 10,
+               "maximumTotalLengthOfJSONData" : 10000,
+               "maximumValueLength" : 100,
+               "tolerateJSONParsingWarnings" : false
+            },
+            "description" : "",
+            "handleJsonValuesAsParameters" : true,
+            "hasValidationFiles" : false,
+            "name" : "portfolio",
+            "validationFiles" : []
+         }
+      ],
+      "login-enforcement" : {
+         "authenticatedUrls" : [
+            "/"
+         ]
+      },
+      "login-pages" : [
+         {
+            "accessValidation" : {
+               "cookieContains" : "",
+               "headerContains" : "302 Found",
+               "headerOmits" : "",
+               "parameterContains" : "",
+               "responseContains" : "",
+               "responseHttpStatus" : "",
+               "responseOmits" : ""
+            },
+            "authenticationType" : "form",
+            "passwordParameterName" : "password",
+            "url" : {
+               "method" : "POST",
+               "name" : "/",
+               "protocol" : "http",
+               "type" : "explicit"
+            },
+            "usernameParameterName" : "username"
+         }
+      ],
+      "name" : "WAF_Policy",
+      "policy-builder" : {
+         "autoApply" : {
+            "frequency" : "real-time"
+         },
+         "enableUntrustedTrafficSiteChangeTracking" : true,
+         "learningMode" : "automatic",
+         "trafficTighten" : {
+            "maxModificationSuggestionScore" : 60,
+            "totalRequests" : 10000
+         },
+         "untrustedTrafficLoosen" : {
+            "differentSources" : 10,
+            "minHoursBetweenSamples" : 0.5
+         },
+         "untrustedTrafficSiteChangeTracking" : {
+            "differentSources" : 5,
+            "minMinutesBetweenSamples" : 15
+         }
+      },
+      "policy-builder-server-technologies" : {
+         "enableServerTechnologiesDetection" : true
+      },
+      "protocolIndependent" : true,
+      "server-technologies" : [
+         {
+            "serverTechnologyName" : "Nginx"
+         },
+         {
+            "serverTechnologyName" : "Unix/Linux"
+         }
+      ],
+      "session-tracking" : {
+         "delayBlocking" : {},
+         "sessionTrackingConfiguration" : {
+            "enableTrackingSessionHijackingByDeviceId" : true
+         }
+      },
+      "signature-sets" : [
+         {
+            "alarm" : true,
+            "block" : true,
+            "learn" : true,
+            "name" : "Nginx Signatures (High Accuracy)",
+            "signatureSet" : {
+               "filter" : {
+                  "accuracyFilter" : "ge",
+                  "accuracyValue" : "high",
+                  "hasCve" : "all",
+                  "lastUpdatedFilter" : "all",
+                  "riskFilter" : "all",
+                  "riskValue" : "all",
+                  "signatureType" : "all",
+                  "tagFilter" : "all",
+                  "userDefinedFilter" : "all"
+               },
+               "systems" : [
+                  {
+                     "name" : "Nginx"
+                  }
+               ],
+               "type" : "filter-based"
+            }
+         },
+         {
+            "alarm" : true,
+            "block" : true,
+            "learn" : true,
+            "name" : "Unix/Linux Signatures (High Accuracy)",
+            "signatureSet" : {
+               "filter" : {
+                  "accuracyFilter" : "ge",
+                  "accuracyValue" : "high",
+                  "hasCve" : "all",
+                  "lastUpdatedFilter" : "all",
+                  "riskFilter" : "all",
+                  "riskValue" : "all",
+                  "signatureType" : "all",
+                  "tagFilter" : "all",
+                  "userDefinedFilter" : "all"
+               },
+               "systems" : [
+                  {
+                     "name" : "Unix/Linux"
+                  }
+               ],
+               "type" : "filter-based"
+            }
+         }
+      ],
+      "signature-settings" : {
+         "minimumAccuracyForAutoAddedSignatures" : "high",
+         "signatureStaging" : false
+      },
+      "softwareVersion" : "16.1.2",
+      "template" : {
+         "name" : "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
+      },
+      "type" : "security",
+      "urls" : [
+         {
+            "disallowFileUploadOfExecutables" : false,
+            "isAllowed" : false,
+            "mandatoryBody" : false,
+            "method" : "GET",
+            "name" : "/",
+            "protocol" : "http",
+            "type" : "explicit"
+         },
+         {
+            "attackSignaturesCheck" : true,
+            "clickjackingProtection" : false,
+            "description" : "",
+            "disallowFileUploadOfExecutables" : false,
+            "html5CrossOriginRequestsEnforcement" : {
+               "enforcementMode" : "disabled"
+            },
+            "isAllowed" : true,
+            "mandatoryBody" : false,
+            "method" : "POST",
+            "methodsOverrideOnUrlCheck" : false,
+            "name" : "/",
+            "performStaging" : false,
+            "protocol" : "http",
+            "type" : "explicit",
+            "urlContentProfiles" : [
+               {
+                  "headerName" : "*",
+                  "headerOrder" : "default",
+                  "headerValue" : "*",
+                  "type" : "apply-value-and-content-signatures"
+               },
+               {
+                  "headerName" : "Content-Type",
+                  "headerOrder" : "1",
+                  "headerValue" : "*form*",
+                  "type" : "form-data"
+               },
+               {
+                  "contentProfile" : {
+                     "name" : "Default"
+                  },
+                  "headerName" : "Content-Type",
+                  "headerOrder" : "2",
+                  "headerValue" : "*json*",
+                  "type" : "json"
+               },
+               {
+                  "contentProfile" : {
+                     "name" : "Default"
+                  },
+                  "headerName" : "Content-Type",
+                  "headerOrder" : "3",
+                  "headerValue" : "*xml*",
+                  "type" : "xml"
+               }
+            ]
+         },
+         {
+            "attackSignaturesCheck" : true,
+            "clickjackingProtection" : false,
+            "description" : "",
+            "disallowFileUploadOfExecutables" : false,
+            "html5CrossOriginRequestsEnforcement" : {
+               "enforcementMode" : "disabled"
+            },
+            "isAllowed" : true,
+            "mandatoryBody" : false,
+            "method" : "GET",
+            "methodsOverrideOnUrlCheck" : false,
+            "name" : "/",
+            "performStaging" : false,
+            "protocol" : "http",
+            "type" : "explicit",
+            "urlContentProfiles" : [
+               {
+                  "headerName" : "*",
+                  "headerOrder" : "default",
+                  "headerValue" : "*",
+                  "type" : "do-nothing"
+               },
+               {
+                  "contentProfile" : {
+                     "name" : "portfolio"
+                  },
+                  "headerName" : "Content-Type",
+                  "headerOrder" : "1",
+                  "headerValue" : "text/html",
+                  "type" : "json"
+               }
+            ]
+         }
+      ],
+      "xml-profiles" : [
+         {
+            "defenseAttributes" : {
+               "allowCDATA" : true,
+               "allowDTDs" : false,
+               "allowExternalReferences" : false,
+               "allowProcessingInstructions" : true,
+               "maximumAttributeValueLength" : "any",
+               "maximumAttributesPerElement" : "any",
+               "maximumChildrenPerElement" : "any",
+               "maximumDocumentDepth" : "any",
+               "maximumDocumentSize" : "any",
+               "maximumElements" : "any",
+               "maximumNSDeclarations" : "any",
+               "maximumNameLength" : "any",
+               "maximumNamespaceLength" : "any",
+               "tolerateCloseTagShorthand" : true,
+               "tolerateLeadingWhiteSpace" : true,
+               "tolerateNumericNames" : true
+            },
+            "name" : "Default",
+            "validationFiles" : []
+         }
+      ]
+   }
+}

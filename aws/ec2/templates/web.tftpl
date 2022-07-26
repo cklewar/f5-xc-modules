@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+until [[ -f /var/lib/cloud/instance/boot-finished ]]; do
+  sleep 1
+done
+
+apt-get update
+apt-get -y install nginx net-tools tcpdump traceroute iputils-ping
+sudo ip route add ${prefix} via ${gateway}
+service nginx start

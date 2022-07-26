@@ -1,8 +1,22 @@
-variable "ssh_private_key_file" {
+variable "project_prefix" {
   type = string
 }
-variable "ssh_public_key_file" {
+
+variable "project_suffix" {
   type = string
+}
+
+variable "environment" {
+  type = string
+}
+
+variable "ssh_private_key_file" {
+  type    = string
+  default = "key"
+}
+variable "ssh_public_key_file" {
+  type    = string
+  default = "key.pub"
 }
 
 variable "aws_region" {
@@ -19,23 +33,11 @@ variable "aws_ec2_instance_data_key" {
 
 variable "aws_ec2_instance_data" {}
 
-variable "aws_vpc_id" {
+variable "aws_ec2_instance_script_template" {
   type = string
 }
 
-variable "aws_ec2_instance_userdata_template" {
-  type = string
-}
-
-variable "aws_ec2_instance_userdata_file" {
-  type = string
-}
-
-variable "aws_ec2_instance_userdata_file_name" {
-  type = string
-}
-
-variable "aws_ec2_instance_userdata_dir" {
+variable "aws_ec2_instance_script_file" {
   type = string
 }
 
@@ -55,6 +57,14 @@ variable "aws_ec2_public_ips" {
   type = list(string)
 }
 
+variable "aws_ec2_instance_userdata_dirs" {
+  type = list(object({
+    name        = string
+    source      = string
+    destination = string
+  }))
+}
+
 variable "aws_subnet_public_id" {
   type = string
 }
@@ -63,9 +73,8 @@ variable "aws_subnet_private_id" {
   type = string
 }
 
-variable "aws_ec2_user_data_replace_on_change" {
-  type    = bool
-  default = true
+variable "aws_subnet_workload_private_cidr" {
+  type = string
 }
 
 variable "amis" {
@@ -85,10 +94,12 @@ variable "amis" {
   }
 }
 
-variable "custom_tags" {
-  description = "Custom tags to set on resources"
-  type        = map(string)
-  default     = {}
+variable "aws_vpc_workload_id" {
+  type = string
+}
+
+variable "owner_tag" {
+  type = string
 }
 
 

@@ -1,22 +1,9 @@
-variable "project_prefix" {
-  type = string
-}
-
-variable "project_suffix" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
-
 variable "ssh_private_key_file" {
   type    = string
-  default = "key"
 }
+
 variable "ssh_public_key_file" {
   type    = string
-  default = "key.pub"
 }
 
 variable "aws_region" {
@@ -49,11 +36,11 @@ variable "aws_ec2_instance_type" {
   type = string
 }
 
-variable "aws_ec2_private_ips" {
+variable "aws_ec2_private_interface_ips" {
   type = list(string)
 }
 
-variable "aws_ec2_public_ips" {
+variable "aws_ec2_public_interface_ips" {
   type = list(string)
 }
 
@@ -73,7 +60,7 @@ variable "aws_subnet_private_id" {
   type = string
 }
 
-variable "aws_subnet_workload_private_cidr" {
+variable "aws_subnet_cidr" {
   type = string
 }
 
@@ -94,7 +81,7 @@ variable "amis" {
   }
 }
 
-variable "aws_vpc_workload_id" {
+variable "aws_vpc_id" {
   type = string
 }
 

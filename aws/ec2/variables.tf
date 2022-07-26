@@ -98,8 +98,8 @@ variable "aws_vpc_workload_id" {
   type = string
 }
 
-variable "owner_tag" {
-  type = string
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }
-
-

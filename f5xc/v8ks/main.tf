@@ -35,7 +35,7 @@ resource "volterra_api_credential" "cred_vk8s" {
 
 resource "local_file" "this_kubeconfig" {
   content  = base64decode(volterra_api_credential.cred_vk8s.data)
-  filename = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
+  filename = format("%s/_output/ves-ns-01_ck-vk8s.yaml", path.root)
 }
 
 resource "null_resource" "apply_creds" {
@@ -43,7 +43,7 @@ resource "null_resource" "apply_creds" {
   provisioner "local-exec" {
     command     = format("kubectl create secret docker-registry regcred --docker-server=docker.io --docker-password=abc --docker-username=abc --docker-email=test@example.net --namespace=%s", var.f5xc_namespace)
     environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
+      KUBECONFIG = format("%s/_output/ves-ns-01-vk8s.yaml", path.root)
     }
   }
 }
@@ -54,16 +54,16 @@ resource "null_resource" "apply_manifest" {
     manifest_sha1 = sha1(local.manifest_content)
   }
   provisioner "local-exec" {
-    command     = format("kubectl apply -f _output/demo_ams.yml --namespace=%s", var.f5xc_namespace)
+    command     = format("kubectl apply -f _output/demo.yml --namespace=%s", var.f5xc_namespace)
     environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
+      KUBECONFIG = format("%s/_output/ves-ns-01-vk8s.yaml", path.root)
     }
   }
   provisioner "local-exec" {
     when        = destroy
     command     = "kubectl delete -f _output/demo.yml --ignore-not-found=true"
     environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
+      KUBECONFIG = format("%s/_output/ves-ns-01-vk8s.yaml", path.root)
     }
     on_failure = continue
   }

@@ -25,6 +25,6 @@ variable "f5xc_api_token" {
   type = string
 }
 
-variable "f5xc_namespace" {
+variable "f5xc_namespace_name" {
   type = string
 }

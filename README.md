@@ -5,33 +5,33 @@ This repository consists of Terraform template modules to bring up various F5XC 
 ## Table of Contents
 
 - [F5-XC-MODULES](#f5-xc-modules)
-  * [Table of Contents](#table-of-contents)
+    * [Table of Contents](#table-of-contents)
 - [Usage](#usage)
 - [Modules](#modules)
-  * [F5XC Modules](#f5xc-modules)
-    + [Virtual Kubernetes](#virtual-kubernetes)
-    + [Site Mesh Group](#site-mesh-group)
-    + [Fleet](#fleet)
-    + [BGP](#bgp)
-    + [Interface](#interface)
-    + [NFV](#nfv)
-    + [CE](#ce)
-    + [IPSec tunnel](#ipsec-tunnel)
-    + [Virtual Network](#virtual-network)
-    + [Site](#site)
-      - [AWS VCP](#aws-vcp)
-      - [AWS TGW](#aws-tgw)
-      - [GCP VPC](#gcp-vpc)
-      - [Azure VNET](#azure-vnet)
-      - [Update](#update)
-    + [Site Status Check](#site-status-check)
-  * [AWS Modules](#aws-modules)
-    + [EC2](#ec2)
-    + [VPC](#vpc)
-    + [EKS](#eks)
-  * [GCP Modules](#gcp-modules)
-    + [Compute](#compute)
-  * [Azure Modules](#azure-modules)
+    * [F5XC Modules](#f5xc-modules)
+        + [Virtual Kubernetes](#virtual-kubernetes)
+        + [Site Mesh Group](#site-mesh-group)
+        + [Fleet](#fleet)
+        + [BGP](#bgp)
+        + [Interface](#interface)
+        + [NFV](#nfv)
+        + [CE](#ce)
+        + [IPSec tunnel](#ipsec-tunnel)
+        + [Virtual Network](#virtual-network)
+        + [Site](#site)
+            - [AWS VCP](#aws-vcp)
+            - [AWS TGW](#aws-tgw)
+            - [GCP VPC](#gcp-vpc)
+            - [Azure VNET](#azure-vnet)
+            - [Update](#update)
+        + [Site Status Check](#site-status-check)
+    * [AWS Modules](#aws-modules)
+        + [EC2](#ec2)
+        + [VPC](#vpc)
+        + [EKS](#eks)
+    * [GCP Modules](#gcp-modules)
+        + [Compute](#compute)
+    * [Azure Modules](#azure-modules)
 
 # Usage
 
@@ -67,7 +67,45 @@ Module repository folder structure like below:
 
 ## F5XC Modules
 
+### Namespace
+
+__Module Usage Example__
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+variable "f5xc_namespace_name" {
+  type = string
+}
+
+module "namespace" {
+  source              = "../modules/namespace"
+  f5xc_namespace_name = format("%s-ns-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace      = var.f5xc_namespace
+  f5xc_api_url        = var.f5xc_api_url
+  f5xc_api_p12_file   = var.f5xc_api_p12_file
+}
+```
+
 ### Virtual Kubernetes
+
+__Module Usage Example__
 
 ```hcl
 variable "project_prefix" {
@@ -115,6 +153,8 @@ module "vk8s" {
 
 ### Site Mesh Group
 
+__Module Usage Example__
+
 ```hcl
 variable "project_prefix" {
   type        = string
@@ -147,12 +187,12 @@ variable "f5xc_site_mesh_group_name" {
 }
 
 module "site_mesh_group" {
-  source                              = "../modules/site-mesh-group"
-  f5xc_f5xc_site_mesh_group_name_name = format("%s-smg-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace                      = var.f5xc_namespace
-  f5xc_tenant                         = var.f5xc_tenant
-  f5xc_api_url                        = var.f5xc_api_url
-  f5xc_api_p12_file                   = var.f5xc_api_p12_file
+  source                    = "../modules/site-mesh-group"
+  f5xc_site_mesh_group_name = format("%s-smg-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace            = var.f5xc_namespace
+  f5xc_tenant               = var.f5xc_tenant
+  f5xc_api_url              = var.f5xc_api_url
+  f5xc_api_p12_file         = var.f5xc_api_p12_file
 }
 ```
 
@@ -895,5 +935,5 @@ module "ec2" {
 __Module Usage Example__
 
 ```hcl
-  source         = "../modules/azure/virtual_machine"
+  source = "../modules/azure/virtual_machine"
 ```

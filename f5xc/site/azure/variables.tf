@@ -5,9 +5,11 @@ variable "f5xc_api_url" {
 variable "f5xc_api_cert" {
   default = ""
 }
+
 variable "f5xc_api_key" {
   default = ""
 }
+
 variable "f5xc_api_ca_cert" {
   default = ""
 }
@@ -64,13 +66,7 @@ variable "f5xc_azure_vnet_primary_ipv4" {
 }
 
 variable "f5xc_azure_az_nodes" {
-  type    = map(map(string))
-  default = {
-    node0 : {
-      f5xc_azure_vnet_inside_subnet = "192.168.168.0/24", f5xc_azure_vnet_outside_subnet = "192.168.169.0/24"
-      f5xc_azure_az                 = "1"
-    }
-  }
+  type = map(map(string))
 }
 
 variable "f5xc_azure_global_network_name" {
@@ -159,7 +155,28 @@ variable "f5xc_azure_no_worker_nodes" {
   type = bool
 }
 
+variable "f5xc_azure_vnet_local" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_vnet_resource_group" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"
+}
+
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }

@@ -103,20 +103,42 @@ resource "volterra_azure_vnet_site" "vnet" {
   }
 
   vnet {
-    new_vnet {
-      name         = local.f5xc_azure_vnet_name
-      primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
+    dynamic "new_vnet" {
+      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
+      content {
+        name         = local.f5xc_azure_vnet_name
+        primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
+      }
+    }
+    dynamic "existing_vnet" {
+      for_each = var.f5xc_azure_vnet_local != "" ? [1] : []
+      content {
+        resource_group = var.f5xc_azure_vnet_resource_group
+        vnet_name      = var.f5xc_azure_vnet_local
+      }
     }
   }
+
   no_worker_nodes = var.f5xc_azure_no_worker_nodes
   nodes_per_az    = var.f5xc_azure_worker_nodes_per_az > 0 ? var.f5xc_azure_worker_nodes_per_az : null
   total_nodes     = var.f5xc_azure_total_worker_nodes > 0 ? var.f5xc_azure_total_worker_nodes : null
   ssh_key         = var.public_ssh_key
+  lifecycle {
+    ignore_changes = [labels]
+  }
+}
+
+resource "volterra_cloud_site_labels" "labels" {
+  name             = volterra_azure_vnet_site.vnet.name
+  site_type        = "azure_vnet_site"
+  # need at least one label, otherwise site_type is ignored
+  labels           = merge({ "key" = "value" }, var.custom_tags)
+  ignore_on_delete = true
 }
 
 resource "volterra_tf_params_action" "azure_vnet_action" {
   site_name       = volterra_azure_vnet_site.vnet.name
   site_kind       = var.f5xc_azure_site_kind
   action          = var.f5xc_tf_params_action
-  wait_for_action = true
+  wait_for_action = var.f5xc_tf_wait_for_action
 }

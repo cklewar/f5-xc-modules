@@ -3,7 +3,7 @@ resource "volterra_aws_tgw_site" "tgw" {
   namespace               = var.f5xc_namespace
   logs_streaming_disabled = var.f5xc_aws_tgw_logs_streaming_disabled
   lifecycle {
-    ignore_changes = [ labels, description ]
+    ignore_changes = [labels, description]
   }
   os {
     default_os_version       = var.f5xc_aws_default_ce_os_version
@@ -13,7 +13,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     default_sw_version        = var.f5xc_aws_default_ce_sw_version
     volterra_software_version = local.f5xc_aws_ce_sw_version
   }
-  tags                      = local.f5xc_aws_tgw_common_tags
+  tags = local.f5xc_aws_tgw_common_tags
 
   aws_parameters {
     aws_certified_hw = var.f5xc_aws_certified_hw
@@ -91,5 +91,5 @@ resource "volterra_tf_params_action" "aws_tgw_action" {
   site_name       = volterra_aws_tgw_site.tgw.name
   site_kind       = var.f5xc_site_kind
   action          = var.f5xc_tf_params_action
-  wait_for_action = true
+  wait_for_action = var.f5xc_tf_wait_for_action
 }

@@ -168,6 +168,11 @@ variable "f5xc_azure_vnet_resource_group" {
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"
+
+  validation {
+    condition     = contains(["apply", "plan"], var.f5xc_tf_params_action)
+    error_message = format("Valid values for f5xc_tf_params_action: apply, plan")
+  }
 }
 
 variable "f5xc_tf_wait_for_action" {

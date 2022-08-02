@@ -56,13 +56,7 @@ variable "f5xc_aws_vpc_primary_ipv4" {
 }
 
 variable "f5xc_aws_vpc_az_nodes" {
-  type    = map(map(string))
-  default = {
-    node0 : {
-      f5xc_aws_vpc_workload_subnet = "192.168.168.0/24", f5xc_aws_vpc_outside_subnet = "192.168.169.0/24"
-      f5xc_aws_vpc_az_name         = "us-east-2a"
-    }
-  }
+  type = map(map(string))
 }
 
 variable "f5xc_aws_default_ce_os_version" {
@@ -183,11 +177,22 @@ variable "f5xc_tf_params_action" {
   default = "apply"
 
   validation {
-    condition = contains(["apply", "plan"], var.f5xc_tf_params_action)
+    condition     = contains(["apply", "plan"], var.f5xc_tf_params_action)
     error_message = format("Valid values for f5xc_tf_params_action: apply, plan")
   }
 }
 
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
+}
+
 variable "aws_owner_tag" {
   type = string
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }

@@ -164,6 +164,17 @@ variable "f5xc_tf_params_action" {
   }
 }
 
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
+}
+
 variable "aws_owner_tag" {
   type = string
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }

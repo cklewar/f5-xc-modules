@@ -26,7 +26,7 @@ resource "aws_route_table" "rt" {
 }
 
 resource "aws_route_table_association" "subnet" {
-  for_each = {for idx, val in aws_subnet.subnet: idx => val}
+  for_each       = {for idx, val in aws_subnet.subnet : idx => val}
   subnet_id      = each.value.id
   route_table_id = aws_route_table.rt.id
 }

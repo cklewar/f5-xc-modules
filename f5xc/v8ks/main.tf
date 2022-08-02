@@ -23,7 +23,6 @@ resource "local_file" "manifest" {
 }
 
 resource "volterra_api_credential" "credentials" {
-  depends_on            = [volterra_virtual_k8s.vk8s]
   name                  = format("%s-credentials", f5xc_vk8s_names)
   api_credential_type   = var.f5xc_api_credential_type
   virtual_k8s_namespace = var.f5xc_namespace

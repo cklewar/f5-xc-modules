@@ -25,23 +25,6 @@ variable "f5xc_api_token" {
   type = string
 }
 
-variable "f5xc_tenant" {
-  type = string
-}
-
 variable "f5xc_namespace" {
   type = string
-}
-
-variable "f5xc_vk8s_name" {
-  type = string
-}
-
-variable "f5xc_api_credential_type" {
-  type = string
-  default = "KUBE_CONFIG"
-}
-
-variable "f5xc_virtual_site_refs" {
-  type = list(string)
 }

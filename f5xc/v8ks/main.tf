@@ -1,5 +1,5 @@
 resource "volterra_virtual_k8s" "vk8s" {
-  name      = "vk8s-01"
+  name      = var.f5xc_vk8s_name
   namespace = var.f5xc_namespace
 
   vsite_refs {
@@ -22,10 +22,10 @@ resource "local_file" "manifest" {
   filename = format("%s/_output/manifest.yml", path.root)
 }
 
-resource "volterra_api_credential" "cred_vk8s" {
+resource "volterra_api_credential" "credentials" {
   depends_on            = [volterra_virtual_k8s.vk8s]
-  name                  = "vk8s-cred"
-  api_credential_type   = "KUBE_CONFIG"
+  name                  = format("%s-credentials", f5xc_vk8s_names)
+  api_credential_type   = var.f5xc_api_credential_type
   virtual_k8s_namespace = var.f5xc_namespace
   virtual_k8s_name      = volterra_virtual_k8s.vk8s.name
   lifecycle {
@@ -34,8 +34,8 @@ resource "volterra_api_credential" "cred_vk8s" {
 }
 
 resource "local_file" "this_kubeconfig" {
-  content  = base64decode(volterra_api_credential.cred_vk8s.data)
-  filename = format("%s/_output/ves-ns-01_ck-vk8s.yaml", path.root)
+  content  = base64decode(volterra_api_credential.credentials.data)
+  filename = format("%s/_output/ves-ns-01-vk8s.yaml", path.root)
 }
 
 resource "null_resource" "apply_creds" {

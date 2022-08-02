@@ -69,6 +69,9 @@ resource "volterra_aws_tgw_site" "tgw" {
     nodes_per_az    = var.f5xc_aws_tgw_worker_nodes_per_az > 0 ? var.f5xc_aws_tgw_worker_nodes_per_az : null
     total_nodes     = var.f5xc_aws_tgw_total_worker_nodes > 0 ? var.f5xc_aws_tgw_total_worker_nodes : null
     ssh_key         = var.public_ssh_key
+    lifecycle {
+      ignore_changes = [labels]
+    }
   }
 
   dynamic "vpc_attachments" {
@@ -85,6 +88,14 @@ resource "volterra_aws_tgw_site" "tgw" {
       }
     }
   }
+}
+
+resource "volterra_cloud_site_labels" "labels" {
+  name             = volterra_aws_tgw_site.tgw.name
+  site_type        = "aws_vpc_site"
+  # need at least one label, otherwise site_type is ignored
+  labels           = merge({ "key" = "value" }, var.custom_tags)
+  ignore_on_delete = true
 }
 
 resource "volterra_tf_params_action" "aws_tgw_action" {

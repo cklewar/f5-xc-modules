@@ -4,26 +4,34 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 ## Table of Contents
 
+- [F5-XC-MODULES](#f5-xc-modules)
+  * [Table of Contents](#table-of-contents)
 - [Usage](#usage)
 - [Modules](#modules)
-    * [F5XC Modules](#f5xc-modules)
-        + [Fleet](#fleet)
-        + [BGP](#bgp)
-        + [Interface](#interface)
-        + [NFV](#nfv)
-        + [CE](#ce)
-        + [IPSec tunnel](#ipsec-tunnel)
-        + [Virtual Network](#virtual-network)
-        + [Site](#site)
-            - [AWS VCP](#aws-vcp)
-            - [AWS TGW](#aws-tgw)
-            - [GCP VPC](#gcp-vpc)
-            - [Azure VNET](#azure-vnet)
-            - [Update](#update)
-        + [Site Status Check](#site-status-check)
-    * [AWS Modules](#aws-modules)
-    * [GCP Modules](#gcp-modules)
-    * [Azure Modules](#azure-modules)
+  * [F5XC Modules](#f5xc-modules)
+    + [Virtual Kubernetes](#virtual-kubernetes)
+    + [Site Mesh Group](#site-mesh-group)
+    + [Fleet](#fleet)
+    + [BGP](#bgp)
+    + [Interface](#interface)
+    + [NFV](#nfv)
+    + [CE](#ce)
+    + [IPSec tunnel](#ipsec-tunnel)
+    + [Virtual Network](#virtual-network)
+    + [Site](#site)
+      - [AWS VCP](#aws-vcp)
+      - [AWS TGW](#aws-tgw)
+      - [GCP VPC](#gcp-vpc)
+      - [Azure VNET](#azure-vnet)
+      - [Update](#update)
+    + [Site Status Check](#site-status-check)
+  * [AWS Modules](#aws-modules)
+    + [EC2](#ec2)
+    + [VPC](#vpc)
+    + [EKS](#eks)
+  * [GCP Modules](#gcp-modules)
+    + [Compute](#compute)
+  * [Azure Modules](#azure-modules)
 
 # Usage
 
@@ -822,6 +830,56 @@ module "site_status_check" {
 
 ### EC2
 
+__Module Usage Example__
+
+```hcl
+module "ec2" {
+  source                        = "./modules/aws/ec2"
+  aws_ec2_instance_name         = "ck-ec2-instance-01"
+  aws_ec2_instance_type         = "t2.small"
+  aws_subnet_cidr               = "172.16.192.0/21"
+  aws_ec2_public_interface_ips  = ["172.16.192.10"]
+  aws_ec2_private_interface_ips = ["172.16.193.10"]
+  aws_ec2_instance_data_key     = "ec2-instance-01"
+  aws_ec2_instance_data         = {
+    inline = [
+      format("chmod +x /tmp/%s", var.aws_ec2_instance_script_file_name),
+      format("sudo /tmp/%s", var.aws_ec2_instance_script_file_name)
+    ]
+    userdata = {
+      GITEA_VERSION  = var.gitea_version
+      GITEA_PASSWORD = var.gitea_password
+    }
+  }
+  aws_ec2_instance_script_template = format("%s.tftpl", var.aws_ec2_instance_script_template_file_name)
+  aws_ec2_instance_script_file     = format("%s.sh", var.aws_ec2_instance_script_file_name)
+  aws_subnet_private_id            = element([for s in module.aws_subnets.aws_subnet_id : s], 1)
+  aws_subnet_public_id             = element([for s in module.aws_subnets.aws_subnet_id : s], 0)
+  aws_az_name                      = var.aws_az
+  aws_region                       = var.aws_region
+  ssh_private_key_file             = abspath("keys/key")
+  ssh_public_key_file              = abspath("keys/key.pub")
+  aws_vpc_id                       = module.aws_vpc.aws_vpc_id
+  aws_ec2_instance_userdata_dirs   = [
+    {
+      name        = "instance_script"
+      source      = abspath(format("../modules/ec2/_out/%s", format("%s.sh", var.aws_ec2_instance_script_file_name)))
+      destination = format("/tmp/%s", format("%s.sh", var.aws_ec2_instance_script_file_name))
+    },
+    {
+      name        = "additional_custom_data"
+      source      = abspath(format("../modules/ec2/userdata/%s", var.aws_ec2_instance_script_file_name))
+      destination = "/tmp/userdata"
+    }
+  ]
+  custom_tags = {
+    Name    = "ec2-instance-01"
+    Version = "1"
+    Owner   = "c.klewar@f5.com"
+  }
+}
+```
+
 ### VPC
 
 ### EKS
@@ -831,3 +889,11 @@ module "site_status_check" {
 ### Compute
 
 ## Azure Modules
+
+### Linux Virtual Machine
+
+__Module Usage Example__
+
+```hcl
+  source         = "../modules/azure/virtual_machine"
+```

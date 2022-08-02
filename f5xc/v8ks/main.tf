@@ -1,5 +1,5 @@
 resource "volterra_virtual_k8s" "vk8s" {
-  name      = "ck-vk8s-ams-01"
+  name      = "vk8s-01"
   namespace = var.f5xc_namespace
 
   vsite_refs {
@@ -41,7 +41,7 @@ resource "local_file" "this_kubeconfig" {
 resource "null_resource" "apply_creds" {
   depends_on = [local_file.this_kubeconfig]
   provisioner "local-exec" {
-    command     = format("kubectl create secret docker-registry regcred --docker-server=docker.io --docker-password=Dandy862021 --docker-username=infernotwo --docker-email=cklewar@t-online.de --namespace=%s", var.namespace_ams)
+    command     = format("kubectl create secret docker-registry regcred --docker-server=docker.io --docker-password=abc --docker-username=abc --docker-email=test@example.net --namespace=%s", var.f5xc_namespace)
     environment = {
       KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
     }

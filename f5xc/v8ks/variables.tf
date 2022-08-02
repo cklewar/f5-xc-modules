@@ -38,10 +38,34 @@ variable "f5xc_vk8s_name" {
 }
 
 variable "f5xc_api_credential_type" {
-  type = string
+  type    = string
   default = "KUBE_CONFIG"
 }
 
 variable "f5xc_virtual_site_refs" {
   type = list(string)
+}
+
+variable "kubectl_secret_registry_username" {
+  type = string
+}
+
+variable "kubectl_secret_registry_password" {
+  type = string
+}
+
+variable "kubectl_secret_registry_email" {
+  type = string
+}
+
+variable "kubectl_secret_name" {
+  type = string
+}
+
+variable "kubectl_secret_registry_type" {
+  type = string
+}
+
+variable "kubectl_secret_registry_server" {
+  type = string
 }

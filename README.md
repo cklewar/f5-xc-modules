@@ -6,25 +6,24 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 - [Usage](#usage)
 - [Modules](#modules)
-  * [F5XC Modules](#f5xc-modules)
-    + [Fleet](#fleet)
-    + [BGP](#bgp)
-    + [Interface](#interface)
-    + [NFV](#nfv)
-    + [CE](#ce)
-    + [IPSec tunnel](#ipsec-tunnel)
-    + [Virtual Network](#virtual-network)
-    + [Site](#site)
-      - [AWS VCP](#aws-vcp)
-      - [AWS TGW](#aws-tgw)
-      - [GCP VPC](#gcp-vpc)
-      - [Azure VNET](#azure-vnet)
-      - [Update](#update)
-    + [Site Status Check](#site-status-check)
-  * [AWS Modules](#aws-modules)
-  * [GCP Modules](#gcp-modules)
-  * [Azure Modules](#azure-modules)
-
+    * [F5XC Modules](#f5xc-modules)
+        + [Fleet](#fleet)
+        + [BGP](#bgp)
+        + [Interface](#interface)
+        + [NFV](#nfv)
+        + [CE](#ce)
+        + [IPSec tunnel](#ipsec-tunnel)
+        + [Virtual Network](#virtual-network)
+        + [Site](#site)
+            - [AWS VCP](#aws-vcp)
+            - [AWS TGW](#aws-tgw)
+            - [GCP VPC](#gcp-vpc)
+            - [Azure VNET](#azure-vnet)
+            - [Update](#update)
+        + [Site Status Check](#site-status-check)
+    * [AWS Modules](#aws-modules)
+    * [GCP Modules](#gcp-modules)
+    * [Azure Modules](#azure-modules)
 
 # Usage
 
@@ -46,10 +45,11 @@ Terraform usage example:
 ```hcl
 module "my_test_modul" {
   source = "./modules/f5xc/<module_name>"
-  <Module Paramet A> = <Module Paramet A Value>
-  <Module Paramet B> = <Module Paramet B Value>
-  <Module Paramet C> = <Module Paramet C Value>
-  ...
+  <Module Paramet
+A> = <Module Paramet A Value>
+<Module Paramet B> = <Module Paramet B Value>
+<Module Paramet C> = <Module Paramet C Value>
+...
 }
 ```
 
@@ -57,59 +57,96 @@ module "my_test_modul" {
 
 Module repository folder structure like below:
 
-```bash
-.
-├── cert
-└── modules
-    ├── aws
-    │   ├── nfv_ec2
-    │   │   ├── keys
-    │   │   └── templates
-    │   ├── eks
-    │   └── vpc
-    ├── f5xc
-    │   ├── bgp
-    │   ├── bigip
-    │   │   ├── _out
-    │   │   └── templates
-    │   ├── ce
-    │   │   ├── k8s-ce-master-2nic-aws
-    │   │   ├── k8s-ce-master-2nic-gcp
-    │   │   ├── k8s-ce-network-2nic-aws
-    │   │   ├── k8s-ce-network-2nic-gcp
-    │   │   ├── k8s-ce-pool-2nic-aws
-    │   │   ├── k8s-own-config-any
-    │   │   │   └── resources
-    │   │   └── k8s-own-config-gcp
-    │   │       └── resources
-    │   ├── fleet
-    │   ├── interface
-    │   │   ├── scripts
-    │   │   └── templates
-    │   ├── nfv
-    │   │   ├── _out
-    │   │   ├── scripts
-    │   │   └── templates
-    │   ├── site
-    │   │   ├── aws
-    │   │   │   ├── tgw
-    │   │   │   └── vpc
-    │   │   ├── azure
-    │   │   ├── gcp
-    │   │   └── update
-    │   │       └── templates
-    │   ├── status
-    │   │   └── site
-    │   │       └── scripts
-    │   ├── tunnel
-    │   │   ├── scripts
-    │   │   └── templates
-    │   └── virtual-network
-    └── gcp
-        └── compute
+## F5XC Modules
+
+### Virtual Kubernetes
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+variable "f5xc_tenant" {
+  type = string
+}
+
+variable "f5xc_namespace" {
+  type = string
+}
+
+module "vk8s" {
+  source                              = "../modules/vk8s"
+  f5xc_f5xc_site_mesh_group_name_name = format("%s-vk8s-%s", var.project_prefix, var.project_suffix)
+  f5xc_virtual_site_refs              = ["vSiteA"]
+  kubectl_secret_registry_type        = "docker-registry"
+  kubectl_secret_registry_server      = "docker.io"
+  kubectl_secret_name                 = "regcred"
+  kubectl_secret_registry_username    = "admin"
+  kubectl_secret_registry_password    = "password"
+  kubectl_secret_registry_email       = "admin@example.net"
+  f5xc_namespace                      = var.f5xc_namespace
+  f5xc_tenant                         = var.f5xc_tenant
+  f5xc_api_url                        = var.f5xc_api_url
+  f5xc_api_p12_file                   = var.f5xc_api_p12_file
+}
 ```
 
-## F5XC Modules
+### Site Mesh Group
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+variable "f5xc_tenant" {
+  type = string
+}
+
+variable "f5xc_namespace" {
+  type = string
+}
+
+variable "f5xc_site_mesh_group_name" {
+  type = string
+}
+
+module "site_mesh_group" {
+  source                              = "../modules/site-mesh-group"
+  f5xc_f5xc_site_mesh_group_name_name = format("%s-smg-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace                      = var.f5xc_namespace
+  f5xc_tenant                         = var.f5xc_tenant
+  f5xc_api_url                        = var.f5xc_api_url
+  f5xc_api_p12_file                   = var.f5xc_api_p12_file
+}
+```
 
 ### Fleet
 
@@ -359,13 +396,13 @@ variable "f5xc_namespace" {
 }
 
 locals {
-  deployment             = format("%s-%s", var.project_prefix, var.project_suffix)
-  tunnel_name            = format("%s-tunnel-%s", var.project_prefix, var.project_suffix)
-  tunnel_interface_name  = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
+  deployment            = format("%s-%s", var.project_prefix, var.project_suffix)
+  tunnel_name           = format("%s-tunnel-%s", var.project_prefix, var.project_suffix)
+  tunnel_interface_name = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
 }
 
 module "interface" {
-  source              = "../modules/interface"
+  source                   = "../modules/interface"
   f5xc_tenant              = var.f5xc_tenant
   f5xc_namespace           = var.f5xc_namespace
   f5xc_api_p12_file        = var.f5xc_api_p12_file
@@ -403,7 +440,7 @@ This module needs a F5XC AWS TGW site to be deployed first since it depends on F
 ````hcl
 module "nfv" {
   source                    = "../modules/nfv"
-  dependency              = module.tgw.this
+  dependency                = module.tgw.this
   f5xc_project_prefix       = var.project_prefix
   f5xc_project_suffix       = var.project_suffix
   f5xc_tenant               = var.data[terraform.workspace].tenant
@@ -482,7 +519,6 @@ module "tunnel" {
 ### Virtual Network
 
 __Module Usage Example: Tunnel Interface Virtual Network__
-
 
 ````hcl
 variable "project_prefix" {
@@ -729,9 +765,9 @@ variable "f5xc_namespace" {
 }
 
 locals {
-  deployment             = format("%s-%s", var.project_prefix, var.project_suffix)
-  cluster_labels         = var.fleet_label != "" ? { "ves.io/fleet" = var.fleet_label } : {}
-  global_vn_name         = format("my-global-vn-%s", var.project_suffix)
+  deployment     = format("%s-%s", var.project_prefix, var.project_suffix)
+  cluster_labels = var.fleet_label != "" ? { "ves.io/fleet" = var.fleet_label } : {}
+  global_vn_name = format("my-global-vn-%s", var.project_suffix)
 }
 
 module "site_update" {
@@ -773,12 +809,12 @@ variable "f5xc_site_name" {
 }
 
 module "site_status_check" {
-  source          = "../modules/status/site"
-  f5xc_api_url    = var.f5xc_api_url
-  f5xc_api_token  = var.f5xc_api_token
-  f5xc_namespace  = var.f5xc_namespace
-  f5xc_site_name  = var.f5xc_site_name
-  f5xc_tenant     = var.f5xc_tenant
+  source         = "../modules/status/site"
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = var.f5xc_site_name
+  f5xc_tenant    = var.f5xc_tenant
 }
 ````
 

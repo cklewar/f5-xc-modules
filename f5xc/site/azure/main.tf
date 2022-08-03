@@ -100,13 +100,13 @@ resource "volterra_azure_vnet_site" "vnet" {
 
           inside_subnet {
             subnet {
-              subnet = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
+              subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
             }
           }
 
           outside_subnet {
             subnet {
-              subnet = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
+              subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
             }
           }
         }

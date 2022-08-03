@@ -803,6 +803,7 @@ module "azure_multi_node" {
     node1 : { f5xc_azure_local_subnet_name = "node1_subnetB" },
     node2 : { f5xc_azure_local_subnet_name = "node2_subnetC" }
   }
+  f5xc_azure_vnet_resource_group      = "vnet_resource_group_A"
   f5xc_azure_default_blocked_services = false
   f5xc_azure_default_ce_sw_version    = true
   f5xc_azure_default_os_version       = true

@@ -44,17 +44,13 @@ resource "volterra_azure_vnet_site" "vnet" {
 
           local_subnet {
             dynamic "subnet_param" {
-              for_each = var.f5xc_azure_vnet_name == "" && var.f5xc_azure_vnet_resource_group == "" && var.f5xc_azure_local_subnet_name == "" ? [
-                1
-              ] : []
+              for_each = var.f5xc_azure_vnet_name == "" && var.f5xc_azure_vnet_resource_group == "" && var.f5xc_azure_local_subnet_name == "" ? [1] : []
               content {
                 ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_local_subnet"]
               }
             }
             dynamic "subnet" {
-              for_each = var.f5xc_azure_vnet_name != "" && var.f5xc_azure_vnet_resource_group != "" && var.f5xc_azure_local_subnet_name != "" ? [
-                1
-              ] : []
+              for_each = var.f5xc_azure_vnet_name != "" && var.f5xc_azure_vnet_resource_group != "" && var.f5xc_azure_local_subnet_name != "" ? [1] : []
               content {
                 subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_local_subnet_name"]
               }

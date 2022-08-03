@@ -114,6 +114,11 @@ variable "f5xc_gcp_no_forward_proxy" {
 variable "f5xc_gcp_ce_gw_type" {
   type    = string
   default = "multi_nic"
+
+  validation {
+    condition     = contains(["multi_nic", "single_nic"], var.f5xc_gcp_ce_gw_type)
+    error_message = format("Valid values for f5xc_gcp_ce_gw_type: multi_nic, single_nic")
+  }
 }
 
 variable "f5xc_gcp_ce_certified_hw" {

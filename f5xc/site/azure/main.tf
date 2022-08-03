@@ -1,3 +1,9 @@
+resource "azurerm_marketplace_agreement" "f5xc" {
+  publisher = var.f5xc_azure_azurerm_marketplace_agreement_publisher
+  offer     = var.azurerm_marketplace_agreement_offer
+  plan      = var.azurerm_marketplace_agreement_plan
+}
+
 resource "volterra_azure_vnet_site" "vnet" {
   name                     = var.f5xc_azure_site_name
   namespace                = var.f5xc_namespace
@@ -12,7 +18,7 @@ resource "volterra_azure_vnet_site" "vnet" {
 
   logs_streaming_disabled = var.f5xc_azure_logs_streaming_disabled
   azure_region            = var.f5xc_azure_region
-  resource_group          = local.f5xc_azure_resource_group
+  resource_group          = local.f5xc_azure_vnet_resource_group
 
   os {
     default_os_version       = var.f5xc_azure_default_ce_os_version
@@ -37,8 +43,21 @@ resource "volterra_azure_vnet_site" "vnet" {
           disk_size = var.f5xc_azure_ce_disk_size
 
           local_subnet {
-            subnet_param {
-              ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_local_subnet"]
+            dynamic "subnet_param" {
+              for_each = var.f5xc_azure_vnet_name == "" && var.f5xc_azure_vnet_resource_group == "" && var.f5xc_azure_local_subnet_name == "" ? [
+                1
+              ] : []
+              content {
+                ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_local_subnet"]
+              }
+            }
+            dynamic "subnet" {
+              for_each = var.f5xc_azure_vnet_name != "" && var.f5xc_azure_vnet_resource_group != "" && var.f5xc_azure_local_subnet_name != "" ? [
+                1
+              ] : []
+              content {
+                subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_local_subnet_name"]
+              }
             }
           }
         }
@@ -50,7 +69,7 @@ resource "volterra_azure_vnet_site" "vnet" {
     for_each = var.f5xc_azure_ce_gw_type == "multi_nic" ? [1] : []
     content {
       dynamic az_nodes {
-        for_each = var.f5xc_azure_az_nodes
+        for_each = f5xc_azure_vnet_primary_ipv4 != "" ? var.f5xc_azure_az_nodes : []
 
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
@@ -71,6 +90,27 @@ resource "volterra_azure_vnet_site" "vnet" {
             }
             subnet_param {
               ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet"]
+            }
+          }
+        }
+      }
+
+      dynamic az_nodes {
+        for_each = f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : []
+
+        content {
+          azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
+          disk_size = var.f5xc_azure_ce_disk_size
+
+          inside_subnet {
+            subnet {
+              subnet = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
+            }
+          }
+
+          outside_subnet {
+            subnet {
+              subnet = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
             }
           }
         }
@@ -111,10 +151,10 @@ resource "volterra_azure_vnet_site" "vnet" {
       }
     }
     dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_local != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
       content {
-        resource_group = var.f5xc_azure_vnet_resource_group
-        vnet_name      = var.f5xc_azure_vnet_local
+        resource_group = local.f5xc_azure_vnet_resource_group
+        vnet_name      = local.f5xc_azure_vnet_name
       }
     }
   }
@@ -130,7 +170,7 @@ resource "volterra_azure_vnet_site" "vnet" {
 
 resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_azure_vnet_site.vnet.name
-  site_type        = "azure_vnet_site"
+  site_type        = var.f5xc_azure_site_kind
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.custom_tags)
   ignore_on_delete = true

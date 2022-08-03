@@ -102,6 +102,11 @@ variable "f5xc_azure_no_forward_proxy" {
 variable "f5xc_azure_ce_gw_type" {
   type    = string
   default = "multi_nic"
+
+  validation {
+    condition     = contains(["multi_nic", "single_nic"], var.f5xc_azure_ce_gw_type)
+    error_message = format("Valid values for f5xc_azure_ce_gw_type: multi_nic, single_nic")
+  }
 }
 
 variable "f5xc_azure_ce_certified_hw" {
@@ -155,14 +160,34 @@ variable "f5xc_azure_no_worker_nodes" {
   type = bool
 }
 
-variable "f5xc_azure_vnet_local" {
+variable "f5xc_azure_vnet_resource_group" {
   type    = string
   default = ""
 }
 
-variable "f5xc_azure_vnet_resource_group" {
+variable "f5xc_azure_vnet_name" {
   type    = string
   default = ""
+}
+
+variable "f5xc_azure_local_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_azurerm_marketplace_agreement_publisher" {
+  type    = string
+  default = "volterraedgeservices"
+}
+
+variable "azurerm_marketplace_agreement_offer" {
+  type    = string
+  default = "entcloud_voltmesh_voltstack_node"
+}
+
+variable "azurerm_marketplace_agreement_plan" {
+  tpye    = string
+  default = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
 }
 
 variable "f5xc_tf_params_action" {

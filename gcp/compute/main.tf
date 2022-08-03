@@ -1,12 +1,12 @@
 resource "google_compute_instance" "compute" {
-  name         = var.compute_instance_machine_name
+  name         = var.gcp_compute_instance_machine_name
   machine_type = var.gcp_compute_instance_machine_type
-  zone         = element(var.zone_names, 0)
+  zone         = element(var.gcp_zone_names, 0)
   //tags         = ["ssh"]
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = var.gcp_google_compute_instance_image
     }
   }
 
@@ -15,12 +15,7 @@ resource "google_compute_instance" "compute" {
     access_config {}
   }
 
-  metadata_startup_script = <<-EOF
-#!/bin/bash
-sleep 30
-sudo apt-get update
-sudo apt-get -y install net-tools tcpdump traceroute iputils-ping
-EOF
+  metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
 
   metadata = {
     ssh-keys = var.public_ssh_key
@@ -28,8 +23,8 @@ EOF
 }
 
 resource "google_compute_firewall" "allow-ssh" {
-  name    = var.google_compute_firewall_name
-  network = format("%s-inside", var.site_name)
+  name    = var.gcp_compute_firewall_name
+  network = format("%s-inside", var.gcp_site_name)
 
   allow {
     protocol = "icmp"

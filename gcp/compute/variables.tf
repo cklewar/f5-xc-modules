@@ -1,57 +1,58 @@
-variable "project_name" {
+variable "gcp_project_name" {
   type = string
 }
 
-variable "region" {
+variable "gcp_region" {
   type = string
 }
 
-variable "zone" {
+variable "gcp_zone" {
   type = string
 }
 
-variable "credentials_file_path" {
+variable "gcp_credentials_file_path" {
   type = string
 }
 
-variable "image" {
-  type    = string
-  default = "ubuntu-os-cloud/ubuntu-2004-lts"
-}
-
-variable "machine_type" {
+variable "gcp_compute_instance_machine_type" {
   type    = string
   default = "n1-standard-4"
 }
 
-variable "machine_disk_size" {
+variable "gcp_compute_instance_machine_disk_size" {
   type    = string
   default = "40"
 }
 
-variable "zone_names" {
+variable "gcp_zone_names" {
   type = list(string)
 }
 
-variable "site_name" {
+variable "gcp_site_name" {
   type = string
 }
 
-variable "inside_subnet_name" {
+variable "gcp_compute_instance_inside_subnet_name" {
   type = string
 }
 
-variable "google_compute_firewall_name" {
-  type = string
+variable "gcp_compute_firewall_name" {
+  type    = string
   default = "allow-ssh"
 }
 
-variable "gcp_compute_instance_machine_type" {
+variable "gcp_compute_instance_machine_name" {
   type = string
 }
 
-variable "compute_instance_machine_name" {
-  type = string
+variable "gcp_google_compute_instance_image" {
+  type    = string
+  default = "ubuntu-os-cloud/ubuntu-2004-lts"
+}
+
+variable "gcp_compute_instance_metadata_startup_script" {
+  type    = string
+  default = "<<-EOF #!/bin/bash sleep 30 sudo apt-get update sudo apt-get -y install net-tools tcpdump traceroute iputils-ping EOF"
 }
 
 variable "public_ssh_key" {

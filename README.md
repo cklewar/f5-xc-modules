@@ -796,8 +796,9 @@ module "aws_vpc_multi_node" {
 }
 ```
 
-#### AWS TGW
 ------------
+#### AWS TGW
+
 
 __Module Usage Example New VPC__
 

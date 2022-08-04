@@ -115,6 +115,11 @@ variable "f5xc_site_kind" {
   default = "aws_tgw_site"
 }
 
+variable "f5xc_aws_tgw_existing_id" {
+  type = string
+  default = ""
+}
+
 variable "f5xc_aws_tgw_logs_streaming_disabled" {
   type    = bool
   default = true

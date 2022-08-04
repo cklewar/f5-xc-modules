@@ -62,6 +62,7 @@ variable "f5xc_aws_tgw_ce_instance_disk_size" {
 
 variable "f5xc_aws_tgw_primary_ipv4" {
   type = string
+  default = ""
 }
 
 variable "f5xc_aws_cred" {

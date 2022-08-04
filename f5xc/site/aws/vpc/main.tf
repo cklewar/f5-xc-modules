@@ -14,6 +14,7 @@ resource "volterra_aws_vpc_site" "vpc" {
       name_tag     = var.f5xc_aws_vpc_name_tag
       primary_ipv4 = var.f5xc_aws_vpc_primary_ipv4
     }
+    existing_vpc
   }
   disk_size               = var.f5xc_aws_vpc_ce_instance_disk_size
   instance_type           = var.f5xc_aws_vpc_ce_instance_type
@@ -43,8 +44,17 @@ resource "volterra_aws_vpc_site" "vpc" {
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
 
           local_subnet {
-            subnet_param {
-              ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_subnet"]
+            dynamic "subnet_param" {
+              for_each = ""
+              content {
+                ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_subnet"]
+              }
+            }
+            dynamic "subnet" {
+              for_each = var.f5xc_aws_vnet_name != "" && var.f5xc_aws_vp != "" ? [1] : []
+              content {
+                subnet_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_subnet_name"]
+              }
             }
           }
         }

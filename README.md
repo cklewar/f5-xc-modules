@@ -654,7 +654,7 @@ module "global_virtual_network" {
 
 #### AWS VCP
 
-__Module Usage Example__
+__Module Usage Example Single NIC / New Subnet__
 
 ```hcl
 module "aws_vpc_multi_node" {
@@ -662,19 +662,130 @@ module "aws_vpc_multi_node" {
   f5xc_api_p12_file               = "cert/api-creds.p12"
   f5xc_api_url                    = "https://playground.staging.volterra.us/api"
   f5xc_namespace                  = "system"
-  f5xc_tenant                     = "playground-wtppvaog"
+  f5xc_tenant                     = "playground"
   f5xc_aws_region                 = "us-east-2"
-  f5xc_aws_cred                   = "ck-aws-01"
-  f5xc_aws_vpc_site_name          = "ck-aws-vpc-multi-node-03"
-  f5xc_aws_vpc_name_tag           = ""
+  f5xc_aws_cred                   = "cred-aws-01"
+  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-01"
+  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-01"
   f5xc_aws_vpc_az_name            = "us-east-2a"
   f5xc_aws_vpc_primary_ipv4       = "192.168.168.0/21"
   f5xc_aws_vpc_total_worker_nodes = 2
   f5xc_aws_ce_gw_type             = "single_nic"
   f5xc_aws_vpc_az_nodes           = {
-    node0 = { f5xc_aws_vpc_local_subnet = "192.168.168.0/26" },
-    node1 = { f5xc_aws_vpc_local_subnet = "192.168.169.0/26" },
-    node2 = { f5xc_aws_vpc_local_subnet = "192.168.170.0/26" }
+    node0 = { f5xc_aws_vpc_local_subnet = "192.168.168.0/26", f5xc_aws_vpc_az_name = "us-east-2a"},
+    node1 = { f5xc_aws_vpc_local_subnet = "192.168.169.0/26", f5xc_aws_vpc_az_name = "us-east-2a"},
+    node2 = { f5xc_aws_vpc_local_subnet = "192.168.170.0/26", f5xc_aws_vpc_az_name = "us-east-2a"}
+  }
+  f5xc_aws_default_ce_os_version       = true
+  f5xc_aws_default_ce_sw_version       = true
+  f5xc_aws_vpc_no_worker_nodes         = false
+  f5xc_aws_vpc_use_http_https_port     = true
+  f5xc_aws_vpc_use_http_https_port_sli = true
+  public_ssh_key                       = "ssh-rsa xyz"
+}
+```
+
+__Module Usage Example Single NIC / Existing Subnet__
+
+```hcl
+module "aws_vpc_multi_node" {
+  source                          = "./modules/f5xc/site/aws/vpc"
+  f5xc_api_p12_file               = "cert/api-creds.p12"
+  f5xc_api_url                    = "https://playground.staging.volterra.us/api"
+  f5xc_namespace                  = "system"
+  f5xc_tenant                     = "playground"
+  f5xc_aws_region                 = "us-east-2"
+  f5xc_aws_cred                   = "cred-aws-01"
+  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-01"
+  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_az_name            = "us-east-2a"
+  f5xc_aws_vpc_primary_ipv4       = ""
+  f5xc_aws_vpc_total_worker_nodes = 2
+  f5xc_aws_ce_gw_type             = "single_nic"
+  f5xc_aws_vpc_az_nodes           = {
+    node0 = { f5xc_aws_vpc_local_existing_subnet_id = "node0_subnet_id", f5xc_aws_vpc_az_name = "us-east-2a" },
+    node1 = { f5xc_aws_vpc_local_existing_subnet_id = "node1_subnet_id", f5xc_aws_vpc_az_name = "us-east-2a" },
+    node2 = { f5xc_aws_vpc_local_existing_subnet_id = "node2_subnet_id", f5xc_aws_vpc_az_name = "us-east-2a" }
+  }
+  f5xc_aws_default_ce_os_version       = true
+  f5xc_aws_default_ce_sw_version       = true
+  f5xc_aws_vpc_no_worker_nodes         = false
+  f5xc_aws_vpc_use_http_https_port     = true
+  f5xc_aws_vpc_use_http_https_port_sli = true
+  public_ssh_key                       = "ssh-rsa xyz"
+}
+```
+
+__Module Usage Example Multi NIC / New Subnet__
+
+```hcl
+module "aws_vpc_multi_node" {
+  source                          = "./modules/f5xc/site/aws/vpc"
+  f5xc_api_p12_file               = "cert/api-creds.p12"
+  f5xc_api_url                    = "https://playground.staging.volterra.us/api"
+  f5xc_namespace                  = "system"
+  f5xc_tenant                     = "playground"
+  f5xc_aws_region                 = "us-east-2"
+  f5xc_aws_cred                   = "aws-01"
+  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_az_name            = "us-east-2a"
+  f5xc_aws_vpc_primary_ipv4       = "192.168.168.0/21"
+  f5xc_aws_vpc_total_worker_nodes = 2
+  f5xc_aws_ce_gw_type             = "multi_nic"
+  f5xc_aws_vpc_az_nodes           = {
+    node0 = {
+      f5xc_aws_vpc_workload_subnet = "192.168.168.0/26", f5xc_aws_vpc_inside_subnet = "192.168.168.64/26",
+      f5xc_aws_vpc_outside_subnet  = "192.168.168.128/26", f5xc_aws_vpc_az_name = "us-east-2a"
+    },
+    node1 = {
+      f5xc_aws_vpc_workload_subnet = "192.168.169.0/26", f5xc_aws_vpc_inside_subnet = "192.168.169.64/26",
+      f5xc_aws_vpc_outside_subnet  = "192.168.169.128/26", f5xc_aws_vpc_az_name = "us-east-2a"
+    },
+    node2 = {
+      f5xc_aws_vpc_workload_subnet = "192.168.170.0/26", f5xc_aws_vpc_inside_subnet = "192.168.170.64/26",
+      f5xc_aws_vpc_outside_subnet  = "192.168.170.128/26", f5xc_aws_vpc_az_name = "us-east-2a"
+    }
+  }
+  f5xc_aws_default_ce_os_version       = true
+  f5xc_aws_default_ce_sw_version       = true
+  f5xc_aws_vpc_no_worker_nodes         = false
+  f5xc_aws_vpc_use_http_https_port     = true
+  f5xc_aws_vpc_use_http_https_port_sli = true
+  public_ssh_key                       = "ssh-rsa xyz"
+}
+```
+
+__Module Usage Example Multi NIC / Existing Subnet__
+
+```hcl
+module "aws_vpc_multi_node" {
+  source                          = "./modules/f5xc/site/aws/vpc"
+  f5xc_api_p12_file               = "cert/api-creds.p12"
+  f5xc_api_url                    = "https://playground.staging.volterra.us/api"
+  f5xc_namespace                  = "system"
+  f5xc_tenant                     = "playground"
+  f5xc_aws_region                 = "us-east-2"
+  f5xc_aws_cred                   = "aws-01"
+  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_az_name            = "us-east-2a"
+  f5xc_aws_vpc_primary_ipv4       = ""
+  f5xc_aws_vpc_total_worker_nodes = 2
+  f5xc_aws_ce_gw_type             = "multi_nic"
+  f5xc_aws_vpc_az_nodes           = {
+    node0 = {
+      f5xc_aws_vpc_workload_subnet_name = "node0_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node0_subnet_inside",
+      f5xc_aws_vpc_outside_subnet_name  = "node0_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+    },
+    node1 = {
+      f5xc_aws_vpc_workload_subnet_name = "node1_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node1_subnet_inside",
+      f5xc_aws_vpc_outside_subnet_name  = "node1_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+    },
+    node2 = {
+      f5xc_aws_vpc_workload_subnet_name = "node2_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node2_subnet_inside",
+      f5xc_aws_vpc_outside_subnet_name  = "node2_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+    }
   }
   f5xc_aws_default_ce_os_version       = true
   f5xc_aws_default_ce_sw_version       = true

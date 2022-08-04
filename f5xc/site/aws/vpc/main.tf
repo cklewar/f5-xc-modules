@@ -69,13 +69,11 @@ resource "volterra_aws_vpc_site" "vpc" {
           }
         }
       }
+      local_control_plane {
+        no_local_control_plane = var.f5xc_aws_vpc_no_local_control_plane
+      }
     }
   }
-
-  local_control_plane {
-    no_local_control_plane = var.f5xc_aws_vpc_no_local_control_plane
-  }
-
 
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : []

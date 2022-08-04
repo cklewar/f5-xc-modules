@@ -766,24 +766,24 @@ module "aws_vpc_multi_node" {
   f5xc_tenant                     = "playground"
   f5xc_aws_region                 = "us-east-2"
   f5xc_aws_cred                   = "aws-01"
-  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-03"
-  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-03"
+  f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-01"
+  f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-01"
   f5xc_aws_vpc_az_name            = "us-east-2a"
   f5xc_aws_vpc_primary_ipv4       = ""
   f5xc_aws_vpc_total_worker_nodes = 2
   f5xc_aws_ce_gw_type             = "multi_nic"
   f5xc_aws_vpc_az_nodes           = {
     node0 = {
-      f5xc_aws_vpc_workload_subnet_name = "node0_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node0_subnet_inside",
-      f5xc_aws_vpc_outside_subnet_name  = "node0_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+      f5xc_aws_vpc_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node0_subnet_inside_id",
+      f5xc_aws_vpc_outside_existing_subnet_id  = "node0_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     },
     node1 = {
-      f5xc_aws_vpc_workload_subnet_name = "node1_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node1_subnet_inside",
-      f5xc_aws_vpc_outside_subnet_name  = "node1_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+      f5xc_aws_vpc_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node1_subnet_inside_id",
+      f5xc_aws_vpc_outside_existing_subnet_id  = "node1_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     },
     node2 = {
-      f5xc_aws_vpc_workload_subnet_name = "node2_subnet_workload", f5xc_aws_vpc_inside_subnet_name = "node2_subnet_inside",
-      f5xc_aws_vpc_outside_subnet_name  = "node2_subnet_outside", f5xc_aws_vpc_az_name = "us-east-2a"
+      f5xc_aws_vpc_workload_existing_subnet_id = "node2_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node2_subnet_inside_id",
+      f5xc_aws_vpc_outside_existing_subnet_id = "node2_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     }
   }
   f5xc_aws_default_ce_os_version       = true

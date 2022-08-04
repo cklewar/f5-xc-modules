@@ -183,6 +183,11 @@ variable "f5xc_aws_vpc_local_existing_subnet_id" {
   default = ""
 }
 
+variable "f5xc_aws_vpc_existing_id" {
+  type = string
+  default = ""
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"

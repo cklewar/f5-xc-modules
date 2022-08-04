@@ -78,10 +78,22 @@ resource "volterra_aws_tgw_site" "tgw" {
     }
     instance_type = var.f5xc_aws_tgw_instance_type
 
-    new_vpc {
-      allocate_ipv6 = var.f5xc_aws_tgw_vpc_allocate_ipv6
-      autogenerate  = var.f5xc_aws_tgw_vpc_autogenerate
-      primary_ipv4  = var.f5xc_aws_tgw_primary_ipv4
+    dynamic "vpc" {
+      for_each = var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_primary_ipv4 != ""
+      content {
+        new_vpc {
+          allocate_ipv6 = var.f5xc_aws_tgw_vpc_allocate_ipv6
+          autogenerate  = var.f5xc_aws_tgw_vpc_autogenerate
+          primary_ipv4  = var.f5xc_aws_tgw_primary_ipv4
+        }
+      }
+    }
+
+    dynamic "vpc" {
+      for_each = var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_primary_ipv4 == ""
+      content {
+        vpc_id = var.f5xc_aws_tgw_existing_id
+      }
     }
 
     new_tgw {

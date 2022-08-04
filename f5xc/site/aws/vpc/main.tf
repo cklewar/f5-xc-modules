@@ -70,11 +70,12 @@ resource "volterra_aws_vpc_site" "vpc" {
         }
       }
     }
-
-    local_control_plane {
-      no_local_control_plane = var.f5xc_aws_vpc_no_local_control_plane
-    }
   }
+
+  local_control_plane {
+    no_local_control_plane = var.f5xc_aws_vpc_no_local_control_plane
+  }
+
 
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : []
@@ -127,7 +128,9 @@ resource "volterra_aws_vpc_site" "vpc" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [1] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [
+              1
+            ] : []
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_existing_subnet_id"]
             }

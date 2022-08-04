@@ -2,7 +2,7 @@
 
 This repository consists of Terraform template modules to bring up various F5XC components.
 
-## Table of Contents
+# Table of Contents
 
 - [F5-XC-MODULES](#f5-xc-modules)
   * [Table of Contents](#table-of-contents)
@@ -105,6 +105,7 @@ module "namespace" {
 }
 ```
 
+----------------------
 ### Virtual Kubernetes
 
 __Module Usage Example__
@@ -153,6 +154,7 @@ module "vk8s" {
 }
 ```
 
+-------------------
 ### Site Mesh Group
 
 __Module Usage Example__
@@ -198,6 +200,7 @@ module "site_mesh_group" {
 }
 ```
 
+---------
 ### Fleet
 
 __Module Usage Example__
@@ -266,6 +269,7 @@ __Input Vars Example__
 }
 ```
 
+-------
 ### BGP
 
 __Module Usage Example__
@@ -350,6 +354,7 @@ __Input Vars Example__
 }
 ````
 
+-------------
 ### Interface
 
 __Module Usage Example: IPSec tunnel interface in F5XC AWS site__
@@ -481,6 +486,7 @@ __Input Vars Example: IPSec tunnel interface in F5XC GCP site__
 }
 ```
 
+-------
 ### NFV
 
 __Module Usage Example__
@@ -520,8 +526,7 @@ module "nfv" {
 }
 ````
 
-### CE
-
+----------------
 ### IPSec tunnel
 
 __Module Usage Example__
@@ -566,6 +571,7 @@ module "tunnel" {
 }
 ````
 
+-------------------
 ### Virtual Network
 
 __Module Usage Example: Tunnel Interface Virtual Network__
@@ -650,6 +656,7 @@ module "global_virtual_network" {
 }
 ```
 
+--------
 ### Site
 
 #### AWS VCP

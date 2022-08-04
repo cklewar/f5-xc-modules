@@ -40,6 +40,7 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - The Terraform templates in this repository ment to be used as modules in any root Terraform template environment
 - Create a new Terraform project e.g. __f5xc-mcn__
 - Clone this repo with: `git clone https://github.com/cklewar/f5-xc-modules` into the new created project folder
+- Export P12 cert file password as environment variable: `export VES_P12_PASSWORD=MyPassword`
 
 Folder structure example:
 

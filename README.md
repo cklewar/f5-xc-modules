@@ -876,6 +876,7 @@ module "aws_tgw_multi_node" {
 }
 ````
 
+------------
 #### GCP VPC
 
 __Module Usage Example__
@@ -903,6 +904,7 @@ module "gcp_multi_node" {
 }
 ````
 
+---------------
 #### Azure VNET
 
 __Module Usage Example Single_NIC / New VNET__
@@ -1029,6 +1031,7 @@ module "azure_multi_node" {
 }
 ```
 
+-----------
 #### Update
 
 __Module Usage Example__
@@ -1079,6 +1082,7 @@ module "site_update" {
 }
 ```
 
+---------------------
 ### Site Status Check
 
 __Module Usage Example__
@@ -1114,6 +1118,7 @@ module "site_status_check" {
 }
 ````
 
+--------------
 ## AWS Modules
 
 ### EC2
@@ -1168,16 +1173,22 @@ module "ec2" {
 }
 ```
 
+-------
 ### VPC
 
+-------
 ### EKS
 
+--------------
 ## GCP Modules
 
+-----------
 ### Compute
 
+----------------
 ## Azure Modules
 
+-------------------------
 ### Linux Virtual Machine
 
 __Module Usage Example__

@@ -53,6 +53,7 @@ variable "f5xc_aws_vpc_name_tag" {
 
 variable "f5xc_aws_vpc_primary_ipv4" {
   type = string
+  default = ""
 }
 
 variable "f5xc_aws_vpc_az_nodes" {

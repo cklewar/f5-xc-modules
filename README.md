@@ -699,7 +699,6 @@ module "aws_vpc_multi_node" {
   f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-01"
   f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-03"
   f5xc_aws_vpc_az_name            = "us-east-2a"
-  f5xc_aws_vpc_primary_ipv4       = ""
   f5xc_aws_vpc_total_worker_nodes = 2
   f5xc_aws_ce_gw_type             = "single_nic"
   f5xc_aws_vpc_az_nodes           = {

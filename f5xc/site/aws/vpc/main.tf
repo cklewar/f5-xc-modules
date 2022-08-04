@@ -62,7 +62,7 @@ resource "volterra_aws_vpc_site" "vpc" {
             }
           }
           dynamic "local_subnet" {
-            for_each = f5xc_aws_vpc_primary_ipv4 == "" ? [1] : [0]
+            for_each = var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : [0]
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_existing_subnet_id"]
             }

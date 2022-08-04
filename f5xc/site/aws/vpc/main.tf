@@ -88,7 +88,7 @@ resource "volterra_aws_vpc_site" "vpc" {
       }
 
       dynamic az_nodes {
-        for_each = var.f5xc_aws_vpc_az_nodes
+        for_each = var.f5xc_aws_vpc_primary_ipv4 != "" && var.f5xc_aws_vpc_existing_id == "" ? var.f5xc_aws_vpc_az_nodes : []
         content {
           aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
@@ -112,6 +112,29 @@ resource "volterra_aws_vpc_site" "vpc" {
             subnet_param {
               ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_outside_subnet"]
             }
+          }
+        }
+      }
+
+      dynamic az_nodes {
+        for_each = var.f5xc_aws_vpc_primary_ipv4 == "" && var.f5xc_aws_vpc_existing_id != "" ? var.f5xc_aws_vpc_az_nodes : []
+        content {
+          aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
+          disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
+
+          workload_subnet {
+            existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_workload_existing_subnet_id"]
+          }
+
+          dynamic "inside_subnet" {
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [1] : []
+            content {
+              existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_existing_subnet_id"]
+            }
+          }
+
+          outside_subnet {
+            existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_outside_existing_subnet_id"]
           }
         }
       }

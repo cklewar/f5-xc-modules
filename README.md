@@ -857,7 +857,7 @@ module "aws_tgw_multi_node" {
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
       f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",
-      f5xc_aws_tgw_outside_existing_subnet_id  = "192.168.168.128/26"
+      f5xc_aws_tgw_outside_existing_subnet_id  = "node0_subnet_outside_id"
     },
     node1 : {
       f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node1_subnet_inside_id",

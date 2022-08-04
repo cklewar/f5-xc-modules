@@ -16,7 +16,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
     + [BGP](#bgp)
     + [Interface](#interface)
     + [NFV](#nfv)
-    + [CE](#ce)
     + [IPSec tunnel](#ipsec-tunnel)
     + [Virtual Network](#virtual-network)
     + [Site](#site)

@@ -685,7 +685,7 @@ module "aws_vpc_multi_node" {
 }
 ```
 
-__Module Usage Example Single NIC / Existing Subnet__
+__Module Usage Example Single NIC / Existing VPC/Subnet__
 
 ```hcl
 module "aws_vpc_multi_node" {
@@ -701,6 +701,7 @@ module "aws_vpc_multi_node" {
   f5xc_aws_vpc_az_name            = "us-east-2a"
   f5xc_aws_vpc_total_worker_nodes = 2
   f5xc_aws_ce_gw_type             = "single_nic"
+  f5xc_aws_vpc_existing_id        = "vpc_id_abc"
   f5xc_aws_vpc_az_nodes           = {
     node0 = { f5xc_aws_vpc_local_existing_subnet_id = "node0_subnet_id", f5xc_aws_vpc_az_name = "us-east-2a" },
     node1 = { f5xc_aws_vpc_local_existing_subnet_id = "node1_subnet_id", f5xc_aws_vpc_az_name = "us-east-2a" },
@@ -755,7 +756,7 @@ module "aws_vpc_multi_node" {
 }
 ```
 
-__Module Usage Example Multi NIC / Existing Subnet__
+__Module Usage Example Multi NIC / Existing VPC/Subnet__
 
 ```hcl
 module "aws_vpc_multi_node" {
@@ -769,8 +770,8 @@ module "aws_vpc_multi_node" {
   f5xc_aws_vpc_site_name          = "aws-vpc-multi-node-01"
   f5xc_aws_vpc_name_tag           = "aws-vpc-multi-node-01"
   f5xc_aws_vpc_az_name            = "us-east-2a"
-  f5xc_aws_vpc_primary_ipv4       = ""
   f5xc_aws_vpc_total_worker_nodes = 2
+  f5xc_aws_vpc_existing_id        = "vpc_id_abc"
   f5xc_aws_ce_gw_type             = "multi_nic"
   f5xc_aws_vpc_az_nodes           = {
     node0 = {

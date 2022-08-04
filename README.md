@@ -763,16 +763,15 @@ module "azure_multi_node" {
   f5xc_api_url                 = "https://playground.staging.volterra.us/api"
   f5xc_namespace               = "system"
   f5xc_tenant                  = "playground"
-  f5xc_azure_az                = 1
   f5xc_azure_cred              = "az-creds"
   f5xc_azure_region            = "useast"
   f5xc_azure_site_name         = "azure-multi-node-01"
   f5xc_azure_vnet_primary_ipv4 = "192.168.168.0/21"
   f5xc_azure_ce_gw_type        = "single_nic"
   f5xc_azure_az_nodes          = {
-    node0 : { f5xc_azure_vnet_local_subnet = "192.168.168.0/24" },
-    node1 : { f5xc_azure_vnet_local_subnet = "192.168.170.0/24" },
-    node2 : { f5xc_azure_vnet_local_subnet = "192.168.172.0/24" }
+    node0 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.168.0/24" },
+    node1 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.170.0/24" },
+    node2 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.172.0/24" }
   }
   f5xc_azure_default_blocked_services = false
   f5xc_azure_default_ce_sw_version    = true
@@ -792,16 +791,15 @@ module "azure_multi_node" {
   f5xc_api_url                 = "https://playground.staging.volterra.us/api"
   f5xc_namespace               = "system"
   f5xc_tenant                  = "playground"
-  f5xc_azure_az                = 1
   f5xc_azure_cred              = "az-creds"
   f5xc_azure_region            = "useast"
   f5xc_azure_site_name         = "azure-multi-node-01"
   f5xc_azure_vnet_primary_ipv4 = "192.168.168.0/21"
   f5xc_azure_ce_gw_type        = "single_nic"
   f5xc_azure_az_nodes          = {
-    node0 : { f5xc_azure_local_subnet_name = "node0_subnetA" },
-    node1 : { f5xc_azure_local_subnet_name = "node1_subnetB" },
-    node2 : { f5xc_azure_local_subnet_name = "node2_subnetC" }
+    node0 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node0_subnetA" },
+    node1 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node1_subnetB" },
+    node2 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node2_subnetC" }
   }
   f5xc_azure_vnet_resource_group      = "vnet_resource_group_A"
   f5xc_azure_default_blocked_services = false
@@ -858,15 +856,15 @@ module "azure_multi_node" {
   f5xc_azure_ce_gw_type        = "multi_nic"
   f5xc_azure_az_nodes          = {
     node0 : {
-      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet_name = "node_0_inside_subnet",
+      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_0_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_0_outside_subnet"
     },
     node1 : {
-      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet_name = "node_1_inside_subnet",
+      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_1_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_1_outside_subnet"
     },
     node2 : {
-      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet_name = "node_2_inside_subnet",
+      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_2_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_2_outside_subnet"
     }
   }

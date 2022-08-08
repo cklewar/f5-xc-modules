@@ -116,7 +116,7 @@ variable "f5xc_site_kind" {
   default = "aws_tgw_site"
 }
 
-variable "f5xc_aws_tgw_existing_id" {
+variable "f5xc_aws_tgw_id" {
   type = string
   default = ""
 }

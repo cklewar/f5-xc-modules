@@ -109,9 +109,6 @@ resource "volterra_aws_tgw_site" "tgw" {
     nodes_per_az    = var.f5xc_aws_tgw_worker_nodes_per_az > 0 ? var.f5xc_aws_tgw_worker_nodes_per_az : null
     total_nodes     = var.f5xc_aws_tgw_total_worker_nodes > 0 ? var.f5xc_aws_tgw_total_worker_nodes : null
     ssh_key         = var.public_ssh_key
-    lifecycle {
-      ignore_changes = [labels]
-    }
   }
 
   dynamic "vpc_attachments" {

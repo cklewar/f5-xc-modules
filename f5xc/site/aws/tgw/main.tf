@@ -79,7 +79,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     instance_type = var.f5xc_aws_tgw_instance_type
 
     dynamic "vpc" {
-      for_each = var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_primary_ipv4 != ""
+      for_each = var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? [1] : []
       content {
         new_vpc {
           allocate_ipv6 = var.f5xc_aws_tgw_vpc_allocate_ipv6
@@ -90,14 +90,26 @@ resource "volterra_aws_tgw_site" "tgw" {
     }
 
     dynamic "vpc" {
-      for_each = var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_primary_ipv4 == ""
+      for_each = var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? [1] : []
       content {
         vpc_id = var.f5xc_aws_tgw_existing_id
       }
     }
 
-    new_tgw {
-      system_generated = var.f5xc_aws_tgw_vpc_system_generated
+    dynamic "existing_tgw" {
+      for_each = var.f5xc_aws_tgw_asn != "" && var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_volterra_site_asn != "" ? [1] : [0]
+      content {
+        tgw_asn           = var.f5xc_aws_tgw_asn
+        tgw_id            = var.f5xc_aws_tgw_existing_id
+        volterra_site_asn = var.f5xc_aws_tgw_volterra_site_asn
+      }
+    }
+
+    dynamic "new_tgw" {
+      for_each = var.f5xc_aws_tgw_asn == "" && var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_volterra_site_asn == "" ? [1] : [0]
+      content {
+        system_generated = var.f5xc_aws_tgw_vpc_system_generated
+      }
     }
 
     no_worker_nodes = var.f5xc_aws_tgw_no_worker_nodes

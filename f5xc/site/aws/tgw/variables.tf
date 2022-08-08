@@ -160,6 +160,16 @@ variable "f5xc_aws_tgw_no_worker_nodes" {
   type = bool
 }
 
+variable "f5xc_aws_tgw_asn" {
+  type = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_volterra_site_asn" {
+  type = string
+  default = ""
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"

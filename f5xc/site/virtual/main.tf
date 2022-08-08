@@ -6,5 +6,5 @@ resource "volterra_virtual_site" "virtual-site" {
     expressions = var.f5xc_virtual_site_selector_expression
   }
 
-  site_type = "REGIONAL_EDGE"
+  site_type = var.f5xc_virtual_site_type
 }

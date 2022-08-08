@@ -52,8 +52,8 @@ variable "f5xc_site_2_site_connection_type" {
   type = string
 
   validation {
-    condition     = contains(["spoke", "hub", "full mesh"], var.f5xc_site_2_site_connection_type)
-    error_message = format("Valid values for f5xc_site_2_site_connection_type: spoke, hub, full mesh")
+    condition     = contains(["spoke", "hub", "full_mesh"], var.f5xc_site_2_site_connection_type)
+    error_message = format("Valid values for f5xc_site_2_site_connection_type: spoke, hub, full_mesh")
   }
 }
 

@@ -17,7 +17,7 @@ resource "volterra_origin_pool" "origin-pool" {
     vn_private_ip   = var.f5xc_origin_pool_vn_private_ip != "" ? var.f5xc_origin_pool_vn_private_ip : null
 
     dynamic "custom_endpoint_object" {
-      for_each = ""
+      for_each = var.f5xc_origin_pool_custom_endpoint_object_name != "" ? [1] : [0]
       content {
         endpoint {
           name      = var.f5xc_origin_pool_custom_endpoint_object_name

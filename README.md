@@ -858,7 +858,45 @@ module "aws_tgw_multi_node" {
   f5xc_aws_tgw_name               = "aws-tgw-multi-node-01"
   f5xc_aws_tgw_no_worker_nodes    = false
   f5xc_aws_tgw_total_worker_nodes = 2
-  f5xc_aws_tgw_existing_id        = "vpc_id_abc"
+  f5xc_aws_tgw_id                 = "vpc_id_abc"
+  f5xc_aws_tgw_az_nodes           = {
+    node0 : {
+      f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",
+      f5xc_aws_tgw_outside_existing_subnet_id  = "node0_subnet_outside_id"
+    },
+    node1 : {
+      f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node1_subnet_inside_id",
+      f5xc_aws_tgw_outside_existing_subnet_id  = "node1_subnet_outside_id"
+    },
+    node2 : {
+      f5xc_aws_tgw_workload_existing_subnet_id = "node2_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node2_subnet_inside_id",
+      f5xc_aws_tgw_outside_existing_subnet_id  = "node2_subnet_outside_id"
+    }
+  }
+  f5xc_aws_tgw_vpc_attach_label_deploy = ""
+  aws_owner_tag                        = "c.klewar@f5.com"
+  public_ssh_key                       = "ssh-rsa xyz"
+}
+````
+
+__Module Usage Example Existing TGW__
+
+````hcl
+module "aws_tgw_multi_node" {
+  source                          = "./modules/f5xc/site/aws/tgw"
+  f5xc_api_p12_file               = "cert/api-creds.p12"
+  f5xc_api_url                    = "https://playground.staging.volterra.us/api"
+  f5xc_namespace                  = "system"
+  f5xc_tenant                     = "playground"
+  f5xc_aws_region                 = "us-east-2"
+  f5xc_aws_cred                   = "aws-01"
+  f5xc_aws_default_ce_sw_version  = true
+  f5xc_aws_default_os_version     = true
+  f5xc_aws_tgw_az_name            = "us-east-2a"
+  f5xc_aws_tgw_name               = "aws-tgw-multi-node-01"
+  f5xc_aws_tgw_no_worker_nodes    = false
+  f5xc_aws_tgw_total_worker_nodes = 2
+  f5xc_aws_tgw_id                 = "tgw_id_abc"
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
       f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",

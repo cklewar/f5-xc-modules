@@ -116,7 +116,7 @@ resource "volterra_aws_vpc_site" "vpc" {
       }
 
       dynamic az_nodes {
-        for_each = var.f5xc_aws_vpc_primary_ipv4 == "" && var.f5xc_aws_vpc_existing_id != "" ? var.f5xc_aws_vpc_az_nodes : []
+        for_each = var.f5xc_aws_vpc_primary_ipv4 == "" && var.f5xc_aws_vpc_existing_id != "" ? toset(var.f5xc_aws_vpc_az_nodes) : []
         content {
           aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size

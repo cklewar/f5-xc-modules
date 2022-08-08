@@ -132,12 +132,14 @@ variable "f5xc_healthcheck_name" {
 }
 
 module "healthcheck" {
-  source                = "./modules/f5xc/healthcheck"
-  f5xc_healthcheck_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace        = var.f5xc_namespace
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_api_p12_file     = var.f5xc_api_p12_file
-  f5xc_healthcheck_type = "tcp"
+  source                        = "./modules/f5xc/healthcheck"
+  f5xc_healthcheck_name         = format("%s-hc-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace                = var.f5xc_namespace
+  f5xc_api_url                  = var.f5xc_api_url
+  f5xc_api_p12_file             = var.f5xc_api_p12_file
+  f5xc_healthcheck_type         = "tcp"
+  f5xc_healthcheck_send_payload = "000000FF"
+  
 }
 ```
 

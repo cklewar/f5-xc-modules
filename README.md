@@ -69,6 +69,38 @@ Module repository folder structure like below:
 
 ## F5XC Modules
 
+### Origin Pool
+
+__Module Usage Example__
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+module "origin_pool" {
+  source                = "./modules/f5xc/origin-pool"
+  f5xc_origin_pool_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace        = var.f5xc_namespace
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_api_p12_file     = var.f5xc_api_p12_file
+}
+```
+
 ### Healthcheck
 
 __Module Usage Example HTTP__
@@ -92,11 +124,7 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_healthcheck_name" {
-  type = string
-}
-
-module "healthcheck" {
+module "healthcheck_http" {
   source                = "./modules/f5xc/healthcheck"
   f5xc_healthcheck_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
   f5xc_namespace        = var.f5xc_namespace
@@ -127,7 +155,7 @@ variable "f5xc_api_url" {
   type = string
 }
 
-module "healthcheck" {
+module "healthcheck_tcp" {
   source                        = "./modules/f5xc/healthcheck"
   f5xc_healthcheck_name         = format("%s-hc-%s", var.project_prefix, var.project_suffix)
   f5xc_namespace                = var.f5xc_namespace

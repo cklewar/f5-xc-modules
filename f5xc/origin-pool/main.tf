@@ -3,6 +3,8 @@ resource "volterra_origin_pool" "origin-pool" {
   namespace              = var.f5xc_namespace
   endpoint_selection     = var.f5xc_origin_pool_endpoint_selection
   loadbalancer_algorithm = var.f5xc_origin_pool_loadbalancer_algorithm
+  same_as_endpoint_port  = var.f5xc_origin_pool_same_as_endpoint_port
+  health_check_port      = var.f5xc_origin_pool_health_check_port != "" ? var.f5xc_origin_pool_health_check_port : null
 
   origin_servers {
     public_ip       = var.f5xc_origin_pool_public_ip != "" ? var.f5xc_origin_pool_public_ip : null
@@ -18,7 +20,7 @@ resource "volterra_origin_pool" "origin-pool" {
       for_each = ""
       content {
         endpoint {
-          name      = var.f5xc_origin_pool_name
+          name      = var.f5xc_origin_pool_custom_endpoint_object_name
           namespace = var.f5xc_namespace
           tenant    = var.f5xc_tenant
         }

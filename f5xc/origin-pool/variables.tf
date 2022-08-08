@@ -40,12 +40,25 @@ variable "f5xc_origin_pool_name" {
 
 variable "f5xc_origin_pool_endpoint_selection" {
   type    = string
-  default = ""
+  default = "LOCAL_PREFERRED"
+
+  validation {
+    condition     = contains(["LOCAL_PREFERRED", "LOCAL_ONLY", "DISTRIBUTED"], var.f5xc_origin_pool_endpoint_selection)
+    error_message = format("Valid values for f5xc_origin_pool_endpoint_selection: LOCAL_PREFERRED, LOCAL_ONLY, DISTRIBUTED")
+  }
 }
 
 variable "f5xc_origin_pool_loadbalancer_algorithm" {
   type    = string
-  default = ""
+  default = "ROUND_ROBIN"
+
+  validation {
+    condition = contains([
+      "ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "LB_OVERRIDE", "RANDOM"
+    ], var.f5xc_origin_pool_loadbalancer_algorithm)
+    error_message = format("Valid values for f5xc_origin_pool_loadbalancer_algorithm: ROUND_ROBIN, LEAST_REQUEST, RING_HASH, LB_OVERRIDE, RANDOM")
+  }
+
 }
 
 variable "f5xc_origin_pool_labels" {
@@ -102,6 +115,21 @@ variable "f5xc_origin_pool_consul_service" {
 }
 
 variable "f5xc_origin_pool_vn_private_ip" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_custom_endpoint_object_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_same_as_endpoint_port" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_health_check_port" {
   type    = string
   default = ""
 }

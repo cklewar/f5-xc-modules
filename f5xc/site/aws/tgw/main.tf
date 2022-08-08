@@ -20,7 +20,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     aws_region       = var.f5xc_aws_region
 
     dynamic "az_nodes" {
-      for_each = var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? var.f5xc_aws_tgw_az_nodes : []
+      for_each = var.f5xc_aws_tgw_existing_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? var.f5xc_aws_tgw_az_nodes : {}
       content {
         aws_az_name = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_az_name"]
         disk_size   = var.f5xc_aws_tgw_ce_instance_disk_size
@@ -49,7 +49,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     }
 
     dynamic "az_nodes" {
-      for_each = var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? var.f5xc_aws_tgw_az_nodes : []
+      for_each = var.f5xc_aws_tgw_existing_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? var.f5xc_aws_tgw_az_nodes : {}
       content {
         aws_az_name = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_az_name"]
         disk_size   = var.f5xc_aws_tgw_ce_instance_disk_size

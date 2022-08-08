@@ -195,11 +195,6 @@ variable "f5xc_aws_tgw_default_blocked_services" {
   default = true
 }
 
-variable "f5xc_aws_tgw_direct_direct_connect_enabled" {
-  type    = bool
-  default = false
-}
-
 variable "f5xc_aws_tgw_direct_connect_disabled" {
   type    = bool
   default = true

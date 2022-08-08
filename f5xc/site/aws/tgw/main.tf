@@ -9,7 +9,7 @@ resource "volterra_aws_tgw_site" "tgw" {
   direct_connect_disabled  = var.f5xc_aws_tgw_direct_connect_disabled
 
   dynamic "direct_connect_enabled" {
-    for_each = var.f5xc_aws_tgw_direct_direct_connect_enabled == true ? [1] : []
+    for_each = var.f5xc_aws_tgw_direct_connect_disabled == false ? [1] : []
     content {
       cloud_aggregated_prefix      = var.f5xc_aws_tgw_cloud_aggregated_prefix
       dc_connect_aggregated_prefix = var.f5xc_aws_tgw_dc_connect_aggregated_prefix

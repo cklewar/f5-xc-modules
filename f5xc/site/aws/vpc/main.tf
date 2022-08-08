@@ -10,7 +10,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "vpc" {
-    for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != ""
+    for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : [0]
     content {
       new_vpc {
         name_tag     = var.f5xc_aws_vpc_name_tag
@@ -20,7 +20,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "vpc" {
-    for_each = var.f5xc_aws_vpc_existing_id != "" && var.f5xc_aws_vpc_primary_ipv4 == ""
+    for_each = var.f5xc_aws_vpc_existing_id != "" && var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : [0]
     content {
       vpc_id = var.f5xc_aws_vpc_existing_id
     }

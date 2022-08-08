@@ -1,7 +1,6 @@
 resource "aws_key_pair" "aws-key" {
   key_name   = format("%s-key", var.aws_ec2_instance_name)
-  # public_key = file(format("%s/keys/%s", path.module, var.ssh_public_key_file))
-  public_key = "modules/aws/ec2/keys/key.pub"
+  public_key = file(format("%s/keys/%s", path.module, var.ssh_public_key_file))
 }
 
 resource "aws_security_group" "public" {

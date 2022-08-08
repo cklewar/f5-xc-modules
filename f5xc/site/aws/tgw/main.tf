@@ -1,7 +1,24 @@
 resource "volterra_aws_tgw_site" "tgw" {
-  name                    = var.f5xc_aws_tgw_name
-  namespace               = var.f5xc_namespace
-  logs_streaming_disabled = var.f5xc_aws_tgw_logs_streaming_disabled
+  name                     = var.f5xc_aws_tgw_name
+  namespace                = var.f5xc_namespace
+  logs_streaming_disabled  = var.f5xc_aws_tgw_logs_streaming_disabled
+  description              = var.f5xc_aws_tgw_description
+  annotations              = var.f5xc_aws_tgw_annotations
+  labels                   = var.f5xc_aws_tgw_labels
+  default_blocked_services = var.f5xc_aws_tgw_default_blocked_services
+  direct_connect_disabled  = var.f5xc_aws_tgw_direct_connect_disabled
+
+  dynamic "direct_connect_enabled" {
+    for_each = var.f5xc_aws_tgw_direct_direct_connect_enabled == true ? [1] : []
+    content {
+      cloud_aggregated_prefix      = var.f5xc_aws_tgw_cloud_aggregated_prefix
+      dc_connect_aggregated_prefix = var.f5xc_aws_tgw_dc_connect_aggregated_prefix
+      manual_gw                    = var.direct_connect_manual_gw == true && var.direct_connect_hosted_vifs == false && var.direct_connect_standard_vifs == false ? true : null
+      hosted_vifs                  = var.direct_connect_manual_gw == false && var.direct_connect_hosted_vifs == true && var.direct_connect_standard_vifs == false ? true : null
+      standard_vifs                = var.direct_connect_manual_gw == false && var.direct_connect_hosted_vifs == false && var.direct_connect_standard_vifs == true ? true : null
+    }
+  }
+
   lifecycle {
     ignore_changes = [labels, description]
   }

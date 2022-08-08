@@ -61,7 +61,7 @@ variable "f5xc_aws_tgw_ce_instance_disk_size" {
 }
 
 variable "f5xc_aws_tgw_primary_ipv4" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -117,12 +117,12 @@ variable "f5xc_site_kind" {
 }
 
 variable "f5xc_aws_tgw_id" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "f5xc_aws_vpc_id" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -166,13 +166,68 @@ variable "f5xc_aws_tgw_no_worker_nodes" {
 }
 
 variable "f5xc_aws_tgw_asn" {
-  type = number
+  type    = number
   default = 0
 }
 
 variable "f5xc_aws_tgw_site_asn" {
-  type = number
+  type    = number
   default = 0
+}
+
+variable "f5xc_aws_tgw_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_annotations" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_labels" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_default_blocked_services" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_aws_tgw_direct_direct_connect_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_tgw_direct_connect_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "direct_connect_manual_gw" {
+  type    = bool
+  default = false
+}
+
+variable "direct_connect_hosted_vifs" {
+  type    = bool
+  default = false
+}
+
+variable "direct_connect_standard_vifs" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_tgw_cloud_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_tgw_dc_connect_aggregated_prefix" {
+  type    = list(string)
+  default = []
 }
 
 variable "f5xc_tf_params_action" {

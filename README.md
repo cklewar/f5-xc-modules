@@ -849,9 +849,9 @@ module "aws_tgw_multi_node" {
   }
   f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
   custom_tags                          = {
-    Deployment    = "aws-tgw-multi-node-01"
-    TTL           = -1
-    aws_owner_tag = "c.klewar@f5.com"
+    Deployment = "aws-tgw-multi-node-01"
+    TTL        = -1
+    Owner      = "c.klewar@f5.com"
   }
   public_ssh_key = "ssh-rsa xyz"
 }
@@ -894,9 +894,9 @@ module "aws_tgw_multi_node" {
   }
   f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
   custom_tags                          = {
-    Deployment    = "aws-tgw-multi-node-01"
-    TTL           = -1
-    aws_owner_tag = "c.klewar@f5.com"
+    Deployment = "aws-tgw-multi-node-01"
+    TTL        = -1
+    Owner      = "c.klewar@f5.com"
   }
   public_ssh_key = "ssh-rsa xyz"
 }
@@ -941,9 +941,9 @@ module "aws_tgw_multi_node" {
   }
   f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
   custom_tags                          = {
-    Deployment    = "aws-tgw-multi-node-01"
-    TTL           = -1
-    aws_owner_tag = "c.klewar@f5.com"
+    Deployment = "aws-tgw-multi-node-01"
+    TTL        = -1
+    Owner      = "c.klewar@f5.com"
   }
   public_ssh_key = "ssh-rsa xyz"
 }

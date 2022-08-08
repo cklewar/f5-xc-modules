@@ -858,7 +858,7 @@ module "aws_tgw_multi_node" {
   f5xc_aws_tgw_name               = "aws-tgw-multi-node-01"
   f5xc_aws_tgw_no_worker_nodes    = false
   f5xc_aws_tgw_total_worker_nodes = 2
-  f5xc_aws_tgw_id                 = "vpc_id_abc"
+  f5xc_aws_vpc_id                 = "vpc_id_abc"
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
       f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",
@@ -897,6 +897,8 @@ module "aws_tgw_multi_node" {
   f5xc_aws_tgw_no_worker_nodes    = false
   f5xc_aws_tgw_total_worker_nodes = 2
   f5xc_aws_tgw_id                 = "tgw_id_abc"
+  f5xc_aws_tgw_asn                = "tgw_asn"
+  f5xc_aws_tgw_site_asn           = "site_asn"
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
       f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",

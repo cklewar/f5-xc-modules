@@ -78,35 +78,28 @@ resource "volterra_aws_tgw_site" "tgw" {
     }
     instance_type = var.f5xc_aws_tgw_instance_type
 
-    dynamic "vpc" {
-      for_each = var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? [1] : []
+    dynamic "new_vpc" {
+      for_each = var.f5xc_aws_vpc_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? [1] : []
       content {
-        new_vpc {
-          allocate_ipv6 = var.f5xc_aws_tgw_vpc_allocate_ipv6
-          autogenerate  = var.f5xc_aws_tgw_vpc_autogenerate
-          primary_ipv4  = var.f5xc_aws_tgw_primary_ipv4
-        }
+        allocate_ipv6 = var.f5xc_aws_tgw_vpc_allocate_ipv6
+        autogenerate  = var.f5xc_aws_tgw_vpc_autogenerate
+        primary_ipv4  = var.f5xc_aws_tgw_primary_ipv4
       }
     }
 
-    dynamic "vpc" {
-      for_each = var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? [1] : []
-      content {
-        vpc_id = var.f5xc_aws_tgw_id
-      }
-    }
+    vpc_id = var.f5xc_aws_vpc_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? f5xc_aws_vpc_id : null
 
     dynamic "existing_tgw" {
-      for_each = var.f5xc_aws_tgw_asn != "" && var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_volterra_site_asn != "" ? [1] : [0]
+      for_each = var.f5xc_aws_tgw_asn != "" && var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_site_asn != "" ? [1] : [0]
       content {
         tgw_asn           = var.f5xc_aws_tgw_asn
         tgw_id            = var.f5xc_aws_tgw_id
-        volterra_site_asn = var.f5xc_aws_tgw_volterra_site_asn
+        volterra_site_asn = var.f5xc_aws_tgw_site_asn
       }
     }
 
     dynamic "new_tgw" {
-      for_each = var.f5xc_aws_tgw_asn == "" && var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_volterra_site_asn == "" ? [1] : [0]
+      for_each = var.f5xc_aws_tgw_asn == "" && var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_site_asn == "" ? [1] : [0]
       content {
         system_generated = var.f5xc_aws_tgw_vpc_system_generated
       }

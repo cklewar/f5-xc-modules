@@ -121,6 +121,11 @@ variable "f5xc_aws_tgw_id" {
   default = ""
 }
 
+variable "f5xc_aws_vpc_id" {
+  type = string
+  default = ""
+}
+
 variable "f5xc_aws_tgw_logs_streaming_disabled" {
   type    = bool
   default = true
@@ -165,7 +170,7 @@ variable "f5xc_aws_tgw_asn" {
   default = ""
 }
 
-variable "f5xc_aws_tgw_volterra_site_asn" {
+variable "f5xc_aws_tgw_site_asn" {
   type = string
   default = ""
 }

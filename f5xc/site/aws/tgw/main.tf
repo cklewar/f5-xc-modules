@@ -13,7 +13,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     default_sw_version        = var.f5xc_aws_default_ce_sw_version
     volterra_software_version = local.f5xc_aws_ce_sw_version
   }
-  tags = local.f5xc_aws_tgw_common_tags
+  tags = local.custom_tags
 
   aws_parameters {
     aws_certified_hw = var.f5xc_aws_certified_hw

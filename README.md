@@ -1159,8 +1159,10 @@ module "azure_multi_node" {
 #### Virtual
 
 ```hcl
-
-
+module "virtual_network" {
+  source                       = "./modules/f5xc/site/virtual"
+  
+}
 ```
 
 

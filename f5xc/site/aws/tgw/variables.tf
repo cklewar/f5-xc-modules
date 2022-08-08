@@ -166,13 +166,13 @@ variable "f5xc_aws_tgw_no_worker_nodes" {
 }
 
 variable "f5xc_aws_tgw_asn" {
-  type = string
-  default = ""
+  type = number
+  default = 0
 }
 
 variable "f5xc_aws_tgw_site_asn" {
-  type = string
-  default = ""
+  type = number
+  default = 0
 }
 
 variable "f5xc_tf_params_action" {

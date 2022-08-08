@@ -5,34 +5,34 @@ This repository consists of Terraform template modules to bring up various F5XC 
 # Table of Contents
 
 - [F5-XC-MODULES](#f5-xc-modules)
-  * [Table of Contents](#table-of-contents)
+    * [Table of Contents](#table-of-contents)
 - [Usage](#usage)
 - [Modules](#modules)
-  * [F5XC Modules](#f5xc-modules)
-    + [Namespace](#namespace)
-    + [Virtual Kubernetes](#virtual-kubernetes)
-    + [Site Mesh Group](#site-mesh-group)
-    + [Fleet](#fleet)
-    + [BGP](#bgp)
-    + [Interface](#interface)
-    + [NFV](#nfv)
-    + [IPSec tunnel](#ipsec-tunnel)
-    + [Virtual Network](#virtual-network)
-    + [Site](#site)
-      - [AWS VCP](#aws-vcp)
-      - [AWS TGW](#aws-tgw)
-      - [GCP VPC](#gcp-vpc)
-      - [Azure VNET](#azure-vnet)
-      - [Update](#update)
-    + [Site Status Check](#site-status-check)
-  * [AWS Modules](#aws-modules)
-    + [EC2](#ec2)
-    + [VPC](#vpc)
-    + [EKS](#eks)
-  * [GCP Modules](#gcp-modules)
-    + [Compute](#compute)
-  * [Azure Modules](#azure-modules)
-    + [Linux Virtual Machine](#linux-virtual-machine)
+    * [F5XC Modules](#f5xc-modules)
+        + [Namespace](#namespace)
+        + [Virtual Kubernetes](#virtual-kubernetes)
+        + [Site Mesh Group](#site-mesh-group)
+        + [Fleet](#fleet)
+        + [BGP](#bgp)
+        + [Interface](#interface)
+        + [NFV](#nfv)
+        + [IPSec tunnel](#ipsec-tunnel)
+        + [Virtual Network](#virtual-network)
+        + [Site](#site)
+            - [AWS VCP](#aws-vcp)
+            - [AWS TGW](#aws-tgw)
+            - [GCP VPC](#gcp-vpc)
+            - [Azure VNET](#azure-vnet)
+            - [Update](#update)
+        + [Site Status Check](#site-status-check)
+    * [AWS Modules](#aws-modules)
+        + [EC2](#ec2)
+        + [VPC](#vpc)
+        + [EKS](#eks)
+    * [GCP Modules](#gcp-modules)
+        + [Compute](#compute)
+    * [Azure Modules](#azure-modules)
+        + [Linux Virtual Machine](#linux-virtual-machine)
 
 # Usage
 
@@ -106,6 +106,7 @@ module "namespace" {
 ```
 
 ----------------------
+
 ### Virtual Kubernetes
 
 __Module Usage Example__
@@ -155,6 +156,7 @@ module "vk8s" {
 ```
 
 -------------------
+
 ### Site Mesh Group
 
 __Module Usage Example__
@@ -201,6 +203,7 @@ module "site_mesh_group" {
 ```
 
 ---------
+
 ### Fleet
 
 __Module Usage Example__
@@ -270,6 +273,7 @@ __Input Vars Example__
 ```
 
 -------
+
 ### BGP
 
 __Module Usage Example__
@@ -355,6 +359,7 @@ __Input Vars Example__
 ````
 
 -------------
+
 ### Interface
 
 __Module Usage Example: IPSec tunnel interface in F5XC AWS site__
@@ -487,6 +492,7 @@ __Input Vars Example: IPSec tunnel interface in F5XC GCP site__
 ```
 
 -------
+
 ### NFV
 
 __Module Usage Example__
@@ -527,6 +533,7 @@ module "nfv" {
 ````
 
 ----------------
+
 ### IPSec tunnel
 
 __Module Usage Example__
@@ -572,6 +579,7 @@ module "tunnel" {
 ````
 
 -------------------
+
 ### Virtual Network
 
 __Module Usage Example: Tunnel Interface Virtual Network__
@@ -657,6 +665,7 @@ module "global_virtual_network" {
 ```
 
 --------
+
 ### Site
 
 #### AWS VCP
@@ -678,9 +687,9 @@ module "aws_vpc_multi_node" {
   f5xc_aws_vpc_total_worker_nodes = 2
   f5xc_aws_ce_gw_type             = "single_nic"
   f5xc_aws_vpc_az_nodes           = {
-    node0 = { f5xc_aws_vpc_local_subnet = "192.168.168.0/26", f5xc_aws_vpc_az_name = "us-east-2a"},
-    node1 = { f5xc_aws_vpc_local_subnet = "192.168.169.0/26", f5xc_aws_vpc_az_name = "us-east-2a"},
-    node2 = { f5xc_aws_vpc_local_subnet = "192.168.170.0/26", f5xc_aws_vpc_az_name = "us-east-2a"}
+    node0 = { f5xc_aws_vpc_local_subnet = "192.168.168.0/26", f5xc_aws_vpc_az_name = "us-east-2a" },
+    node1 = { f5xc_aws_vpc_local_subnet = "192.168.169.0/26", f5xc_aws_vpc_az_name = "us-east-2a" },
+    node2 = { f5xc_aws_vpc_local_subnet = "192.168.170.0/26", f5xc_aws_vpc_az_name = "us-east-2a" }
   }
   f5xc_aws_default_ce_os_version       = true
   f5xc_aws_default_ce_sw_version       = true
@@ -778,16 +787,19 @@ module "aws_vpc_multi_node" {
   f5xc_aws_ce_gw_type             = "multi_nic"
   f5xc_aws_vpc_az_nodes           = {
     node0 = {
-      f5xc_aws_vpc_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node0_subnet_inside_id",
+      f5xc_aws_vpc_workload_existing_subnet_id = "node0_subnet_workload_id",
+      f5xc_aws_vpc_inside_existing_subnet_id   = "node0_subnet_inside_id",
       f5xc_aws_vpc_outside_existing_subnet_id  = "node0_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     },
     node1 = {
-      f5xc_aws_vpc_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node1_subnet_inside_id",
+      f5xc_aws_vpc_workload_existing_subnet_id = "node1_subnet_workload_id",
+      f5xc_aws_vpc_inside_existing_subnet_id   = "node1_subnet_inside_id",
       f5xc_aws_vpc_outside_existing_subnet_id  = "node1_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     },
     node2 = {
-      f5xc_aws_vpc_workload_existing_subnet_id = "node2_subnet_workload_id", f5xc_aws_vpc_inside_existing_subnet_id = "node2_subnet_inside_id",
-      f5xc_aws_vpc_outside_existing_subnet_id = "node2_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
+      f5xc_aws_vpc_workload_existing_subnet_id = "node2_subnet_workload_id",
+      f5xc_aws_vpc_inside_existing_subnet_id   = "node2_subnet_inside_id",
+      f5xc_aws_vpc_outside_existing_subnet_id  = "node2_subnet_outside_id", f5xc_aws_vpc_az_name = "us-east-2a"
     }
   }
   f5xc_aws_default_ce_os_version       = true
@@ -800,8 +812,8 @@ module "aws_vpc_multi_node" {
 ```
 
 ------------
-#### AWS TGW
 
+#### AWS TGW
 
 __Module Usage Example New VPC__
 
@@ -835,9 +847,13 @@ module "aws_tgw_multi_node" {
       f5xc_aws_tgw_outside_subnet  = "192.168.170.128/26"
     }
   }
-  f5xc_aws_tgw_vpc_attach_label_deploy = ""
-  aws_owner_tag                        = "c.klewar@f5.com"
-  public_ssh_key                       = "ssh-rsa xyz"
+  f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
+  custom_tags                          = {
+    Deployment    = "aws-tgw-multi-node-01"
+    TTL           = -1
+    aws_owner_tag = "c.klewar@f5.com"
+  }
+  public_ssh_key = "ssh-rsa xyz"
 }
 ````
 
@@ -861,21 +877,28 @@ module "aws_tgw_multi_node" {
   f5xc_aws_vpc_id                 = "vpc_id_abc"
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node0_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node0_subnet_outside_id"
     },
     node1 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node1_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node1_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node1_subnet_outside_id"
     },
     node2 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node2_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node2_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node2_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node2_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node2_subnet_outside_id"
     }
   }
-  f5xc_aws_tgw_vpc_attach_label_deploy = ""
-  aws_owner_tag                        = "c.klewar@f5.com"
-  public_ssh_key                       = "ssh-rsa xyz"
+  f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
+  custom_tags                          = {
+    Deployment    = "aws-tgw-multi-node-01"
+    TTL           = -1
+    aws_owner_tag = "c.klewar@f5.com"
+  }
+  public_ssh_key = "ssh-rsa xyz"
 }
 ````
 
@@ -897,29 +920,37 @@ module "aws_tgw_multi_node" {
   f5xc_aws_tgw_no_worker_nodes    = false
   f5xc_aws_tgw_total_worker_nodes = 2
   f5xc_aws_tgw_id                 = "tgw_id_abc"
-  f5xc_aws_tgw_asn                = "tgw_asn"
-  f5xc_aws_tgw_site_asn           = "site_asn"
+  f5xc_aws_tgw_asn                = 63200
+  f5xc_aws_tgw_site_asn           = 65400
   f5xc_aws_tgw_az_nodes           = {
     node0 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node0_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node0_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node0_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node0_subnet_outside_id"
     },
     node1 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node1_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node1_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node1_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node1_subnet_outside_id"
     },
     node2 : {
-      f5xc_aws_tgw_workload_existing_subnet_id = "node2_subnet_workload_id", f5xc_aws_tgw_inside_existing_subnet_id = "node2_subnet_inside_id",
+      f5xc_aws_tgw_workload_existing_subnet_id = "node2_subnet_workload_id",
+      f5xc_aws_tgw_inside_existing_subnet_id   = "node2_subnet_inside_id",
       f5xc_aws_tgw_outside_existing_subnet_id  = "node2_subnet_outside_id"
     }
   }
-  f5xc_aws_tgw_vpc_attach_label_deploy = ""
-  aws_owner_tag                        = "c.klewar@f5.com"
-  public_ssh_key                       = "ssh-rsa xyz"
+  f5xc_aws_tgw_vpc_attach_label_deploy = "vpc_attachment_label"
+  custom_tags                          = {
+    Deployment    = "aws-tgw-multi-node-01"
+    TTL           = -1
+    aws_owner_tag = "c.klewar@f5.com"
+  }
+  public_ssh_key = "ssh-rsa xyz"
 }
 ````
 
 ------------
+
 #### GCP VPC
 
 __Module Usage Example__
@@ -948,6 +979,7 @@ module "gcp_multi_node" {
 ````
 
 ---------------
+
 #### Azure VNET
 
 __Module Usage Example Single_NIC / New VNET__
@@ -1052,15 +1084,15 @@ module "azure_multi_node" {
   f5xc_azure_ce_gw_type        = "multi_nic"
   f5xc_azure_az_nodes          = {
     node0 : {
-      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_0_inside_subnet",
+      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_0_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_0_outside_subnet"
     },
     node1 : {
-      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_1_inside_subnet",
+      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_1_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_1_outside_subnet"
     },
     node2 : {
-      f5xc_azure_az = "1", f5xc_azure_vnet_inside_subnet_name = "node_2_inside_subnet",
+      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_2_inside_subnet",
       f5xc_azure_vnet_outside_subnet_name = "node_2_outside_subnet"
     }
   }
@@ -1075,6 +1107,7 @@ module "azure_multi_node" {
 ```
 
 -----------
+
 #### Update
 
 __Module Usage Example__
@@ -1126,6 +1159,7 @@ module "site_update" {
 ```
 
 ---------------------
+
 ### Site Status Check
 
 __Module Usage Example__
@@ -1162,6 +1196,7 @@ module "site_status_check" {
 ````
 
 --------------
+
 ## AWS Modules
 
 ### EC2
@@ -1217,21 +1252,27 @@ module "ec2" {
 ```
 
 -------
+
 ### VPC
 
 -------
+
 ### EKS
 
 --------------
+
 ## GCP Modules
 
 -----------
+
 ### Compute
 
 ----------------
+
 ## Azure Modules
 
 -------------------------
+
 ### Linux Virtual Machine
 
 __Module Usage Example__

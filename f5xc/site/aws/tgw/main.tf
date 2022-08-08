@@ -90,7 +90,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     vpc_id = var.f5xc_aws_vpc_id != "" && var.f5xc_aws_tgw_primary_ipv4 == "" ? var.f5xc_aws_vpc_id : null
 
     dynamic "existing_tgw" {
-      for_each = var.f5xc_aws_tgw_asn != "" && var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_site_asn != "" ? [1] : [0]
+      for_each = var.f5xc_aws_tgw_asn != 0 && var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_site_asn != 0 ? [1] : [0]
       content {
         tgw_asn           = var.f5xc_aws_tgw_asn
         tgw_id            = var.f5xc_aws_tgw_id
@@ -99,7 +99,7 @@ resource "volterra_aws_tgw_site" "tgw" {
     }
 
     dynamic "new_tgw" {
-      for_each = var.f5xc_aws_tgw_asn == "" && var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_site_asn == "" ? [1] : [0]
+      for_each = var.f5xc_aws_tgw_asn == 0 && var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_site_asn == 0 ? [1] : [0]
       content {
         system_generated = var.f5xc_aws_tgw_vpc_system_generated
       }

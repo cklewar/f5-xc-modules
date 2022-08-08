@@ -17,8 +17,8 @@ resource "volterra_healthcheck" "healthcheck" {
   dynamic "tcp_health_check" {
     for_each = var.f5xc_healthcheck_type == var.f5xc_f5xc_healthcheck_type_tcp ? [1] : [0]
     content {
-      expected_response = var.f5xc_healthcheck_expected_response
-      send_payload      = var.f5xc_healthcheck_send_payload
+      expected_response = var.f5xc_healthcheck_expected_response != "" ? var.f5xc_healthcheck_expected_response : null
+      send_payload      = var.f5xc_healthcheck_send_payload != "" ? var.f5xc_healthcheck_send_payload : null
     }
   }
 

@@ -92,21 +92,54 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_namespace_name" {
+variable "f5xc_healthcheck_name" {
   type = string
 }
 
-module "namespace" {
-  source              = "./modules/f5xc/healthcheck"
-  f5xc_namespace_name = format("%s-ns-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace      = var.f5xc_namespace
-  f5xc_api_url        = var.f5xc_api_url
-  f5xc_api_p12_file   = var.f5xc_api_p12_file
-  
+module "healthcheck" {
+  source                = "./modules/f5xc/healthcheck"
+  f5xc_healthcheck_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace        = var.f5xc_namespace
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_api_p12_file     = var.f5xc_api_p12_file
+  f5xc_healthcheck_type = "http"
 }
 ```
 
 __Module Usage Example TCP__
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+variable "f5xc_healthcheck_name" {
+  type = string
+}
+
+module "healthcheck" {
+  source                = "./modules/f5xc/healthcheck"
+  f5xc_healthcheck_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace        = var.f5xc_namespace
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_api_p12_file     = var.f5xc_api_p12_file
+  f5xc_healthcheck_type = "tcp"
+}
+```
 
 ----------------------
 

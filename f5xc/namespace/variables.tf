@@ -23,6 +23,7 @@ variable "f5xc_api_p12_file" {
 
 variable "f5xc_api_token" {
   type = string
+  default = ""
 }
 
 variable "f5xc_namespace_name" {

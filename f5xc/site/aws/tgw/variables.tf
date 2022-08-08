@@ -181,13 +181,13 @@ variable "f5xc_aws_tgw_description" {
 }
 
 variable "f5xc_aws_tgw_annotations" {
-  type    = string
-  default = ""
+  type    = map(string)
+  default = {}
 }
 
 variable "f5xc_aws_tgw_labels" {
-  type    = string
-  default = ""
+  type    = map(string)
+  default = {}
 }
 
 variable "f5xc_aws_tgw_default_blocked_services" {

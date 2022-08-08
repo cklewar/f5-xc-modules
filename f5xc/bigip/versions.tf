@@ -5,7 +5,7 @@ terraform {
 
     volterra = {
       source  = "volterraedge/volterra"
-      version = ">= 0.11.9"
+      version = ">= 0.11.11"
     }
 
     bigip = {

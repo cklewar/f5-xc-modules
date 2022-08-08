@@ -4,7 +4,7 @@ terraform {
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
-      version = ">= 0.11.9"
+      version = ">= 0.11.11"
     }
 
     local = ">= 2.2.3"

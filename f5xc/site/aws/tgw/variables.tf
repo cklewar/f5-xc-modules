@@ -200,17 +200,17 @@ variable "f5xc_aws_tgw_direct_connect_disabled" {
   default = true
 }
 
-variable "direct_connect_manual_gw" {
+variable "f5xc_aws_tgw_direct_connect_manual_gw" {
   type    = bool
   default = false
 }
 
-variable "direct_connect_hosted_vifs" {
-  type    = bool
-  default = false
+variable "f5xc_aws_tgw_direct_connect_hosted_vifs" {
+  type    = string
+  default = ""
 }
 
-variable "direct_connect_standard_vifs" {
+variable "f5xc_aws_tgw_direct_connect_standard_vifs" {
   type    = bool
   default = false
 }

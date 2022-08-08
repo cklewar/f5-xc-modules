@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "name": "ver-secret-policy",
-    "namespace": "system"
+    "name": ${policy_name},
+    "namespace": "${namespace}"
   },
   "spec": {
     "rules": [
       {
         "kind": "secret_policy_rule",
-        "tenant": "ves-io",
-        "namespace": "system",
-        "name": "ver-secret-policy-rule"
+        "tenant": "${tenant}",
+        "namespace": "${namespace}",
+        "name": "${policy_rule_name}"
       }
     ]
   }

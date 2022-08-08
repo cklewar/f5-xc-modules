@@ -127,10 +127,6 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_healthcheck_name" {
-  type = string
-}
-
 module "healthcheck" {
   source                        = "./modules/f5xc/healthcheck"
   f5xc_healthcheck_name         = format("%s-hc-%s", var.project_prefix, var.project_suffix)
@@ -139,7 +135,6 @@ module "healthcheck" {
   f5xc_api_p12_file             = var.f5xc_api_p12_file
   f5xc_healthcheck_type         = "tcp"
   f5xc_healthcheck_send_payload = "000000FF"
-  
 }
 ```
 

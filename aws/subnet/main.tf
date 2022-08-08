@@ -1,4 +1,4 @@
-resource "aws_subnet" subnet {
+resource "aws_subnet" "subnet" {
   for_each                = {for k, v in var.aws_vpc_subnets :  k => v}
   vpc_id                  = var.aws_vpc_id
   cidr_block              = each.value.cidr_block

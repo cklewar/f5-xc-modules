@@ -97,7 +97,7 @@ variable "f5xc_namespace_name" {
 }
 
 module "namespace" {
-  source              = "../modules/namespace"
+  source              = "./modules/f5xc/namespace"
   f5xc_namespace_name = format("%s-ns-%s", var.project_prefix, var.project_suffix)
   f5xc_namespace      = var.f5xc_namespace
   f5xc_api_url        = var.f5xc_api_url
@@ -139,7 +139,7 @@ variable "f5xc_namespace" {
 }
 
 module "vk8s" {
-  source                              = "../modules/vk8s"
+  source                              = "./modules/f5xc/vk8s"
   f5xc_f5xc_site_mesh_group_name_name = format("%s-vk8s-%s", var.project_prefix, var.project_suffix)
   f5xc_virtual_site_refs              = ["vSiteA"]
   kubectl_secret_registry_type        = "docker-registry"
@@ -193,7 +193,7 @@ variable "f5xc_site_mesh_group_name" {
 }
 
 module "site_mesh_group" {
-  source                    = "../modules/site-mesh-group"
+  source                    = "./modules/f5xc/site-mesh-group"
   f5xc_site_mesh_group_name = format("%s-smg-%s", var.project_prefix, var.project_suffix)
   f5xc_namespace            = var.f5xc_namespace
   f5xc_tenant               = var.f5xc_tenant
@@ -245,7 +245,7 @@ locals {
 }
 
 module "fleet" {
-  source                       = "../modules/fleet"
+  source                       = "./modules/f5xc/fleet"
   f5xc_fleet_name              = format("%s-fleet-%s", var.project_prefix, var.project_suffix)
   f5xc_fleet_label             = var.fleet_label
   f5xc_outside_virtual_network = [local.tunnel_virtual_network]
@@ -326,7 +326,7 @@ locals {
 }
 
 module "bgp" {
-  source                = "../modules/bgp"
+  source                = "./modules/f5xc/bgp"
   f5xc_namespace        = var.f5xc_namespace
   f5xc_tenant           = var.f5xc_tenant
   f5xc_api_url          = var.f5xc_api_url
@@ -397,7 +397,7 @@ locals {
 }
 
 module "interface" {
-  source                   = "../modules/interface"
+  source                   = "./modules/f5xc/interface"
   f5xc_tenant              = var.f5xc_tenant
   f5xc_namespace           = var.f5xc_namespace
   f5xc_api_p12_file        = var.f5xc_api_p12_file
@@ -462,7 +462,7 @@ locals {
 }
 
 module "interface" {
-  source                   = "../modules/interface"
+  source                   = "./modules/f5xc/interface"
   f5xc_tenant              = var.f5xc_tenant
   f5xc_namespace           = var.f5xc_namespace
   f5xc_api_p12_file        = var.f5xc_api_p12_file
@@ -501,7 +501,7 @@ This module needs a F5XC AWS TGW site to be deployed first since it depends on F
 
 ````hcl
 module "nfv" {
-  source                    = "../modules/nfv"
+  source                    = "./modules/f5xc/nfv"
   dependency                = module.tgw.this
   f5xc_project_prefix       = var.project_prefix
   f5xc_project_suffix       = var.project_suffix
@@ -566,7 +566,7 @@ variable "f5xc_namespace" {
 }
 
 module "tunnel" {
-  source                 = "../modules/tunnel"
+  source                 = "./modules/f5xc/tunnel"
   f5xc_tenant            = var.f5xc_tenant
   f5xc_namespace         = var.f5xc_namespace
   f5xc_api_p12_file      = var.f5xc_api_p12_file
@@ -612,7 +612,7 @@ variable "f5xc_namespace" {
 }
 
 module "tunnel_virtual_network" {
-  source                            = "../modules/virtual-network"
+  source                            = "./modules/f5xc/virtual-network"
   f5xc_name                         = local.tunnel_virtual_network
   f5xc_namespace                    = var.f5xc_namespace
   f5xc_site_local_network           = true
@@ -656,7 +656,7 @@ locals {
 }
 
 module "global_virtual_network" {
-  source              = "../modules/virtual-network"
+  source              = "./modules/f5xc/virtual-network"
   f5xc_name           = local.global_vn_name
   f5xc_tenant         = var.f5xc_tenant
   f5xc_namespace      = var.f5xc_namespace
@@ -1192,7 +1192,7 @@ locals {
 }
 
 module "site_update" {
-  source                      = "../modules/site/update"
+  source                      = "./modules/f5xc/site/update"
   f5xc_tenant                 = var.f5xc_tenant
   f5xc_namespace              = var.f5xc_namespace
   f5xc_api_p12_file           = var.f5xc_api_p12_file
@@ -1232,7 +1232,7 @@ variable "f5xc_site_name" {
 }
 
 module "site_status_check" {
-  source         = "../modules/status/site"
+  source         = "./modules/f5xc/status/site"
   f5xc_api_url   = var.f5xc_api_url
   f5xc_api_token = var.f5xc_api_token
   f5xc_namespace = var.f5xc_namespace

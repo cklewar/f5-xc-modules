@@ -98,7 +98,7 @@ module "origin_pool" {
   f5xc_namespace        = var.f5xc_namespace
   f5xc_api_url          = var.f5xc_api_url
   f5xc_api_p12_file     = var.f5xc_api_p12_file
-  
+  f5xc_origin_pool_port = "443"
 }
 ```
 

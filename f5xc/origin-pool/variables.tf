@@ -104,7 +104,7 @@ variable "f5xc_origin_pool_private_ip" {
   default = ""
 }
 
-variable "f5xc_origin_pool_k8s_service" {
+variable "f5xc_origin_pool_k8s_service_name" {
   type    = string
   default = ""
 }
@@ -132,4 +132,44 @@ variable "f5xc_origin_pool_same_as_endpoint_port" {
 variable "f5xc_origin_pool_health_check_port" {
   type    = string
   default = ""
+}
+
+variable "f5xc_origin_pool_private_ip_site_locator" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_ip_site_locator_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_ip_inside_network" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_private_ip_outside_network" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_private_name_site_locator" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_name_site_locator_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_name_inside_network" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_private_name_outside_network" {
+  type    = bool
+  default = false
 }

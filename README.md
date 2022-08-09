@@ -1427,8 +1427,6 @@ module "site_status_check" {
 
 Module Example at: **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**.
 
--------
-
 ### VPC
 
 [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)
@@ -1441,15 +1439,11 @@ Module Example at: **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**
 
 Module Example at: **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)**.
 
--------
-
 ### EKS
 
 --------------
 
 ## GCP Modules
-
------------
 
 ### Compute
 
@@ -1457,12 +1451,4 @@ Module Example at: **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-sub
 
 ## Azure Modules
 
--------------------------
-
 ### Linux Virtual Machine
-
-__Module Usage Example__
-
-```hcl
-  source = "../modules/azure/virtual_machine"
-```

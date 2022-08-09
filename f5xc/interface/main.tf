@@ -1,9 +1,11 @@
 resource "local_file" "interface" {
+  count = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : [0]
   content  = local.content
   filename = format("%s/_out/%s", path.module, var.f5xc_interface_payload_file)
 }
 
 resource "null_resource" "apply_interface" {
+  count = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : [0]
   triggers = {
     manifest_sha1  = sha1(local.content)
     api_url        = var.f5xc_api_url

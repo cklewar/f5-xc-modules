@@ -33,6 +33,11 @@ variable "f5xc_namespace" {
   type = string
 }
 
+variable "f5xc_interface_type_tunnel_interface" {
+  type = string
+  default = "tunnel_interface"
+}
+
 variable "f5xc_interface_type" {
   type = string
 

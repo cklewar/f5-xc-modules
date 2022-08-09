@@ -72,6 +72,14 @@ Module repository folder structure like below:
 
 ## F5XC Modules
 
+### Blindfold
+
+__Module Usage Example__
+
+```hcl
+
+```
+
 ### Origin Pool
 
 __Module Usage Example Private IP__
@@ -568,6 +576,10 @@ variable "f5xc_tenant" {
 }
 
 variable "f5xc_namespace" {
+  type = string
+}
+
+variable "f5xc_interface_type" {
   type = string
 }
 

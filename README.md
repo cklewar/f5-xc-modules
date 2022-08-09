@@ -9,6 +9,7 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - [Usage](#usage)
 - [Modules](#modules)
     * [F5XC Modules](#f5xc-modules)
+        + [DC Cluster Group](#dc-cluster-group)
         + [Origin Pool](#origin-pool)
         + [Healthcheck](#healthcheck)
         + [Namespace](#namespace)

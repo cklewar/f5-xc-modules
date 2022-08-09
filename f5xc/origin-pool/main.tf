@@ -40,7 +40,17 @@ resource "volterra_origin_pool" "origin-pool" {
       }
     }
 
-    vn_private_name = var.f5xc_origin_pool_vn_private_name != "" ? var.f5xc_origin_pool_vn_private_name : null
+    dynamic "vn_private_name" {
+      for_each = var.f5xc_origin_pool_vn_private_name != "" ? [1] : [0]
+      content {
+        dns_name = var.f5xc_origin_pool_vn_private_name
+        private_network {
+          tenant    = var.f5xc_tenant,
+          namespace = var.f5xc_namespace,
+          name      = var.f5xc_origin_pool_vn_private_name_site_locator_site_name
+        }
+      }
+    }
 
     dynamic "private_ip" {
       for_each = var.f5xc_origin_pool_private_ip != "" ? [1] : [0]
@@ -48,7 +58,7 @@ resource "volterra_origin_pool" "origin-pool" {
         ip = var.f5xc_origin_pool_private_ip
       }
       dynamic "site_locator" {
-        for_each = var.f5xc_origin_pool_private_ip_site_locator != "" ? [1] : [0]
+        for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" ? [1] : [0]
         content {
           site {
             tenant    = var.f5xc_tenant,
@@ -66,9 +76,50 @@ resource "volterra_origin_pool" "origin-pool" {
       content {
         service_name = var.f5xc_origin_pool_k8s_service_name
       }
-    }   =
-    consul_service = var.f5xc_origin_pool_consul_service != "" ? var.f5xc_origin_pool_consul_service : null
-    vn_private_ip  = var.f5xc_origin_pool_vn_private_ip != "" ? var.f5xc_origin_pool_vn_private_ip : null
+      dynamic "site_locator" {
+        for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" ? [1] : [0]
+        content {
+          site {
+            tenant    = var.f5xc_tenant,
+            namespace = var.f5xc_namespace,
+            name      = var.f5xc_origin_pool_k8s_service_site_locator_site_name
+          }
+          inside_network  = var.f5xc_origin_pool_k8s_service_inside_network
+          outside_network = var.f5xc_origin_pool_k8s_service_outside_network
+        }
+      }
+    }
+
+    dynamic "consul_service" {
+      for_each = var.f5xc_origin_pool_consul_service != "" ? [1] : [0]
+      content {
+        service_name = var.f5xc_origin_pool_consul_service_name
+      }
+      dynamic "site_locator" {
+        for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" ? [1] : [0]
+        content {
+          site {
+            tenant    = var.f5xc_tenant,
+            namespace = var.f5xc_namespace,
+            name      = var.f5xc_origin_pool_consul_service_site_locator_site_name
+          }
+          inside_network  = var.f5xc_origin_pool_consul_service_inside_network
+          outside_network = var.f5xc_origin_pool_consul_service_outside_network
+        }
+      }
+    }
+
+    dynamic "vn_private_ip" {
+      for_each = var.f5xc_origin_pool_vn_private_ip != "" ? [1] : [0]
+      content {
+        ip = var.f5xc_origin_pool_vn_private_ip
+        virtual_network {
+          tenant    = var.f5xc_tenant
+          namespace = var.f5xc_namespace
+          name      = var.f5xc_origin_pool_vn_private_ip_virtual_network_name
+        }
+      }
+    }
 
     dynamic "custom_endpoint_object" {
       for_each = var.f5xc_origin_pool_custom_endpoint_object_name != "" ? [1] : [0]

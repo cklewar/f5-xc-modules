@@ -173,3 +173,48 @@ variable "f5xc_origin_pool_private_name_outside_network" {
   type    = bool
   default = false
 }
+
+variable "f5xc_origin_pool_k8s_service_site_locator_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_k8s_service_inside_network" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_k8s_service_outside_network" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_consul_service_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_consul_service_inside_network" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_consul_service_outside_network" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_consul_service_site_locator_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_vn_private_ip_virtual_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_vn_private_name_site_locator_site_name" {
+  type    = string
+  default = ""
+}

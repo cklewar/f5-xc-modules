@@ -71,7 +71,7 @@ Module repository folder structure like below:
 
 ### Origin Pool
 
-__Module Usage Example__
+__Module Usage Example Private IP__
 
 ```hcl
 variable "project_prefix" {

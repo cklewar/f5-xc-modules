@@ -223,7 +223,8 @@ module "healthcheck_tcp" {
 
 ### Namespace
 
-![f5xc_namespace_module_test_status](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg?event=push)
+[![F5XC namespace module_dev](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg?branch=dev)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)
+[![F5XC namespace module_main](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)
 
 __Module Usage Example__
 

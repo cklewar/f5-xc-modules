@@ -93,12 +93,16 @@ variable "f5xc_api_url" {
 }
 
 module "origin_pool" {
-  source                = "./modules/f5xc/origin-pool"
-  f5xc_origin_pool_name = format("%s-hc-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace        = var.f5xc_namespace
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_api_p12_file     = var.f5xc_api_p12_file
-  f5xc_origin_pool_port = "443"
+  source                                             = "./modules/f5xc/origin-pool"
+  f5xc_origin_pool_name                              = format("%s-hc-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace                                     = var.f5xc_namespace
+  f5xc_api_url                                       = var.f5xc_api_url
+  f5xc_api_p12_file                                  = var.f5xc_api_p12_file
+  f5xc_origin_pool_port                              = "443"
+  f5xc_origin_pool_private_ip                        = "10.15.250.100"
+  f5xc_origin_pool_private_ip_site_locator_site_name = "refMySite"
+  f5xc_origin_pool_private_ip_inside_network         = false
+  f5xc_origin_pool_private_ip_outside_network        = true
 }
 ```
 

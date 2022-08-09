@@ -1425,55 +1425,7 @@ module "site_status_check" {
 
 ![f5xc_aws_ec2_module_test_status](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg?event=push)
 
-__Module Usage Example__
-
-```hcl
-module "ec2" {
-  source                        = "./modules/aws/ec2"
-  aws_ec2_instance_name         = "ck-ec2-instance-01"
-  aws_ec2_instance_type         = "t2.small"
-  aws_subnet_cidr               = "172.16.192.0/21"
-  aws_ec2_public_interface_ips  = ["172.16.192.10"]
-  aws_ec2_private_interface_ips = ["172.16.193.10"]
-  aws_ec2_instance_data_key     = "ec2-instance-01"
-  aws_ec2_instance_data         = {
-    inline = [
-      format("chmod +x /tmp/%s", var.aws_ec2_instance_script_file_name),
-      format("sudo /tmp/%s", var.aws_ec2_instance_script_file_name)
-    ]
-    userdata = {
-      GITEA_VERSION  = var.gitea_version
-      GITEA_PASSWORD = var.gitea_password
-    }
-  }
-  aws_ec2_instance_script_template = format("%s.tftpl", var.aws_ec2_instance_script_template_file_name)
-  aws_ec2_instance_script_file     = format("%s.sh", var.aws_ec2_instance_script_file_name)
-  aws_subnet_private_id            = element([for s in module.aws_subnets.aws_subnet_id : s], 1)
-  aws_subnet_public_id             = element([for s in module.aws_subnets.aws_subnet_id : s], 0)
-  aws_az_name                      = var.aws_az
-  aws_region                       = var.aws_region
-  ssh_private_key_file             = abspath("keys/key")
-  ssh_public_key_file              = abspath("keys/key.pub")
-  aws_vpc_id                       = module.aws_vpc.aws_vpc_id
-  aws_ec2_instance_userdata_dirs   = [
-    {
-      name        = "instance_script"
-      source      = abspath(format("../modules/ec2/_out/%s", format("%s.sh", var.aws_ec2_instance_script_file_name)))
-      destination = format("/tmp/%s", format("%s.sh", var.aws_ec2_instance_script_file_name))
-    },
-    {
-      name        = "additional_custom_data"
-      source      = abspath(format("../modules/ec2/userdata/%s", var.aws_ec2_instance_script_file_name))
-      destination = "/tmp/userdata"
-    }
-  ]
-  custom_tags = {
-    Name    = "ec2-instance-01"
-    Version = "1"
-    Owner   = "c.klewar@f5.com"
-  }
-}
-```
+Module Example at: **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**.
 
 -------
 
@@ -1481,10 +1433,13 @@ module "ec2" {
 
 [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)
 
+Module Example at: **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**.
 
 ### Subnet
 
 [![F5XC AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml)
+
+Module Example at: **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)**.
 
 -------
 

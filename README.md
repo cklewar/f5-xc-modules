@@ -1423,6 +1423,8 @@ module "site_status_check" {
 
 ### EC2
 
+![f5xc_aws_ec2_module_test_status](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg?event=push)
+
 __Module Usage Example__
 
 ```hcl

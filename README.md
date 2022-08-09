@@ -8,34 +8,34 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - [Table of Contents](#table-of-contents)
 - [Usage](#usage)
 - [Modules](#modules)
-  * [F5XC Modules](#f5xc-modules)
-    + [Origin Pool](#origin-pool)
-    + [Healthcheck](#healthcheck)
-    + [Namespace](#namespace)
-    + [Virtual Kubernetes](#virtual-kubernetes)
-    + [Site Mesh Group](#site-mesh-group)
-    + [Fleet](#fleet)
-    + [BGP](#bgp)
-    + [Interface](#interface)
-    + [NFV](#nfv)
-    + [IPSec tunnel](#ipsec-tunnel)
-    + [Virtual Network](#virtual-network)
-    + [Site](#site)
-      - [AWS VCP](#aws-vcp)
-      - [AWS TGW](#aws-tgw)
-      - [GCP VPC](#gcp-vpc)
-      - [Azure VNET](#azure-vnet)
-      - [Virtual](#virtual)
-      - [Update](#update)
-    + [Site Status Check](#site-status-check)
-  * [AWS Modules](#aws-modules)
-    + [EC2](#ec2)
-    + [VPC](#vpc)
-    + [EKS](#eks)
-  * [GCP Modules](#gcp-modules)
-    + [Compute](#compute)
-  * [Azure Modules](#azure-modules)
-    + [Linux Virtual Machine](#linux-virtual-machine)
+    * [F5XC Modules](#f5xc-modules)
+        + [Origin Pool](#origin-pool)
+        + [Healthcheck](#healthcheck)
+        + [Namespace](#namespace)
+        + [Virtual Kubernetes](#virtual-kubernetes)
+        + [Site Mesh Group](#site-mesh-group)
+        + [Fleet](#fleet)
+        + [BGP](#bgp)
+        + [Interface](#interface)
+        + [NFV](#nfv)
+        + [IPSec tunnel](#ipsec-tunnel)
+        + [Virtual Network](#virtual-network)
+        + [Site](#site)
+            - [AWS VCP](#aws-vcp)
+            - [AWS TGW](#aws-tgw)
+            - [GCP VPC](#gcp-vpc)
+            - [Azure VNET](#azure-vnet)
+            - [Virtual](#virtual)
+            - [Update](#update)
+        + [Site Status Check](#site-status-check)
+    * [AWS Modules](#aws-modules)
+        + [EC2](#ec2)
+        + [VPC](#vpc)
+        + [EKS](#eks)
+    * [GCP Modules](#gcp-modules)
+        + [Compute](#compute)
+    * [Azure Modules](#azure-modules)
+        + [Linux Virtual Machine](#linux-virtual-machine)
 
 # Usage
 
@@ -71,6 +71,40 @@ A> = <Module Paramet A Value>
 Module repository folder structure like below:
 
 ## F5XC Modules
+
+### DC Cluster Group
+
+```hcl
+variable "project_prefix" {
+  type        = string
+  description = "prefix string put in front of string"
+}
+
+variable "project_suffix" {
+  type        = string
+  description = "prefix string put at the end of string"
+}
+
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+module "dc_cluster_group" {
+  source                            = "./modules/f5xc/origin-pool"
+  f5xc_dc_cluster_group_name        = format("%s-dcg-%s", var.project_prefix, var.project_suffix)
+  f5xc_namespace                    = var.f5xc_namespace
+  f5xc_api_url                      = var.f5xc_api_url
+  f5xc_api_p12_file                 = var.f5xc_api_p12_file
+  f5xc_dc_cluster_group_description = "myDCgrp"
+  f5xc_dc_cluster_group_labels      = {
+    "my-dc-group" : "myDCgrp"
+  }
+}
+```
 
 ### Blindfold
 

@@ -223,6 +223,8 @@ module "healthcheck_tcp" {
 
 ### Namespace
 
+![f5xc_namespace_module_test_status](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg?event=push)
+
 __Module Usage Example__
 
 ```hcl

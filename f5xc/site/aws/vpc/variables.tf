@@ -198,10 +198,6 @@ variable "f5xc_tf_wait_for_action" {
   default = true
 }
 
-variable "aws_owner_tag" {
-  type = string
-}
-
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

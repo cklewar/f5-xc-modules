@@ -2,6 +2,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   name       = var.f5xc_aws_vpc_site_name
   namespace  = var.f5xc_namespace
   aws_region = var.f5xc_aws_region
+  tags       = var.custom_tags
 
   aws_cred {
     name      = var.f5xc_aws_cred

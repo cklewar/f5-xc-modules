@@ -16,17 +16,26 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
   round_robin                     = var.f5xc_http_loadbalancer_round_robin
   least_active                    = var.f5xc_http_loadbalancer_least_active
   random                          = var.f5xc_http_loadbalancer_random
-  source_ip_stickiness            = false
-  cookie_stickiness               = false
-  ring_hash                       = false
+  source_ip_stickiness            = var.f5xc_http_loadbalancer_source_ip_stickiness
+  cookie_stickiness               = var.f5xc_http_loadbalancer_cookie_stickiness
+  ring_hash                       = var.f5xc_http_loadbalancer_ring_hash
 
-  http {
-    dns_volterra_managed = true
-    port                 = "80"
+  dynamic "http" {
+    for_each = ""
+    content {
+      dns_volterra_managed = var.f5xc_http_loadbalancer_dns_volterra_managed
+      port                 = var.f5xc_http_loadbalancer_port
+    }
+  }
+
+  dynamic "https" {
+    for_each = ""
+    content {
+
+    }
   }
 
   https_auto_cert = ""
-  https           = ""
 
   single_lb_app {
 
@@ -46,7 +55,7 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
 
   }
 
-  disable_rate_limit = true
+  disable_rate_limit = var.f5xc_http_loadbalancer_disable_rate_limit
   api_rate_limit     = ""
   rate_limit         = ""
 
@@ -64,9 +73,9 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
     client_ip_headers = ["Client-IP-Header"]
   }
   disable_trust_client_ip_headers = ""
-  user_id_client_ip               = true
+  user_id_client_ip               = var.f5xc_http_loadbalancer_user_id_client_ip
   user_identification             = ""
-  disable_waf                     = true
+  disable_waf                     = var.f5xc_http_loadbalancer_disable_waf
   app_firewall                    = ""
   waf                             = ""
   waf_rule                        = ""

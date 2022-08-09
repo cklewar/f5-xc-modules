@@ -94,7 +94,7 @@ variable "f5xc_api_url" {
 }
 
 module "dc_cluster_group" {
-  source                            = "./modules/f5xc/origin-pool"
+  source                            = "./modules/f5xc/dc-cluster-group"
   f5xc_dc_cluster_group_name        = format("%s-dcg-%s", var.project_prefix, var.project_suffix)
   f5xc_namespace                    = var.f5xc_namespace
   f5xc_api_url                      = var.f5xc_api_url

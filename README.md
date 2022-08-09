@@ -109,6 +109,8 @@ module "origin_pool" {
 }
 ```
 
+---------------
+
 ### Healthcheck
 
 __Module Usage Example HTTP__
@@ -174,7 +176,7 @@ module "healthcheck_tcp" {
 }
 ```
 
-----------------------
+-------------
 
 ### Namespace
 

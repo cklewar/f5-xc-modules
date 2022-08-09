@@ -503,6 +503,10 @@ variable "f5xc_namespace" {
   type = string
 }
 
+variable "f5xc_interface_type" {
+  type = string
+}
+
 locals {
   f5xc_tunnel_interface_name = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
   f5xc_tunnel_name           = format("%s-tunnel-%s", var.project_prefix, var.project_suffix)

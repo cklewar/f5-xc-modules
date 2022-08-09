@@ -6,7 +6,7 @@ resource "volterra_virtual_network" "virtual_network" {
   global_network            = var.f5xc_global_network
 
   dynamic static_routes {
-    for_each = var.f5xc_ip_prefixes
+    for_each = length(var.f5xc_ip_prefixes) > 0 ? var.f5xc_ip_prefixes : [0]
     content {
       ip_prefixes = [static_routes.value]
       interface {
@@ -14,7 +14,7 @@ resource "volterra_virtual_network" "virtual_network" {
         namespace = var.f5xc_namespace
         name      = var.f5xc_ip_prefix_next_hop_interface
       }
-      attrs = ["ROUTE_ATTR_INSTALL_FORWARDING"]
+      attrs = var.f5xc_static_routes_attrs
     }
   }
 }

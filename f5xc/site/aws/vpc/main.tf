@@ -41,7 +41,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "single_nic" ? [1] : []
+    for_each = var.f5xc_aws_ce_gw_type == "single_nic" ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -77,7 +77,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : []
+    for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -100,7 +100,7 @@ resource "volterra_aws_vpc_site" "vpc" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : [0]
             content {
               subnet_param {
                 ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_subnet"]

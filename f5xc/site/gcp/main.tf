@@ -35,7 +35,7 @@ resource "volterra_gcp_vpc_site" "site" {
           }
         }
         dynamic "new_network_autogenerate" {
-          for_each = var.f5xc_gcp_local_primary_ipv4 != "" ? [1] : []
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_network_name == "" ? [1] : []
           content {
             autogenerate = var.f5xc_gcp_new_network_autogenerate
           }

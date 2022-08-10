@@ -51,12 +51,19 @@ variable "f5xc_gcp_ce_instance_type" {
   default = "n1-standard-4"
 }
 
+variable "f5xc_gcp_local_primary_ipv4" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_gcp_outside_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_gcp_inside_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_gcp_node_number" {

@@ -52,7 +52,7 @@ resource "volterra_gcp_vpc_site" "site" {
         dynamic "new_subnet" {
           for_each = ""
           content {
-            primary_ipv4 = var.f5xc_gcp_outside_primary_ipv4
+            primary_ipv4 = var.f5xc_gcp_local_primary_ipv4
             subnet_name  = local.f5xc_gcp_outside_subnet_name
           }
         }

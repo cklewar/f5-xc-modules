@@ -14,9 +14,7 @@ This repository consists of Terraform template modules to bring up various F5XC 
   * [NFV](#nfv)
   * [IPSec tunnel](#ipsec-tunnel)
   * [Virtual Network](#virtual-network)
-  * [Site](#site) 
-    + [GCP VPC](#gcp-vpc)
-    + [Virtual](#virtual)
+  * [Site](#site)
     + [Update](#update)
     + [Site Status Check](#site-status-check)
 - [AWS Modules](#aws-modules)
@@ -596,46 +594,6 @@ module "global_virtual_network" {
 --------
 
 ## Site
-
-### GCP VPC
-
-__Module Usage Example__
-
-````hcl
-module "gcp_multi_node" {
-  source                            = "./modules/f5xc/site/gcp"
-  f5xc_api_p12_file                 = "/cert/api-creds.p12"
-  f5xc_api_url                      = "https://playground.staging.volterra.us/api"
-  f5xc_namespace                    = "system"
-  f5xc_tenant                       = "playground"
-  f5xc_gcp_cred                     = "gcp-01"
-  f5xc_gcp_ce_gw_type               = "single_nic"
-  f5xc_gcp_default_ce_sw_version    = true
-  f5xc_gcp_default_os_version       = true
-  f5xc_gcp_inside_primary_ipv4      = "192.168.169.0/24"
-  f5xc_gcp_outside_primary_ipv4     = "192.168.168.0/24"
-  f5xc_gcp_node_number              = 3
-  f5xc_gcp_project_id               = "gcp_project_id"
-  f5xc_gcp_region                   = "us-east1"
-  f5xc_gcp_site_name                = "gcp-multi-node-01"
-  f5xc_gcp_zone_names               = ["us-east1-b"]
-  f5xc_gcp_default_blocked_services = true
-  public_ssh_key                    = "ssh-rsa xyz"
-}
-````
-
----------------
-
-### Virtual
-
-```hcl
-module "virtual_network" {
-  source = "./modules/f5xc/site/virtual"
-
-}
-```
-
------------
 
 ### Update
 

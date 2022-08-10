@@ -22,45 +22,44 @@ resource "volterra_gcp_vpc_site" "site" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
+    for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
       gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
       gcp_zone_names   = var.f5xc_gcp_zone_names
 
       local_network {
         dynamic "new_network" {
-          for_each = ""
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_network_name != "" ? [1] : []
           content {
-            name = local.f5xc_gcp_outside_network_name
+            name = var.f5xc_gcp_local_network_name
           }
         }
         dynamic "new_network_autogenerate" {
-          for_each = ""
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" ? [1] : []
           content {
             autogenerate = var.f5xc_gcp_new_network_autogenerate
           }
         }
         dynamic "existing_network" {
-          for_each = ""
+          for_each = var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_network_name != "" ? [1] : []
           content {
-            name = "network1"
+            name = var.f5xc_gcp_local_network_name
           }
         }
       }
 
       local_subnet {
         dynamic "new_subnet" {
-          for_each = ""
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_subnet_name != "" ? [1] : []
           content {
-            primary_ipv4 = var.f5xc_gcp_outside_primary_ipv4
-            subnet_name  = local.f5xc_gcp_outside_subnet_name
+            primary_ipv4 = var.f5xc_gcp_local_primary_ipv4
+            subnet_name  = var.f5xc_gcp_local_subnet_name
           }
         }
-        dynamic "new_subnet" {
-          for_each = ""
+        dynamic "existing_subnet" {
+          for_each = var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_subnet_name != "" ? [1] : []
           content {
-            primary_ipv4 = "10.1.0.0/16"
-            subnet_name  = "subnet1-in-network1"
+            subnet_name = var.f5xc_gcp_local_subnet_name
           }
         }
       }
@@ -74,7 +73,7 @@ resource "volterra_gcp_vpc_site" "site" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
+    for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
       gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
       gcp_zone_names   = var.f5xc_gcp_zone_names

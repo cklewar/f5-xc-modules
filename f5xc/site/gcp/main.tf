@@ -52,17 +52,17 @@ resource "volterra_gcp_vpc_site" "site" {
       }
 
       dynamic "local_subnet" {
-        for_each = (var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_subnet_name != "") || (var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_subnet_name != "") ? [1] : []
+        for_each = (var.f5xc_gcp_local_primary_ipv4 != "") || (var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_subnet_name != "") ? [1] : []
         content {
           dynamic "new_subnet" {
-            for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_subnet_name != "" ? [1] : []
+            for_each = var.f5xc_gcp_local_primary_ipv4 != "" ? [1] : []
             content {
               primary_ipv4 = var.f5xc_gcp_local_primary_ipv4
-              subnet_name  = var.f5xc_gcp_local_subnet_name
+              subnet_name  = var.f5xc_gcp_local_subnet_name != "" ? var.f5xc_gcp_local_subnet_name : null
             }
           }
           dynamic "existing_subnet" {
-            for_each = var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_subnet_name != "" ? [1] : []
+            for_each =  var.f5xc_gcp_local_subnet_name != "" ? [1] : []
             content {
               subnet_name = var.f5xc_gcp_local_subnet_name
             }

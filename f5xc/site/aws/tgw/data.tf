@@ -86,7 +86,7 @@ data "aws_subnet" "tgw_subnet_slo" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
   for_each   = var.f5xc_aws_tgw_az_nodes
 
-  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
+  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {

@@ -91,6 +91,35 @@ resource "volterra_aws_tgw_site" "site" {
       }
     }
 
+    dynamic "az_nodes" {
+      for_each = var.f5xc_aws_tgw_id != "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? var.f5xc_aws_tgw_az_nodes : {}
+      content {
+        aws_az_name = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_az_name"]
+        disk_size   = var.f5xc_aws_tgw_ce_instance_disk_size
+
+        workload_subnet {
+          subnet_param {
+            ipv4 = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_workload_subnet"]
+          }
+        }
+
+        dynamic "inside_subnet" {
+          for_each = contains(keys(var.f5xc_aws_tgw_az_nodes[az_nodes.key]), "f5xc_aws_tgw_inside_subnet") ? [1] : []
+          content {
+            subnet_param {
+              ipv4 = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_inside_subnet"]
+            }
+          }
+        }
+
+        outside_subnet {
+          subnet_param {
+            ipv4 = var.f5xc_aws_tgw_az_nodes[az_nodes.key]["f5xc_aws_tgw_outside_subnet"]
+          }
+        }
+      }
+    }
+
     aws_cred {
       name      = var.f5xc_aws_cred
       namespace = var.f5xc_namespace

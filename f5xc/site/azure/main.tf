@@ -30,7 +30,7 @@ resource "volterra_azure_vnet_site" "site" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
+    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
       azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       local_control_plane {
@@ -62,10 +62,10 @@ resource "volterra_azure_vnet_site" "site" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
+    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
       dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : [0]
+        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : {}
 
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
@@ -92,7 +92,7 @@ resource "volterra_azure_vnet_site" "site" {
       }
 
       dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : [0]
+        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : {}
 
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
@@ -140,14 +140,14 @@ resource "volterra_azure_vnet_site" "site" {
 
   vnet {
     dynamic "new_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : [0]
+      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
       content {
         name         = local.f5xc_azure_vnet_name
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }
     }
     dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : [0]
+      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
       content {
         resource_group = local.f5xc_azure_vnet_resource_group
         vnet_name      = local.f5xc_azure_vnet_name

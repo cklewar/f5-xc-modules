@@ -183,6 +183,16 @@ variable "f5xc_aws_vpc_existing_id" {
   default = ""
 }
 
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"

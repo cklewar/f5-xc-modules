@@ -41,7 +41,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "single_nic" ? [1] : [0]
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -77,7 +77,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : [0]
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {

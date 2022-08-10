@@ -154,6 +154,21 @@ variable "f5xc_gcp_no_local_control_plane" {
   default = true
 }
 
+variable "f5xc_gcp_description" {
+  type = string
+  default = ""
+}
+
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
+}
+
 variable "public_ssh_key" {
   type = string
 }

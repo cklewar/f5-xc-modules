@@ -85,36 +85,48 @@ resource "volterra_gcp_vpc_site" "site" {
       gcp_zone_names   = var.f5xc_gcp_zone_names
 
       dynamic "outside_network" {
-        for_each = var.f5xc_gcp_outside_primary_ipv4 != "" ? [1] : []
+        for_each = var.f5xc_gcp_outside_network_name != "" || (f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
         content {
           dynamic "new_network" {
-            for_each = var.f5xc_gcp_outside_primary_ipv4 != "" && var.f5xc_gcp_outside_network_name != "" ? [1] : []
+            for_each =  var.f5xc_gcp_outside_network_name != "" ? [1] : []
             content {
               name = var.f5xc_gcp_outside_network_name
             }
           }
           dynamic "new_network_autogenerate" {
-            for_each = var.f5xc_gcp_outside_primary_ipv4 != "" && var.f5xc_gcp_outside_network_name == "" ? [1] : []
+            for_each = f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "" ? [1] : []
             content {
               autogenerate = var.f5xc_gcp_new_network_autogenerate
+            }
+          }
+          dynamic "existing_network" {
+            for_each = var.f5xc_gcp_existing_outside_network_name != "" ? [1] : []
+            content {
+              name = var.f5xc_gcp_existing_outside_network_name
             }
           }
         }
       }
 
       dynamic "inside_network" {
-        for_each = var.f5xc_gcp_inside_primary_ipv4 != "" ? [1] : []
+        for_each = var.f5xc_gcp_inside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "") || (var.f5xc_gcp_existing_inside_network_name) ? [1] : []
         content {
           dynamic "new_network" {
-            for_each = var.f5xc_gcp_inside_primary_ipv4 != "" && var.f5xc_gcp_inside_network_name != "" ? [1] : []
+            for_each = var.f5xc_gcp_inside_network_name != "" ? [1] : []
             content {
               name = var.f5xc_gcp_inside_network_name
             }
           }
           dynamic "new_network_autogenerate" {
-            for_each = var.f5xc_gcp_inside_primary_ipv4 != "" && var.f5xc_gcp_inside_network_name == "" ? [1] : []
+            for_each = var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "" ? [1] : []
             content {
               autogenerate = var.f5xc_gcp_new_network_autogenerate
+            }
+          }
+          dynamic "existing_network" {
+            for_each = var.f5xc_gcp_existing_inside_network_name != "" ? [1] : []
+            content {
+              name = var.f5xc_gcp_existing_inside_network_name
             }
           }
         }

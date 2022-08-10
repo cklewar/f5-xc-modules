@@ -3,5 +3,4 @@ resource "volterra_dc_cluster_group" "dc_cluster_group" {
   namespace   = var.f5xc_namespace
   labels      = var.f5xc_dc_cluster_group_labels
   description = var.f5xc_dc_cluster_group_description != "" ? var.f5xc_dc_cluster_group_description : null
-  annotations = var.f5xc_dc_cluster_group_annotations
 }

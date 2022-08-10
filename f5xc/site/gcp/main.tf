@@ -79,34 +79,52 @@ resource "volterra_gcp_vpc_site" "site" {
       gcp_zone_names   = var.f5xc_gcp_zone_names
 
       outside_network {
-        new_network {
-          name = local.f5xc_gcp_outside_network_name
+        dynamic "new_network" {
+          for_each = var.f5xc_gcp_outside_primary_ipv4 != "" && var.f5xc_gcp_outside_network_name != "" ? [1] : []
+          content {
+            name = var.f5xc_gcp_outside_network_name
+          }
         }
-        new_network_autogenerate {
-          autogenerate = var.f5xc_gcp_new_network_autogenerate
-        }
-      }
-
-      outside_subnet {
-        new_subnet {
-          primary_ipv4 = var.f5xc_gcp_outside_primary_ipv4
-          subnet_name  = local.f5xc_gcp_outside_subnet_name
+        dynamic "new_network_autogenerate" {
+          for_each = var.f5xc_gcp_outside_primary_ipv4 != "" && var.f5xc_gcp_outside_network_name == "" ? [1] : []
+          content {
+            autogenerate = var.f5xc_gcp_new_network_autogenerate
+          }
         }
       }
 
       inside_network {
-        new_network {
-          name = local.f5xc_gcp_inside_network_name
+        dynamic "new_network" {
+          for_each = var.f5xc_gcp_inside_primary_ipv4 != "" && var.f5xc_gcp_inside_network_name != "" ? [1] : []
+          content {
+            name = var.f5xc_gcp_inside_network_name
+          }
         }
-        new_network_autogenerate {
-          autogenerate = var.f5xc_gcp_new_network_autogenerate
+        dynamic "new_network_autogenerate" {
+          for_each = var.f5xc_gcp_inside_primary_ipv4 != "" && var.f5xc_gcp_inside_network_name == "" ? [1] : []
+          content {
+            autogenerate = var.f5xc_gcp_new_network_autogenerate
+          }
+        }
+      }
+
+      outside_subnet {
+        dynamic "new_subnet" {
+          for_each = var.f5xc_gcp_outside_primary_ipv4 != "" && var.f5xc_gcp_outside_subnet_name != "" ? [1] : []
+          content {
+            primary_ipv4 = var.f5xc_gcp_outside_primary_ipv4
+            subnet_name  = var.f5xc_gcp_outside_subnet_name
+          }
         }
       }
 
       inside_subnet {
-        new_subnet {
-          primary_ipv4 = var.f5xc_gcp_inside_primary_ipv4
-          subnet_name  = local.f5xc_gcp_inside_subnet_name
+        dynamic "new_subnet" {
+          for_each = var.f5xc_gcp_inside_primary_ipv4 != "" && var.f5xc_gcp_inside_subnet_name != "" ? [1] : []
+          content {
+            primary_ipv4 = var.f5xc_gcp_inside_primary_ipv4
+            subnet_name  = var.f5xc_gcp_inside_subnet_name
+          }
         }
       }
 

@@ -208,6 +208,11 @@ variable "f5xc_tf_wait_for_action" {
   default = true
 }
 
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
+  type    = bool
+  default = true
+}
+
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

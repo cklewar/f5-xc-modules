@@ -59,7 +59,6 @@ data "aws_vpc" "tgw_vpc" {
   }
 }
 
-
 /*data "aws_subnet" "tgw_subnet_sli" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
   vpc_id     = data.aws_vpc.tgw_vpc.id
@@ -79,8 +78,6 @@ data "aws_vpc" "tgw_vpc" {
     values = [var.f5xc_aws_tgw_name]
   }
 }*/
-
-//for_each   = contains(keys(var.f5xc_aws_tgw_az_nodes), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes : {}
 
 data "aws_subnet" "tgw_subnet_slo" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
@@ -105,33 +102,9 @@ data "aws_subnet" "tgw_subnet_slo" {
   }
 }
 
-/*data "aws_subnet" "tgw_subnet_slo_existing_subnet" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
-  for_each   = contains(keys(var.f5xc_aws_tgw_az_nodes), "f5xc_aws_tgw_outside_existing_subnet_id") ? var.f5xc_aws_tgw_az_nodes : {}
-
-  cidr_block = var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
-  vpc_id     = data.aws_vpc.tgw_vpc.id
-
-  filter {
-    name   = "tag:ves.io/subnet-type"
-    values = ["site-local-outside"]
-  }
-
-  filter {
-    name   = format("tag:kubernetes.io/cluster/%s", var.f5xc_aws_tgw_name)
-    values = ["owned"]
-  }
-
-  filter {
-    name   = "tag:ves-io-site-name"
-    values = [var.f5xc_aws_tgw_name]
-  }
-}*/
-
 data "aws_subnet" "tgw_subnet_workload" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
   for_each   = var.f5xc_aws_tgw_az_nodes
-  // cidr_block = var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"]
   cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_workload_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 

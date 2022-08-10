@@ -11,7 +11,7 @@ resource "volterra_aws_vpc_site" "site" {
   }
 
   dynamic "vpc" {
-    for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : [0]
+    for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : []
     content {
       new_vpc {
         name_tag     = var.f5xc_aws_vpc_name_tag
@@ -21,7 +21,7 @@ resource "volterra_aws_vpc_site" "site" {
   }
 
   dynamic "vpc" {
-    for_each = var.f5xc_aws_vpc_existing_id != "" && var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : [0]
+    for_each = var.f5xc_aws_vpc_existing_id != "" && var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : []
     content {
       vpc_id = var.f5xc_aws_vpc_existing_id
     }
@@ -41,7 +41,7 @@ resource "volterra_aws_vpc_site" "site" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -55,7 +55,7 @@ resource "volterra_aws_vpc_site" "site" {
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
 
           dynamic "local_subnet" {
-            for_each = var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : [0]
+            for_each = var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : []
             content {
               subnet_param {
                 ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_subnet"]
@@ -63,7 +63,7 @@ resource "volterra_aws_vpc_site" "site" {
             }
           }
           dynamic "local_subnet" {
-            for_each = var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : [0]
+            for_each = var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : []
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_local_existing_subnet_id"]
             }
@@ -77,7 +77,7 @@ resource "volterra_aws_vpc_site" "site" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -100,7 +100,7 @@ resource "volterra_aws_vpc_site" "site" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : [0]
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : []
             content {
               subnet_param {
                 ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_subnet"]
@@ -127,9 +127,7 @@ resource "volterra_aws_vpc_site" "site" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [
-              1
-            ] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [1] : []
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_existing_subnet_id"]
             }

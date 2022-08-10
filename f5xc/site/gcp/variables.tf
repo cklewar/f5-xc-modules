@@ -155,7 +155,7 @@ variable "f5xc_gcp_no_local_control_plane" {
 }
 
 variable "f5xc_gcp_description" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -173,12 +173,23 @@ variable "public_ssh_key" {
   type = string
 }
 
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"
 
   validation {
-    condition = contains(["apply", "plan"], var.f5xc_tf_params_action)
+    condition     = contains(["apply", "plan"], var.f5xc_tf_params_action)
     error_message = format("Valid values for f5xc_tf_params_action: apply, plan")
   }
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }

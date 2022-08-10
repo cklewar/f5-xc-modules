@@ -4,7 +4,7 @@ resource "azurerm_marketplace_agreement" "f5xc" {
   plan      = var.f5xc_azurer_marketplace_agreement_plan
 }
 
-resource "volterra_azure_vnet_site" "vnet" {
+resource "volterra_azure_vnet_site" "site" {
   name                     = var.f5xc_azure_site_name
   namespace                = var.f5xc_namespace
   default_blocked_services = var.f5xc_azure_default_blocked_services
@@ -165,7 +165,7 @@ resource "volterra_azure_vnet_site" "vnet" {
 }
 
 resource "volterra_cloud_site_labels" "labels" {
-  name             = volterra_azure_vnet_site.vnet.name
+  name             = volterra_azure_vnet_site.site.name
   site_type        = var.f5xc_azure_site_kind
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.custom_tags)
@@ -173,7 +173,7 @@ resource "volterra_cloud_site_labels" "labels" {
 }
 
 resource "volterra_tf_params_action" "azure_vnet_action" {
-  site_name       = volterra_azure_vnet_site.vnet.name
+  site_name       = volterra_azure_vnet_site.site.name
   site_kind       = var.f5xc_azure_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action

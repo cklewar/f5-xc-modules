@@ -1,4 +1,4 @@
-output "aws_vpc" {
+output "f5xc_aws_vpc" {
   value = {
     name          = volterra_aws_vpc_site.site.name
     id            = volterra_aws_vpc_site.site.id

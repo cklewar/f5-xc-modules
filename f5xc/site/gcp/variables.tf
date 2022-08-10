@@ -96,6 +96,26 @@ variable "f5xc_gcp_outside_subnet_name" {
   default = ""
 }
 
+variable "f5xc_gcp_existing_local_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_local_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_outside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_inside_network_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_gcp_node_number" {
   type = number
 }

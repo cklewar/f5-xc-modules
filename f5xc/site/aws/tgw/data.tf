@@ -18,7 +18,7 @@ data "aws_ec2_transit_gateway" "tgw" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["aws_owner_tag"]]
+    values = [var.custom_tags["Owner"]]
   }
 }
 
@@ -32,7 +32,7 @@ data "aws_instance" "ce_master" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["aws_owner_tag"]]
+    values = [var.custom_tags["Owner"]]
   }
 
   filter {

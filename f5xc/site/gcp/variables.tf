@@ -66,6 +66,36 @@ variable "f5xc_gcp_inside_primary_ipv4" {
   default = ""
 }
 
+variable "f5xc_gcp_outside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_inside_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_inside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_local_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_local_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_outside_subnet_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_gcp_node_number" {
   type = number
 }

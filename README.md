@@ -14,10 +14,7 @@ This repository consists of Terraform template modules to bring up various F5XC 
   * [NFV](#nfv)
   * [IPSec tunnel](#ipsec-tunnel)
   * [Virtual Network](#virtual-network)
-  * [Site](#site) 
-    + [GCP VPC](#gcp-vpc)
-    + [Azure VNET](#azure-vnet)
-    + [Virtual](#virtual)
+  * [Site](#site)
     + [Update](#update)
     + [Site Status Check](#site-status-check)
 - [AWS Modules](#aws-modules)
@@ -53,28 +50,28 @@ module "my_test_modul" {
 
 # F5XC Modules
 
-| Module             | Documentation                                                                        | Status                                                                                                                                                                                                                |
-|--------------------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DC Cluster Group   | **[f5xc_dcg_module](https://github.com/cklewar/f5-xc-dc-cluster-group)**             | [![F5XC DC Cluster Group module](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml) |
-| Namespace          | **[f5xc_namespace_module](https://github.com/cklewar/f5-xc-namespace)**              | [![F5XC namespace module](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)                      |
-| Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**                |                                                                                                                                                                                                                       |
-| BGP                | **[f5xc_bgp_module](https://github.com/cklewar/f5-xc-bgp)**                          | [![F5XC BGP module](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml)                                        |
-| Fleet              | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-fleet)**                      | [![F5XC Fleet module](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml)                                  |
-| HealthCheck        |                                                                                      |                                                                                                                                                                                                                       |
-| Virtual Kubernetes |                                                                                      |                                                                                                                                                                                                                       |
-| Site Mesh Group    |                                                                                      |                                                                                                                                                                                                                       |
-| Interface          |                                                                                      |                                                                                                                                                                                                                       |
-| NFV                |                                                                                      |                                                                                                                                                                                                                       |
-| IPSec              |                                                                                      |                                                                                                                                                                                                                       |
-| Virtual Network    | **[f5xc_virtual_network_module](https://github.com/cklewar/f5-xc-virtual-network)**  | [![F5XC Virtual-Network module](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
-|                    |                                                                                      |                                                                                                                                                                                                                       |
-| AWS VPC            | **[f5xc_aws_vpc_module](https://github.com/cklewar/f5-xc-aws-vpc-multinode)**        | [![F5XC AWS VPC module](https://github.com/cklewar/f5-xc-aws-vpc-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-aws-vpc-multinode/actions/workflows/module_test.yml)        |
-| AWS TGW            | **[f5xc_aws_tgw_module](https://github.com/cklewar/f5-xc-aws-tgw-multinode)**        | [![F5XC AWS TGW module](https://github.com/cklewar/f5-xc-aws-tgw-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-aws-tgw-multinode/actions/workflows/module_test.yml)        |
-| Azure VNET         | **[f5xc_azurev_vnet_module](https://github.com/cklewar/f5-xc-azure-vnet-multinode)** | [![F5XC Azure VNET module](https://github.com/cklewar/f5-xc-azure-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-azure-multinode/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
-| GCP VPC            |                                                                                      |                                                                                                                                                                                                                       |
-| Virtual Site       |                                                                                      |                                                                                                                                                                                                                       |
-| Update             |                                                                                      |                                                                                                                                                                                                                       |
-| Site Status Check  |                                                                                      |                                                                                                                                                                                                                       |
+| Module             | Documentation                                                                       | Status                                                                                                                                                                                                                |
+|--------------------|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DC Cluster Group   | **[f5xc_dcg_module](https://github.com/cklewar/f5-xc-dc-cluster-group)**            | [![F5XC DC Cluster Group module](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml) |
+| Namespace          | **[f5xc_namespace_module](https://github.com/cklewar/f5-xc-namespace)**             | [![F5XC namespace module](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)                      |
+| Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**               |                                                                                                                                                                                                                       |
+| BGP                | **[f5xc_bgp_module](https://github.com/cklewar/f5-xc-bgp)**                         | [![F5XC BGP module](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml)                                        |
+| Fleet              | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-fleet)**                     | [![F5XC Fleet module](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml)                                  |
+| HealthCheck        |                                                                                     |                                                                                                                                                                                                                       |
+| Virtual Kubernetes |                                                                                     |                                                                                                                                                                                                                       |
+| Site Mesh Group    |                                                                                     |                                                                                                                                                                                                                       |
+| Interface          |                                                                                     |                                                                                                                                                                                                                       |
+| NFV                |                                                                                     |                                                                                                                                                                                                                       |
+| IPSec              |                                                                                     |                                                                                                                                                                                                                       |
+| Virtual Network    | **[f5xc_virtual_network_module](https://github.com/cklewar/f5-xc-virtual-network)** | [![F5XC Virtual-Network module](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+|                    |                                                                                     |                                                                                                                                                                                                                       |
+| AWS VPC            | **[f5xc_aws_vpc_module](https://github.com/cklewar/f5-xc-aws-vpc-multinode)**       | [![F5XC AWS VPC module](https://github.com/cklewar/f5-xc-aws-vpc-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-aws-vpc-multinode/actions/workflows/module_test.yml)        |
+| AWS TGW            | **[f5xc_aws_tgw_module](https://github.com/cklewar/f5-xc-aws-tgw-multinode)**       | [![F5XC AWS TGW module](https://github.com/cklewar/f5-xc-aws-tgw-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-aws-tgw-multinode/actions/workflows/module_test.yml)        |
+| Azure VNET         | **[f5xc_azure_vnet_module](https://github.com/cklewar/f5-xc-azure-vnet-multinode)** | [![F5XC Azure VNET module](https://github.com/cklewar/f5-xc-azure-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-azure-multinode/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+| GCP VPC            | **[f5xc_gcp_vpc_module](https://github.com/cklewar/f5-xc-gcp-vpc-multinode)**       | [![F5XC GCP VPC module](https://github.com/cklewar/f5-xc-gcp-multinode/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-gcp-multinode/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+| Virtual Site       |                                                                                     |                                                                                                                                                                                                                       |
+| Update             |                                                                                     |                                                                                                                                                                                                                       |
+| Site Status Check  |                                                                                     |                                                                                                                                                                                                                       |
 
 ## Origin Pool
 
@@ -597,174 +594,6 @@ module "global_virtual_network" {
 --------
 
 ## Site
-
-### GCP VPC
-
-__Module Usage Example__
-
-````hcl
-module "gcp_multi_node" {
-  source                            = "./modules/f5xc/site/gcp"
-  f5xc_api_p12_file                 = "/cert/api-creds.p12"
-  f5xc_api_url                      = "https://playground.staging.volterra.us/api"
-  f5xc_namespace                    = "system"
-  f5xc_tenant                       = "playground"
-  f5xc_gcp_cred                     = "gcp-01"
-  f5xc_gcp_ce_gw_type               = "single_nic"
-  f5xc_gcp_default_ce_sw_version    = true
-  f5xc_gcp_default_os_version       = true
-  f5xc_gcp_inside_primary_ipv4      = "192.168.169.0/24"
-  f5xc_gcp_outside_primary_ipv4     = "192.168.168.0/24"
-  f5xc_gcp_node_number              = 3
-  f5xc_gcp_project_id               = "gcp_project_id"
-  f5xc_gcp_region                   = "us-east1"
-  f5xc_gcp_site_name                = "gcp-multi-node-01"
-  f5xc_gcp_zone_names               = ["us-east1-b"]
-  f5xc_gcp_default_blocked_services = true
-  public_ssh_key                    = "ssh-rsa xyz"
-}
-````
-
----------------
-
-### Azure VNET
-
-__Module Usage Example Single_NIC / New VNET__
-
-```hcl
-module "azure_multi_node" {
-  source                       = "./modules/f5xc/site/azure"
-  f5xc_api_p12_file            = "/api-creds.p12"
-  f5xc_api_url                 = "https://playground.staging.volterra.us/api"
-  f5xc_namespace               = "system"
-  f5xc_tenant                  = "playground"
-  f5xc_azure_cred              = "az-creds"
-  f5xc_azure_region            = "useast"
-  f5xc_azure_site_name         = "azure-multi-node-01"
-  f5xc_azure_vnet_primary_ipv4 = "192.168.168.0/21"
-  f5xc_azure_ce_gw_type        = "single_nic"
-  f5xc_azure_az_nodes          = {
-    node0 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.168.0/24" },
-    node1 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.170.0/24" },
-    node2 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "192.168.172.0/24" }
-  }
-  f5xc_azure_default_blocked_services = false
-  f5xc_azure_default_ce_sw_version    = true
-  f5xc_azure_default_os_version       = true
-  f5xc_azure_no_worker_nodes          = false
-  f5xc_azure_total_worker_nodes       = 2
-  public_ssh_key                      = "ssh-rsa xyz"
-}
-```
-
-__Module Usage Example Single_NIC / existing VNET__
-
-```hcl
-module "azure_multi_node" {
-  source                       = "./modules/f5xc/site/azure"
-  f5xc_api_p12_file            = "/api-creds.p12"
-  f5xc_api_url                 = "https://playground.staging.volterra.us/api"
-  f5xc_namespace               = "system"
-  f5xc_tenant                  = "playground"
-  f5xc_azure_cred              = "az-creds"
-  f5xc_azure_region            = "useast"
-  f5xc_azure_site_name         = "azure-multi-node-01"
-  f5xc_azure_vnet_primary_ipv4 = "192.168.168.0/21"
-  f5xc_azure_ce_gw_type        = "single_nic"
-  f5xc_azure_az_nodes          = {
-    node0 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node0_subnetA" },
-    node1 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node1_subnetB" },
-    node2 : { f5xc_azure_az = "1", f5xc_azure_local_subnet_name = "node2_subnetC" }
-  }
-  f5xc_azure_vnet_resource_group      = "vnet_resource_group_A"
-  f5xc_azure_default_blocked_services = false
-  f5xc_azure_default_ce_sw_version    = true
-  f5xc_azure_default_os_version       = true
-  f5xc_azure_no_worker_nodes          = true
-  f5xc_azure_total_worker_nodes       = 0
-  public_ssh_key                      = "ssh-rsa xyz"
-}
-```
-
-__Module Usage Example Multi_NIC / new VNET__
-
-```hcl
-module "azure_multi_node" {
-  source                       = "./modules/f5xc/site/azure"
-  f5xc_api_p12_file            = "./playground.staging.api-creds.p12"
-  f5xc_api_url                 = "https://playground.staging.volterra.us/api"
-  f5xc_namespace               = "system"
-  f5xc_tenant                  = "playground"
-  f5xc_azure_cred              = "az-creds"
-  f5xc_azure_region            = "useast"
-  f5xc_azure_site_name         = "azure-multi-node-01"
-  f5xc_azure_vnet_primary_ipv4 = "100.64.16.0/20"
-  f5xc_azure_ce_gw_type        = "multi_nic"
-  f5xc_azure_az_nodes          = {
-    node0 : {
-      f5xc_azure_az                  = "1", f5xc_azure_vnet_inside_subnet = "100.64.16.0/24",
-      f5xc_azure_vnet_outside_subnet = "100.64.17.0/24"
-    }
-  }
-  f5xc_azure_default_blocked_services = false
-  f5xc_azure_default_ce_sw_version    = true
-  f5xc_azure_default_ce_os_version    = true
-  f5xc_azure_no_worker_nodes          = true
-  f5xc_azure_total_worker_nodes       = 0
-  public_ssh_key                      = "ssh-rsa xyz"
-}
-```
-
-__Module Usage Example Multi_NIC / existing VNET__
-
-```hcl
-module "azure_multi_node" {
-  source                       = "./modules/f5xc/site/azure"
-  f5xc_api_p12_file            = "./playground.staging.api-creds.p12"
-  f5xc_api_url                 = "https://playground.staging.volterra.us/api"
-  f5xc_namespace               = "system"
-  f5xc_tenant                  = "playground"
-  f5xc_azure_cred              = "az-creds"
-  f5xc_azure_region            = "useast"
-  f5xc_azure_site_name         = "azure-multi-node-01"
-  f5xc_azure_vnet_primary_ipv4 = "100.64.16.0/20"
-  f5xc_azure_ce_gw_type        = "multi_nic"
-  f5xc_azure_az_nodes          = {
-    node0 : {
-      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_0_inside_subnet",
-      f5xc_azure_vnet_outside_subnet_name = "node_0_outside_subnet"
-    },
-    node1 : {
-      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_1_inside_subnet",
-      f5xc_azure_vnet_outside_subnet_name = "node_1_outside_subnet"
-    },
-    node2 : {
-      f5xc_azure_az                       = "1", f5xc_azure_vnet_inside_subnet_name = "node_2_inside_subnet",
-      f5xc_azure_vnet_outside_subnet_name = "node_2_outside_subnet"
-    }
-  }
-  f5xc_azure_vnet_resource_group      = "vnet_resource_group_A"
-  f5xc_azure_default_blocked_services = false
-  f5xc_azure_default_ce_sw_version    = true
-  f5xc_azure_default_ce_os_version    = true
-  f5xc_azure_no_worker_nodes          = true
-  f5xc_azure_total_worker_nodes       = 2
-  public_ssh_key                      = "ssh-rsa xyz"
-}
-```
-
------------
-
-### Virtual
-
-```hcl
-module "virtual_network" {
-  source = "./modules/f5xc/site/virtual"
-
-}
-```
-
------------
 
 ### Update
 

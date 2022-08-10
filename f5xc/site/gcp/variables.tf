@@ -154,8 +154,28 @@ variable "f5xc_gcp_no_local_control_plane" {
   default = true
 }
 
+variable "f5xc_gcp_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
+}
+
 variable "public_ssh_key" {
   type = string
+}
+
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
 }
 
 variable "f5xc_tf_params_action" {
@@ -163,7 +183,18 @@ variable "f5xc_tf_params_action" {
   default = "apply"
 
   validation {
-    condition = contains(["apply", "plan"], var.f5xc_tf_params_action)
+    condition     = contains(["apply", "plan"], var.f5xc_tf_params_action)
     error_message = format("Valid values for f5xc_tf_params_action: apply, plan")
   }
+}
+
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
+  type    = bool
+  default = true
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
 }

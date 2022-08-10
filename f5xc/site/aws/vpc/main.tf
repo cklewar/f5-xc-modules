@@ -1,4 +1,4 @@
-resource "volterra_aws_vpc_site" "vpc" {
+resource "volterra_aws_vpc_site" "site" {
   name       = var.f5xc_aws_vpc_site_name
   namespace  = var.f5xc_namespace
   aws_region = var.f5xc_aws_region
@@ -41,7 +41,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "single_nic" ? [1] : []
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -77,7 +77,7 @@ resource "volterra_aws_vpc_site" "vpc" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_aws_ce_gw_type == "multi_nic" ? [1] : []
+    for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
     content {
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
@@ -100,7 +100,7 @@ resource "volterra_aws_vpc_site" "vpc" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_subnet") ? [1] : [0]
             content {
               subnet_param {
                 ipv4 = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_subnet"]
@@ -175,15 +175,15 @@ resource "volterra_aws_vpc_site" "vpc" {
 }
 
 resource "volterra_cloud_site_labels" "labels" {
-  name             = volterra_aws_vpc_site.vpc.name
+  name             = volterra_aws_vpc_site.site.name
   site_type        = "aws_vpc_site"
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.custom_tags)
-  ignore_on_delete = true
+  ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
 resource "volterra_tf_params_action" "aws_vpc_action" {
-  site_name       = volterra_aws_vpc_site.vpc.name
+  site_name       = volterra_aws_vpc_site.site.name
   site_kind       = var.f5xc_aws_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action

@@ -86,3 +86,42 @@ variable "f5xc_http_loadbalancer_random" {
   type    = bool
   default = false
 }
+
+variable "f5xc_http_loadbalancer_source_ip_stickiness" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_http_loadbalancer_cookie_stickiness" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_http_loadbalancer_ring_hash" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_http_loadbalancer_disable_rate_limit" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_http_loadbalancer_user_id_client_ip" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_http_loadbalancer_disable_waf" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_http_loadbalancer_port" {
+  type = string
+}
+
+variable "f5xc_http_loadbalancer_dns_volterra_managed" {
+  type    = bool
+  default = true
+}

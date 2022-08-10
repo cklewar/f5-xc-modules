@@ -4,7 +4,7 @@ resource "azurerm_marketplace_agreement" "f5xc" {
   plan      = var.f5xc_azurer_marketplace_agreement_plan
 }
 
-resource "volterra_azure_vnet_site" "vnet" {
+resource "volterra_azure_vnet_site" "site" {
   name                     = var.f5xc_azure_site_name
   namespace                = var.f5xc_namespace
   default_blocked_services = var.f5xc_azure_default_blocked_services
@@ -30,7 +30,7 @@ resource "volterra_azure_vnet_site" "vnet" {
   }
 
   dynamic "ingress_gw" {
-    for_each = var.f5xc_azure_ce_gw_type == "single_nic" ? [1] : []
+    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : [0]
     content {
       azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       local_control_plane {
@@ -62,10 +62,10 @@ resource "volterra_azure_vnet_site" "vnet" {
   }
 
   dynamic "ingress_egress_gw" {
-    for_each = var.f5xc_azure_ce_gw_type == "multi_nic" ? [1] : []
+    for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : [0]
     content {
       dynamic az_nodes {
-        for_each = f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : []
+        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : [0]
 
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
@@ -92,7 +92,7 @@ resource "volterra_azure_vnet_site" "vnet" {
       }
 
       dynamic az_nodes {
-        for_each = f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : []
+        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : [0]
 
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
@@ -140,14 +140,14 @@ resource "volterra_azure_vnet_site" "vnet" {
 
   vnet {
     dynamic "new_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : [0]
       content {
         name         = local.f5xc_azure_vnet_name
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }
     }
     dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : [0]
       content {
         resource_group = local.f5xc_azure_vnet_resource_group
         vnet_name      = local.f5xc_azure_vnet_name
@@ -165,15 +165,15 @@ resource "volterra_azure_vnet_site" "vnet" {
 }
 
 resource "volterra_cloud_site_labels" "labels" {
-  name             = volterra_azure_vnet_site.vnet.name
+  name             = volterra_azure_vnet_site.site.name
   site_type        = var.f5xc_azure_site_kind
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.custom_tags)
-  ignore_on_delete = true
+  ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
 resource "volterra_tf_params_action" "azure_vnet_action" {
-  site_name       = volterra_azure_vnet_site.vnet.name
+  site_name       = volterra_azure_vnet_site.site.name
   site_kind       = var.f5xc_azure_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action

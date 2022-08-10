@@ -190,6 +190,16 @@ variable "f5xc_azurer_marketplace_agreement_plan" {
   default = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
 }
 
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"
@@ -201,6 +211,11 @@ variable "f5xc_tf_params_action" {
 }
 
 variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
   type    = bool
   default = true
 }

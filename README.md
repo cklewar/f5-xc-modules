@@ -30,13 +30,8 @@ This repository consists of Terraform template modules to bring up various F5XC 
             - [Update](#update)
         + [Site Status Check](#site-status-check)
     * [AWS Modules](#aws-modules)
-        + [EC2](#ec2)
-        + [VPC](#vpc)
-        + [EKS](#eks)
     * [GCP Modules](#gcp-modules)
-        + [Compute](#compute)
     * [Azure Modules](#azure-modules)
-        + [Linux Virtual Machine](#linux-virtual-machine)
 
 # Usage
 
@@ -59,11 +54,9 @@ Terraform usage example:
 ```hcl
 module "my_test_modul" {
   source = "./modules/f5xc/<module_name>"
-  <Module Paramet
-A> = <Module Paramet A Value>
-<Module Paramet B> = <Module Paramet B Value>
-<Module Paramet C> = <Module Paramet C Value>
-...
+  <Module Paramet A> = <Module Paramet A Value>
+  <Module Paramet B> = <Module Paramet B Value>
+  <Module Paramet C> = <Module Paramet C Value>
 }
 ```
 
@@ -1417,52 +1410,32 @@ module "site_status_check" {
 }
 ````
 
---------------
-
 ## AWS Modules
-
-### EC2
-
-![f5xc_aws_ec2_module_test_status](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg?event=push)
-
-Module Example at: **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**.
-
--------
-
-### VPC
-
-[![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)
-
-Module Example at: **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**.
-
-### Subnet
-
-[![F5XC AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml)
-
-Module Example at: **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)**.
-
--------
-
-### EKS
-
 --------------
+
+| Module Name | Example                                                             | Status                                                                                                                                                                                    |
+|-------------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| EC2         | **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
+| VPC         | **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
+| Subnet      | **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)** | [![F5XC AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml) |
+| EKS         |                                                                     |                                                                                                                                                                                           |
+
 
 ## GCP Modules
+--------------
 
------------
+| Module Name | Example | Status |
+|-------------|---------|--------|
+| Compute     |         |        |
+|             |         |        |
 
-### Compute
-
-----------------
 
 ## Azure Modules
+----------------
 
--------------------------
-
-### Linux Virtual Machine
-
-__Module Usage Example__
-
-```hcl
-  source = "../modules/azure/virtual_machine"
-```
+| Module Name           | Example | Status |
+|-----------------------|---------|--------|
+| Linux Virtual Machine |         |        |
+| Resource Group        |         |        |
+| Virtual Network       |         |        |
+| Subnet                |         |        |

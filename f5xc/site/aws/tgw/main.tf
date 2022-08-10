@@ -1,4 +1,4 @@
-resource "volterra_aws_tgw_site" "tgw" {
+resource "volterra_aws_tgw_site" "site" {
   name                     = var.f5xc_aws_tgw_name
   namespace                = var.f5xc_namespace
   logs_streaming_disabled  = var.f5xc_aws_tgw_logs_streaming_disabled
@@ -150,15 +150,15 @@ resource "volterra_aws_tgw_site" "tgw" {
 }
 
 resource "volterra_cloud_site_labels" "labels" {
-  name             = volterra_aws_tgw_site.tgw.name
+  name             = volterra_aws_tgw_site.site.name
   site_type        = "aws_vpc_site"
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.custom_tags)
-  ignore_on_delete = true
+  ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
 resource "volterra_tf_params_action" "aws_tgw_action" {
-  site_name       = volterra_aws_tgw_site.tgw.name
+  site_name       = volterra_aws_tgw_site.site.name
   site_kind       = var.f5xc_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action

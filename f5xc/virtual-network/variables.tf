@@ -62,3 +62,8 @@ variable "f5xc_ip_prefixes" {
   type    = list(string)
   default = []
 }
+
+variable "f5xc_static_routes_attrs" {
+  type = list(string)
+  default = ["ROUTE_ATTR_INSTALL_FORWARDING"]
+}

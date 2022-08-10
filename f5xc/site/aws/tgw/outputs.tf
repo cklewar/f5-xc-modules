@@ -24,7 +24,7 @@ output "tgw" {
     //tgw_subnet_sli      = {for k, v in data.aws_subnet.tgw_subnet_sli : k => v}
     tgw_subnet_slo      = {for k, v in data.aws_subnet.tgw_subnet_slo : k => v}
     tgw_subnet_workload = {for k, v in data.aws_subnet.tgw_subnet_workload : k => v}
-
+    params              = volterra_tf_params_action.aws_tgw_action
   }
 }
 

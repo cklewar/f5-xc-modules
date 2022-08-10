@@ -29,7 +29,7 @@ resource "volterra_gcp_vpc_site" "site" {
 
       local_network {
         dynamic "new_network" {
-          for_each = var.f5xc_gcp_local_primary_ipv4 != "" ? [1] : []
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_network_name != "" ? [1] : []
           content {
             name = var.f5xc_gcp_local_network_name
           }
@@ -41,7 +41,7 @@ resource "volterra_gcp_vpc_site" "site" {
           }
         }
         dynamic "existing_network" {
-          for_each = var.f5xc_gcp_local_primary_ipv4 == "" ? [1] : []
+          for_each = var.f5xc_gcp_local_primary_ipv4 == "" && var.f5xc_gcp_local_network_name != "" ? [1] : []
           content {
             name = var.f5xc_gcp_local_network_name
           }

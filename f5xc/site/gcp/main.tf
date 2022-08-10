@@ -50,7 +50,7 @@ resource "volterra_gcp_vpc_site" "site" {
 
       local_subnet {
         dynamic "new_subnet" {
-          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_subnet_name != ""? [1] : []
+          for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_subnet_name != "" ? [1] : []
           content {
             primary_ipv4 = var.f5xc_gcp_local_primary_ipv4
             subnet_name  = var.f5xc_gcp_local_subnet_name

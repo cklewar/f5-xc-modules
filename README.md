@@ -4,34 +4,29 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 # Table of Contents
 
-- [F5-XC-MODULES](#f5-xc-modules)
-- [Table of Contents](#table-of-contents)
 - [Usage](#usage)
-- [Modules](#modules)
-    * [F5XC Modules](#f5xc-modules)
-        + [DC Cluster Group](#dc-cluster-group)
-        + [Origin Pool](#origin-pool)
-        + [Healthcheck](#healthcheck)
-        + [Namespace](#namespace)
-        + [Virtual Kubernetes](#virtual-kubernetes)
-        + [Site Mesh Group](#site-mesh-group)
-        + [Fleet](#fleet)
-        + [BGP](#bgp)
-        + [Interface](#interface)
-        + [NFV](#nfv)
-        + [IPSec tunnel](#ipsec-tunnel)
-        + [Virtual Network](#virtual-network)
-        + [Site](#site)
-            - [AWS VCP](#aws-vcp)
-            - [AWS TGW](#aws-tgw)
-            - [GCP VPC](#gcp-vpc)
-            - [Azure VNET](#azure-vnet)
-            - [Virtual](#virtual)
-            - [Update](#update)
-        + [Site Status Check](#site-status-check)
-    * [AWS Modules](#aws-modules)
-    * [GCP Modules](#gcp-modules)
-    * [Azure Modules](#azure-modules)
+- [F5XC Modules](#f5xc-modules)
+  * [Origin Pool](#origin-pool)
+  * [Healthcheck](#healthcheck)
+  * [Virtual Kubernetes](#virtual-kubernetes)
+  * [Site Mesh Group](#site-mesh-group)
+  * [Fleet](#fleet)
+  * [BGP](#bgp)
+  * [Interface](#interface)
+  * [NFV](#nfv)
+  * [IPSec tunnel](#ipsec-tunnel)
+  * [Virtual Network](#virtual-network)
+  * [Site](#site)
+    + [AWS VCP](#aws-vcp)
+    + [AWS TGW](#aws-tgw)
+    + [GCP VPC](#gcp-vpc)
+    + [Azure VNET](#azure-vnet)
+    + [Virtual](#virtual)
+    + [Update](#update)
+    + [Site Status Check](#site-status-check)
+- [AWS Modules](#aws-modules)
+- [GCP Modules](#gcp-modules)
+- [Azure Modules](#azure-modules)
 
 # Usage
 
@@ -60,55 +55,33 @@ module "my_test_modul" {
 }
 ```
 
-# Modules
+# F5XC Modules
 
-Module repository folder structure like below:
 
-## F5XC Modules
+| Module             | Example                                                                      | Status                                                                                                                                                                                                                |
+|--------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DC Cluster Group   | **[f5xc_dcg_module](https://github.com/cklewar/f5-xc-dc-cluster-group)**     | [![F5XC DC Cluster Group module](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml) |
+| Namespace          | **[f5xc_namespace_module](https://github.com/cklewar/f5-xc-namespace)**      | [![F5XC namespace module](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+| Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**        |                                                                                                                                                                                                                       |
+| BGP                | **[f5xc_bgp_module](https://github.com/cklewar/f5-xc-bgp)**                  | [![F5XC BGP module](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+| Fleet              | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-fleet)**              | [![F5XC Fleet module](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
+| HealthCheck        |                                                                              |                                                                                                                                                                                                                       |
+| Virtual Kubernetes |                                                                              |                                                                                                                                                                                                                       |
+| Site Mesh Group    |                                                                              |                                                                                                                                                                                                                       |
+| Interface          |                                                                              |                                                                                                                                                                                                                       |
+| NFV                |                                                                              |                                                                                                                                                                                                                       |
+| IPSec              |                                                                              |                                                                                                                                                                                                                       |
+| Virtual Network    |                                                                              |                                                                                                                                                                                                                       |
+|                    |                                                                              |                                                                                                                                                                                                                       |
+| AWS VPC            | **[f5xc_aws_vpc_module](https://github.com/cklewar/f5-xc-dc-cluster-group)** |                                                                                                                                                                                                                       |
+| AWS TGW            |                                                                              |                                                                                                                                                                                                                       |
+| Azure VNET         |                                                                              |                                                                                                                                                                                                                       |
+| GCP VPC            |                                                                              |                                                                                                                                                                                                                       |
+| Virtual Site       |                                                                              |                                                                                                                                                                                                                       |
+| Update             |                                                                              |                                                                                                                                                                                                                       |
+| Site Status Check  |                                                                              |                                                                                                                                                                                                                       |
 
-### DC Cluster Group
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-module "dc_cluster_group" {
-  source                            = "./modules/f5xc/dc-cluster-group"
-  f5xc_dc_cluster_group_name        = format("%s-dcg-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace                    = var.f5xc_namespace
-  f5xc_api_url                      = var.f5xc_api_url
-  f5xc_api_p12_file                 = var.f5xc_api_p12_file
-  f5xc_dc_cluster_group_description = "myDCgrp"
-  f5xc_dc_cluster_group_labels      = {
-    "my-dc-group" : "myDCgrp"
-  }
-}
-```
-
-### Blindfold
-
-__Module Usage Example__
-
-```hcl
-
-```
-
-### Origin Pool
+## Origin Pool
 
 __Module Usage Example Private IP__
 
@@ -147,7 +120,7 @@ module "origin_pool" {
 
 ---------------
 
-### Healthcheck
+## Healthcheck
 
 __Module Usage Example HTTP__
 
@@ -212,49 +185,9 @@ module "healthcheck_tcp" {
 }
 ```
 
--------------
-
-### Namespace
-
-[![F5XC namespace module_dev](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg?branch=dev)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)
-
-__Module Usage Example__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_namespace_name" {
-  type = string
-}
-
-module "namespace" {
-  source              = "./modules/f5xc/namespace"
-  f5xc_namespace_name = format("%s-ns-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace      = var.f5xc_namespace
-  f5xc_api_url        = var.f5xc_api_url
-  f5xc_api_p12_file   = var.f5xc_api_p12_file
-}
-```
-
 ----------------------
 
-### Virtual Kubernetes
+## Virtual Kubernetes
 
 __Module Usage Example__
 
@@ -304,7 +237,7 @@ module "vk8s" {
 
 -------------------
 
-### Site Mesh Group
+## Site Mesh Group
 
 __Module Usage Example__
 
@@ -354,163 +287,7 @@ module "site_mesh_group" {
 
 ---------
 
-### Fleet
-
-__Module Usage Example__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-variable "f5xc_fleet_label" {
-  type = string
-}
-
-locals {
-  tunnel_interface_name  = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
-  tunnel_virtual_network = format("%s-vn-%s", var.project_prefix, var.project_suffix)
-}
-
-module "fleet" {
-  source                       = "./modules/f5xc/fleet"
-  f5xc_fleet_name              = format("%s-fleet-%s", var.project_prefix, var.project_suffix)
-  f5xc_fleet_label             = var.fleet_label
-  f5xc_outside_virtual_network = [local.tunnel_virtual_network]
-  f5xc_inside_virtual_network  = var.inside_virtual_network
-  f5xc_networks_interface_list = [local.tunnel_interface_name]
-  f5xc_namespace               = var.f5xc_namespace
-  f5xc_tenant                  = var.f5xc_tenant
-  f5xc_api_url                 = var.f5xc_api_url
-  f5xc_api_p12_file            = var.f5xc_api_p12_file
-}
-```
-
-__Input Vars Example__
-
-```json
-{
-  "project_prefix": "aws",
-  "project_suffix": "01",
-  "f5xc_tenant": "xyz-ydghbxyc",
-  "f5xc_namespace": "system",
-  "f5xc_api_p12_file": "xyz.console.ves.volterra.io.api-creds.p12",
-  "f5xc_api_url": "https://xyz.console.ves.volterra.io/api",
-  "f5xc_fleet_label": "fleet-123-abc"
-}
-```
-
--------
-
-### BGP
-
-__Module Usage Example__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-variable "f5xc_bgp_local_asn" {
-  type = number
-}
-
-variable "f5xc_bgp_peer_asn" {
-  type = number
-}
-
-variable "f5xc_bgp_peer_address" {
-  type = string
-}
-
-variable "f5xc_bgp_description" {
-  type = string
-}
-
-locals {
-  deployment = format("%s-%s", var.project_prefix, var.project_suffix)
-}
-
-module "bgp" {
-  source                = "./modules/f5xc/bgp"
-  f5xc_namespace        = var.f5xc_namespace
-  f5xc_tenant           = var.f5xc_tenant
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_api_p12_file     = var.f5xc_api_p12_file
-  f5xc_bgp_asn          = var.f5xc_bgp_local_asn
-  f5xc_bgp_description  = var.f5xc_bgp_description
-  f5xc_bgp_name         = format("%s-bgp-%s", var.project_prefix, var.project_suffix)
-  f5xc_bgp_peer_asn     = var.f5xc_bgp_peer_asn
-  f5xc_bgp_peer_name    = format("%s-peer-%s", var.project_prefix, var.project_suffix)
-  f5xc_bgp_peer_address = var.f5xc_bgp_peer_address
-  f5xc_site_name        = local.deployment
-}
-```
-
-__Input Vars Example__
-
-````json
-{
-  "project_prefix": "aws",
-  "project_suffix": "01",
-  "f5xc_tenant": "xyz-ydghbxyc",
-  "f5xc_namespace": "system",
-  "f5xc_api_p12_file": "xyz.console.ves.volterra.io.api-creds.p12",
-  "f5xc_api_url": "https://xyz.console.ves.volterra.io/api",
-  "f5xc_bgp_local_asn": 65200,
-  "f5xc_bgp_peer_asn": 65000,
-  "f5xc_bgp_peer_address": "169.254.186.2",
-  "f5xc_bgp_description": "Neighbor Xyz"
-}
-````
-
--------------
-
-### Interface
+## Interface
 
 __Module Usage Example: IPSec tunnel interface in F5XC AWS site__
 
@@ -651,7 +428,7 @@ __Input Vars Example: IPSec tunnel interface in F5XC GCP site__
 
 -------
 
-### NFV
+## NFV
 
 __Module Usage Example__
 
@@ -692,7 +469,7 @@ module "nfv" {
 
 ----------------
 
-### IPSec tunnel
+## IPSec tunnel
 
 __Module Usage Example__
 
@@ -738,7 +515,7 @@ module "tunnel" {
 
 -------------------
 
-### Virtual Network
+## Virtual Network
 
 __Module Usage Example: Tunnel Interface Virtual Network__
 
@@ -824,9 +601,9 @@ module "global_virtual_network" {
 
 --------
 
-### Site
+## Site
 
-#### AWS VCP
+### AWS VCP
 
 __Module Usage Example Single NIC / New Subnet__
 
@@ -971,7 +748,7 @@ module "aws_vpc_multi_node" {
 
 ------------
 
-#### AWS TGW
+### AWS TGW
 
 __Module Usage Example New VPC__
 
@@ -1155,7 +932,7 @@ module "aws_tgw_multi_node" {
 
 ------------
 
-#### GCP VPC
+### GCP VPC
 
 __Module Usage Example__
 
@@ -1184,7 +961,7 @@ module "gcp_multi_node" {
 
 ---------------
 
-#### Azure VNET
+### Azure VNET
 
 __Module Usage Example Single_NIC / New VNET__
 
@@ -1312,7 +1089,7 @@ module "azure_multi_node" {
 
 -----------
 
-#### Virtual
+### Virtual
 
 ```hcl
 module "virtual_network" {
@@ -1323,7 +1100,7 @@ module "virtual_network" {
 
 -----------
 
-#### Update
+### Update
 
 __Module Usage Example__
 
@@ -1410,30 +1187,25 @@ module "site_status_check" {
 }
 ````
 
-## AWS Modules
---------------
+# AWS Modules
 
-| Module Name | Example                                                             | Status                                                                                                                                                                                    |
-|-------------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| EC2         | **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
-| VPC         | **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
-| Subnet      | **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)** | [![F5XC AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml) |
-| EKS         |                                                                     |                                                                                                                                                                                           |
+| Module | Example                                                             | Status                                                                                                                                                                                    |
+|--------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| EC2    | **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
+| VPC    | **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
+| Subnet | **[f5xc_aws_subnet_module](https://github.com/cklewar/aws-subnet)** | [![F5XC AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml) |
+| EKS    |                                                                     |                                                                                                                                                                                           |
 
+# GCP Modules
 
-## GCP Modules
---------------
+| Module  | Example | Status |
+|---------|---------|--------|
+| Compute |         |        |
+|         |         |        |
 
-| Module Name | Example | Status |
-|-------------|---------|--------|
-| Compute     |         |        |
-|             |         |        |
+# Azure Modules
 
-
-## Azure Modules
-----------------
-
-| Module Name           | Example | Status |
+| Module                | Example | Status |
 |-----------------------|---------|--------|
 | Linux Virtual Machine |         |        |
 | Resource Group        |         |        |

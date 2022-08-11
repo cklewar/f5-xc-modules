@@ -69,7 +69,8 @@ variable "f5xc_interface_name" {
 }
 
 variable "f5xc_tunnel_name" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_node_name" {

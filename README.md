@@ -6,7 +6,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 - [Usage](#usage)
 - [F5XC Modules](#f5xc-modules)
-  * [Origin Pool](#origin-pool)
   * [Healthcheck](#healthcheck)
   * [Virtual Kubernetes](#virtual-kubernetes)
   * [Interface](#interface)
@@ -545,7 +544,7 @@ module "site_status_check" {
 
 # AWS Modules
 
-| Module | Example                                                             | Status                                                                                                                                                                                    |
+| Module | Documentation                                                       | Status                                                                                                                                                                                    |
 |--------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | EC2    | **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
 | VPC    | **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
@@ -554,16 +553,16 @@ module "site_status_check" {
 
 # GCP Modules
 
-| Module  | Example | Status |
-|---------|---------|--------|
-| Compute |         |        |
-|         |         |        |
+| Module  | Documentation | Status |
+|---------|---------------|--------|
+| Compute |               |        |
+|         |               |        |
 
 # Azure Modules
 
-| Module                | Example | Status |
-|-----------------------|---------|--------|
-| Linux Virtual Machine |         |        |
-| Resource Group        |         |        |
-| Virtual Network       |         |        |
-| Subnet                |         |        |
+| Module                | Documentation | Status   |
+|-----------------------|---------------|----------|
+| Linux Virtual Machine |               |          |
+| Resource Group        |               |          |
+| Virtual Network       |               |          |
+| Subnet                |               |          |

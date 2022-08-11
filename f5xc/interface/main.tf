@@ -17,7 +17,6 @@ resource "volterra_network_interface" "ethernet_interface" {
     vlan_id                   = var.f5xc_interface_vlan_id
     site_local_inside_network = var.f5xc_interface_site_local_inside_network
     site_local_network        = var.f5xc_interface_site_local_network
-    dhcp_option82_tag         = var.f5xc_interface_dhcp_option82_tag
 
     dynamic "static_ip" {
       for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
@@ -41,6 +40,7 @@ resource "volterra_network_interface" "ethernet_interface" {
         fixed_ip_map         = var.f5xc_interface_dhcp_server_fixed_ip_map
         automatic_from_start = var.f5xc_interface_dhcp_server_automatic_from_start
         automatic_from_end   = var.f5xc_interface_dhcp_server_automatic_from_end
+        dhcp_option82_tag    = var.f5xc_interface_dhcp_option82_tag
         interface_ip_map {
           interface_ip_map = var.f5xc_interface_dhcp_server_interface_ip_map
         }
@@ -54,7 +54,7 @@ resource "volterra_network_interface" "ethernet_interface" {
             first_address  = try(dhcp_networks.value.first_address, null)
             last_address   = try(dhcp_networks.value.last_address, null)
             network_prefix = dhcp_networks.value.network_prefix
-            pool_settings = var.f5xc_interface_dhcp_networks_pool_settings
+            pool_settings  = var.f5xc_interface_dhcp_networks_pool_settings
             dynamic "pools" {
               for_each = dhcp_networks.value.pools
               content {

@@ -93,7 +93,6 @@ resource "volterra_network_interface" "ethernet_interface" {
   }
 }
 
-
 resource "local_file" "tunnel_interface" {
   count    = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : []
   content  = local.tunnel_interface_content

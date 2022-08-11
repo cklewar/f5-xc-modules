@@ -1,29 +1,29 @@
-{
-	"metadata": {
-		"description": "${interface_description}",
-		"labels": "${labels}",
-		"name": "${interface_name}",
-		"namespace": "${namespace}"
+${jsonencode({
+    "metadata": {
+		"description": interface_description,
+		"labels": labels,
+		"name": interface_name,
+		"namespace": namespace
 	},
 	"spec": {
 		"tunnel_interface": {
-			"mtu": "${mtu}",
-			"node": "${node_name}",
-			%{ if site_local_network != "" }"site_local_network": "${site_local_network}",%{ endif ~}
-			%{ if site_local_inside_network != "" }"site_local_inside_network": "${site_local_inside_network}",%{ endif ~}
-			%{ if inside_network != "" }"inside_network": "${inside_network}",%{ endif ~}
+			"mtu": mtu,
+			"node": node_name,
+			"site_local_network": site_local_network,
+			"site_local_inside_network": site_local_inside_network,
+			"inside_network": inside_network,
 			"static_ip": {
 				"node_static_ip": {
-				    %{ if interface_default_gw != "" }default_gw = "${interface_default_gw}"%{ endif ~}
-				    %{ if interface_dns_server != "" }dns_server = "${interface_dns_server}"%{ endif ~}
-					"ip_address": "${interface_static_ip}"
+				   "default_gw": interface_default_gw
+				   "dns_server": interface_dns_server
+					"ip_address": interface_static_ip
 				}
 			},
 			"tunnel": {
-				"name": "${tunnel_name}",
-				"namespace": "${namespace}",
-				"tenant": "${tenant}"
+				"name": tunnel_name,
+				"namespace": namespace,
+				"tenant": tenant
 			}
 		}
 	}
-}
+})}

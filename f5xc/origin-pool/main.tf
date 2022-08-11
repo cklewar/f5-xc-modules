@@ -131,10 +131,9 @@ resource "volterra_origin_pool" "origin-pool" {
         }
       }
     }
-
-    port    = var.f5xc_origin_pool_port
-    no_tls  = var.f5xc_origin_pool_no_tls
-    use_tls = var.f5xc_origin_pool_use_tls
-    labels  = var.f5xc_origin_pool_labels
+    labels = var.f5xc_origin_pool_labels
   }
+  port    = var.f5xc_origin_pool_port
+  no_tls  = var.f5xc_origin_pool_no_tls
+  use_tls = var.f5xc_origin_pool_use_tls
 }

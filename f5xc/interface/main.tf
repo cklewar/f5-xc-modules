@@ -6,7 +6,7 @@ resource "volterra_network_interface" "ethernet_interface" {
 
   ethernet_interface {
     # no_ipv6_address  = var.f5xc_interface_no_ipv6_address
-    device           = var.f5xc_interface_device
+    device           = var.f5xc_interface_ethernet_interface_device
     mtu              = var.f5xc_interface_mtu
     monitor_disabled = var.f5xc_interface_monitor_disabled
     dhcp_client      = var.f5xc_interface_dhcp_client

@@ -154,7 +154,7 @@ variable "f5xc_interface_static_ip_node_static_ip" {
   default = ""
 }
 
-variable "f5xc_interface_static_ip_fleet_static_ip_name" {
+variable "f5xc_interface_static_ip_fleet_static_ip_network_prefix_allocator_name" {
   type    = string
   default = ""
 }

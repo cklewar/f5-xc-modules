@@ -42,11 +42,18 @@ resource "volterra_network_interface" "ethernet_interface" {
           }
         }
         dynamic "fleet_static_ip" {
-          for_each = var.f5xc_interface_static_ip_fleet_static_ip_name != "" ? [1] : []
+          for_each = var.f5xc_interface_static_ip_fleet_static_ip_network_prefix_allocator_name != "" ? [1] : []
           content {
-            name = var.f5xc_interface_static_ip_fleet_static_ip_name
-            # namespace = var.f5xc_namespace
-            # tenant    = var.f5xc_tenant
+            default_gw = var.f5xc_interface_default_gw
+            dns_server = var.f5xc_interface_dns_server
+            dynamic "network_prefix_allocator" {
+              for_each = var.f5xc_interface_static_ip_fleet_static_ip_network_prefix_allocator_name != "" ? [1] : []
+              content {
+                name      = var.f5xc_interface_static_ip_fleet_static_ip_network_prefix_allocator_name
+                namespace = var.f5xc_namespace
+                tenant    = var.f5xc_tenant
+              }
+            }
           }
         }
         dynamic "node_static_ip" {

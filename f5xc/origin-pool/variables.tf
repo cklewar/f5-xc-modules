@@ -154,7 +154,7 @@ variable "f5xc_origin_pool_private_name" {
   default = ""
 }
 
-variable "f5xc_origin_pool_vn_private_name" {
+variable "f5xc_origin_pool_vn_private_dns_name" {
   type    = string
   default = ""
 }

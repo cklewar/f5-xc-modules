@@ -52,9 +52,9 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "vn_private_name" {
-      for_each = var.f5xc_origin_pool_vn_private_name != "" ? [1] : []
+      for_each = var.f5xc_origin_pool_vn_private_dns_name != "" ? [1] : []
       content {
-        dns_name = var.f5xc_origin_pool_vn_private_name
+        dns_name = var.f5xc_origin_pool_vn_private_dns_name
         private_network {
           tenant    = var.f5xc_tenant
           namespace = var.f5xc_namespace

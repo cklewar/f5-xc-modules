@@ -5,30 +5,34 @@ resource "volterra_network_interface" "ethernet_interface" {
   description = var.f5xc_interface_description
 
   ethernet_interface {
-    # no_ipv6_address  = var.f5xc_interface_no_ipv6_address
-    device           = var.f5xc_interface_ethernet_interface_device
-    mtu              = var.f5xc_interface_mtu
-    monitor_disabled = var.f5xc_interface_monitor_disabled
-    dhcp_client      = var.f5xc_interface_dhcp_client
-    cluster          = var.f5xc_apply_to_cluster
-    node             = var.f5xc_apply_to_node
-    is_primary       = var.f5xc_interface_is_primary
-    not_primary      = var.f5xc_interface_not_primary
-    priority         = var.f5xc_interface_priority
-    untagged         = var.f5xc_interface_untagged
-    vlan_id          = var.f5xc_interface_vlan_id
+    device                    = var.f5xc_interface_ethernet_interface_device
+    mtu                       = var.f5xc_interface_mtu
+    monitor_disabled          = var.f5xc_interface_monitor_disabled
+    cluster                   = var.f5xc_apply_to_cluster
+    node                      = var.f5xc_apply_to_node
+    is_primary                = var.f5xc_interface_is_primary
+    not_primary               = var.f5xc_interface_not_primary
+    priority                  = var.f5xc_interface_priority
+    untagged                  = var.f5xc_interface_untagged
+    vlan_id                   = var.f5xc_interface_vlan_id
+    site_local_inside_network = var.f5xc_interface_site_local_inside_network
+    site_local_network        = var.f5xc_interface_site_local_network
 
-    dynamic "inside_network" {
-      for_each = var.f5xc_interface_inside_network_name != "" ? [1] : []
+    dynamic "static_ip" {
+      for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
       content {
-        name      = var.f5xc_interface_inside_network_name
-        namespace = var.f5xc_namespace
-        tenant    = var.f5xc_tenant
+        dynamic "node_static_ip" {
+          for_each = var.f5xc_interface_static_ip_node_static_ip != "" ? [1] : []
+          content {
+            default_gw = var.f5xc_interface_default_gw
+            dns_server = var.f5xc_interface_dns_server
+            ip_address = var.f5xc_interface_static_ip_node_static_ip
+          }
+        }
       }
     }
 
-    site_local_inside_network = var.f5xc_interface_site_local_inside_network
-    site_local_network        = var.f5xc_interface_site_local_network
+    dhcp_client = var.f5xc_interface_dhcp_client
 
     dynamic "dhcp_server" {
       for_each = length(var.f5xc_interface_dhcp_networks_pools) > 0 ? [1] : []
@@ -36,6 +40,7 @@ resource "volterra_network_interface" "ethernet_interface" {
         fixed_ip_map         = var.f5xc_interface_dhcp_server_fixed_ip_map
         automatic_from_start = var.f5xc_interface_dhcp_server_automatic_from_start
         automatic_from_end   = var.f5xc_interface_dhcp_server_automatic_from_end
+        dhcp_option82_tag    = var.f5xc_interface_dhcp_option82_tag
         interface_ip_map {
           interface_ip_map = var.f5xc_interface_dhcp_server_interface_ip_map
         }
@@ -49,15 +54,7 @@ resource "volterra_network_interface" "ethernet_interface" {
             first_address  = try(dhcp_networks.value.first_address, null)
             last_address   = try(dhcp_networks.value.last_address, null)
             network_prefix = dhcp_networks.value.network_prefix
-            dynamic "network_prefix_allocator" {
-              for_each = var.f5xc_interface_dhcp_networks_network_prefix_allocator_name != "" ? [1] : []
-              content {
-                name      = var.f5xc_interface_dhcp_networks_network_prefix_allocator_name
-                namespace = var.f5xc_namespace
-                tenant    = var.f5xc_tenant
-              }
-            }
-            pool_settings = var.f5xc_interface_dhcp_networks_pool_settings
+            pool_settings  = var.f5xc_interface_dhcp_networks_pool_settings
             dynamic "pools" {
               for_each = dhcp_networks.value.pools
               content {
@@ -69,7 +66,6 @@ resource "volterra_network_interface" "ethernet_interface" {
           }
         }
       }
-
     }
   }
 }

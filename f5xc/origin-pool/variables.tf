@@ -278,3 +278,23 @@ variable "f5xc_origin_pool_vn_private_name_site_locator_site_name" {
   type    = string
   default = ""
 }
+
+variable "f5xc_origin_pool_k8s_service_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_consul_service_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_name_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_ip_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}

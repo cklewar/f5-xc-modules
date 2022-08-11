@@ -1,5 +1,5 @@
 resource "volterra_network_interface" "ethernet_interface" {
-  count            = var.f5xc_interface_type == var.f5xc_interface_type_ethernet_interface ? [1] : [0]
+  count            = var.f5xc_interface_type == var.f5xc_interface_type_ethernet_interface ? [1] : []
   name             = var.f5xc_interface_name
   namespace        = var.f5xc_namespace
   no_ipv6_address  = var.f5xc_interface_no_ipv6_address
@@ -64,10 +64,10 @@ resource "volterra_network_interface" "ethernet_interface" {
       }
     }
     dynamic "static_ip" {
-      for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : [0]
+      for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
       content {
         dynamic "cluster_static_ip" {
-          for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : [0]
+          for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
           content {
             interface_ip_map = var.f5xc_interface_static_ip_interface_ip_map
           }
@@ -95,13 +95,13 @@ resource "volterra_network_interface" "ethernet_interface" {
 
 
 resource "local_file" "tunnel_interface" {
-  count    = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : [0]
+  count    = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : []
   content  = local.tunnel_interface_content
   filename = format("%s/_out/%s", path.module, var.f5xc_interface_payload_file)
 }
 
 resource "null_resource" "apply_interface" {
-  count    = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : [0]
+  count    = var.f5xc_interface_type == var.f5xc_interface_type_tunnel_interface ? [1] : []
   triggers = {
     manifest_sha1  = sha1(local.tunnel_interface_content)
     api_url        = var.f5xc_api_url

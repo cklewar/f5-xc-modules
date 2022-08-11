@@ -46,8 +46,8 @@ resource "volterra_network_interface" "ethernet_interface" {
           for_each = var.f5xc_interface_static_ip_fleet_static_ip_name != "" ? [1] : []
           content {
             name      = var.f5xc_interface_static_ip_fleet_static_ip_name
-            namespace = var.f5xc_namespace
-            tenant    = var.f5xc_tenant
+            # namespace = var.f5xc_namespace
+            # tenant    = var.f5xc_tenant
           }
         }
         dynamic "node_static_ip" {

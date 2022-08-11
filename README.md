@@ -12,7 +12,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
   * [Site Mesh Group](#site-mesh-group)
   * [Interface](#interface)
   * [NFV](#nfv)
-  * [IPSec tunnel](#ipsec-tunnel)
   * [Virtual Network](#virtual-network)
   * [Site](#site)
     + [Update](#update)
@@ -456,52 +455,6 @@ module "nfv" {
   f5xc_nfv_svc_get_uri      = var.f5xc_nfv_svc_get_uri
   aws_owner_tag             = var.data[terraform.workspace].owner_tag
   public_ssh_key            = var.public_ssh_key
-}
-````
-
-----------------
-
-## IPSec tunnel
-
-__Module Usage Example__
-
-````hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-module "tunnel" {
-  source                 = "./modules/f5xc/tunnel"
-  f5xc_tenant            = var.f5xc_tenant
-  f5xc_namespace         = var.f5xc_namespace
-  f5xc_api_p12_file      = var.f5xc_api_p12_file
-  f5xc_api_token         = var.f5xc_api_token
-  f5xc_api_url           = var.f5xc_api_url
-  f5xc_tunnel_name       = local.tunnel_name
-  f5xc_remote_ip_address = var.f5xc_tunnel_remote_ip_address
-  f5xc_clear_secret      = var.f5xc_tunnel_clear_secret
 }
 ````
 

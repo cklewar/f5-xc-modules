@@ -268,6 +268,10 @@ variable "f5xc_interface_dhcp_server_fixed_ip_map" {
   default = {}
 }
 
+variable "f5xc_interface_device" {
+  type = string
+}
+
 variable "f5xc_labels" {
   type    = map(string)
   default = {}

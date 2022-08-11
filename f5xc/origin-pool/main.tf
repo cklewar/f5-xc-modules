@@ -8,25 +8,25 @@ resource "volterra_origin_pool" "origin-pool" {
 
   origin_servers {
     dynamic "public_ip" {
-      for_each = var.f5xc_origin_pool_public_ip != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_public_ip != "" ? [1] : []
       content {
         ip = var.f5xc_origin_pool_public_ip
       }
     }
 
     dynamic "public_name" {
-      for_each = var.f5xc_origin_pool_public_name != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_public_name != "" ? [1] : []
       content {
         dns_name = var.f5xc_origin_pool_public_name
       }
     }
 
     dynamic "private_name" {
-      for_each = var.f5xc_origin_pool_private_name != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_private_name != "" ? [1] : []
       content {
         dns_name = var.f5xc_origin_pool_private_name
         dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_private_name_site_locator != "" ? [1] : [0]
+          for_each = var.f5xc_origin_pool_private_name_site_locator != "" ? [1] : []
           content {
             site {
               tenant    = var.f5xc_tenant
@@ -41,7 +41,7 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "vn_private_name" {
-      for_each = var.f5xc_origin_pool_vn_private_name != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_vn_private_name != "" ? [1] : []
       content {
         dns_name = var.f5xc_origin_pool_vn_private_name
         private_network {
@@ -53,11 +53,11 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "private_ip" {
-      for_each = var.f5xc_origin_pool_private_ip != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_private_ip != "" ? [1] : []
       content {
         ip = var.f5xc_origin_pool_private_ip
         dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" ? [1] : [0]
+          for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" ? [1] : []
           content {
             site {
               tenant    = var.f5xc_tenant
@@ -72,11 +72,11 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "k8s_service" {
-      for_each = var.f5xc_origin_pool_k8s_service_name != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_k8s_service_name != "" ? [1] : []
       content {
         service_name = var.f5xc_origin_pool_k8s_service_name
         dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" ? [1] : [0]
+          for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" ? [1] : []
           content {
             site {
               tenant    = var.f5xc_tenant
@@ -91,11 +91,11 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "consul_service" {
-      for_each = var.f5xc_origin_pool_consul_service != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_consul_service != "" ? [1] : []
       content {
         service_name = var.f5xc_origin_pool_consul_service_name
         dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" ? [1] : [0]
+          for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" ? [1] : []
           content {
             site {
               tenant    = var.f5xc_tenant
@@ -110,7 +110,7 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "vn_private_ip" {
-      for_each = var.f5xc_origin_pool_vn_private_ip != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_vn_private_ip != "" ? [1] : []
       content {
         ip = var.f5xc_origin_pool_vn_private_ip
         virtual_network {
@@ -122,7 +122,7 @@ resource "volterra_origin_pool" "origin-pool" {
     }
 
     dynamic "custom_endpoint_object" {
-      for_each = var.f5xc_origin_pool_custom_endpoint_object_name != "" ? [1] : [0]
+      for_each = var.f5xc_origin_pool_custom_endpoint_object_name != "" ? [1] : []
       content {
         endpoint {
           name      = var.f5xc_origin_pool_custom_endpoint_object_name

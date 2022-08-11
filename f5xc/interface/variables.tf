@@ -206,7 +206,7 @@ variable "f5xc_interface_dhcp_networks_pool_settings" {
   validation {
     condition = contains([
       "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS", "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
-    ], var.f5xc_interface_type)
+    ], var.f5xc_interface_dhcp_networks_pool_settings)
     error_message = "Allowed values for input_parameter are 'INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS', 'EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS'."
   }
 }

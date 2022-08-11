@@ -74,9 +74,69 @@ variable "f5xc_origin_pool_no_tls" {
   default = true
 }
 
-variable "f5xc_origin_pool_use_tls" {
+variable "f5xc_origin_pool_no_mtls" {
   type    = bool
   default = false
+}
+
+variable "f5xc_origin_pool_mtls_certificate_url" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_mtls_private_key_clear_secret_url" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_tls_skip_server_verification" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_tls_sni" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_tls_use_host_header_as_sni" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_tls_default_security" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_tls_low_security" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_tls_medium_security" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_tls_volterra_trusted_ca" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_origin_pool_tls_disable_sni" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_mtls_certificate_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_mtls_custom_hash_algorithms" {
+  type    = list(string)
+  default = []
 }
 
 variable "f5xc_origin_pool_public_ip" {
@@ -94,7 +154,7 @@ variable "f5xc_origin_pool_private_name" {
   default = ""
 }
 
-variable "f5xc_origin_pool_vn_private_name" {
+variable "f5xc_origin_pool_vn_private_dns_name" {
   type    = string
   default = ""
 }
@@ -215,6 +275,31 @@ variable "f5xc_origin_pool_vn_private_ip_virtual_network_name" {
 }
 
 variable "f5xc_origin_pool_vn_private_name_site_locator_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_k8s_service_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_consul_service_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_name_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_private_ip_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_healthcheck_name" {
   type    = string
   default = ""
 }

@@ -34,8 +34,23 @@ variable "f5xc_namespace" {
 }
 
 variable "f5xc_interface_type_tunnel_interface" {
-  type = string
+  type    = string
   default = "tunnel_interface"
+}
+
+variable "f5xc_interface_type_ethernet_interface" {
+  type    = string
+  default = "ethernet_interface"
+}
+
+variable "f5xc_interface_type_dedicated_management_interface" {
+  type    = string
+  default = "dedicated_management_interface"
+}
+
+variable "f5xc_interface_type_dedicated_interface" {
+  type    = string
+  default = "dedicated_interface"
 }
 
 variable "f5xc_interface_type" {
@@ -65,27 +80,135 @@ variable "f5xc_interface_static_ip" {
   type = string
 }
 
-variable "f5xc_mtu" {
-  type    = string
-  default = "1450"
-}
-
-variable "f5xc_site_local_network" {
+variable "f5xc_interface_site_local_network" {
   type    = bool
   default = true
 }
 
-variable "f5xc_cluster" {
+variable "f5xc_interface_dhcp_server_automatic_from_start" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_interface_dhcp_server_automatic_from_end" {
   type    = bool
   default = false
 }
 
-variable "f5xc_site_local_inside_network" {
+variable "f5xc_interface_dhcp_server_interface_ip_map" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_inside_network" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_apply_to_cluster" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_apply_to_node" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_default_gw" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_dhcp_server_networks" {
+  type = list(object({
+    network_prefix           = string
+    dns_address              = optional(string)
+    same_as_dgw              = optional(bool)
+    dgw_address              = optional(string)
+    first_address            = optional(bool)
+    last_address             = optional(bool)
+    network_prefix_allocator = object({
+      name      = string
+      namespace = string
+      tenant    = string
+    })
+    pool_settings = string
+    pools         = list(object({
+      exclude  = bool
+      start_ip = string
+      end_ip   = string
+    }))
+  }))
+  default = []
+}
+
+variable "f5xc_interface_static_ip_interface_ip_map" {
+  type        = string
+  default     = ""
+  description = "Site:Node to IP address"
+}
+
+variable "f5xc_interface_static_ip_node_static_ip" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_static_ip_fleet_static_ip_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_dns_server" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_site_local_inside_network" {
   type    = bool
   default = false
 }
 
-variable "f5xc_interface_template_file" {
+variable "f5xc_interface_inside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_no_ipv6_address" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_interface_dhcp_client" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_interface_dhcp_networks_pools" {
+  type = list(object({
+    exclude  = bool
+    start_ip = string
+    end_ip   = string
+  }))
+  default = []
+}
+
+variable "f5xc_interface_monitor_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_interface_dhcp_networks_pool_settings" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_dhcp_networks_network_prefix_allocator_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_tunnel_interface_template_file" {
   type    = string
   default = "interface.tftpl"
 }
@@ -108,4 +231,44 @@ variable "f5xc_interface_delete_uri" {
 variable "f5xc_interface_payload_file" {
   type    = string
   default = "interface.json"
+}
+
+variable "f5xc_interface_mtu" {
+  type    = string
+  default = "1450"
+}
+
+variable "f5xc_interface_priority" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_interface_untagged" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_interface_vlan_id" {
+  type    = number
+  default = 1
+}
+
+variable "f5xc_interface_is_primary" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_interface_not_primary" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_interface_dhcp_server_fixed_ip_map" {
+  type    = map(string)
+  default = {}
+}
+
+variable "f5xc_labels" {
+  type    = map(string)
+  default = {}
 }

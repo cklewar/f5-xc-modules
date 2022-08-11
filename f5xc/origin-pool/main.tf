@@ -135,31 +135,34 @@ resource "volterra_origin_pool" "origin-pool" {
   }
   port   = var.f5xc_origin_pool_port
   no_tls = var.f5xc_origin_pool_no_tls
-  use_tls {
-    skip_server_verification = var.f5xc_origin_pool_tls_skip_server_verification
-    sni                      = var.f5xc_origin_pool_tls_sni
-    disable_sni              = var.f5xc_origin_pool_tls_disable_sni
-    use_host_header_as_sni   = var.f5xc_origin_pool_tls_use_host_header_as_sni
-    volterra_trusted_ca      = var.f5xc_origin_pool_tls_volterra_trusted_ca
-    tls_config {
-      default_security = var.f5xc_origin_pool_tls_default_security
-      medium_security  = var.f5xc_origin_pool_tls_medium_security
-      low_security     = var.f5xc_origin_pool_tls_low_security
-    }
-    no_mtls = var.f5xc_origin_pool_no_mtls
+  dynamic "use_tls" {
+    for_each = var.f5xc_origin_pool_no_tls == false ? [1] : []
+    content {
+      skip_server_verification = var.f5xc_origin_pool_tls_skip_server_verification
+      sni                      = var.f5xc_origin_pool_tls_sni
+      disable_sni              = var.f5xc_origin_pool_tls_disable_sni
+      use_host_header_as_sni   = var.f5xc_origin_pool_tls_use_host_header_as_sni
+      volterra_trusted_ca      = var.f5xc_origin_pool_tls_volterra_trusted_ca
+      tls_config {
+        default_security = var.f5xc_origin_pool_tls_default_security
+        medium_security  = var.f5xc_origin_pool_tls_medium_security
+        low_security     = var.f5xc_origin_pool_tls_low_security
+      }
+      no_mtls = var.f5xc_origin_pool_no_mtls
 
-    dynamic "use_mtls" {
-      for_each = var.f5xc_origin_pool_no_mtls == false ? [1] : []
-      content {
-        tls_certificates {
-          certificate_url = var.f5xc_origin_pool_mtls_certificate_url
-          description     = var.f5xc_origin_pool_mtls_certificate_description
-          custom_hash_algorithms {
-            hash_algorithms = var.f5xc_origin_pool_mtls_custom_hash_algorithms
-          }
-          private_key {
-            clear_secret_info {
-              url = var.f5xc_origin_pool_mtls_private_key_url
+      dynamic "use_mtls" {
+        for_each = var.f5xc_origin_pool_no_mtls == false ? [1] : []
+        content {
+          tls_certificates {
+            certificate_url = var.f5xc_origin_pool_mtls_certificate_url
+            description     = var.f5xc_origin_pool_mtls_certificate_description
+            custom_hash_algorithms {
+              hash_algorithms = var.f5xc_origin_pool_mtls_custom_hash_algorithms
+            }
+            private_key {
+              clear_secret_info {
+                url = var.f5xc_origin_pool_mtls_private_key_url
+              }
             }
           }
         }

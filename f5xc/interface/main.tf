@@ -38,6 +38,7 @@ resource "volterra_network_interface" "ethernet_interface" {
           content {
             interface_ip_map {
               interface_ip_map = var.f5xc_interface_static_ip_interface_ip_map
+              name = ""
             }
           }
         }

@@ -114,10 +114,6 @@ variable "f5xc_healthcheck_host_header" {
 }
 
 variable "f5xc_healthcheck_headers" {
-  type    = list(map(string))
-  default = [
-    { "key" = "h1", "value" = "v1" },
-    { "key" = "h2", "value" = "v2" },
-    { "key" = "h3", "value" = "v3" }
-  ]
+  type    = map(string)
+  default = { "key" = "h1", "value" = "v1", "key" = "h2", "value" = "v2", "key" = "h3", "value" = "v3" }
 }

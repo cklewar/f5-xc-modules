@@ -33,10 +33,10 @@ resource "volterra_origin_pool" "origin-pool" {
               namespace = var.f5xc_namespace
               name      = var.f5xc_origin_pool_private_name_site_locator_site_name
             }
-            inside_network  = var.f5xc_origin_pool_private_name_inside_network
-            outside_network = var.f5xc_origin_pool_private_name_outside_network
           }
         }
+        inside_network  = var.f5xc_origin_pool_private_name_inside_network
+        outside_network = var.f5xc_origin_pool_private_name_outside_network
       }
     }
 
@@ -64,10 +64,10 @@ resource "volterra_origin_pool" "origin-pool" {
               namespace = var.f5xc_namespace
               name      = var.f5xc_origin_pool_private_ip_site_locator_site_name
             }
-            inside_network  = var.f5xc_origin_pool_private_ip_inside_network
-            outside_network = var.f5xc_origin_pool_private_ip_outside_network
           }
         }
+        inside_network  = var.f5xc_origin_pool_private_ip_inside_network
+        outside_network = var.f5xc_origin_pool_private_ip_outside_network
       }
     }
 
@@ -83,10 +83,10 @@ resource "volterra_origin_pool" "origin-pool" {
               namespace = var.f5xc_namespace
               name      = var.f5xc_origin_pool_k8s_service_site_locator_site_name
             }
-            inside_network  = var.f5xc_origin_pool_k8s_service_inside_network
-            outside_network = var.f5xc_origin_pool_k8s_service_outside_network
           }
         }
+        inside_network  = var.f5xc_origin_pool_k8s_service_inside_network
+        outside_network = var.f5xc_origin_pool_k8s_service_outside_network
       }
     }
 
@@ -102,10 +102,10 @@ resource "volterra_origin_pool" "origin-pool" {
               namespace = var.f5xc_namespace
               name      = var.f5xc_origin_pool_consul_service_site_locator_site_name
             }
-            inside_network  = var.f5xc_origin_pool_consul_service_inside_network
-            outside_network = var.f5xc_origin_pool_consul_service_outside_network
           }
         }
+        inside_network  = var.f5xc_origin_pool_consul_service_inside_network
+        outside_network = var.f5xc_origin_pool_consul_service_outside_network
       }
     }
 

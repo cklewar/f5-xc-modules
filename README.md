@@ -53,7 +53,7 @@ module "my_test_modul" {
 | Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**               | [![F5XC Origin Pool module](https://github.com/cklewar/f5-xc-origin-pool/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-origin-pool/actions/workflows/module_test.yml)                |
 | BGP                | **[f5xc_bgp_module](https://github.com/cklewar/f5-xc-bgp)**                         | [![F5XC BGP module](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml)                                        |
 | Fleet              | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-fleet)**                     | [![F5XC Fleet module](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml)                                  |
-| HealthCheck        | **[f5xc_healthcheck_module](https://github.com/cklewar/f5-xc-healthcheck)**         |                                                                                                                                                                                                                       |
+| HealthCheck        | **[f5xc_healthcheck_module](https://github.com/cklewar/f5-xc-healthcheck)**         | [![F5XC Healthcheck module](https://github.com/cklewar/f5-xc-healthcheck/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-healthcheck/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
 | Virtual Kubernetes |                                                                                     |                                                                                                                                                                                                                       |
 | Site Mesh Group    | **[f5xc_site_mesh_group_module](https://github.com/cklewar/f5-xc-site-mesh-group)** | [![F5XC Site Mesh Group module](https://github.com/cklewar/f5-xc-site-mesh-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-site-mesh-group/actions/workflows/module_test.yml)    |
 | Interface          |                                                                                     |                                                                                                                                                                                                                       |
@@ -68,42 +68,6 @@ module "my_test_modul" {
 | Virtual Site       | **[f5xc_virtual_site_module](https://github.com/cklewar/f5-xc-virtual_site)**       | [![F5XC Virtual Site module](https://github.com/cklewar/f5-xc-virtual-site/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-virtual-site/actions/workflows/module_test.yml)             |
 | Update             |                                                                                     |                                                                                                                                                                                                                       |
 | Site Status Check  |                                                                                     |                                                                                                                                                                                                                       |
-
-## Healthcheck
-
-__Module Usage Example TCP__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-module "healthcheck_tcp" {
-  source                        = "./modules/f5xc/healthcheck"
-  f5xc_healthcheck_name         = format("%s-hc-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace                = var.f5xc_namespace
-  f5xc_api_url                  = var.f5xc_api_url
-  f5xc_api_p12_file             = var.f5xc_api_p12_file
-  f5xc_healthcheck_type         = "tcp"
-  f5xc_healthcheck_send_payload = "000000FF"
-}
-```
-
-----------------------
 
 ## Virtual Kubernetes
 

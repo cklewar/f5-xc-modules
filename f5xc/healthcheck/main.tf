@@ -9,8 +9,8 @@ resource "volterra_healthcheck" "healthcheck" {
       path                      = var.f5xc_healthcheck_path
       use_http2                 = var.f5xc_healthcheck_use_http2
       request_headers_to_remove = length(var.f5xc_healthcheck_request_headers_to_remove) > 0 ? var.f5xc_healthcheck_request_headers_to_remove : null
-      host_header               = var.f5xc_healthcheck_host_header != "" ? var.f5xc_healthcheck_host_header : null
-      headers                   = length(var.f5xc_healthcheck_headers) > 0 ? var.f5xc_healthcheck_headers : null
+      host_header               = var.f5xc_healthcheck_http_host_header != "" ? var.f5xc_healthcheck_http_host_header : null
+      headers                   = length(var.f5xc_healthcheck_http_headers) > 0 ? var.f5xc_healthcheck_http_headers : null
     }
   }
 

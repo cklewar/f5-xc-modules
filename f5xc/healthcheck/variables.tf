@@ -108,12 +108,12 @@ variable "f5xc_healthcheck_send_payload" {
   default = ""
 }
 
-variable "f5xc_healthcheck_host_header" {
+variable "f5xc_healthcheck_http_host_header" {
   type    = string
   default = ""
 }
 
-variable "f5xc_healthcheck_headers" {
+variable "f5xc_healthcheck_http_headers" {
   type    = map(string)
-  default = { "key" = "h1", "value" = "v1", "key" = "h2", "value" = "v2", "key" = "h3", "value" = "v3" }
+  default = {}
 }

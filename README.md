@@ -53,10 +53,10 @@ module "my_test_modul" {
 |--------------------|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | DC Cluster Group   | **[f5xc_dcg_module](https://github.com/cklewar/f5-xc-dc-cluster-group)**            | [![F5XC DC Cluster Group module](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-dc-cluster-group/actions/workflows/module_test.yml) |
 | Namespace          | **[f5xc_namespace_module](https://github.com/cklewar/f5-xc-namespace)**             | [![F5XC namespace module](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-namespace/actions/workflows/module_test.yml)                      |
-| Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**               |                                                                                                                                                                                                                       |
+| Origin Pool        | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-origin-pool)**               | [![F5XC Origin Pool module](https://github.com/cklewar/f5-xc-origin-pool/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-origin-pool/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
 | BGP                | **[f5xc_bgp_module](https://github.com/cklewar/f5-xc-bgp)**                         | [![F5XC BGP module](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-bgp/actions/workflows/module_test.yml)                                        |
 | Fleet              | **[f5xc_fleet_module](https://github.com/cklewar/f5-xc-fleet)**                     | [![F5XC Fleet module](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-fleet/actions/workflows/module_test.yml)                                  |
-| HealthCheck        |                                                                                     |                                                                                                                                                                                                                       |
+| HealthCheck        | **[f5xc_healthcheck_module](https://github.com/cklewar/f5-xc-healthcheck)**         |                                                                                                                                                                                                                       |
 | Virtual Kubernetes |                                                                                     |                                                                                                                                                                                                                       |
 | Site Mesh Group    |                                                                                     |                                                                                                                                                                                                                       |
 | Interface          |                                                                                     |                                                                                                                                                                                                                       |
@@ -71,45 +71,6 @@ module "my_test_modul" {
 | Virtual Site       | **[f5xc_virtual_site_module](https://github.com/cklewar/f5-xc-virtual_site)**       | [![F5XC Virtual Site module](https://github.com/cklewar/f5-xc-virtual-site/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-virtual-site/actions/workflows/module_test.yml)             |
 | Update             |                                                                                     |                                                                                                                                                                                                                       |
 | Site Status Check  |                                                                                     |                                                                                                                                                                                                                       |
-
-## Origin Pool
-
-__Module Usage Example Private IP__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-module "origin_pool" {
-  source                                             = "./modules/f5xc/origin-pool"
-  f5xc_origin_pool_name                              = format("%s-hc-%s", var.project_prefix, var.project_suffix)
-  f5xc_namespace                                     = var.f5xc_namespace
-  f5xc_api_url                                       = var.f5xc_api_url
-  f5xc_api_p12_file                                  = var.f5xc_api_p12_file
-  f5xc_origin_pool_port                              = "443"
-  f5xc_origin_pool_private_ip                        = "10.15.250.100"
-  f5xc_origin_pool_private_ip_site_locator_site_name = "refMySite"
-  f5xc_origin_pool_private_ip_inside_network         = false
-  f5xc_origin_pool_private_ip_outside_network        = true
-}
-```
-
----------------
 
 ## Healthcheck
 

@@ -6,7 +6,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 - [Usage](#usage)
 - [F5XC Modules](#f5xc-modules)
-  * [Healthcheck](#healthcheck)
   * [Virtual Kubernetes](#virtual-kubernetes)
   * [NFV](#nfv)
   * [Site](#site)

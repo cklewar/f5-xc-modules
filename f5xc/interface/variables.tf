@@ -159,11 +159,6 @@ variable "f5xc_interface_static_ip_node_static_ip" {
   default = ""
 }
 
-variable "f5xc_interface_static_ip_fleet_static_ip_network_prefix_allocator_name" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_interface_dns_server" {
   type    = string
   default = ""
@@ -288,7 +283,7 @@ variable "f5xc_interface_dhcp_option82_tag" {
 
 variable "f5xc_interface_ethernet_interface_device" {
   type    = string
-  default = ""
+  default = "eth0"
 }
 
 variable "f5xc_labels" {

@@ -242,8 +242,8 @@ variable "f5xc_interface_mtu" {
 }
 
 variable "f5xc_interface_priority" {
-  type    = string
-  default = ""
+  type    = number
+  default = null
 }
 
 variable "f5xc_interface_untagged" {

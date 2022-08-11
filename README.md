@@ -6,7 +6,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
 
 - [Usage](#usage)
 - [F5XC Modules](#f5xc-modules)
-  * [Origin Pool](#origin-pool)
   * [Healthcheck](#healthcheck)
   * [Virtual Kubernetes](#virtual-kubernetes)
   * [Interface](#interface)
@@ -366,94 +365,6 @@ module "nfv" {
 }
 ````
 
--------------------
-
-## Virtual Network
-
-__Module Usage Example: Tunnel Interface Virtual Network__
-
-````hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-module "tunnel_virtual_network" {
-  source                            = "./modules/f5xc/virtual-network"
-  f5xc_name                         = local.tunnel_virtual_network
-  f5xc_namespace                    = var.f5xc_namespace
-  f5xc_site_local_network           = true
-  f5xc_tenant                       = var.f5xc_tenant
-  f5xc_ip_prefixes                  = var.f5xc_tunnel_virtual_network_ip_prefixes
-  f5xc_ip_prefix_next_hop_interface = local.tunnel_interface_name
-}
-````
-
-__Module Usage Example: Global Virtual Network__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-locals {
-  global_vn_name = format("my-global-vn-%s", var.project_suffix)
-}
-
-module "global_virtual_network" {
-  source              = "./modules/f5xc/virtual-network"
-  f5xc_name           = local.global_vn_name
-  f5xc_tenant         = var.f5xc_tenant
-  f5xc_namespace      = var.f5xc_namespace
-  f5xc_global_network = true
-}
-```
-
---------
-
 ## Site
 
 ### Update
@@ -545,7 +456,7 @@ module "site_status_check" {
 
 # AWS Modules
 
-| Module | Example                                                             | Status                                                                                                                                                                                    |
+| Module | Documentation                                                       | Status                                                                                                                                                                                    |
 |--------|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | EC2    | **[f5xc_aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
 | VPC    | **[f5xc_aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![F5XC AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
@@ -554,16 +465,16 @@ module "site_status_check" {
 
 # GCP Modules
 
-| Module  | Example | Status |
-|---------|---------|--------|
-| Compute |         |        |
-|         |         |        |
+| Module  | Documentation | Status |
+|---------|---------------|--------|
+| Compute |               |        |
+|         |               |        |
 
 # Azure Modules
 
-| Module                | Example | Status |
-|-----------------------|---------|--------|
-| Linux Virtual Machine |         |        |
-| Resource Group        |         |        |
-| Virtual Network       |         |        |
-| Subnet                |         |        |
+| Module                | Documentation | Status   |
+|-----------------------|---------------|----------|
+| Linux Virtual Machine |               |          |
+| Resource Group        |               |          |
+| Virtual Network       |               |          |
+| Subnet                |               |          |

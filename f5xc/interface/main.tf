@@ -30,6 +30,34 @@ resource "volterra_network_interface" "ethernet_interface" {
     site_local_inside_network = var.f5xc_interface_site_local_inside_network
     site_local_network        = var.f5xc_interface_site_local_network
 
+    dynamic "static_ip" {
+        for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
+        content {
+          dynamic "cluster_static_ip" {
+            for_each = var.f5xc_interface_static_ip_interface_ip_map != "" ? [1] : []
+            content {
+              interface_ip_map = var.f5xc_interface_static_ip_interface_ip_map
+            }
+          }
+          dynamic "fleet_static_ip" {
+            for_each = var.f5xc_interface_static_ip_fleet_static_ip_name != "" ? [1] : []
+            content {
+              name      = var.f5xc_interface_static_ip_fleet_static_ip_name
+              namespace = var.f5xc_namespace
+              tenant    = var.f5xc_tenant
+            }
+          }
+          dynamic "node_static_ip" {
+            for_each = var.f5xc_interface_static_ip_node_static_ip != "" ? [1] : []
+            content {
+              default_gw = var.f5xc_interface_default_gw
+              dns_server = var.f5xc_interface_dns_server
+              ip_address = var.f5xc_interface_static_ip_node_static_ip
+            }
+          }
+        }
+      }
+
     dynamic "dhcp_server" {
       for_each = length(var.f5xc_interface_dhcp_networks_pools) > 0 ? [1] : []
       content {
@@ -69,7 +97,6 @@ resource "volterra_network_interface" "ethernet_interface" {
           }
         }
       }
-
     }
   }
 }

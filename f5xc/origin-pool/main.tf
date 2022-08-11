@@ -29,8 +29,8 @@ resource "volterra_origin_pool" "origin-pool" {
           for_each = var.f5xc_origin_pool_private_name_site_locator != "" ? [1] : [0]
           content {
             site {
-              tenant    = var.f5xc_tenant,
-              namespace = var.f5xc_namespace,
+              tenant    = var.f5xc_tenant
+              namespace = var.f5xc_namespace
               name      = var.f5xc_origin_pool_private_name_site_locator_site_name
             }
             inside_network  = var.f5xc_origin_pool_private_name_inside_network
@@ -45,8 +45,8 @@ resource "volterra_origin_pool" "origin-pool" {
       content {
         dns_name = var.f5xc_origin_pool_vn_private_name
         private_network {
-          tenant    = var.f5xc_tenant,
-          namespace = var.f5xc_namespace,
+          tenant    = var.f5xc_tenant
+          namespace = var.f5xc_namespace
           name      = var.f5xc_origin_pool_vn_private_name_site_locator_site_name
         }
       }
@@ -61,8 +61,8 @@ resource "volterra_origin_pool" "origin-pool" {
         for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" ? [1] : [0]
         content {
           site {
-            tenant    = var.f5xc_tenant,
-            namespace = var.f5xc_namespace,
+            tenant    = var.f5xc_tenant
+            namespace = var.f5xc_namespace
             name      = var.f5xc_origin_pool_private_ip_site_locator_site_name
           }
           inside_network  = var.f5xc_origin_pool_private_ip_inside_network
@@ -80,8 +80,8 @@ resource "volterra_origin_pool" "origin-pool" {
         for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" ? [1] : [0]
         content {
           site {
-            tenant    = var.f5xc_tenant,
-            namespace = var.f5xc_namespace,
+            tenant    = var.f5xc_tenant
+            namespace = var.f5xc_namespace
             name      = var.f5xc_origin_pool_k8s_service_site_locator_site_name
           }
           inside_network  = var.f5xc_origin_pool_k8s_service_inside_network
@@ -99,8 +99,8 @@ resource "volterra_origin_pool" "origin-pool" {
         for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" ? [1] : [0]
         content {
           site {
-            tenant    = var.f5xc_tenant,
-            namespace = var.f5xc_namespace,
+            tenant    = var.f5xc_tenant
+            namespace = var.f5xc_namespace
             name      = var.f5xc_origin_pool_consul_service_site_locator_site_name
           }
           inside_network  = var.f5xc_origin_pool_consul_service_inside_network

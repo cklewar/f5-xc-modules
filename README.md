@@ -9,7 +9,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
   * [Origin Pool](#origin-pool)
   * [Healthcheck](#healthcheck)
   * [Virtual Kubernetes](#virtual-kubernetes)
-  * [Site Mesh Group](#site-mesh-group)
   * [Interface](#interface)
   * [NFV](#nfv)
   * [Virtual Network](#virtual-network)

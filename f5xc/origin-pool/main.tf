@@ -5,6 +5,14 @@ resource "volterra_origin_pool" "origin-pool" {
   loadbalancer_algorithm = var.f5xc_origin_pool_loadbalancer_algorithm
   same_as_endpoint_port  = var.f5xc_origin_pool_same_as_endpoint_port
   health_check_port      = var.f5xc_origin_pool_health_check_port != "" ? var.f5xc_origin_pool_health_check_port : null
+  dynamic "healthcheck" {
+    for_each = var.f5xc_origin_pool_healthcheck_name != "" ? [1] : []
+    content {
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+      name      = var.f5xc_origin_pool_healthcheck_name
+    }
+  }
 
   origin_servers {
     dynamic "public_ip" {
@@ -177,14 +185,15 @@ resource "volterra_origin_pool" "origin-pool" {
     }
     labels = var.f5xc_origin_pool_labels
   }
+
   port   = var.f5xc_origin_pool_port
   no_tls = var.f5xc_origin_pool_no_tls
   dynamic "use_tls" {
     for_each = var.f5xc_origin_pool_no_tls == false ? [1] : []
     content {
       skip_server_verification = var.f5xc_origin_pool_tls_skip_server_verification
-      sni                      = var.f5xc_origin_pool_tls_sni
       disable_sni              = var.f5xc_origin_pool_tls_disable_sni
+      sni                      = var.f5xc_origin_pool_tls_disable_sni == false ? var.f5xc_origin_pool_tls_sni : null
       use_host_header_as_sni   = var.f5xc_origin_pool_tls_use_host_header_as_sni
       volterra_trusted_ca      = var.f5xc_origin_pool_tls_volterra_trusted_ca
       tls_config {
@@ -205,7 +214,7 @@ resource "volterra_origin_pool" "origin-pool" {
             }
             private_key {
               clear_secret_info {
-                url = var.f5xc_origin_pool_mtls_private_key_url
+                url = var.f5xc_origin_pool_mtls_private_key_clear_secret_url
               }
             }
           }

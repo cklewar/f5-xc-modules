@@ -84,7 +84,7 @@ variable "f5xc_origin_pool_mtls_certificate_url" {
   default = ""
 }
 
-variable "f5xc_origin_pool_mtls_private_key_url" {
+variable "f5xc_origin_pool_mtls_private_key_clear_secret_url" {
   type    = string
   default = ""
 }
@@ -295,6 +295,11 @@ variable "f5xc_origin_pool_private_name_site_locator_virtual_site_name" {
 }
 
 variable "f5xc_origin_pool_private_ip_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_origin_pool_healthcheck_name" {
   type    = string
   default = ""
 }

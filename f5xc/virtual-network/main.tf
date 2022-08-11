@@ -6,7 +6,7 @@ resource "volterra_virtual_network" "virtual_network" {
   global_network            = var.f5xc_global_network
 
   dynamic static_routes {
-    for_each = length(var.f5xc_ip_prefixes) > 0 ? var.f5xc_ip_prefixes : [0]
+    for_each = length(var.f5xc_ip_prefixes) > 0 ? var.f5xc_ip_prefixes : []
     content {
       ip_prefixes = [static_routes.value]
       interface {

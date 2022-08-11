@@ -238,7 +238,7 @@ variable "f5xc_interface_payload_file" {
 
 variable "f5xc_interface_mtu" {
   type    = string
-  default = "1450"
+  default = null
 }
 
 variable "f5xc_interface_priority" {
@@ -253,7 +253,7 @@ variable "f5xc_interface_untagged" {
 
 variable "f5xc_interface_vlan_id" {
   type    = number
-  default = 1
+  default = null
 }
 
 variable "f5xc_interface_is_primary" {

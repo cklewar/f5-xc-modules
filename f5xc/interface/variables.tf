@@ -96,8 +96,13 @@ variable "f5xc_interface_dhcp_server_automatic_from_end" {
 }
 
 variable "f5xc_interface_dhcp_server_interface_ip_map" {
-  type    = string
-  default = ""
+  type    = map(string)
+  default = {}
+  /*{
+    "master-0" = "10.0.0.1"
+    "master-1" = "10.0.0.2"
+    "master-2" = "10.0.0.3"
+  }*/
 }
 
 variable "f5xc_interface_inside_network" {
@@ -200,12 +205,14 @@ variable "f5xc_interface_monitor_disabled" {
 
 variable "f5xc_interface_dhcp_networks_pool_settings" {
   type    = string
-  default = ""
-}
+  default = "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
 
-variable "f5xc_interface_dhcp_networks_network_prefix_allocator_name" {
-  type    = string
-  default = ""
+  validation {
+    condition = contains([
+      "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS", "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
+    ], var.f5xc_interface_type)
+    error_message = "Allowed values for input_parameter are 'INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS', 'EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS'."
+  }
 }
 
 variable "f5xc_tunnel_interface_template_file" {
@@ -266,6 +273,17 @@ variable "f5xc_interface_not_primary" {
 variable "f5xc_interface_dhcp_server_fixed_ip_map" {
   type    = map(string)
   default = {}
+  /*
+  {
+    "00:00:00:00:FF": "10.0.0.100",
+    "00:00:00:00:EE": "10.0.0.101"
+  }
+  */
+}
+
+variable "f5xc_interface_dhcp_option82_tag" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_interface_ethernet_interface_device" {

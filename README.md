@@ -8,7 +8,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - [F5XC Modules](#f5xc-modules)
   * [Healthcheck](#healthcheck)
   * [Virtual Kubernetes](#virtual-kubernetes)
-  * [Interface](#interface)
   * [NFV](#nfv)
   * [Site](#site)
     + [Update](#update)
@@ -56,7 +55,7 @@ module "my_test_modul" {
 | HealthCheck        | **[f5xc_healthcheck_module](https://github.com/cklewar/f5-xc-healthcheck)**         | [![F5XC Healthcheck module](https://github.com/cklewar/f5-xc-healthcheck/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-healthcheck/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
 | Virtual Kubernetes |                                                                                     |                                                                                                                                                                                                                       |
 | Site Mesh Group    | **[f5xc_site_mesh_group_module](https://github.com/cklewar/f5-xc-site-mesh-group)** | [![F5XC Site Mesh Group module](https://github.com/cklewar/f5-xc-site-mesh-group/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-site-mesh-group/actions/workflows/module_test.yml)    |
-| Interface          |                                                                                     |                                                                                                                                                                                                                       |
+| Interface          | **[f5xc_interface_module](https://github.com/cklewar/f5-xc-interface)**             | [![F5XC Interface module](https://github.com/cklewar/f5-xc-interface/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-interface/actions/workflows/module_test.yml)                                                                                                                                                                                                                      |
 | NFV                |                                                                                     |                                                                                                                                                                                                                       |
 | IPSec              | **[f5xc_ipsec_module](https://github.com/cklewar/f5-xc-ipsec)**                     | [![F5XC IPSec module](https://github.com/cklewar/f5-xc-ipsec/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-ipsec/actions/workflows/module_test.yml)                                  |
 | Virtual Network    | **[f5xc_virtual_network_module](https://github.com/cklewar/f5-xc-virtual-network)** | [![F5XC Virtual-Network module](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-virtual-network/actions/workflows/module_test.yml)    |
@@ -116,148 +115,6 @@ module "vk8s" {
   f5xc_api_p12_file                   = var.f5xc_api_p12_file
 }
 ```
-
-## Interface
-
-__Module Usage Example: IPSec tunnel interface in F5XC AWS site__
-
-```hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-variable "f5xc_interface_type" {
-  type = string
-}
-
-locals {
-  f5xc_tunnel_interface_name = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
-  f5xc_tunnel_name           = format("%s-tunnel-%s", var.project_prefix, var.project_suffix)
-}
-
-module "interface" {
-  source                   = "./modules/f5xc/interface"
-  f5xc_tenant              = var.f5xc_tenant
-  f5xc_namespace           = var.f5xc_namespace
-  f5xc_api_p12_file        = var.f5xc_api_p12_file
-  f5xc_api_token           = var.f5xc_api_token
-  f5xc_api_url             = var.f5xc_api_url
-  f5xc_interface_name      = local.tunnel_interface_name
-  f5xc_interface_type      = var.f5xc_interface_type
-  f5xc_interface_static_ip = var.f5xc_tunnel_interface_static_ip
-  f5xc_node_name           = "ip-192-168-45-1"
-  f5xc_tunnel_name         = local.f5xc_tunnel_name
-}
-```
-
-__Input Vars Example: IPSec tunnel interface in F5XC AWS site__
-
-```json
-{
-  "project_prefix": "aws",
-  "project_suffix": "01",
-  "f5xc_tenant": "xyz-ydghbxyc",
-  "f5xc_namespace": "system",
-  "f5xc_api_p12_file": "xyz.console.ves.volterra.io.api-creds.p12",
-  "f5xc_api_url": "https://xyz.console.ves.volterra.io/api",
-  "f5xc_interface_type": "tunnel_interface",
-  "f5xc_tunnel_interface_static_ip": "192.168.1.1"
-}
-```
-
-__Module Usage Example: IPSec tunnel interface in F5XC GCP site__
-
-````hcl
-variable "project_prefix" {
-  type        = string
-  description = "prefix string put in front of string"
-}
-
-variable "project_suffix" {
-  type        = string
-  description = "prefix string put at the end of string"
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
-}
-
-variable "f5xc_interface_type" {
-  type = string
-}
-
-locals {
-  deployment            = format("%s-%s", var.project_prefix, var.project_suffix)
-  tunnel_name           = format("%s-tunnel-%s", var.project_prefix, var.project_suffix)
-  tunnel_interface_name = format("%s-tunnel-interface-%s", var.project_prefix, var.project_suffix)
-}
-
-module "interface" {
-  source                   = "./modules/f5xc/interface"
-  f5xc_tenant              = var.f5xc_tenant
-  f5xc_namespace           = var.f5xc_namespace
-  f5xc_api_p12_file        = var.f5xc_api_p12_file
-  f5xc_api_token           = var.f5xc_api_token
-  f5xc_api_url             = var.f5xc_api_url
-  f5xc_interface_name      = local.tunnel_interface_name
-  f5xc_interface_type      = "tunnel_interface"
-  f5xc_interface_static_ip = var.f5xc_tunnel_interface_static_ip
-  f5xc_node_name           = local.deployment
-  f5xc_tunnel_name         = local.tunnel_name
-}
-````
-
-__Input Vars Example: IPSec tunnel interface in F5XC GCP site__
-
-```json
-{
-  "project_prefix": "gcp",
-  "project_suffix": "01",
-  "f5xc_tenant": "xyz-ydghbxyc",
-  "f5xc_namespace": "system",
-  "f5xc_api_p12_file": "xyz.console.ves.volterra.io.api-creds.p12",
-  "f5xc_api_url": "https://xyz.console.ves.volterra.io/api",
-  "f5xc_interface_type": "tunnel_interface",
-  "f5xc_tunnel_interface_static_ip": "192.168.1.1"
-}
-```
-
--------
-
 ## NFV
 
 __Module Usage Example__

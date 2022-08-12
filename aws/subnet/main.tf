@@ -11,7 +11,7 @@ resource "aws_subnet" "subnet" {
   }
 }
 
-resource "aws_internet_gateway" "igw" {
+/*resource "aws_internet_gateway" "igw" {
   vpc_id = var.aws_vpc_id
   tags   = var.custom_tags
 }
@@ -29,4 +29,4 @@ resource "aws_route_table_association" "subnet" {
   for_each       = {for idx, val in aws_subnet.subnet : idx => val}
   subnet_id      = each.value.id
   route_table_id = aws_route_table.rt.id
-}
+}*/

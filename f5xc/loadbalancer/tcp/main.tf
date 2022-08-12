@@ -1,4 +1,4 @@
-resource "volterra_http_loadbalancer" "loadbalancer" {
+resource "volterra_tcp_loadbalancer" "loadbalancer" {
   name                            = var.f5xc_http_loadbalancer_name
   namespace                       = var.f5xc_namespace
   advertise_on_public_default_vip = var.f5xc_http_loadbalancer_advertise_on_public_default_vip

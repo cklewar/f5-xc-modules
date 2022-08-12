@@ -3,5 +3,5 @@
 #}
 
 output "aws_subnets" {
-  value = {for key, val in aws_subnet.subnet : val.tags["Name"] => val}
+  value = {for val in aws_subnet.subnet : val.tags["Name"] => val}
 }

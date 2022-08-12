@@ -58,8 +58,8 @@ variable "f5xc_site_2_site_connection_type" {
 }
 
 variable "f5xc_site_2_site_connection_type_hub_mesh" {
-  type    = string
-  default = "hub_mesh"
+  type    = bool
+  default = false
 }
 
 variable "f5xc_site_2_site_connection_type_full_mesh" {

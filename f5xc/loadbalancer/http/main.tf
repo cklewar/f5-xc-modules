@@ -48,7 +48,6 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
       }
     }
   }
-  api_endpoint_rules = null
 
   no_challenge         = var.f5xc_http_loadbalancer_no_challenge
   domains              = var.f5xc_http_loadbalancer_domains
@@ -61,24 +60,42 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
   add_location         = var.f5xc_http_loadbalancer_add_location
   disable_bot_defense  = var.f5xc_http_loadbalancer_disable_bot_defense
 
-  "http": {
-      "dns_volterra_managed": true,
-      "port": 80
+  dynamic "http" {
+    for_each = var.f5xc_loadbalancer_type == var.f5xc_loadbalancer_type_http ? [1] : []
+    content {
+      dns_volterra_managed = var.f5xc_http_loadbalancer_type_http_dns_volterra_managed
+      port                 = var.f5xc_http_loadbalancer_type_http_port
     }
+  }
 
-  https_auto_cert {
-    http_redirect = var.f5xc_http_loadbalancer_https_auto_cert_http_redirect
-    add_hsts      = var.f5xc_http_loadbalancer_https_auto_cert_add_hsts
-    port          = var.f5xc_http_loadbalancer_https_auto_cert_http_port
-    tls_config    = {
-      default_security = var.f5xc_http_loadbalancer_https_auto_cert_tls_config_high_security
-      medium_security  = var.f5xc_http_loadbalancer_https_auto_cert_tls_config_medium_security
-      low_security     = var.f5xc_http_loadbalancer_https_auto_cert_tls_config_low_security
-      low_security     = var.f5xc_http_loadbalancer_https_auto_cert_tls_config_low_security
+  dynamic "https" {
+    for_each = var.f5xc_loadbalancer_type == var.f5xc_loadbalancer_type_https ? [1] : []
+    content {
+      http_redirect         = var.f5xc_http_loadbalancer_type_https_http_redirect
+      add_hsts              = var.f5xc_http_loadbalancer_type_https_add_hsts
+      port                  = var.f5xc_http_loadbalancer_type_https_port
+      tls_parameters        = null
+      default_header        = {}
+      enable_path_normalize = {}
     }
-    no_mtls               = var.f5xc_http_loadbalancer_https_auto_cert_no_mtls
-    default_header        = var.f5xc_http_loadbalancer_https_auto_cert_default_header
-    enable_path_normalize = var.f5xc_http_loadbalancer_https_auto_cert_enable_path_normalize
+  }
+
+  dynamic "https_auto_cert" {
+    for_each = var.f5xc_loadbalancer_type == var.f5xc_loadbalancer_type_custom_https_auto_cert ? [1] : []
+    content {
+      http_redirect = var.f5xc_http_loadbalancer_type_https_auto_cert_http_redirect
+      add_hsts      = var.f5xc_http_loadbalancer_type_https_auto_cert_add_hsts
+      port          = var.f5xc_http_loadbalancer_type_https_auto_cert_http_port
+      tls_config    = {
+        default_security = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_high_security
+        medium_security  = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_medium_security
+        low_security     = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_low_security
+        low_security     = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_low_security
+      }
+      no_mtls               = var.f5xc_http_loadbalancer_type_https_auto_cert_no_mtls
+      default_header        = var.f5xc_http_loadbalancer_type_https_auto_cert_default_header
+      enable_path_normalize = var.f5xc_http_loadbalancer_type_https_auto_cert_enable_path_normalize
+    }
   }
 
   dynamic "default_route_pools" {

@@ -137,47 +137,47 @@ variable "f5xc_http_loadbalancer_description" {
   default = ""
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_add_hsts" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_add_hsts" {
   type    = bool
   default = false
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_http_redirect" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_http_redirect" {
   type    = bool
   default = false
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_http_port" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_http_port" {
   type    = number
   default = 443
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_tls_config_high_security" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_tls_config_high_security" {
   type    = bool
   default = true
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_tls_config_medium_security" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_tls_config_medium_security" {
   type    = bool
   default = null
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_tls_config_low_security" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_tls_config_low_security" {
   type    = bool
   default = null
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_no_mtls" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_no_mtls" {
   type    = bool
   default = true
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_default_header" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_default_header" {
   type    = bool
   default = true
 }
 
-variable "f5xc_http_loadbalancer_https_auto_cert_enable_path_normalize" {
+variable "f5xc_http_loadbalancer_type_https_auto_cert_enable_path_normalize" {
   type    = bool
   default = true
 }
@@ -363,15 +363,55 @@ variable "f5xc_http_loadbalancer_advertise_custom" {
   }
 }
 
-variable "loadbalancer_type" {
+variable "f5xc_loadbalancer_type_http" {
   type    = string
+  default = "http"
+}
+
+variable "f5xc_loadbalancer_type_https" {
+  type    = string
+  default = "https"
+}
+
+variable "f5xc_loadbalancer_type_custom_https_auto_cert" {
+  type    = string
+  default = "https_auto_cert"
+}
+
+variable "f5xc_loadbalancer_type" {
+  type = string
 
   validation {
     condition = contains([
       "https_auto_cert", "http", "https"
-    ], var.loadbalancer_type)
+    ], var.f5xc_loadbalancer_type)
     error_message = format("Valid values for loadbalancer_type: https_auto_cert, http, https")
   }
+}
+
+variable "f5xc_http_loadbalancer_type_http_dns_volterra_managed" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_http_loadbalancer_type_http_port" {
+  type    = number
+  default = 80
+}
+
+variable "f5xc_http_loadbalancer_type_https_port" {
+  type    = number
+  default = 443
+}
+
+variable "f5xc_http_loadbalancer_type_https_http_redirect" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_http_loadbalancer_type_https_add_hsts" {
+  type    = bool
+  default = true
 }
 
 variable "f5xc_labels" {

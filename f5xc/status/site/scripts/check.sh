@@ -7,7 +7,7 @@ echo "$1" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
 while true; do
-  content=$(curl -s -X 'GET' \
+  content=$(curl -v -s -X 'GET' \
     "$1" \
     -H 'accept: application/json' \
     -H 'Access-Control-Allow-Origin: *' \

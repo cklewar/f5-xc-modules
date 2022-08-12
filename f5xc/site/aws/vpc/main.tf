@@ -3,6 +3,7 @@ resource "volterra_aws_vpc_site" "site" {
   namespace  = var.f5xc_namespace
   aws_region = var.f5xc_aws_region
   tags       = var.custom_tags
+  labels     = var.f5xc_labels
 
   aws_cred {
     name      = var.f5xc_aws_cred
@@ -174,9 +175,9 @@ resource "volterra_aws_vpc_site" "site" {
 
 resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_aws_vpc_site.site.name
-  site_type        = "aws_vpc_site"
+  site_type        = var.f5xc_aws_site_kind
   # need at least one label, otherwise site_type is ignored
-  labels           = merge({ "key" = "value" }, var.custom_tags)
+  labels           = merge({ "key" = "value" }, var.f5xc_labels)
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 

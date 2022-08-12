@@ -28,6 +28,11 @@ variable "f5xc_namespace" {
 
 variable "f5xc_aws_vpc_site_name" {
   type = string
+
+  validation {
+    condition     = length(var.f5xc_aws_vpc_site_name) <= 64
+    error_message = format("Max length for f5xc_aws_vpc_site_name ist 64 characters")
+  }
 }
 
 variable "f5xc_aws_region" {

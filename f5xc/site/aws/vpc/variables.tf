@@ -52,7 +52,7 @@ variable "f5xc_aws_vpc_name_tag" {
 }
 
 variable "f5xc_aws_vpc_primary_ipv4" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -179,7 +179,7 @@ variable "f5xc_aws_vpc_no_local_control_plane" {
 }
 
 variable "f5xc_aws_vpc_existing_id" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -211,6 +211,11 @@ variable "f5xc_tf_wait_for_action" {
 variable "f5xc_cloud_site_labels_ignore_on_delete" {
   type    = bool
   default = true
+}
+
+variable "f5xc_labels" {
+  type    = map(string)
+  default = {}
 }
 
 variable "custom_tags" {

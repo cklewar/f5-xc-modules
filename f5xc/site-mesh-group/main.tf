@@ -4,7 +4,8 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
   tunnel_type = var.f5xc_tunnel_type
   type        = var.f5xc_site_2_site_connection_type
   description = var.f5xc_site_mesh_group_description
-  hub_mesh    = false
+  hub_mesh    = var.f5xc_site_2_site_connection_type_hub_mesh
+
   /*dynamic "hub_mesh" {
     for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_hub_mesh ? [1] : []
     content {

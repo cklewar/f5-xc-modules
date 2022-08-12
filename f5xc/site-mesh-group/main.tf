@@ -16,7 +16,7 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
   }
 
   dynamic "full_mesh" {
-    for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_full_mesh
+    for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_full_mesh ? [1] : []
     content {
       #control_and_data_plane_mesh = var.f5xc_site_mesh_group_full_mesh_control_and_data_plane_mesh
       #data_plane_mesh             = var.f5xc_site_mesh_group_full_mesh_data_plane_mesh
@@ -24,7 +24,7 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
   }
 
   dynamic "spoke_mesh" {
-    for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_spoke_mesh
+    for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_spoke_mesh ? [1] : []
     content {
       hub_mesh_group {
         name      = var.f5xc_site_site_hub_name

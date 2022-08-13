@@ -11,7 +11,8 @@ variable "gcp_zone" {
 }
 
 variable "gcp_credentials_file_path" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "gcp_compute_instance_machine_type" {
@@ -53,6 +54,11 @@ variable "gcp_google_compute_instance_image" {
 variable "gcp_compute_instance_metadata_startup_script" {
   type    = string
   default = "<<-EOF #!/bin/bash sleep 30 sudo apt-get update sudo apt-get -y install net-tools tcpdump traceroute iputils-ping EOF"
+}
+
+variable "gcp_google_credentials" {
+  type    = string
+  default = ""
 }
 
 variable "public_ssh_key" {

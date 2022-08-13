@@ -414,6 +414,86 @@ variable "f5xc_http_loadbalancer_type_https_add_hsts" {
   default = true
 }
 
+variable "f5xc_http_loadbalancer_bot_defense" {
+  type = object({
+    regional_endpoint = string
+    policy            = object({
+      protected_app_endpoints = list(object({
+        metadata = object({
+          name        = string
+          description = string
+          disable     = bool
+        })
+        http_methods = list(string)
+        protocol     = string
+        any_domain   = bool
+        path         = object({
+          prefix = string
+        })
+        web        = bool
+        mobile     = bool
+        web_mobile = object({
+          mobile_identifier = string
+        })
+        mitigation = object({
+          flag = object({
+            no_headers = bool
+          })
+          none  = bool
+          block = object({
+            body      = optional(string)
+            status    = optional(string)
+            body_hash = optional(string)
+          })
+        })
+      }))
+      js_insert_all_pages = object({
+        javascript_location = string
+      })
+      js_download_path   = string
+      disable_mobile_sdk = bool
+    })
+    timeout = number
+  })
+}
+
+/*
+"bot_defense": {
+      "regional_endpoint": "EU",
+      "policy": {
+        "protected_app_endpoints": [
+          {
+            "metadata": {
+              "name": "app-ep-01",
+              "description": null,
+              "disable": null
+            },
+            "http_methods": [
+              "GET"
+            ],
+            "protocol": "BOTH",
+            "any_domain": {},
+            "path": {
+              "prefix": "/"
+            },
+            "web": {},
+            "mitigation": {
+              "flag": {
+                "no_headers": {}
+              }
+            }
+          }
+        ],
+        "js_insert_all_pages": {
+          "javascript_location": "AFTER_HEAD"
+        },
+        "js_download_path": "/common.js",
+        "disable_mobile_sdk": {}
+      },
+      "timeout": 1000
+    },
+*/
+
 variable "f5xc_labels" {
   type    = map(string)
   default = {}

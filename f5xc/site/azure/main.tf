@@ -137,18 +137,19 @@ resource "volterra_azure_vnet_site" "site" {
         }
       }
     }
-
-    azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
-    local_control_plane {
-      no_local_control_plane = var.f5xc_azure_no_local_control_plane
-    }
-
-    no_global_network        = var.f5xc_azure_no_global_network
-    no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
-    no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
-    no_network_policy        = var.f5xc_azure_no_network_policy
-    no_forward_proxy         = var.f5xc_azure_no_forward_proxy
   }
+
+  azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
+  local_control_plane {
+    no_local_control_plane = var.f5xc_azure_no_local_control_plane
+  }
+
+  no_global_network        = var.f5xc_azure_no_global_network
+  no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
+  no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
+  no_network_policy        = var.f5xc_azure_no_network_policy
+  no_forward_proxy         = var.f5xc_azure_no_forward_proxy
+
 
   vnet {
     dynamic "new_vnet" {

@@ -125,16 +125,19 @@ resource "volterra_azure_vnet_site" "site" {
       }
 
       dynamic "hub" {
-        for_each = length(var.f5xc_azure_hub_spoke_vnets) > 0 ? var.f5xc_azure_hub_spoke_vnets : []
+        for_each = length(var.f5xc_azure_hub_spoke_vnets) > 0 ? [1] : []
         content {
-          spoke_vnets {
-            vnet {
-              resource_group = hub.value.resource_group
-              vnet_name      = hub.value.vnet_name
+          dynamic "spoke_vnets" {
+            for_each = var.f5xc_azure_hub_spoke_vnets
+            content {
+              vnet {
+                resource_group = spoke_vnets.value.resource_group
+                vnet_name      = spoke_vnets.value.vnet_name
+              }
+              auto   = spoke_vnets.value.auto
+              manual = spoke_vnets.value.manual
+              labels = spoke_vnets.value.labels
             }
-            auto   = hub.value.auto
-            manual = hub.value.manual
-            labels = hub.value.lables
           }
         }
       }

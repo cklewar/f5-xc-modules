@@ -123,6 +123,21 @@ resource "volterra_azure_vnet_site" "site" {
           }
         }
       }
+
+      dynamic "hub" {
+        for_each = length(var.f5xc_azure_hub_spoke_vnets) > 0 ? var.f5xc_azure_hub_spoke_vnets : []
+        content {
+          spoke_vnets {
+            vnet = {
+              resource_group = hub.value.resource_group
+              vnet_name      = hub.value.vnet_name
+            }
+            auto   = hub.value.auto
+            labels = hub.value.lables
+          }
+        }
+      }
+
       azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       no_global_network        = var.f5xc_azure_no_global_network
       no_outside_static_routes = var.f5xc_azure_no_outside_static_routes

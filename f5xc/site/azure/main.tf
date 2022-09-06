@@ -133,6 +133,7 @@ resource "volterra_azure_vnet_site" "site" {
               vnet_name      = hub.value.vnet_name
             }
             auto   = hub.value.auto
+            manual = hub.value.manual
             labels = hub.value.lables
           }
         }

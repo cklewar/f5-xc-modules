@@ -122,57 +122,58 @@ resource "volterra_azure_vnet_site" "site" {
           }
         }
       }
+    }
 
-      azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
-      local_control_plane {
-        no_local_control_plane = var.f5xc_azure_no_local_control_plane
-      }
+    azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
+    local_control_plane {
+      no_local_control_plane = var.f5xc_azure_no_local_control_plane
+    }
 
-      no_global_network        = var.f5xc_azure_no_global_network
-      no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
-      no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
-      no_network_policy        = var.f5xc_azure_no_network_policy
-      no_forward_proxy         = var.f5xc_azure_no_forward_proxy
+    no_global_network        = var.f5xc_azure_no_global_network
+    no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
+    no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
+    no_network_policy        = var.f5xc_azure_no_network_policy
+    no_forward_proxy         = var.f5xc_azure_no_forward_proxy
+  }
+}
+
+vnet {
+  dynamic "new_vnet" {
+    for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
+    content {
+      name         = local.f5xc_azure_vnet_name
+      primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
     }
   }
-
-  vnet {
-    dynamic "new_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
-      content {
-        name         = local.f5xc_azure_vnet_name
-        primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
-      }
-    }
-    dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
-      content {
-        resource_group = local.f5xc_azure_vnet_resource_group
-        vnet_name      = local.f5xc_azure_vnet_name
-      }
+  dynamic "existing_vnet" {
+    for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
+    content {
+      resource_group = local.f5xc_azure_vnet_resource_group
+      vnet_name      = local.f5xc_azure_vnet_name
     }
   }
+}
 
-  no_worker_nodes = var.f5xc_azure_no_worker_nodes
-  nodes_per_az    = var.f5xc_azure_worker_nodes_per_az > 0 ? var.f5xc_azure_worker_nodes_per_az : null
-  total_nodes     = var.f5xc_azure_total_worker_nodes > 0 ? var.f5xc_azure_total_worker_nodes : null
-  ssh_key         = var.public_ssh_key
-  lifecycle {
-    ignore_changes = [labels]
-  }
+no_worker_nodes = var.f5xc_azure_no_worker_nodes
+nodes_per_az    = var.f5xc_azure_worker_nodes_per_az > 0 ? var.f5xc_azure_worker_nodes_per_az : null
+total_nodes     = var.f5xc_azure_total_worker_nodes > 0 ? var.f5xc_azure_total_worker_nodes : null
+ssh_key         = var.public_ssh_key
+lifecycle {
+  ignore_changes = [labels]
+}
 }
 
 resource "volterra_cloud_site_labels" "labels" {
-  name             = volterra_azure_vnet_site.site.name
-  site_type        = var.f5xc_azure_site_kind
-  # need at least one label, otherwise site_type is ignored
-  labels           = merge({ "key" = "value" }, var.custom_tags)
-  ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
+name = volterra_azure_vnet_site.site.name
+site_type = var.f5xc_azure_site_kind
+# need at least one label, otherwise site_type is ignored
+labels = merge({"key" = "value"}, var.custom_tags)
+ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
 resource "volterra_tf_params_action" "azure_vnet_action" {
-  site_name       = volterra_azure_vnet_site.site.name
-  site_kind       = var.f5xc_azure_site_kind
-  action          = var.f5xc_tf_params_action
-  wait_for_action = var.f5xc_tf_wait_for_action
+site_name = volterra_azure_vnet_site.site.name
+site_kind = var.f5xc_azure_site_kind
+action = var.f5xc_tf_params_action
+wait_for_action = var.f5xc_tf_wait_for_action
 }

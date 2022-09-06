@@ -128,7 +128,7 @@ resource "volterra_azure_vnet_site" "site" {
         for_each = length(var.f5xc_azure_hub_spoke_vnets) > 0 ? var.f5xc_azure_hub_spoke_vnets : []
         content {
           spoke_vnets {
-            vnet = {
+            vnet {
               resource_group = hub.value.resource_group
               vnet_name      = hub.value.vnet_name
             }

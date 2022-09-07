@@ -202,12 +202,30 @@ variable "f5xc_azure_local_subnet_name" {
   default = ""
 }
 
+variable "f5xc_azure_marketplace_agreement_offers" {
+  type    = map(string)
+  default = {
+    multi_nic  = "entcloud_voltmesh_voltstack_node"
+    single_nic = "volterra-node"
+    app_stack  = "entcloud_voltmesh_voltstack_node"
+  }
+}
+
+variable "f5xc_azure_marketplace_agreement_plans" {
+  type    = map(string)
+  default = {
+    multi_nic  = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
+    single_nic = "volterra-node"
+    app_stack  = "freeplan_entcloud_voltmesh_voltstack_node"
+  }
+}
+
 variable "f5xc_azure_marketplace_agreement_publisher" {
   type    = string
   default = "volterraedgeservices"
 }
 
-variable "f5xc_azure_marketplace_agreement_offer" {
+/*variable "f5xc_azure_marketplace_agreement_offer" {
   type    = string
   default = "entcloud_voltmesh_voltstack_node"
 }
@@ -215,7 +233,7 @@ variable "f5xc_azure_marketplace_agreement_offer" {
 variable "f5xc_azure_marketplace_agreement_plan" {
   type    = string
   default = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
-}
+}*/
 
 variable "f5xc_nic_type_single_nic" {
   type    = string

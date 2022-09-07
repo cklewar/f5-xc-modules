@@ -1,7 +1,7 @@
 resource "azurerm_marketplace_agreement" "f5xc" {
   publisher = var.f5xc_azure_marketplace_agreement_publisher
-  offer     = var.f5xc_azure_marketplace_agreement_offer
-  plan      = var.f5xc_azure_marketplace_agreement_plan
+  offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
+  plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
 }
 
 resource "volterra_azure_vnet_site" "site" {

@@ -204,9 +204,9 @@ resource "volterra_cloud_site_labels" "labels" {
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
-resource "volterra_tf_params_action" "azure_vnet_action" {
+/*resource "volterra_tf_params_action" "azure_vnet_action" {
   site_name       = volterra_azure_vnet_site.site.name
   site_kind       = var.f5xc_azure_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action
-}
+}*/

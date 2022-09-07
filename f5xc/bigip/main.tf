@@ -37,3 +37,8 @@ resource "bigip_sys_provision" "asm" {
   memory_ratio = 0
   depends_on   = [null_resource.apply_waf_policy]
 }
+
+/*
+tmsh modify sys db httpd.matchclient value false
+bigstart restart httpd
+*/

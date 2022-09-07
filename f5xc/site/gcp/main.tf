@@ -6,6 +6,9 @@ resource "volterra_gcp_vpc_site" "site" {
   instance_type            = var.f5xc_gcp_ce_instance_type
   logs_streaming_disabled  = var.f5xc_gcp_logs_streaming_disabled
   default_blocked_services = var.f5xc_gcp_default_blocked_services
+  site_local_control_plane {
+    no_local_control_plane = var.f5xc_gcp_no_local_control_plane
+  }
   cloud_credentials {
     name      = var.f5xc_gcp_cred
     namespace = var.f5xc_namespace
@@ -62,18 +65,13 @@ resource "volterra_gcp_vpc_site" "site" {
             }
           }
           dynamic "existing_subnet" {
-            for_each =  var.f5xc_gcp_existing_local_subnet_name != "" ? [1] : []
+            for_each = var.f5xc_gcp_existing_local_subnet_name != "" ? [1] : []
             content {
               subnet_name = var.f5xc_gcp_existing_local_subnet_name
             }
           }
         }
       }
-
-      local_control_plane {
-        no_local_control_plane = var.f5xc_gcp_no_local_control_plane
-      }
-
       node_number = var.f5xc_gcp_node_number
     }
   }
@@ -85,10 +83,12 @@ resource "volterra_gcp_vpc_site" "site" {
       gcp_zone_names   = var.f5xc_gcp_zone_names
 
       dynamic "outside_network" {
-        for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
+        for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [
+          1
+        ] : []
         content {
           dynamic "new_network" {
-            for_each =  var.f5xc_gcp_outside_network_name != "" ? [1] : []
+            for_each = var.f5xc_gcp_outside_network_name != "" ? [1] : []
             content {
               name = var.f5xc_gcp_outside_network_name
             }
@@ -109,7 +109,9 @@ resource "volterra_gcp_vpc_site" "site" {
       }
 
       dynamic "inside_network" {
-        for_each = var.f5xc_gcp_inside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "") || var.f5xc_gcp_existing_inside_network_name != "" ? [1] : []
+        for_each = var.f5xc_gcp_inside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "") || var.f5xc_gcp_existing_inside_network_name != "" ? [
+          1
+        ] : []
         content {
           dynamic "new_network" {
             for_each = var.f5xc_gcp_inside_network_name != "" ? [1] : []
@@ -181,10 +183,6 @@ resource "volterra_gcp_vpc_site" "site" {
             }
           }
         }
-      }
-
-      local_control_plane {
-        no_local_control_plane = var.f5xc_gcp_no_local_control_plane
       }
 
       no_global_network        = var.f5xc_gcp_no_global_network

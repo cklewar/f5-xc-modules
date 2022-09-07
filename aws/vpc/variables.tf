@@ -16,11 +16,6 @@ variable "enable_dns_hostnames" {
   default = true
 }
 
-variable "enable_classiclink" {
-  type    = bool
-  default = false
-}
-
 variable "instance_tenancy" {
   type    = string
   default = "default"

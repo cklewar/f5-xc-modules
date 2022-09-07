@@ -32,6 +32,11 @@ variable "f5xc_gcp_project_id" {
 
 variable "f5xc_gcp_site_name" {
   type = string
+
+  validation {
+    condition     = length(var.f5xc_gcp_site_name) <= 37
+    error_message = format("Max length for f5xc_gcp_site_name ist 37 characters")
+  }
 }
 
 variable "f5xc_gcp_cred" {

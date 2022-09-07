@@ -58,7 +58,7 @@ variable "f5xc_azure_ce_sw_version" {
 
 variable "f5xc_azure_ce_machine_type" {
   type    = string
-  default = "Standard_D4_v4"
+  default = "Standard_D3_v2"
 }
 
 variable "f5xc_azure_vnet_primary_ipv4" {
@@ -67,6 +67,17 @@ variable "f5xc_azure_vnet_primary_ipv4" {
 
 variable "f5xc_azure_az_nodes" {
   type = map(map(string))
+}
+
+variable "f5xc_azure_hub_spoke_vnets" {
+  type = list(object({
+    resource_group = string
+    vnet_name      = string
+    auto           = bool
+    manual         = bool
+    labels         = map(string)
+  }))
+  default = []
 }
 
 variable "f5xc_azure_global_network_name" {

@@ -28,14 +28,15 @@ resource "volterra_azure_vnet_site" "site" {
     default_sw_version        = var.f5xc_azure_default_ce_sw_version
     volterra_software_version = local.f5xc_azure_ce_sw_version
   }
+  site_local_control_plane {
+    no_local_control_plane = var.f5xc_azure_no_local_control_plane
+  }
 
   dynamic "ingress_gw" {
     for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
       azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
-      local_control_plane {
-        no_local_control_plane = var.f5xc_azure_no_local_control_plane
-      }
+
       dynamic "az_nodes" {
         for_each = var.f5xc_azure_az_nodes
         content {
@@ -66,7 +67,6 @@ resource "volterra_azure_vnet_site" "site" {
     content {
       dynamic az_nodes {
         for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : {}
-
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
@@ -93,7 +93,6 @@ resource "volterra_azure_vnet_site" "site" {
 
       dynamic az_nodes {
         for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : {}
-
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
@@ -125,11 +124,25 @@ resource "volterra_azure_vnet_site" "site" {
         }
       }
 
-      azure_certified_hw = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
-      local_control_plane {
-        no_local_control_plane = var.f5xc_azure_no_local_control_plane
+      dynamic "hub" {
+        for_each = length(var.f5xc_azure_hub_spoke_vnets) > 0 ? [1] : []
+        content {
+          dynamic "spoke_vnets" {
+            for_each = var.f5xc_azure_hub_spoke_vnets
+            content {
+              vnet {
+                resource_group = spoke_vnets.value.resource_group
+                vnet_name      = spoke_vnets.value.vnet_name
+              }
+              auto   = spoke_vnets.value.auto
+              manual = spoke_vnets.value.manual
+              labels = spoke_vnets.value.labels
+            }
+          }
+        }
       }
 
+      azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       no_global_network        = var.f5xc_azure_no_global_network
       no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
       no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes

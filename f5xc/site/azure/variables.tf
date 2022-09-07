@@ -1,3 +1,15 @@
+variable "azure_client_id" {
+  type = string
+}
+
+variable "azure_client_secret" {
+  type = string
+}
+
+variable "azure_tenant_id" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+timeout=1800
+counter=0
+sleep_first_step=1
+sleep_second_step=30
+
 echo "$1" \
   -H 'accept: application/json' \
   -H 'Access-Control-Allow-Origin: *' \
@@ -7,6 +12,7 @@ echo "$1" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
 while true; do
+  ((counter+=1))
   content=$(curl -s -X 'GET' \
     "$1" \
     -H 'accept: application/json' \
@@ -18,7 +24,7 @@ while true; do
   if [[ "${status}" == "ONLINE" ]]; then
     echo "Status: ${status} --> Wait 30 secs and check status again..."
     echo ""
-    sleep 30
+    sleep $sleep_second_step
 
     content=$(curl -s -X 'GET' \
       "$1" \
@@ -32,11 +38,15 @@ while true; do
       echo "Done"
       break
     fi
+  fi
 
+  if [ "$counter" -eq "$timeout" ]; then
+      echo "Timeout ${timeout}s reached... stop check status..."
+      break
   fi
 
   echo "Status: ${status} --> Waiting..."
   echo ""
-  sleep 1
+  sleep $sleep_first_step
 
 done

@@ -212,7 +212,7 @@ variable "f5xc_azure_marketplace_agreement_offer" {
   default = "entcloud_voltmesh_voltstack_node"
 }
 
-variable "f5xc_azurer_marketplace_agreement_plan" {
+variable "f5xc_azure_marketplace_agreement_plan" {
   type    = string
   default = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
 }

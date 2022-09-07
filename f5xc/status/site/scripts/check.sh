@@ -5,11 +5,26 @@ counter=0
 sleep_first_step=1
 sleep_second_step=30
 
-echo "$1" \
+echo "Status check URL: $1" \
   -H 'accept: application/json' \
   -H 'Access-Control-Allow-Origin: *' \
   -H 'Authorization: APIToken '"$2" \
   -H 'x-volterra-apigw-tenant: '"$3"
+
+#status_code=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
+status_code=$(curl --write-out '%{http_code}' -s -X 'GET' \
+    "$1" \
+    -H 'accept: application/json' \
+    -H 'Access-Control-Allow-Origin: *' \
+    -H 'Authorization: APIToken '"$2" \
+    -H 'x-volterra-apigw-tenant: '"$3")
+
+if [[ "$status_code" -ne 200 ]] ; then
+  echo "Error in request with Status Code: $status_code. Exiting..."
+  exit 0
+else
+  echo "200 OK... Good to go..."
+fi
 
 while true; do
   ((counter+=1))

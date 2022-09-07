@@ -1,10 +1,17 @@
+resource "null_resource" "import_agreement_single_nic" {
+  provisioner "local-exec" {
+    command = "terraform import azurerm_marketplace_agreement.single_nic /subscriptions/e9cbbd48-704d-4dfa-bf62-60edda755a66/providers/Microsoft.MarketplaceOrdering/agreements/volterraedgeservices/offers/volterra-node/plans/volterra-node"
+    interpreter = ["bash", "-e"]
+  }
+}
+
 resource "azurerm_marketplace_agreement" "single_nic" {
   publisher = var.f5xc_azure_marketplace_agreement_publisher
   offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
   plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
 }
 
-resource "azurerm_marketplace_agreement" "multi_nic" {
+/*resource "azurerm_marketplace_agreement" "multi_nic" {
   publisher = var.f5xc_azure_marketplace_agreement_publisher
   offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
   plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
@@ -14,7 +21,7 @@ resource "azurerm_marketplace_agreement" "app_stack" {
   publisher = var.f5xc_azure_marketplace_agreement_publisher
   offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
   plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
-}
+}*/
 
 resource "volterra_azure_vnet_site" "site" {
   name                     = var.f5xc_azure_site_name

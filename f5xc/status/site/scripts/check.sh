@@ -11,7 +11,6 @@ echo "Status check URL: $1" \
   -H 'Authorization: APIToken '"$2" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
-#status_code=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
 status_code=$(curl --write-out '%{http_code}' -s --output /dev/null -X 'GET' \
     "$1" \
     -H 'accept: application/json' \

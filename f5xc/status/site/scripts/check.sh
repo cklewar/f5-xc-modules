@@ -1,6 +1,6 @@
 #!/bin/bash
 
-timeout=1800
+timeout=3600
 counter=0
 sleep_first_step=1
 sleep_second_step=30
@@ -36,7 +36,7 @@ while true; do
   status=$(jq -r '.spec.site_state' <<<"${content}")
 
   if [[ "${status}" == "ONLINE" ]]; then
-    echo "Status: ${status} --> Wait 30 secs and check status again..."
+    echo "Status: ${status} --> Wait ${sleep_second_step} secs and check status again..."
     echo ""
     sleep $sleep_second_step
 
@@ -55,7 +55,7 @@ while true; do
   fi
 
   if [ "$counter" -eq "$timeout" ]; then
-      echo "Timeout ${timeout}s reached... stop check status..."
+      echo "Timeout of ${timeout} secs reached. Stop checking status now..."
       break
   fi
 

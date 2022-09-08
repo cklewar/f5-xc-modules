@@ -17,6 +17,7 @@ resource "azurerm_marketplace_agreement" "app_stack" {
 }
 
 resource "volterra_azure_vnet_site" "site" {
+  depends_on               = [azurerm_marketplace_agreement.single_nic, azurerm_marketplace_agreement.multi_nic, azurerm_marketplace_agreement.app_stack]
   name                     = var.f5xc_azure_site_name
   namespace                = var.f5xc_namespace
   default_blocked_services = var.f5xc_azure_default_blocked_services

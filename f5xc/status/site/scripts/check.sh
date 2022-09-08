@@ -23,7 +23,7 @@ if [[ "$status_code" -ne 200 ]] ; then
   echo "Error in request with Status Code: $status_code. Exiting..."
   exit 0
 else
-  echo "200 OK... Good to go..."
+  echo "200 OK. Good to go..."
 fi
 
 while true; do

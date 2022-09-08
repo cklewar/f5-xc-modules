@@ -54,7 +54,7 @@ while true; do
     fi
   fi
 
-  if [ "$counter" -eq "$timeout" ]; then
+  if [ "${counter}" -eq "${timeout}" ]; then
       echo "Timeout of ${timeout} secs reached. Stop checking status now..."
       break
   fi

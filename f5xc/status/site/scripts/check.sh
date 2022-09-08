@@ -12,7 +12,7 @@ echo "Status check URL: $1" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
 #status_code=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
-status_code=$(curl --write-out '%{http_code}' -s -X 'GET' \
+status_code=$(curl --write-out '%{http_code}' -s --output /dev/null -X 'GET' \
     "$1" \
     -H 'accept: application/json' \
     -H 'Access-Control-Allow-Origin: *' \
@@ -20,7 +20,7 @@ status_code=$(curl --write-out '%{http_code}' -s -X 'GET' \
     -H 'x-volterra-apigw-tenant: '"$3")
 
 if [[ "$status_code" -ne 200 ]] ; then
-  echo "Error in request with Status Code: $status_code. Exiting..."
+  echo "Error in request with status code: ${status_code}. Exiting..."
   exit 0
 else
   echo "200 OK. Good to go..."

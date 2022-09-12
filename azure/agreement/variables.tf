@@ -14,8 +14,17 @@ variable "azure_subscription_id" {
   type = string
 }
 
-variable "f5xc_default_azure_marketplace_agreement" {
-  type    = bool
+variable "f5xc_azure_ce_gw_type" {
+  type    = string
+
+  validation {
+    condition     = contains(["multi_nic", "single_nic", "app_stack"], var.f5xc_azure_ce_gw_type)
+    error_message = format("Valid values for f5xc_azure_ce_gw_type: multi_nic, single_nic, app_stack")
+  }
+}
+
+variable "f5xc_azure_marketplace_agreement" {
+  type = bool
 }
 
 variable "f5xc_azure_marketplace_agreement_offers" {
@@ -41,11 +50,12 @@ variable "f5xc_azure_marketplace_agreement_publisher" {
   default = "volterraedgeservices"
 }
 
-/*variable "f5xc_azure_ce_gw_type" {
-   type    = string
+variable "azure_marketplace_agreement_plan_generic" {
+  type    = string
+  default = ""
+}
 
-  validation {
-    condition     = contains(["multi_nic", "single_nic", "app_stack"], var.f5xc_azure_ce_gw_type)
-    error_message = format("Valid values for f5xc_azure_ce_gw_type: multi_nic, single_nic, app_stack")
-  }
-}*/
+variable "azure_marketplace_agreement_offer_generic" {
+  type    = string
+  default = ""
+}

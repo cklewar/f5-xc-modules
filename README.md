@@ -247,7 +247,7 @@ module "site_status_check" {
 
 | Module | Documentation                                                  | Status                                                                                                                                                                               |
 |--------|----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| EC2    | **[aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![F5XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)       |
+| EC2    | **[aws_ec2_module](https://github.com/cklewar/aws-ec2)**       | [![AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)            |
 | VPC    | **[aws_vpc_module](https://github.com/cklewar/aws-vpc)**       | [![AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)            |
 | Subnet | **[aws_subnet_module](https://github.com/cklewar/aws-subnet)** | [![AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml) |
 | EKS    |                                                                |                                                                                                                                                                                      |
@@ -267,3 +267,4 @@ module "site_status_check" {
 | Resource Group        |               |          |
 | Virtual Network       |               |          |
 | Subnet                |               |          |
+| Marketplace Agreement |               |          |

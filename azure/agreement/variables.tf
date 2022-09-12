@@ -14,6 +14,11 @@ variable "azure_subscription_id" {
   type = string
 }
 
+variable "f5xc_default_azure_marketplace_agreement" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {

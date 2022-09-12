@@ -1,23 +1,4 @@
-resource "azurerm_marketplace_agreement" "single_nic" {
-  publisher = var.f5xc_azure_marketplace_agreement_publisher
-  offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
-  plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
-}
-
-resource "azurerm_marketplace_agreement" "multi_nic" {
-  publisher = var.f5xc_azure_marketplace_agreement_publisher
-  offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
-  plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
-}
-
-resource "azurerm_marketplace_agreement" "app_stack" {
-  publisher = var.f5xc_azure_marketplace_agreement_publisher
-  offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_azure_ce_gw_type]
-  plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_azure_ce_gw_type]
-}
-
 resource "volterra_azure_vnet_site" "site" {
-  depends_on               = [azurerm_marketplace_agreement.single_nic, azurerm_marketplace_agreement.multi_nic, azurerm_marketplace_agreement.app_stack]
   name                     = var.f5xc_azure_site_name
   namespace                = var.f5xc_namespace
   default_blocked_services = var.f5xc_azure_default_blocked_services

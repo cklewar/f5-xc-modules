@@ -1,7 +1,5 @@
 output "vnet" {
   value = {
-    single_nic_id = azurerm_marketplace_agreement.single_nic.id
-    multi_nic_id  = azurerm_marketplace_agreement.multi_nic.id
-    app_stack_id  = azurerm_marketplace_agreement.app_stack.id
+    id = var.f5xc_default_azure_marketplace_agreement == true ? azurerm_marketplace_agreement.f5xc_azure_ce[0].id : azurerm_marketplace_agreement.generic[0].id
   }
 }

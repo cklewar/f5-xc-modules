@@ -44,10 +44,9 @@ variable "f5xc_azure_marketplace_agreement_publisher" {
 
 variable "f5xc_azure_ce_gw_type" {
   type    = string
-  default = "multi_nic"
 
   validation {
-    condition     = contains(["multi_nic", "single_nic"], var.f5xc_azure_ce_gw_type)
-    error_message = format("Valid values for f5xc_azure_ce_gw_type: multi_nic, single_nic")
+    condition     = contains(["multi_nic", "single_nic", "app_stack"], var.f5xc_azure_ce_gw_type)
+    error_message = format("Valid values for f5xc_azure_ce_gw_type: multi_nic, single_nic, app_stack")
   }
 }

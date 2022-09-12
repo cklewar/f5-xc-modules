@@ -15,7 +15,7 @@ variable "azure_subscription_id" {
 }
 
 variable "f5xc_azure_ce_gw_type" {
-  type    = string
+  type = string
 
   validation {
     condition     = contains(["multi_nic", "single_nic", "app_stack"], var.f5xc_azure_ce_gw_type)

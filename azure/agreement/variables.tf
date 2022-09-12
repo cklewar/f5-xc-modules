@@ -23,10 +23,6 @@ variable "f5xc_azure_ce_gw_type" {
   }
 }
 
-variable "f5xc_azure_marketplace_agreement" {
-  type = bool
-}
-
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {

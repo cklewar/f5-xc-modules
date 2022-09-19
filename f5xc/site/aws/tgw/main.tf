@@ -180,8 +180,8 @@ resource "volterra_aws_tgw_site" "site" {
     }
 
     no_worker_nodes = var.f5xc_aws_tgw_no_worker_nodes
-    nodes_per_az    = var.f5xc_aws_tgw_worker_nodes_per_az > 0 ? var.f5xc_aws_tgw_worker_nodes_per_az : null
-    total_nodes     = var.f5xc_aws_tgw_total_worker_nodes > 0 ? var.f5xc_aws_tgw_total_worker_nodes : null
+    nodes_per_az    = var.f5xc_aws_tgw_no_worker_nodes != false && var.f5xc_aws_tgw_worker_nodes_per_az > 0 ? var.f5xc_aws_tgw_worker_nodes_per_az : null
+    total_nodes     = var.f5xc_aws_tgw_no_worker_nodes != false && var.f5xc_aws_tgw_total_worker_nodes > 0 ? var.f5xc_aws_tgw_total_worker_nodes : null
     ssh_key         = var.public_ssh_key
   }
 

@@ -1,5 +1,5 @@
 data "aws_ec2_transit_gateway" "tgw" {
-  depends_on    = [volterra_tf_params_action.aws_tgw_action]
+  depends_on = [volterra_tf_params_action.aws_tgw_action]
 
   filter {
     name   = "state"

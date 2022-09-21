@@ -1,14 +1,33 @@
 resource "volterra_aws_vpc_site" "site" {
-  name       = var.f5xc_aws_vpc_site_name
-  namespace  = var.f5xc_namespace
-  aws_region = var.f5xc_aws_region
-  tags       = var.custom_tags
-  labels     = var.f5xc_labels
+  name                     = var.f5xc_aws_vpc_site_name
+  namespace                = var.f5xc_namespace
+  aws_region               = var.f5xc_aws_region
+  tags                     = var.custom_tags
+  labels                   = var.f5xc_labels
+  direct_connect_disabled  = var.f5xc_aws_vpc_direct_connect_disabled
 
   aws_cred {
     name      = var.f5xc_aws_cred
     namespace = var.f5xc_namespace
     tenant    = var.f5xc_tenant
+  }
+
+  dynamic "direct_connect_enabled" {
+    for_each = var.f5xc_aws_vpc_direct_connect_disabled == false ? [1] : []
+    content {
+      cloud_aggregated_prefix      = var.f5xc_aws_vpc_cloud_aggregated_prefix
+      dc_connect_aggregated_prefix = var.f5xc_aws_vpc_dc_connect_aggregated_prefix
+      manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
+      standard_vifs                = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == true ? true : null
+      dynamic "hosted_vifs" {
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
+        content {
+          vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
+        }
+      }
+      custom_asn = var.f5xc_aws_vpc_direct_connect_custom_asn
+      auto_asn = var.f5xc_aws_vpc_direct_connect_custom_asn == 0 ? true : null
+    }
   }
 
   dynamic "vpc" {

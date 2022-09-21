@@ -228,3 +228,39 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "f5xc_aws_vpc_direct_connect_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_aws_vpc_direct_connect_manual_gw" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_vpc_direct_connect_hosted_vifs" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_direct_connect_standard_vifs" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_vpc_direct_connect_custom_asn" {
+  type    = number
+  default = 0
+}
+
+variable "f5xc_aws_vpc_cloud_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_dc_connect_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+

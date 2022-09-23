@@ -5,5 +5,6 @@ output "api_credential" {
     "type"                  = volterra_api_credential.credential.api_credential_type
     "vk8s_name"             = volterra_api_credential.credential.virtual_k8s_name
     "virtual_k8s_namespace" = volterra_api_credential.credential.virtual_k8s_namespace
+    "data"                  = volterra_api_credential.credential.data
   }
 }

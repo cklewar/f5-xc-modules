@@ -33,21 +33,15 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_vk8s_name" {
+variable "f5xc_api_credentials_name" {
   type = string
 }
 
-variable "f5xc_virtual_site_refs" {
-  type    = list(string)
-  default = []
-}
-
-variable "f5xc_vk8s_provisioner_apply_timeout" {
+variable "f5xc_api_credential_type" {
   type    = string
-  default = "120s"
-}
+  default = "KUBE_CONFIG"
 
-variable "f5xc_vk8s_provisioner_destroy_timeout" {
-  type    = string
-  default = "30s"
+  validation {
+    condition = contains(["KUBE_CONFIG"], var.f5xc_api_credential_type) error_message = format("Valid values for f5xc_aws_region: KUBE_CONFIG")
+  }
 }

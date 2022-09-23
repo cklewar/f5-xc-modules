@@ -88,7 +88,7 @@ resource "null_resource" "apply_interface" {
   }
 
   provisioner "local-exec" {
-    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.interface_create_uri, var.f5xc_api_token, local.tunnel_interface_content)
+    command     = format("curl -v -X 'POST' %s/%s -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.interface_create_uri, var.f5xc_api_token, local.tunnel_interface_content)
     interpreter = ["/bin/bash", "-c"]
   }
 

@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.1.9"
+  required_version = ">= 1.2.7"
 
   required_providers {
 
@@ -15,10 +15,10 @@ terraform {
 
     http = {
       source  = "hashicorp/http"
-      version = ">= 2.2.0"
+      version = ">= 3.1.0"
     }
 
-    local = ">= 2.0"
-    null  = ">= 3.0"
+    local = ">= 2.2.3"
+    null  = ">= 3.1.1"
   }
 }

@@ -43,29 +43,16 @@ variable "f5xc_api_credential_type" {
 }
 
 variable "f5xc_virtual_site_refs" {
-  type = list(string)
+  type    = list(string)
+  default = []
 }
 
-variable "kubectl_secret_registry_username" {
-  type = string
+variable "f5xc_vk8s_provisioner_apply_timeout" {
+  type    = string
+  default = "120s"
 }
 
-variable "kubectl_secret_registry_password" {
-  type = string
-}
-
-variable "kubectl_secret_registry_email" {
-  type = string
-}
-
-variable "kubectl_secret_name" {
-  type = string
-}
-
-variable "kubectl_secret_registry_type" {
-  type = string
-}
-
-variable "kubectl_secret_registry_server" {
-  type = string
+variable "f5xc_vk8s_provisioner_destroy_timeout" {
+  type    = string
+  default = "30s"
 }

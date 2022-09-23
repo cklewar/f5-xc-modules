@@ -1,4 +1,4 @@
-curl -v -X 'DELETE' "$api_url"/"$delete_uri"/"$interface_name" \
+curl -X 'DELETE' "$api_url"/"$delete_uri"/"$interface_name" \
 -H 'Content-Type: application/json' \
 -H "Authorization: APIToken $api_token" \
 -d "{

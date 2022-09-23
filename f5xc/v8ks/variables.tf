@@ -59,10 +59,10 @@ variable "f5xc_virtual_site_refs" {
 
 variable "f5xc_vk8s_provisioner_apply_timeout" {
   type    = string
-  default = "120s"
+  default = "sleep 120s"
 }
 
 variable "f5xc_vk8s_provisioner_destroy_timeout" {
   type    = string
-  default = "30s"
+  default = "sleep 30s"
 }

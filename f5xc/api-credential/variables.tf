@@ -42,6 +42,7 @@ variable "f5xc_api_credential_type" {
   default = "KUBE_CONFIG"
 
   validation {
-    condition = contains(["KUBE_CONFIG"], var.f5xc_api_credential_type) error_message = format("Valid values for f5xc_api_credential_type: KUBE_CONFIG")
+    condition = contains(["KUBE_CONFIG"], var.f5xc_api_credential_type)
+    error_message = format("Valid values for f5xc_api_credential_type: KUBE_CONFIG")
   }
 }

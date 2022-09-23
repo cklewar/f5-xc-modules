@@ -37,6 +37,21 @@ variable "f5xc_vk8s_name" {
   type = string
 }
 
+variable "f5xc_vk8s_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_vk8s_isolated" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_vk8s_default_flavor_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_virtual_site_refs" {
   type    = list(string)
   default = []

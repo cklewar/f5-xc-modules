@@ -56,13 +56,3 @@ variable "f5xc_virtual_site_refs" {
   type    = list(string)
   default = []
 }
-
-variable "f5xc_vk8s_provisioner_apply_timeout" {
-  type    = string
-  default = "sleep 120s"
-}
-
-variable "f5xc_vk8s_provisioner_destroy_timeout" {
-  type    = string
-  default = "sleep 30s"
-}

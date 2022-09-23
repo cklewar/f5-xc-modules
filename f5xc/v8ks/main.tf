@@ -3,10 +3,6 @@ resource "volterra_virtual_k8s" "vk8s" {
   namespace   = var.f5xc_namespace
   description = var.f5xc_vk8s_description
   isolated    = var.f5xc_vk8s_isolated
-  triggers    = {
-    f5xc_vk8s_provisioner_apply_timeout   = var.f5xc_vk8s_provisioner_apply_timeout
-    f5xc_vk8s_provisioner_destroy_timeout = var.f5xc_vk8s_provisioner_destroy_timeout
-  }
 
   dynamic "vsite_refs" {
     for_each = length(var.f5xc_virtual_site_refs) > 0 ? var.f5xc_virtual_site_refs : []
@@ -25,11 +21,17 @@ resource "volterra_virtual_k8s" "vk8s" {
   }
 
   provisioner "local-exec" {
-    command = self.triggers.f5xc_vk8s_provisioner_apply_timeout
+    command = "sleep $F5XC_VK8S_PROVISIONER_APPLY_TIMEOUT"
+    environment = {
+      F5XC_VK8S_PROVISIONER_APPLY_TIMEOUT = var.f5xc_vk8s_provisioner_apply_timeout
+    }
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = self.triggers.f5xc_vk8s_provisioner_destroy_timeout
+    command = "sleep $F5XC_VK8S_PROVISIONER_DESTROY_TIMEOUT"
+    environment = {
+      F5XC_VK8S_PROVISIONER_DESTROY_TIMEOUT = var.f5xc_vk8s_provisioner_destroy_timeout
+    }
   }
 }

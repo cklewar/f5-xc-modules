@@ -49,6 +49,7 @@ resource "null_resource" "apply_credential" {
 }
 
 resource "null_resource" "destroy" {
+  depends_on = [local_file.api_credentials]
   triggers = {
     api_url    = var.f5xc_api_url
     delete_uri = local.credential_delete_uri

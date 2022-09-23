@@ -59,7 +59,6 @@ variable "f5xc_api_credential_type_api_certificate" {
 
 variable "f5xc_api_credential_type" {
   type    = string
-  default = "KUBE_CONFIG"
 
   validation {
     condition     = contains(["KUBE_CONFIG", "API_CERTIFICATE", "API_TOKEN"], var.f5xc_api_credential_type)

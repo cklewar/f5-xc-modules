@@ -8,4 +8,16 @@ resource "volterra_api_credential" "credential" {
   lifecycle {
     ignore_changes = [name]
   }
+
+  provisioner "local-exec" {
+    when        = destroy
+    command     = "${path.module}/scripts/delete.sh"
+    on_failure  = fail
+    environment = {
+      api_token  = "LhqZ7DZgLxNk3ib/DUydAc+8JPQ="
+      api_url    = "https://playground.staging.volterra.us/api/web/namespaces/system/revoke/api_credentials"
+      namespace  = "system"
+      name       = ""
+    }
+  }
 }

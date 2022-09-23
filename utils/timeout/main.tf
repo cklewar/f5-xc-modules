@@ -1,15 +1,16 @@
-resource "time_sleep" "sleep_create" {
-  count           = var.action == var.action_create ? 1 : 0
-  depends_on      = [var.dependsOn]
-  create_duration = var.timeout
+resource "time_sleep" "sleep" {
+  # count           = var.action == var.action_create ? 1 : 0
+  depends_on       = [var.dependsOn]
+  create_duration  = var.action == var.action_create ? var.timeout : null
+  destroy_duration = var.action == var.action_destroy ? var.timeout : null
 }
 
-resource "null_resource" "next_create" {
-  count      = var.action == var.action_create ? 1 : 0
-  depends_on = [time_sleep.sleep_create]
+resource "null_resource" "next" {
+  # count      = var.action == var.action_create ? 1 : 0
+  depends_on = [time_sleep.sleep]
 }
 
-resource "time_sleep" "sleep_destroy" {
+/*resource "time_sleep" "sleep_destroy" {
   count            = var.action == var.action_destroy ? 1 : 0
   depends_on       = [var.dependsOn]
   destroy_duration = var.timeout
@@ -18,4 +19,4 @@ resource "time_sleep" "sleep_destroy" {
 resource "null_resource" "next_destroy" {
   count      = var.action == var.action_create ? 1 : 0
   depends_on = [time_sleep.sleep_create]
-}
+}*/

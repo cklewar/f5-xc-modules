@@ -13,6 +13,10 @@
 resource "local_file" "api_credentials" {
   content  = local.api_credential_content
   filename = format("%s/_out/%s", path.module, var.f5xc_api_credentials_payload_file)
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "null_resource" "apply_credential" {
@@ -50,7 +54,7 @@ resource "null_resource" "apply_credential" {
 
 resource "null_resource" "destroy" {
   depends_on = [local_file.api_credentials]
-  triggers = {
+  triggers   = {
     api_url    = var.f5xc_api_url
     delete_uri = local.credential_delete_uri
     api_token  = var.f5xc_api_token

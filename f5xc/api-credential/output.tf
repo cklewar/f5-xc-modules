@@ -19,12 +19,3 @@ output "api_credential" {
     "data"                  = jsondecode(data.local_file.response.content).data
   }
 }
-
-output "path" {
-  value = {
-    "abs"  = abspath(path.root)
-    "rel1" = abspath(path.module)
-    "rel2" = path.root
-    "rel3" = path.module
-  }
-}

@@ -56,3 +56,8 @@ variable "f5xc_virtual_site_refs" {
   type    = list(string)
   default = []
 }
+
+variable "f5xc_labels" {
+  type    = map(string)
+  default = {}
+}

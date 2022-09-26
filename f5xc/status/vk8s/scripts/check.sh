@@ -53,9 +53,8 @@ while true; do
       status=$(jq -r 'if (.system_metadata.initializers.pending | length) > 0 then (.system_metadata.initializers.pending | length) else 0 end' <<<"${content}")
 
       if [[ "${status}" -gt 0 ]]; then
-        initializers=$(jq -r '.system_metadata.initializers.pending[].name' <<<"${content}")
-        echo "Check if initializers running..."
-        echo "$initializers"
+        initializers=$(jq -r '[ .system_metadata.initializers.pending[].name ] | join(", ")' <<<"${content}")
+        echo "Check if initializers running... $initializers"
         echo ""
         sleep $sleep_step
       fi

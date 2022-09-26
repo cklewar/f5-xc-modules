@@ -4,7 +4,7 @@ resource "null_resource" "check_vk8s_status" {
   }
 
   provisioner "local-exec" {
-    command     = format("%s/scripts/check.sh %s %s %s", path.module, local.site_get_url, var.f5xc_api_token, var.f5xc_tenant)
+    command     = format("%s/scripts/check.sh %s %s %s %s", path.module, local.site_get_url, var.f5xc_api_token, var.f5xc_tenant, local.site_get_uri_filter)
     interpreter = ["/bin/bash", "-c"]
   }
 }

@@ -21,7 +21,7 @@ variable "f5xc_vk8s_get_uri" {
 
 variable "f5xc_vk8s_get_uri_filter" {
   type    = string
-  default = "?label_filter=tf_vk8s_filter%3D%s"
+  default = "?label_filter=tf_vk8s_filter=%s"
 }
 
 variable "f5xc_vk8s_name" {

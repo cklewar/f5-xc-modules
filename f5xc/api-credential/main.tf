@@ -33,7 +33,7 @@ resource "null_resource" "apply_credential" {
   }
 
   provisioner "local-exec" {
-    command     = format("curl -o ${self.triggers.filename} -X 'POST' https://playground.staging.volterra.us/api/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_token, local.api_credential_content)
+    command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null https://playground.staging.volterra.us/api/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_token, local.api_credential_content)
     interpreter = ["/bin/bash", "-c"]
   }
 

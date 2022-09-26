@@ -16,12 +16,12 @@ variable "f5xc_namespace" {
 
 variable "f5xc_vk8s_get_uri" {
   type    = string
-  default = "config/namespaces/%s/virtual_k8ss/%s"
+  default = "config/namespaces/%s/virtual_k8ss/%s?response_format=GET_RSP_FORMAT_DEFAULT"
 }
 
 variable "f5xc_vk8s_get_uri_filter" {
   type    = string
-  default = "?label_filter=tf_vk8s_filter=%s"
+  default = "config/namespaces/%s/virtual_k8ss?label_filter=tf_vk8s_filter=%s"
 }
 
 variable "f5xc_vk8s_name" {

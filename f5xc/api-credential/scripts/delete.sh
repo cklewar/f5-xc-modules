@@ -1,7 +1,7 @@
 echo "URL: $api_url"/"$delete_uri"
 echo "NAME: $name"
 
-curl -X 'POST' "$api_url"/"$delete_uri" \
+curl -X 'POST' "$api_url"/"$delete_uri" 2>/dev/null\
 -H 'accept: application/json' \
 -H 'Content-Type: application/json' \
 -H 'Access-Control-Allow-Origin: *' \

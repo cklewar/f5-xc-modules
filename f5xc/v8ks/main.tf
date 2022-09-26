@@ -3,6 +3,7 @@ resource "volterra_virtual_k8s" "vk8s" {
   namespace   = var.f5xc_namespace
   description = var.f5xc_vk8s_description
   isolated    = var.f5xc_vk8s_isolated
+  labels      = local.f5xc_labels
 
   dynamic "vsite_refs" {
     for_each = length(var.f5xc_virtual_site_refs) > 0 ? var.f5xc_virtual_site_refs : []

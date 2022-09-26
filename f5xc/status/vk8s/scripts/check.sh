@@ -5,14 +5,14 @@ counter=0
 sleep_step=1
 end_outer=0
 
-echo "Status check URL: $1$4" \
+echo "Status check URL: $4" \
   -H 'accept: application/json' \
   -H 'Access-Control-Allow-Origin: *' \
   -H 'Authorization: APIToken '"$2" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
 status_code=$(curl --write-out '%{http_code}' -s --output /dev/null -X 'GET' \
-  "$1$4" \
+  "$4" \
   -H 'accept: application/json' \
   -H 'Access-Control-Allow-Origin: *' \
   -H 'Authorization: APIToken '"$2" \
@@ -26,13 +26,13 @@ else
 fi
 
 while true; do
-  content=$(curl -s -X 'GET' \
-    "$1$4" \
-    -H 'accept: application/json' \
-    -H 'Access-Control-Allow-Origin: *' \
-    -H 'Authorization: APIToken '"$2" \
-    -H 'x-volterra-apigw-tenant: '"$3" 2>/dev/null
-
+  content=$(
+    curl -s -X 'GET' \
+      "$4" \
+      -H 'accept: application/json' \
+      -H 'Access-Control-Allow-Origin: *' \
+      -H 'Authorization: APIToken '"$2" \
+      -H 'x-volterra-apigw-tenant: '"$3" 2>/dev/null
   )
   status=$(jq 'if (.items | length) > 0 then (.items | length) else empty end' <<<"${content}")
 
@@ -41,12 +41,13 @@ while true; do
 
     while true; do
       ((counter += 1))
-      content=$(curl -s -X 'GET' \
-        "$1"'?response_format=GET_RSP_FORMAT_DEFAULT' \
-        -H 'accept: application/json' \
-        -H 'Access-Control-Allow-Origin: *' \
-        -H 'Authorization: APIToken '"$2" \
-        -H 'x-volterra-apigw-tenant: '"$3" 2>/dev/null
+      content=$(
+        curl -s -X 'GET' \
+          "$1" \
+          -H 'accept: application/json' \
+          -H 'Access-Control-Allow-Origin: *' \
+          -H 'Authorization: APIToken '"$2" \
+          -H 'x-volterra-apigw-tenant: '"$3" 2>/dev/null
 
       )
       status=$(jq -r 'if (.system_metadata.initializers.pending | length) > 0 then (.system_metadata.initializers.pending | length) else 0 end' <<<"${content}")

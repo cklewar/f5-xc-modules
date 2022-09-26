@@ -14,9 +14,14 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_site_get_uri" {
+variable "f5xc_vk8s_get_uri" {
   type    = string
   default = "config/namespaces/%s/virtual_k8ss/%s"
+}
+
+variable "f5xc_vk8s_get_uri_filter" {
+  type    = string
+  default = "?label_filter=tf_vk8s_filter%3D%s"
 }
 
 variable "f5xc_vk8s_name" {

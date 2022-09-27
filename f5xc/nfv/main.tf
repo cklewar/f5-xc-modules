@@ -3,17 +3,8 @@ resource "local_file" "payload" {
   filename = format("%s/_out/%s", path.module, var.f5xc_nfv_payload_file)
 }
 
-resource "null_resource" "wait_for_tgw_online" {
-  depends_on = [var.dependency]
-
-  provisioner "local-exec" {
-    command     = format("%s/scripts/check_tgw.sh %s %s %s", path.module, local.site_get_url, var.f5xc_api_token, var.f5xc_tenant)
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "null_resource" "apply_nfv" {
-  depends_on = [var.dependency, null_resource.wait_for_tgw_online]
+  depends_on = [var.dependency]
   triggers   = {
     manifest_sha1 = sha1(local.manifest_content)
     api_url       = var.f5xc_api_url
@@ -43,7 +34,7 @@ resource "null_resource" "apply_nfv" {
 }
 
 resource "null_resource" "check_nfv_reachable" {
-  depends_on = [null_resource.wait_for_tgw_online, null_resource.apply_nfv]
+  depends_on = [null_resource.apply_nfv]
   provisioner "local-exec" {
     command     = format("%s/scripts/check_nfv.sh https://%s.%s", path.module, var.f5xc_nfv_node_name, var.f5xc_nfv_domain_suffix)
     interpreter = ["/bin/bash", "-c"]

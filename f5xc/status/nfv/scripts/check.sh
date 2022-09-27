@@ -6,7 +6,7 @@ max_attempts=1800
 echo "URL: $1"
 until $(curl --output /dev/null --silent --head --fail $1); do
   if [ ${attempt_counter} -eq ${max_attempts} ]; then
-    echo "Max attempts reached"
+    echo "Max attempts reached. Exiting..."
     exit 1
   fi
 

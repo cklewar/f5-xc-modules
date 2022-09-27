@@ -4,7 +4,6 @@ resource "local_file" "payload" {
 }
 
 resource "null_resource" "apply_nfv" {
-  depends_on = [var.dependency]
   triggers   = {
     manifest_sha1 = sha1(local.manifest_content)
     api_url       = var.f5xc_api_url

@@ -50,23 +50,28 @@ variable "f5xc_tgw_name" {
 }
 
 variable "f5xc_nfv_svc_create_uri" {
-  type = string
+  type    = string
+  default = "config/namespaces/%s/nfv_services"
 }
 
 variable "f5xc_nfv_svc_delete_uri" {
-  type = string
+  type    = string
+  default = "config/namespaces/%s/nfv_services"
 }
 
 variable "f5xc_nfv_svc_get_uri" {
-  type = string
+  type    = string
+  default = "config/namespaces/%s/nfv_services/%s"
 }
 
 variable "f5xc_nfv_payload_template" {
   type = string
+  default = "payload.tftpl"
 }
 
 variable "f5xc_nfv_payload_file" {
   type = string
+  default = "payload.json"
 }
 
 variable "f5xc_nfv_domain_suffix" {

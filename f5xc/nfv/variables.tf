@@ -1,13 +1,3 @@
-variable "project_prefix" {
-  type = string
-}
-
-variable "project_suffix" {
-  type = string
-}
-
-variable "dependency" {}
-
 variable "aws_region" {
   type = string
 }
@@ -17,17 +7,17 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_cert" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "f5xc_api_key" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "f5xc_api_ca_cert" {
-  type = string
+  type    = string
   default = ""
 }
 

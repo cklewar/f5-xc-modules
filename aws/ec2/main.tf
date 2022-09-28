@@ -63,20 +63,20 @@ resource "aws_network_interface" "public" {
   subnet_id       = var.aws_subnet_public_id
   private_ips     = var.aws_ec2_public_interface_ips
   security_groups = [aws_security_group.public.id]
-  tags = var.custom_tags
+  tags            = var.custom_tags
 }
 
 resource "aws_network_interface" "private" {
   subnet_id       = var.aws_subnet_private_id
   private_ips     = var.aws_ec2_private_interface_ips
   security_groups = [aws_security_group.private.id]
-  tags = var.custom_tags
+  tags            = var.custom_tags
 }
 
 resource "aws_eip" "eip" {
   vpc               = true
   network_interface = aws_network_interface.public.id
-  tags = var.custom_tags
+  tags              = var.custom_tags
 }
 
 resource "aws_instance" "instance" {
@@ -109,9 +109,9 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
   for_each   = {for item in var.aws_ec2_instance_userdata_dirs : item.name => item}
 
   connection {
-    type        = "ssh"
+    type        = var.provisioner_connection_type
     host        = aws_eip.eip.public_ip
-    user        = "ubuntu"
+    user        = var.provisioner_connection_user
     private_key = file(var.ssh_private_key_file)
   }
 
@@ -124,9 +124,9 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
 resource "null_resource" "ec2_provision_script_file" {
   depends_on = [null_resource.ec2_instance_provision_custom_files]
   connection {
-    type        = "ssh"
+    type        = var.provisioner_connection_type
     host        = aws_eip.eip.public_ip
-    user        = "ubuntu"
+    user        = var.provisioner_connection_user
     private_key = file(var.ssh_private_key_file)
   }
 

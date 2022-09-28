@@ -1,9 +1,9 @@
 variable "ssh_private_key_file" {
-  type    = string
+  type = string
 }
 
 variable "ssh_public_key_file" {
-  type    = string
+  type = string
 }
 
 variable "aws_region" {
@@ -89,4 +89,14 @@ variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
+}
+
+variable "provisioner_connection_type" {
+  type    = string
+  default = "ssh"
+}
+
+variable "provisioner_connection_user" {
+  type    = string
+  default = "ubuntu"
 }

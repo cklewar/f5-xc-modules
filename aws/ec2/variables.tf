@@ -40,7 +40,7 @@ variable "aws_ec2_public_interface_ips" {
   type = list(string)
 }
 
-variable "aws_ec2_instance_userdata_dirs" {
+variable "aws_ec2_instance_custom_data_dirs" {
   type = list(object({
     name        = string
     source      = string

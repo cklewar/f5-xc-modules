@@ -121,7 +121,7 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
   }
 }
 
-resource "null_resource" "ec2_provision_script_file" {
+resource "null_resource" "ec2_execute_script_file" {
   depends_on = [null_resource.ec2_instance_provision_custom_files]
   connection {
     type        = var.provisioner_connection_type

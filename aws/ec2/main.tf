@@ -131,6 +131,6 @@ resource "null_resource" "ec2_execute_script_file" {
   }
 
   provisioner "remote-exec" {
-    inline = var.aws_ec2_instance_data.script_actions
+    inline = var.aws_ec2_instance_script.actions
   }
 }

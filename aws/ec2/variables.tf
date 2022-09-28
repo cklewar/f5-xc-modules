@@ -25,6 +25,10 @@ variable "aws_ec2_instance_cloud_init_template" {
   default = ""
 }
 
+variable "rendered_template_output_path" {
+  type    = string
+}
+
 variable "aws_ec2_instance_script_file" {
   type = string
 }

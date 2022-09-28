@@ -112,7 +112,7 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
     type        = "ssh"
     host        = aws_eip.eip.public_ip
     user        = "ubuntu"
-    private_key = file(format("%s/keys/%s", path.module, var.ssh_private_key_file))
+    private_key = file(var.ssh_private_key_file)
   }
 
   provisioner "file" {
@@ -127,7 +127,7 @@ resource "null_resource" "ec2_provision_script_file" {
     type        = "ssh"
     host        = aws_eip.eip.public_ip
     user        = "ubuntu"
-    private_key = file(format("%s/keys/%s", path.module, var.ssh_private_key_file))
+    private_key = file(var.ssh_private_key_file)
   }
 
   provisioner "remote-exec" {

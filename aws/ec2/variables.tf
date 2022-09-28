@@ -20,6 +20,11 @@ variable "aws_ec2_instance_script_template" {
   type = string
 }
 
+variable "aws_ec2_instance_cloud_init_template" {
+  type    = string
+  default = ""
+}
+
 variable "aws_ec2_instance_script_file" {
   type = string
 }

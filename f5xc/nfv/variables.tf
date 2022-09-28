@@ -65,12 +65,12 @@ variable "f5xc_nfv_svc_get_uri" {
 }
 
 variable "f5xc_nfv_payload_template" {
-  type = string
+  type    = string
   default = "payload.tftpl"
 }
 
 variable "f5xc_nfv_payload_file" {
-  type = string
+  type    = string
   default = "payload.json"
 }
 
@@ -100,9 +100,16 @@ variable "f5xc_nfv_description" {
 
 variable "f5xc_aws_tgw_site_get_uri" {
   type    = string
-  default = "config/namespaces/%s/aws_tgw_sites/%s"
+  default = "config/namespaces/%s/aws_tgw_sites/%s?response_format=GET_RSP_FORMAT_DEFAULT"
 }
 
-variable "aws_owner_tag" {
-  type = string
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "f5xc_nfv_labels" {
+  type    = map(string)
+  default = {}
 }

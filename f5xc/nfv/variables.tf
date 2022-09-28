@@ -100,7 +100,7 @@ variable "f5xc_nfv_description" {
 
 variable "f5xc_aws_tgw_site_get_uri" {
   type    = string
-  default = "config/namespaces/%s/aws_tgw_sites/%s"
+  default = "config/namespaces/%s/aws_tgw_sites/%s?response_format=GET_RSP_FORMAT_DEFAULT"
 }
 
 variable "custom_tags" {

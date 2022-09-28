@@ -108,10 +108,6 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
   depends_on = [aws_instance.instance, local_file.payload]
   for_each   = {for item in var.aws_ec2_instance_userdata_dirs : item.name => item}
 
-  /*triggers = {
-    always_run = timestamp()
-  }*/
-
   connection {
     type        = "ssh"
     host        = aws_eip.eip.public_ip

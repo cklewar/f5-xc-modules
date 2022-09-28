@@ -106,7 +106,7 @@ resource "local_file" "payload" {
 
 resource "null_resource" "ec2_instance_provision_custom_files" {
   depends_on = [aws_instance.instance, local_file.payload]
-  for_each   = {for item in var.aws_ec2_instance_userdata_dirs : item.name => item}
+  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
   connection {
     type        = var.provisioner_connection_type

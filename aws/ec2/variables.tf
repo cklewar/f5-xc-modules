@@ -14,7 +14,7 @@ variable "aws_az_name" {
   type = string
 }
 
-variable "aws_ec2_instance_data" {}
+variable "aws_ec2_instance_script" {}
 
 variable "aws_ec2_instance_script_template" {
   type = string

@@ -19,5 +19,6 @@ locals {
     nfv_admin_password = base64encode(var.f5xc_nfv_admin_password)
     nfv_description    = var.f5xc_nfv_description
     labels             = var.f5xc_nfv_labels
+    tags               = var.custom_tags
   })
 }

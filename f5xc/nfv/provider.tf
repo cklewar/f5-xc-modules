@@ -7,5 +7,5 @@ provider "volterra" {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = var.f5xc_aws_region
 }

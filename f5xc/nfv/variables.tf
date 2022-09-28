@@ -1,4 +1,4 @@
-variable "aws_region" {
+variable "f5xc_aws_region" {
   type = string
 }
 
@@ -41,7 +41,7 @@ variable "public_ssh_key" {
   type = string
 }
 
-variable "aws_az_name" {
+variable "f5xc_aws_az_name" {
   type = string
 }
 

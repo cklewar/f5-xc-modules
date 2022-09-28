@@ -41,7 +41,7 @@
 				},
 				"WAF_Policy": {
 					"class": "WAF_Policy",
-					"url": "https://raw.githubusercontent.com/cklewar/waf_policy/main/policy.json",
+					"url": "http://${aws_ec2_instance_private_ip}:3000/gitea/awaf/raw/branch/master/waf_policy.json",
                     "enforcementMode": "blocking",
 					"ignoreChanges": true
 				}

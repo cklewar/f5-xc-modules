@@ -102,7 +102,7 @@ resource "aws_instance" "instance" {
 resource "local_file" "instance_script" {
   depends_on = [aws_instance.instance]
   content    = local.script_content
-  filename   = "${var.rendered_template_output_path}/${var.aws_ec2_instance_script_file}"
+  filename   = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
 }
 
 resource "null_resource" "ec2_instance_provision_custom_data" {

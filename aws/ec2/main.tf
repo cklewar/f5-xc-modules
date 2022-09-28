@@ -100,8 +100,8 @@ resource "aws_instance" "instance" {
 
 resource "local_file" "payload" {
   depends_on = [aws_instance.instance]
-  content    = local.userdata_content
-  filename   = format("%s/_out/%s", path.module, var.aws_ec2_instance_script_file)
+  content    = local.script_content
+  filename   = abspath("_out/${var.aws_ec2_instance_script_file}")
 }
 
 resource "null_resource" "ec2_instance_provision_custom_files" {
@@ -131,6 +131,6 @@ resource "null_resource" "ec2_execute_script_file" {
   }
 
   provisioner "remote-exec" {
-    inline = var.aws_ec2_instance_data.inline
+    inline = var.aws_ec2_instance_data.script_actions
   }
 }

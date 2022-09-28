@@ -65,10 +65,6 @@ variable "aws_subnet_private_id" {
   type = string
 }
 
-variable "aws_subnet_cidr" {
-  type = string
-}
-
 variable "amis" {
   type        = map(string)
   description = "The amis instances will use - ubuntu 20.04 LTS"

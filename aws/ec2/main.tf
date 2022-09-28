@@ -102,12 +102,11 @@ resource "aws_instance" "instance" {
 resource "local_file" "instance_script" {
   depends_on = [aws_instance.instance]
   content    = local.script_content
-  # filename   = abspath("_out/${var.aws_ec2_instance_script_file}")
-  filename   = "../../../_out/${var.aws_ec2_instance_script_file}"
+  filename   = "${var.rendered_template_output_path}/${var.aws_ec2_instance_script_file}"
 }
 
 resource "null_resource" "ec2_instance_provision_custom_data" {
-  depends_on = [aws_instance.instance, local_file.payload]
+  depends_on = [aws_instance.instance, local_file.instance_script]
   for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
   connection {

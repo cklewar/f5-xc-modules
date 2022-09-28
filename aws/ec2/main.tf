@@ -83,6 +83,7 @@ resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
   instance_type               = var.aws_ec2_instance_type
   key_name                    = aws_key_pair.aws-key.id
+  user_data                   = local.cloud_init_content
   user_data_replace_on_change = true
 
   network_interface {
@@ -98,13 +99,14 @@ resource "aws_instance" "instance" {
   tags = var.custom_tags
 }
 
-resource "local_file" "payload" {
+resource "local_file" "instance_script" {
   depends_on = [aws_instance.instance]
   content    = local.script_content
-  filename   = abspath("_out/${var.aws_ec2_instance_script_file}")
+  # filename   = abspath("_out/${var.aws_ec2_instance_script_file}")
+  filename   = "../../../_out/${var.aws_ec2_instance_script_file}"
 }
 
-resource "null_resource" "ec2_instance_provision_custom_files" {
+resource "null_resource" "ec2_instance_provision_custom_data" {
   depends_on = [aws_instance.instance, local_file.payload]
   for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
@@ -122,7 +124,7 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
 }
 
 resource "null_resource" "ec2_execute_script_file" {
-  depends_on = [null_resource.ec2_instance_provision_custom_files]
+  depends_on = [null_resource.ec2_instance_provision_custom_data]
   connection {
     type        = var.provisioner_connection_type
     host        = aws_eip.eip.public_ip

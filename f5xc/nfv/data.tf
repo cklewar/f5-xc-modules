@@ -1,5 +1,4 @@
 data "http" "nfv_virtual_server_ip" {
-  depends_on = [null_resource.check_nfv_reachable]
   url = format("%s/%s", var.f5xc_api_url, local.nfv_svc_get_uri)
 
   request_headers = {
@@ -9,8 +8,6 @@ data "http" "nfv_virtual_server_ip" {
 }
 
 data "aws_instance" "nfv" {
-  depends_on = [null_resource.check_nfv_reachable]
-
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_tgw_name]
@@ -33,8 +30,6 @@ data "aws_instance" "nfv" {
 }
 
 data "aws_network_interface" "nfv_external_interface" {
-  depends_on = [null_resource.check_nfv_reachable]
-
   filter {
     name = "tag:Name"
     values = ["BIGIP-External-Private-Interface-0"]
@@ -67,7 +62,6 @@ data "aws_network_interface" "nfv_external_interface" {
 }
 
 data "aws_network_interface" "nfv_internal_interface" {
-  depends_on = [null_resource.check_nfv_reachable]
 
   /*filter {
     name   = "subnet-id"

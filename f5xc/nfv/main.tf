@@ -4,7 +4,7 @@ resource "local_file" "payload" {
 }
 
 resource "null_resource" "apply_nfv" {
-  triggers   = {
+  triggers = {
     manifest_sha1 = sha1(local.manifest_content)
     api_url       = var.f5xc_api_url
     api_token     = var.f5xc_api_token
@@ -30,4 +30,16 @@ resource "null_resource" "apply_nfv" {
       name       = self.triggers.name
     }
   }
+}
+
+module "f5xc_nfv_wait_for_online" {
+  depends_on             = [null_resource.apply_nfv]
+  source                 = "../status/nfv"
+  f5xc_api_token         = var.f5xc_api_token
+  f5xc_api_url           = var.f5xc_api_url
+  f5xc_namespace         = var.f5xc_namespace
+  f5xc_tenant            = var.f5xc_tenant
+  f5xc_nfv_name          = var.f5xc_nfv_name
+  f5xc_nfv_node_name     = var.f5xc_nfv_node_name
+  f5xc_nfv_domain_suffix = var.f5xc_nfv_domain_suffix
 }

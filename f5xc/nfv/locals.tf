@@ -16,7 +16,7 @@ locals {
     nfv_domain_suffix  = var.f5xc_nfv_domain_suffix
     nfv_node_name      = var.f5xc_nfv_node_name
     nfv_admin_username = var.f5xc_nfv_admin_username
-    nfv_admin_password = base64encode(var.f5xc_nfv_admin_password)
+    nfv_admin_password = format("%s%s", "string:///", base64encode(var.f5xc_nfv_admin_password))
     nfv_description    = var.f5xc_nfv_description
     labels             = var.f5xc_nfv_labels
     tags               = var.custom_tags

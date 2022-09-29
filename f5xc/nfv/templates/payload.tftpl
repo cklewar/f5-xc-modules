@@ -3,10 +3,10 @@ ${jsonencode(
 	"metadata": {
 		"annotations": {},
 		"description": nfv_description,
-		"labels": labels
-    },
-    "name": nfv_name,
-    "namespace": namespace,
+		"labels": {},
+		"name": nfv_name,
+		"namespace": namespace
+	},
 	"spec": {
 		"endpoint_service": {
 			"advertise_on_slo_ip_external": {},
@@ -35,11 +35,11 @@ ${jsonencode(
 			"nodes": [{
 				"automatic_prefix": {},
 				"aws_az_name": aws_az_name,
-				"node_name": nfv_node_name,
+				"node_name": {nfv_node_name,
 				"reserved_mgmt_subnet": {}
 			}],
 			"ssh_key": ssh_key,
-			"tags":  tags
+			"tags": {}
 		},
 		"https_management": {
 			"advertise_on_public_default_vip": {},
@@ -48,4 +48,5 @@ ${jsonencode(
 			"disable_local": {}
 		}
 	}
-})}
+}
+)}

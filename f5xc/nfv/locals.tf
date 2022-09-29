@@ -1,7 +1,7 @@
 locals {
   random_id             = uuid()
-  site_get_uri          = format(var.f5xc_aws_tgw_site_get_uri, var.f5xc_namespace, var.f5xc_tgw_name)
-  site_get_url          = format("%s/%s", var.f5xc_api_url, local.site_get_uri)
+  # site_get_uri          = format(var.f5xc_aws_tgw_site_get_uri, var.f5xc_namespace, var.f5xc_tgw_name)
+  # site_get_url          = format("%s/%s", var.f5xc_api_url, local.site_get_uri)
   nfv_create_uri        = format(var.f5xc_nfv_svc_create_uri, var.f5xc_namespace)
   nfv_delete_uri        = format(var.f5xc_nfv_svc_delete_uri, var.f5xc_namespace)
   nfv_svc_get_uri       = format(var.f5xc_nfv_svc_get_uri, var.f5xc_namespace, var.f5xc_nfv_name)

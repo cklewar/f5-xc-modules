@@ -11,7 +11,7 @@ until $(curl --output /dev/null --silent --head --fail $1); do
   fi
 
   printf '.'
-  attempt_counter=$($attempt_counter + 1)
+  attempt_counter=$(($attempt_counter + 1))
   sleep 1
 done
 echo "Success"

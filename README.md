@@ -28,7 +28,7 @@ Folder structure example:
 .
 ├── cert
 └── modules
-└── main.tf
+└── ck.tf
 ```
 
 Terraform usage example:

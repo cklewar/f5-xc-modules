@@ -2,7 +2,11 @@
 	"metadata": {
 		"annotations": {},
 		"description": "${nfv_description}",
-		"labels": ${labels},
+		"labels": {
+		%{ for label_key, label_value in labels ~}
+            "${label_key}": "${label_value}"
+        %{ endfor ~}
+        },
 		"name": "${nfv_name}",
 		"namespace": "${namespace}"
 	},
@@ -38,7 +42,11 @@
 				"reserved_mgmt_subnet": {}
 			}],
 			"ssh_key": "${ssh_key}",
-			"tags": ${tags}
+			"tags":  {
+            %{ for tag_key, tag_value in tags ~}
+                "${tag_key}": "${tag_value}"
+            %{ endfor ~}
+            },
 		},
 		"https_management": {
 			"advertise_on_public_default_vip": {},

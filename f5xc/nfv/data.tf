@@ -1,4 +1,4 @@
-data "http" "nfv_virtual_server_ip" {
+/*data "http" "nfv_virtual_server_ip" {
   depends_on = [module.f5xc_nfv_wait_for_online]
   url        = format("%s/%s", var.f5xc_api_url, local.nfv_svc_get_uri)
 
@@ -29,9 +29,9 @@ data "aws_instance" "nfv" {
     name   = "tag:ves-io/nfv-service-type"
     values = ["bigip"]
   }
-}
+}*/
 
-data "aws_network_interface" "nfv_external_interface" {
+/*data "aws_network_interface" "nfv_external_interface" {
   depends_on = [module.f5xc_nfv_wait_for_online]
   filter {
     name   = "tag:Name"
@@ -43,7 +43,7 @@ data "aws_network_interface" "nfv_external_interface" {
     values = [var.nfv_subnet_external]
   }*/
 
-  filter {
+  /*filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_tgw_name]
   }
@@ -62,17 +62,17 @@ data "aws_network_interface" "nfv_external_interface" {
     name   = "tag:ves-io/nfv-service-type"
     values = ["bigip"]
   }
-}
+}*/
 
-data "aws_network_interface" "nfv_internal_interface" {
-  depends_on = [module.f5xc_nfv_wait_for_online]
+/*data "aws_network_interface" "nfv_internal_interface" {
+  depends_on = [module.f5xc_nfv_wait_for_online]*/
 
   /*filter {
     name   = "subnet-id"
     values = [var.nfv_subnet_internal]
   }*/
 
-  filter {
+  /*filter {
     name   = "tag:Name"
     values = ["BIGIP-Internal-Interface-0"]
   }
@@ -96,4 +96,4 @@ data "aws_network_interface" "nfv_internal_interface" {
     name   = "tag:ves-io/nfv-service-type"
     values = ["bigip"]
   }
-}
+}*/

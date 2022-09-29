@@ -3,7 +3,7 @@ resource "local_file" "payload" {
   filename = format("%s/_out/%s", path.module, var.f5xc_nfv_payload_file)
 }
 
-resource "null_resource" "apply_nfv" {
+/*resource "null_resource" "apply_nfv" {
   triggers = {
     manifest_sha1 = sha1(local.manifest_content)
     api_url       = var.f5xc_api_url
@@ -42,4 +42,4 @@ module "f5xc_nfv_wait_for_online" {
   f5xc_nfv_name          = var.f5xc_nfv_name
   f5xc_nfv_node_name     = var.f5xc_nfv_node_name
   f5xc_nfv_domain_suffix = var.f5xc_nfv_domain_suffix
-}
+}*/

@@ -74,7 +74,7 @@ data "aws_vpc" "tgw_vpc" {
   }
 }*/
 
-data "aws_subnet" "tgw_subnet_slo" {
+/*data "aws_subnet" "tgw_subnet_slo" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
   for_each   = var.f5xc_aws_tgw_az_nodes
 
@@ -95,9 +95,9 @@ data "aws_subnet" "tgw_subnet_slo" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
-}
+}*/
 
-data "aws_subnet" "tgw_subnet_workload" {
+/*data "aws_subnet" "tgw_subnet_workload" {
   depends_on = [volterra_tf_params_action.aws_tgw_action]
   for_each   = var.f5xc_aws_tgw_az_nodes
   cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_workload_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_existing_subnet_id"]
@@ -117,4 +117,4 @@ data "aws_subnet" "tgw_subnet_workload" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
-}
+}*/

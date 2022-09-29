@@ -14,11 +14,14 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_nfv_get_uri" {
-  type    = string
-  default = "config/namespaces/%s/sites/%s"
+variable "f5xc_nfv_name" {
+  type = string
 }
 
-variable "f5xc_nfv_name" {
+variable "f5xc_nfv_domain_suffix" {
+  type = string
+}
+
+variable "f5xc_nfv_node_name" {
   type = string
 }

@@ -1,10 +1,10 @@
-resource "null_resource" "check_nfv_status" {
+resource "null_resource" "check_nfv_online" {
   triggers = {
     always = local.random_id
   }
 
   provisioner "local-exec" {
-    command     = format("%s/scripts/check.sh %s %s %s", path.module, local.site_get_url, var.f5xc_api_token, var.f5xc_tenant)
+    command     = format("%s/scripts/check.sh https://%s.%s", path.module, var.f5xc_nfv_node_name, var.f5xc_nfv_domain_suffix)
     interpreter = ["/bin/bash", "-c"]
   }
 }

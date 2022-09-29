@@ -31,11 +31,3 @@ resource "null_resource" "apply_nfv" {
     }
   }
 }
-
-resource "null_resource" "check_nfv_reachable" {
-  depends_on = [null_resource.apply_nfv]
-  provisioner "local-exec" {
-    command     = format("%s/scripts/check_nfv.sh https://%s.%s", path.module, var.f5xc_nfv_node_name, var.f5xc_nfv_domain_suffix)
-    interpreter = ["/bin/bash", "-c"]
-  }
-}

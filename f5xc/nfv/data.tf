@@ -72,8 +72,7 @@ data "aws_network_interface" "nfv_internal_interface" {
     values = [var.nfv_subnet_internal]
   }*/
 
-  filter
-  {
+  filter {
     name   = "tag:Name"
     values = ["BIGIP-Internal-Interface-0"]
   }

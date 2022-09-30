@@ -2,15 +2,9 @@ terraform {
   required_version = ">= 1.3.0"
 
   required_providers {
-
-    volterra = {
-      source  = "volterraedge/volterra"
-      version = ">= 0.11.12"
-    }
-
     bigip = {
       source  = "F5Networks/bigip"
-      version = ">= 1.14.0"
+      version = ">= 1.15.2"
     }
 
     local = ">= 2.2.3"

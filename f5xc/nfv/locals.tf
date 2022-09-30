@@ -1,11 +1,9 @@
 locals {
   random_id             = uuid()
-  # site_get_uri          = format(var.f5xc_aws_tgw_site_get_uri, var.f5xc_namespace, var.f5xc_tgw_name)
-  # site_get_url          = format("%s/%s", var.f5xc_api_url, local.site_get_uri)
   nfv_create_uri        = format(var.f5xc_nfv_svc_create_uri, var.f5xc_namespace)
   nfv_delete_uri        = format(var.f5xc_nfv_svc_delete_uri, var.f5xc_namespace)
   nfv_svc_get_uri       = format(var.f5xc_nfv_svc_get_uri, var.f5xc_namespace, var.f5xc_nfv_name)
-  # nfv_virtual_server_ip = (jsondecode(data.http.nfv_virtual_server_ip.response_body).status[*].vip)[0]
+  nfv_virtual_server_ip = (jsondecode(data.http.nfv_virtual_server_ip.response_body).status[*].vip)[0]
   manifest_content      = templatefile(format("%s/templates/%s", path.module, var.f5xc_nfv_payload_template), {
     tenant             = var.f5xc_tenant
     namespace          = var.f5xc_namespace

@@ -69,7 +69,11 @@ variable "bigip_tenant" {
   type = string
 }
 
-variable "aws_ec2_instance_public_ip" {
+#variable "aws_ec2_instance_public_ip" {
+#  type = string
+#}
+
+variable "aws_ec2_instance_private_ip" {
   type = string
 }
 

@@ -1,9 +1,18 @@
-resource "local_file" "waf_policy" {
-  content  = local.waf_policy_content
-  filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
+#resource "local_file" "waf_policy" {
+#  content  = local.waf_policy_content
+#  filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
+#}
+
+resource "bigip_command" "test-command" {
+  commands = ["tmsh modify sys db httpd.matchclient value false", "bigstart restart httpd"]
 }
 
-resource "null_resource" "apply_waf_policy" {
+resource "bigip_as3" "waf_policy" {
+  as3_json = local.waf_policy_content
+}
+
+
+/*resource "null_resource" "apply_waf_policy" {
   triggers = {
     uuid = local.random_id
   }
@@ -17,7 +26,7 @@ resource "null_resource" "apply_waf_policy" {
   }
 
   provisioner "file" {
-    source = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
+    source      = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
     destination = format("/tmp/%s", var.bigip_as3_awaf_policy)
   }
 
@@ -27,18 +36,14 @@ resource "null_resource" "apply_waf_policy" {
     ]
   }
 }
+*/
 
 resource "bigip_sys_provision" "asm" {
+  # depends_on   = [null_resource.apply_waf_policy]
   name         = "asm"
   full_path    = "/Common/asm"
   cpu_ratio    = 0
   disk_ratio   = 0
   level        = "nominal"
   memory_ratio = 0
-  depends_on   = [null_resource.apply_waf_policy]
 }
-
-/*
-tmsh modify sys db httpd.matchclient value false
-bigstart restart httpd
-*/

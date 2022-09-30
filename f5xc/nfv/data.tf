@@ -38,11 +38,6 @@ data "aws_network_interface" "nfv_external_interface" {
     values = ["BIGIP-External-Private-Interface-0"]
   }
 
-  /*filter {
-    name   = "subnet-id"
-    values = [var.nfv_subnet_external]
-  }*/
-
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_tgw_name]
@@ -66,11 +61,6 @@ data "aws_network_interface" "nfv_external_interface" {
 
 data "aws_network_interface" "nfv_internal_interface" {
   depends_on = [module.f5xc_nfv_wait_for_online]
-
-  /*filter {
-    name   = "subnet-id"
-    values = [var.nfv_subnet_internal]
-  }*/
 
   filter {
     name   = "tag:Name"

@@ -5,6 +5,6 @@ locals {
     vip_ip                      = chomp(var.bigip_ltm_virtual_server_ip)
     pool_node_ip                = var.bigip_ltm_pool_node_ip
     bigip_tenant                = var.bigip_tenant
-    aws_ec2_instance_private_ip = var.aws_ec2_instance_private_ip
+    aws_ec2_instance_private_ip = var.aws_ec2_vcs_instance_ip
   })
 }

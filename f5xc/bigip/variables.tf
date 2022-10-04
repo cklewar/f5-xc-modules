@@ -66,6 +66,21 @@ variable "bigip_tenant" {
   type = string
 }
 
+variable "provisioner_connection_type" {
+  type    = string
+  default = "ssh"
+}
+
+variable "provisioner_connection_user" {
+  type    = string
+  default = "ubuntu"
+}
+
+variable "provisioner_connection_timeout" {
+  type    = string
+  default = "1m"
+}
+
 variable "aws_ec2_vcs_instance_protocol" {
   type    = string
   default = "http"
@@ -75,7 +90,7 @@ variable "aws_ec2_vcs_instance_address" {
   type = string
 }
 
-variable "aws_ec2_ssh_instance_address" {
+variable "aws_ec2_ssh_address" {
   type = string
 }
 

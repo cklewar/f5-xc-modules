@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 resource "bigip_sys_provision" "asm" {
   # depends_on   = [null_resource.apply_waf_policy]
   name         = "asm"

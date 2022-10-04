@@ -1,14 +1,14 @@
-#resource "local_file" "waf_policy" {
-#  content  = local.waf_policy_content
-#  filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
-#}
+resource "local_file" "waf_policy" {
+  content  = local.waf_policy_content
+  filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
+}
 
 resource "bigip_command" "test-command" {
   commands = ["tmsh modify sys db httpd.matchclient value false", "bigstart restart httpd"]
 }
 
 resource "bigip_as3" "waf_policy" {
-  as3_json = local.waf_policy_content
+  as3_json = local_file.waf_policy.content
 }
 
 

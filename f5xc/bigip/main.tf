@@ -1,4 +1,30 @@
+resource "null_resource" "fix" {
+  triggers = {
+    uuid = local.random_id
+  }
+
+  connection {
+    host        = var.aws_ec2_vcs_instance_public_address
+    user        = "ubuntu"
+    type        = "ssh"
+    private_key = var.private_ssh_key
+    timeout     = "1m"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      format("curl -k -v -X \"POST\" \"https://%s/mgmt/tm/util/bash\" -H \"Content-Type: application/json\" -H \"Authorization: Basic %s\" -d \"{\"command\":\"run\", \"utilCmdArgs\": \"-c 'tmsh modify sys db httpd.matchclient value false'\"}", var.bigip_interface_internal_ip, base64encode(format("%s:%s", var.bigip_admin_username, var.bigip_admin_password)))
+    ]
+  }
+}
+
+/*resource "bigip_command" "fix" {
+  #commands   = ["tmsh modify sys db httpd.matchclient value false", "bigstart restart httpd"]
+  commands = ["modify sys db httpd.matchclient value false", "bigstart restart httpd"]
+}*/
+
 resource "bigip_sys_provision" "asm" {
+  # depends_on   = [null_resource.fix]
   name         = "asm"
   full_path    = "/Common/asm"
   cpu_ratio    = 0
@@ -7,20 +33,17 @@ resource "bigip_sys_provision" "asm" {
   memory_ratio = 0
 }
 
-resource "bigip_command" "fix" {
-  depends_on = [bigip_sys_provision.asm]
-  commands   = ["tmsh modify sys db httpd.matchclient value false", "bigstart restart httpd"]
-}
 
 resource "local_file" "waf_policy" {
+  # depends_on = [null_resource.fix]
   content  = local.waf_policy_content
   filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
 }
 
-resource "bigip_as3" "waf_policy" {
-  depends_on = [bigip_command.fix, local_file.waf_policy]
+/*resource "bigip_as3" "waf_policy" {
+  depends_on = [bigip_command.fix, bigip_sys_provision.asm, local_file.waf_policy]
   as3_json   = local_file.waf_policy.content
-}
+}*/
 
 /*resource "null_resource" "apply_waf_policy" {
   triggers = {
@@ -47,4 +70,3 @@ resource "bigip_as3" "waf_policy" {
   }
 }
 */
-

@@ -90,3 +90,7 @@ variable "aws_ec2_vcs_instance_uri" {
 variable "owner_tag" {
   type = string
 }
+
+variable "private_ssh_key" {
+  type = string
+}

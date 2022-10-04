@@ -71,7 +71,11 @@ variable "aws_ec2_vcs_instance_protocol" {
   default = "http"
 }
 
-variable "aws_ec2_vcs_instance_ip" {
+variable "aws_ec2_vcs_instance_public_address" {
+  type = string
+}
+
+variable "aws_ec2_vcs_instance_private_address" {
   type = string
 }
 

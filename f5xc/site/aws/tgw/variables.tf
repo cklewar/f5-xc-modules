@@ -80,7 +80,8 @@ variable "f5xc_aws_tgw_az_nodes" {
 }
 
 variable "f5xc_aws_tgw_vpc_attach_label_deploy" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_aws_default_ce_os_version" {

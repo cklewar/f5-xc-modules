@@ -4,7 +4,7 @@ resource "null_resource" "fix" {
   }
 
   connection {
-    host        = var.aws_ec2_vcs_instance_public_address
+    host        = var.aws_ec2_ssh_instance_address
     user        = "ubuntu"
     type        = "ssh"
     private_key = var.private_ssh_key

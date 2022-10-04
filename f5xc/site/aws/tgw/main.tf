@@ -16,7 +16,9 @@ resource "volterra_aws_tgw_site" "site" {
       manual_gw                    = var.f5xc_aws_tgw_direct_connect_manual_gw == true && var.f5xc_aws_tgw_direct_connect_hosted_vifs == false && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs == false && var.f5xc_aws_tgw_direct_connect_standard_vifs == true ? true : null
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs != "" && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? [1] : []
+        for_each = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs != "" && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? [
+          1
+        ] : []
         content {
           vifs = var.f5xc_aws_tgw_direct_connect_hosted_vifs
         }
@@ -192,7 +194,7 @@ resource "volterra_aws_tgw_site" "site" {
         for_each = var.f5xc_aws_vpc_attachment_ids
         content {
           labels = {
-            "deployment" = var.f5xc_aws_tgw_vpc_attach_label_deploy
+            "deployment" = var.f5xc_aws_tgw_vpc_attach_label_deploy != "" ? var.f5xc_aws_tgw_vpc_attach_label_deploy : null
           }
           vpc_id = vpc_list.value
         }

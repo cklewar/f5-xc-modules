@@ -41,7 +41,7 @@
 				},
 				"WAF_Policy": {
 					"class": "WAF_Policy",
-					"url": "http://${aws_ec2_vcs_instance_ip}:3000/gitea/awaf/raw/branch/master/waf_policy.json",
+					"url": "${vcs_url}",
                     "enforcementMode": "blocking",
 					"ignoreChanges": true
 				}

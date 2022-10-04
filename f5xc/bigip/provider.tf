@@ -1,5 +1,5 @@
 provider "bigip" {
-  address  = format("%s.%s", var.nfv_node_name, var.nfv_domain_suffix)
+  address  = var.bigip_address
   username = var.bigip_admin_username
   // fix me to be integrated with Blindfold
   password = var.bigip_admin_password

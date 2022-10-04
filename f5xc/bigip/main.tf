@@ -4,11 +4,11 @@ resource "null_resource" "fix" {
   }
 
   connection {
-    host        = var.aws_ec2_ssh_instance_address
-    user        = "ubuntu"
-    type        = "ssh"
+    host        = var.aws_ec2_ssh_address
+    user        = var.provisioner_connection_user
+    type        = var.provisioner_connection_type
     private_key = var.private_ssh_key
-    timeout     = "1m"
+    timeout     = var.provisioner_connection_timeout
   }
 
   provisioner "remote-exec" {

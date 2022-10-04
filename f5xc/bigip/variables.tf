@@ -1,11 +1,3 @@
-variable "project_prefix" {
-  type = string
-}
-
-variable "project_suffix" {
-  type = string
-}
-
 variable "nfv_domain_suffix" {
   type = string
 }
@@ -25,6 +17,7 @@ variable "bigip_admin_password" {
 variable "bigip_as3_rpm" {
   type = string
 }
+
 variable "bigip_as3_rpm_url" {
   type = string
 }
@@ -69,11 +62,7 @@ variable "bigip_tenant" {
   type = string
 }
 
-#variable "aws_ec2_instance_public_ip" {
-#  type = string
-#}
-
-variable "aws_ec2_instance_private_ip" {
+variable "aws_ec2_vcs_instance_ip" {
   type = string
 }
 

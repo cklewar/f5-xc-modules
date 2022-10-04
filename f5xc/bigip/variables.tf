@@ -62,7 +62,20 @@ variable "bigip_tenant" {
   type = string
 }
 
+variable "aws_ec2_vcs_instance_protocol" {
+  type    = string
+  default = "http"
+}
+
 variable "aws_ec2_vcs_instance_ip" {
+  type = string
+}
+
+variable "aws_ec2_vcs_instance_port" {
+  type = string
+}
+
+variable "aws_ec2_vcs_instance_uri" {
   type = string
 }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 terraform {
   required_version = ">= 1.3.0"
 
@@ -11,3 +12,5 @@ terraform {
     null  = ">= 3.1.1"
   }
 }
+=======
+>>>>>>> 368a486 (0.11.33)

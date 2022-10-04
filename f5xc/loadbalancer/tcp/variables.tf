@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 variable "f5xc_api_url" {
   type = string
 }
@@ -125,3 +126,5 @@ variable "f5xc_http_loadbalancer_dns_volterra_managed" {
   type    = bool
   default = true
 }
+=======
+>>>>>>> 368a486 (0.11.33)

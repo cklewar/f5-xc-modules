@@ -8,6 +8,7 @@ resource "bigip_sys_provision" "asm" {
   memory_ratio = 0
 }
 
+>>>>>>> f690c27499abf84d701c9a2ef7ca78c8a4584448
 resource "local_file" "waf_policy" {
   content  = local.waf_policy_content
   filename = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)

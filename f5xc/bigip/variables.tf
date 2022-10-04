@@ -6,6 +6,10 @@ variable "nfv_node_name" {
   type = string
 }
 
+variable "bigip_address" {
+  type = string
+}
+
 variable "bigip_admin_username" {
   type = string
 }

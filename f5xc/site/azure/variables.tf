@@ -181,11 +181,6 @@ variable "f5xc_azure_vnet_name" {
   default = ""
 }
 
-variable "f5xc_azure_local_subnet_name" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_nic_type_single_nic" {
   type    = string
   default = "single_nic"

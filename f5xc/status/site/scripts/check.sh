@@ -6,14 +6,14 @@ sleep_first_step=1
 sleep_second_step=30
 
 echo "Status check URL: $1" \
-  -H 'accept: application/json' \
+  -H 'accept: application/data' \
   -H 'Access-Control-Allow-Origin: *' \
   -H 'Authorization: APIToken '"$2" \
   -H 'x-volterra-apigw-tenant: '"$3"
 
 status_code=$(curl --write-out '%{http_code}' -s --output /dev/null -X 'GET' \
     "$1" \
-    -H 'accept: application/json' \
+    -H 'accept: application/data' \
     -H 'Access-Control-Allow-Origin: *' \
     -H 'Authorization: APIToken '"$2" \
     -H 'x-volterra-apigw-tenant: '"$3")
@@ -29,7 +29,7 @@ while true; do
   ((counter+=1))
   content=$(curl -s -X 'GET' \
     "$1" \
-    -H 'accept: application/json' \
+    -H 'accept: application/data' \
     -H 'Access-Control-Allow-Origin: *' \
     -H 'Authorization: APIToken '"$2" \
     -H 'x-volterra-apigw-tenant: '"$3")
@@ -42,7 +42,7 @@ while true; do
 
     content=$(curl -s -X 'GET' \
       "$1" \
-      -H 'accept: application/json' \
+      -H 'accept: application/data' \
       -H 'Access-Control-Allow-Origin: *' \
       -H 'Authorization: APIToken '"$2" \
       -H 'x-volterra-apigw-tenant: '"$3")

@@ -65,6 +65,7 @@ module "my_test_modul" {
 | Update Object        |                                                                                        |                                                                                                                                                                                                                                      | 
 | Site Status Check    | **[f5xc_site_status_check](https://github.com/cklewar/f5-xc-site-status-check)**       | [![F5XC site status check module](https://github.com/cklewar/f5-xc-site-status-check/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/f5-xc-site-status-check/actions/workflows/module_test.yml) |
 | vk8s Status Check    | **[f5xc_vk8s_status_check](https://github.com/cklewar/f5-xc-vk8s-status-check)**       | [![F5XC vk8s status check module](https://github.com/cklewar/f5-xc-vk8s-status-check/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/f5-xc-vk8s-status-check/actions/workflows/module_test.yml) |
+| NFV Status Check     |                                                                                        |                                                                                                                                                                                                                                      |
 
 # AWS Modules
 

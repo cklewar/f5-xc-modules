@@ -62,7 +62,8 @@ variable "f5xc_azure_ce_machine_type" {
 }
 
 variable "f5xc_azure_vnet_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_azure_az_nodes" {

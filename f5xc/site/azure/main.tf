@@ -36,16 +36,16 @@ resource "volterra_azure_vnet_site" "site" {
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
-
+          # node0 : { f5xc_azure_az = "1", f5xc_azure_vnet_local_subnet = "172.16.20.0/24" },
           local_subnet {
             dynamic "subnet_param" {
-              for_each = contains(var.f5xc_azure_az_nodes[az_nodes.key], "f5xc_azure_vnet_local_subnet") ? [1] : []
+              for_each = contains(key(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_local_subnet") ? [1] : []
               content {
                 ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_local_subnet"]
               }
             }
             dynamic "subnet" {
-              for_each = contains(var.f5xc_azure_az_nodes[az_nodes.key], "f5xc_azure_local_subnet_name") ? [1] : []
+              for_each = contains(key(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_local_subnet_name") ? [1] : []
               content {
                 subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_local_subnet_name"]
               }

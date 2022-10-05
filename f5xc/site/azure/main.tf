@@ -149,7 +149,7 @@ resource "volterra_azure_vnet_site" "site" {
     dynamic "new_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
       content {
-        autogenerate = var.f5xc_azure_vnet_name == "" ? true : null
+        autogenerate = var.f5xc_azure_vnet_name == "" ? true : false
         name         = var.f5xc_azure_vnet_name != "" ? var.f5xc_azure_vnet_name : null
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }

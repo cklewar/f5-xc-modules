@@ -33,3 +33,23 @@ variable "azure_tenant_id" {
   type    = string
   default = ""
 }
+
+variable "azure_vnet_dns_servers" {
+  type    = list(string)
+  default = []
+}
+
+variable "azure_vnet_subnets" {
+  type = list(object({
+    name           = string
+    address_prefix = string
+    security_group = optional(string)
+  }))
+  default = []
+}
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
+}

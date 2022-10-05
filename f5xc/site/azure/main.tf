@@ -60,24 +60,24 @@ resource "volterra_azure_vnet_site" "site" {
     for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
       dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_vnet_resource_group == "" ? var.f5xc_azure_az_nodes : {}
+        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? var.f5xc_azure_az_nodes : {}
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
 
           inside_subnet {
-            subnet {
+            /*subnet {
               subnet_name = format("%s-%s", local.f5xc_azure_inside_subnet_name, az_nodes.key)
-            }
+            }*/
             subnet_param {
               ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet"]
             }
           }
 
           outside_subnet {
-            subnet {
+            /*subnet {
               subnet_name = format("%s-%s", local.f5xc_azure_outside_subnet_name, az_nodes.key)
-            }
+            }*/
             subnet_param {
               ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet"]
             }
@@ -86,7 +86,7 @@ resource "volterra_azure_vnet_site" "site" {
       }
 
       dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? var.f5xc_azure_az_nodes : {}
+        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" ? var.f5xc_azure_az_nodes : {}
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
@@ -149,7 +149,7 @@ resource "volterra_azure_vnet_site" "site" {
     dynamic "new_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
       content {
-        autogenerate = var.f5xc_azure_vnet_name == "" ? true : false
+        autogenerate = var.f5xc_azure_vnet_name == "" ? true : null
         name         = var.f5xc_azure_vnet_name != "" ? var.f5xc_azure_vnet_name : null
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }

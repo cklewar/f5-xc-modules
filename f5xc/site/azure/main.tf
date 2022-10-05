@@ -12,7 +12,7 @@ resource "volterra_azure_vnet_site" "site" {
 
   logs_streaming_disabled = var.f5xc_azure_logs_streaming_disabled
   azure_region            = var.f5xc_azure_region
-  resource_group          = local.f5xc_azure_vnet_resource_group
+  resource_group          = var.f5xc_azure_vnet_resource_group
 
   os {
     default_os_version       = var.f5xc_azure_default_ce_os_version
@@ -157,7 +157,7 @@ resource "volterra_azure_vnet_site" "site" {
     dynamic "existing_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" && var.f5xc_azure_vnet_name != "" ? [1] : []
       content {
-        resource_group = local.f5xc_azure_vnet_resource_group
+        resource_group = var.f5xc_azure_vnet_resource_group
         vnet_name      = var.f5xc_azure_vnet_name
       }
     }

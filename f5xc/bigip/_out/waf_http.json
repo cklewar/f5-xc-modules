@@ -8,7 +8,7 @@
 		"id": "1000000000",
 		"label": "ASM_policy_external_URL",
 		"remark": "ASM_policy_external_URL",
-		"${bigip_tenant}": {
+		"Application_Security_01": {
 			"class": "Tenant",
 			"defaultRouteDomain": 0,
 			"HTTP_Service": {
@@ -18,7 +18,7 @@
 					"class": "Service_HTTP",
 					"virtualPort": 80,
 					"virtualAddresses": [
-						"${vip_ip}"
+						"192.168.168.106"
 					],
 					"snat": "auto",
 					"pool": "Pool1",
@@ -34,14 +34,14 @@
 					"members": [{
 							"servicePort": 80,
 							"serverAddresses": [
-								"${pool_node_ip}"
+								"172.16.184.10"
 							]
 						}
 					]
 				},
 				"WAF_Policy": {
 					"class": "WAF_Policy",
-					"url": "${vcs_url}",
+					"url": "http://172.16.184.12:3000/gitea/awaf/raw/branch/main/waf_policy.json",
                     "enforcementMode": "blocking",
 					"ignoreChanges": true
 				}

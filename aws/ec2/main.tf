@@ -107,7 +107,7 @@ resource "local_file" "instance_script" {
 
 resource "null_resource" "ec2_instance_provision_custom_data" {
   depends_on = [aws_instance.instance, local_file.instance_script]
-  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
+  for_each = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
   connection {
     type        = var.provisioner_connection_type

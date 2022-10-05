@@ -60,46 +60,38 @@ resource "volterra_azure_vnet_site" "site" {
     for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
       dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? var.f5xc_azure_az_nodes : {}
+        for_each = var.f5xc_azure_az_nodes
         content {
           azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
           disk_size = var.f5xc_azure_ce_disk_size
 
           inside_subnet {
-            /*subnet {
-              subnet_name = format("%s-%s", local.f5xc_azure_inside_subnet_name, az_nodes.key)
-            }*/
-            subnet_param {
-              ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet"]
+            dynamic "subnet_param" {
+              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_inside_subnet") ? [1] : []
+              content {
+                ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet"]
+              }
+            }
+            dynamic "subnet" {
+              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_inside_subnet_name") ? [1] : []
+              content {
+                subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
+              }
             }
           }
 
           outside_subnet {
-            /*subnet {
-              subnet_name = format("%s-%s", local.f5xc_azure_outside_subnet_name, az_nodes.key)
-            }*/
-            subnet_param {
-              ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet"]
+            dynamic "subnet_param" {
+              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_outside_subnet") ? [1] : []
+              content {
+                ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet"]
+              }
             }
-          }
-        }
-      }
-
-      dynamic az_nodes {
-        for_each = var.f5xc_azure_vnet_primary_ipv4 == "" ? var.f5xc_azure_az_nodes : {}
-        content {
-          azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
-          disk_size = var.f5xc_azure_ce_disk_size
-
-          inside_subnet {
-            subnet {
-              subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
-            }
-          }
-
-          outside_subnet {
-            subnet {
-              subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
+            dynamic "subnet" {
+              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_outside_subnet_name") ? [1] : []
+              content {
+                subnet_name = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
+              }
             }
           }
         }

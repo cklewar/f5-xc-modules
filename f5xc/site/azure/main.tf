@@ -149,15 +149,16 @@ resource "volterra_azure_vnet_site" "site" {
     dynamic "new_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
       content {
-        name         = local.f5xc_azure_vnet_name
+        autogenerate = var.f5xc_azure_vnet_name == "" ? true : false
+        name         = var.f5xc_azure_vnet_name != "" ? var.f5xc_azure_vnet_name : null
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }
     }
     dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_resource_group != "" && var.f5xc_azure_vnet_name != "" ? [1] : []
       content {
         resource_group = local.f5xc_azure_vnet_resource_group
-        vnet_name      = local.f5xc_azure_vnet_name
+        vnet_name      = var.f5xc_azure_vnet_name
       }
     }
   }

@@ -25,3 +25,9 @@ variable "azure_tenant_id" {
   type    = string
   default = ""
 }
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
+}

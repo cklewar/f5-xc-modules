@@ -5,6 +5,7 @@ resource "azurerm_public_ip" "ip" {
   zones               = var.azure_zones
   allocation_method   = var.azure_virtual_machine_allocation_method
   sku                 = var.azure_virtual_machine_sku
+  tags                = var.custom_tags
 }
 
 resource "azurerm_network_security_group" "sg" {
@@ -23,6 +24,8 @@ resource "azurerm_network_security_group" "sg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+  tags = var.custom_tags
 }
 
 resource "azurerm_network_interface_security_group_association" "sga" {
@@ -41,6 +44,7 @@ resource "azurerm_network_interface" "network_interface" {
     public_ip_address_id          = azurerm_public_ip.ip.id
     private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
   }
+  tags = var.custom_tags
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
@@ -72,6 +76,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     username   = var.azure_linux_virtual_machine_admin_username
     public_key = var.public_ssh_key
   }
-
+  tags = var.custom_tags
   custom_data = var.azure_linux_virtual_machine_custom_data != "" ? var.azure_linux_virtual_machine_custom_data : null
 }

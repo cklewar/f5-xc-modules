@@ -76,6 +76,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     username   = var.azure_linux_virtual_machine_admin_username
     public_key = var.public_ssh_key
   }
-  tags        = var.custom_tags
+  tags = var.custom_tags
   custom_data = var.azure_linux_virtual_machine_custom_data != "" ? var.azure_linux_virtual_machine_custom_data : null
 }

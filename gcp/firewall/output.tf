@@ -1,7 +1,9 @@
-output "vpc_network" {
+output "compute_firewall" {
   value = {
-    "id"           = google_compute_network.vpc_network.id
-    "name"         = google_compute_network.vpc_network.name
-    "gateway_ipv4" = google_compute_network.vpc_network.gateway_ipv4
+    "id"                 = google_compute_firewall.firewall.id
+    "name"               = google_compute_firewall.firewall.name
+    "network"            = google_compute_firewall.firewall.network
+    "source_ranges"      = google_compute_firewall.firewall.source_ranges
+    "destination_ranges" = google_compute_firewall.firewall.destination_ranges
   }
 }

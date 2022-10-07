@@ -96,3 +96,9 @@ variable "azure_linux_virtual_machine_custom_data" {
 variable "public_ssh_key" {
   type = string
 }
+
+variable "custom_tags" {
+  description = "Custom tags to set on resources"
+  type        = map(string)
+  default     = {}
+}

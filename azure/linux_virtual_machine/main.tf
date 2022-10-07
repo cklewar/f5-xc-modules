@@ -46,7 +46,7 @@ resource "azurerm_network_interface" "network_interface" {
 resource "azurerm_linux_virtual_machine" "vm" {
   name                  = var.azure_virtual_machine_name
   location              = var.azure_region
-  zone                  = var.azure_zones
+  zone                  = var.azure_zone
   size                  = var.azure_virtual_machine_size
   resource_group_name   = var.azure_resource_group_name
   network_interface_ids = [azurerm_network_interface.network_interface.id]

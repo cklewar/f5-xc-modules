@@ -17,7 +17,7 @@ resource "azurerm_network_interface" "network_interface" {
   ip_configuration {
     name                          = var.azure_network_interface_ip_cfg_name
     subnet_id                     = var.azure_vnet_subnet_id
-    public_ip_address_id          = var.create_public_ip == true ? azurerm_public_ip.ip.id : null
+    public_ip_address_id          = var.create_public_ip == true ? azurerm_public_ip.ip[0].id : null
     private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
   }
   tags = var.custom_tags

@@ -13,18 +13,20 @@ resource "azurerm_network_security_group" "sg" {
   resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
 
-  security_rule {
-    name                       = "SSH"
-    priority                   = 1001
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
+  dynamic "security_rule" {
+    for_each = var.azure_linux_security_rules
+    content {
+      name                       = security_rule.value.name
+      priority                   = security_rule.value.priority
+      direction                  = security_rule.value.direction
+      access                     = security_rule.value.access
+      protocol                   = security_rule.value.protocol
+      source_port_range          = security_rule.value.source_port_range
+      destination_port_range     = security_rule.value.destination_port_range
+      source_address_prefix      = security_rule.value.source_address_prefix
+      destination_address_prefix = security_rule.value.destination_address_prefix
+    }
   }
-
   tags = var.custom_tags
 }
 
@@ -76,6 +78,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     username   = var.azure_linux_virtual_machine_admin_username
     public_key = var.public_ssh_key
   }
-  tags = var.custom_tags
+  tags        = var.custom_tags
   custom_data = var.azure_linux_virtual_machine_custom_data != "" ? var.azure_linux_virtual_machine_custom_data : null
 }

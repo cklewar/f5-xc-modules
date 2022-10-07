@@ -100,6 +100,11 @@ variable "public_ssh_key" {
   type = string
 }
 
+variable "create_public_ip" {
+  type    = bool
+  default = false
+}
+
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

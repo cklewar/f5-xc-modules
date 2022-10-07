@@ -12,8 +12,27 @@ variable "gcp_zone_name" {
   type = string
 }
 
-variable "gcp_compute_instance_inside_subnet_name" {
-  type = string
+variable "gcp_compute_instance_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "gcp_compute_instance_network_interfaces" {
+  type = list(object({
+    network_name    = optional(string)
+    subnetwork_name = optional(string)
+    network_ip      = optional(string)
+    access_config   = optional(object({
+      nat_ip                 = optional(string)
+      public_ptr_domain_name = optional(string)
+      network_tier           = optional(string)
+    }))
+  }))
+}
+
+variable "gcp_compute_instance_subnetwork_name" {
+  type    = string
+  default = ""
 }
 
 variable "gcp_compute_instance_machine_name" {

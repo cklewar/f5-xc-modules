@@ -10,14 +10,23 @@ resource "google_compute_instance" "compute" {
     }
   }
 
-  network_interface {
-    subnetwork = data.google_compute_subnetwork.subnetwork_inside.name
-    access_config {}
+  dynamic "network_interface" {
+    for_each = var.gcp_compute_instance_network_interfaces
+    content {
+      network    = network_interface.value.network_name
+      subnetwork = network_interface.value.subnetwork_name
+      network_ip = network_interface.value.network_ip
+      access_config {
+        nat_ip                 = network_interface.value.access_config.nat_ip
+        public_ptr_domain_name = network_interface.value.access_config.public_ptr_domain_name
+        network_tier           = network_interface.value.access_config.network_tier
+      }
+    }
   }
+}
 
-  metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
-
-  metadata = {
-    ssh-keys = var.public_ssh_key
-  }
+metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
+metadata                = {
+  ssh-keys = var.public_ssh_key
+}
 }

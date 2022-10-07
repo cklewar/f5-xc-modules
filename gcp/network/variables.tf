@@ -37,7 +37,3 @@ variable "gcp_compute_network_delete_default_routes_on_create" {
 variable "gcp_compute_network_name" {
   type = string
 }
-
-variable "public_ssh_key" {
-  type = string
-}

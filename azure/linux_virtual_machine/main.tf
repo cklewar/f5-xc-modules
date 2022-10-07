@@ -73,5 +73,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     public_key = var.public_ssh_key
   }
 
-  custom_data = var.azure_linux_virtual_machine_custom_data
+  custom_data = var.azure_linux_virtual_machine_custom_data != "" ? var.azure_linux_virtual_machine_custom_data : null
 }

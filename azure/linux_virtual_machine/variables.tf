@@ -7,14 +7,14 @@ variable "azure_virtual_machine_size" {
   default = "Standard_DS1_v2"
 }
 
-variable "azure_zone" {
-  type    = number
-  default = 1
+variable "azure_zones" {
+  type    = list(number)
+  default = [1]
 }
 
 variable "azure_linux_virtual_machine_admin_username" {
   type    = string
-  default = "azueruser"
+  default = "azureuser"
 }
 
 variable "azure_vnet_subnet_id" {

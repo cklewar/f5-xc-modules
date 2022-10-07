@@ -2,7 +2,7 @@ resource "azurerm_public_ip" "ip" {
   name                = var.azure_virtual_machine_name
   resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
-  zones               = [var.azure_zone]
+  zones               = var.azure_zones
   allocation_method   = var.azure_virtual_machine_allocation_method
   sku                 = var.azure_virtual_machine_sku
 }
@@ -32,21 +32,21 @@ resource "azurerm_network_interface_security_group_association" "sga" {
 
 resource "azurerm_network_interface" "network_interface" {
   name                = var.azure_network_interface_name
-  resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
+  resource_group_name = var.azure_resource_group_name
 
   ip_configuration {
     name                          = var.azure_network_interface_ip_cfg_name
     subnet_id                     = var.azure_vnet_subnet_id
-    private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
     public_ip_address_id          = azurerm_public_ip.ip.id
+    private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
   }
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
   name                  = var.azure_virtual_machine_name
   location              = var.azure_region
-  zone                  = var.azure_zone
+  zone                  = var.azure_zones
   size                  = var.azure_virtual_machine_size
   resource_group_name   = var.azure_resource_group_name
   network_interface_ids = [azurerm_network_interface.network_interface.id]

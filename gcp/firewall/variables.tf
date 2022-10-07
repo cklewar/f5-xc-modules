@@ -56,5 +56,5 @@ variable "compute_firewall_deny_rules" {
     protocol = string
     port     = list(string)
   }))
-
+  default = []
 }

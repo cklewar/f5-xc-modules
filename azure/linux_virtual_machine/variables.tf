@@ -8,8 +8,8 @@ variable "azure_virtual_machine_size" {
 }
 
 variable "azure_zones" {
-  type    = list(number)
-  default = [1]
+  type    = list(string)
+  default = ["1"]
 }
 
 variable "azure_linux_virtual_machine_admin_username" {

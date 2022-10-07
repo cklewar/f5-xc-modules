@@ -1,4 +1,5 @@
 resource "azurerm_public_ip" "ip" {
+  count               = create_public_ip == true ? 1 : 0
   name                = var.azure_virtual_machine_name
   resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
@@ -16,7 +17,7 @@ resource "azurerm_network_interface" "network_interface" {
   ip_configuration {
     name                          = var.azure_network_interface_ip_cfg_name
     subnet_id                     = var.azure_vnet_subnet_id
-    public_ip_address_id          = azurerm_public_ip.ip.id
+    public_ip_address_id          = create_public_ip == true ? azurerm_public_ip.ip.id : null
     private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
   }
   tags = var.custom_tags

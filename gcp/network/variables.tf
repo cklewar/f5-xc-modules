@@ -2,63 +2,40 @@ variable "gcp_project_name" {
   type = string
 }
 
-variable "gcp_region" {
-  type = string
+variable "gcp_compute_network_auto_create_subnetworks" {
+  type    = bool
+  default = true
 }
 
-variable "gcp_zone" {
-  type = string
+variable "gcp_compute_network_mtu" {
+  type    = number
+  default = 1460
+
+  validation {
+    condition     = var.gcp_compute_network_mtu >= 1460 && var.gcp_compute_network_mtu <= 1500
+    error_message = format("The minimum value for this field is 1460 and the maximum value is 1500 bytes")
+  }
 }
 
-variable "gcp_credentials_file_path" {
+variable "gcp_compute_network_routing_mode" {
   type    = string
   default = ""
+
+  validation {
+    condition = contains([
+      "REGIONAL", "GLOBAL"
+    ], var.gcp_compute_network_routing_mode)
+    error_message = format("Valid values for gcp_compute_network_routing_mode: REGIONAL, GLOBAL")
+  }
 }
 
-variable "gcp_compute_instance_machine_type" {
-  type    = string
-  default = "n1-standard-4"
+variable "gcp_compute_network_delete_default_routes_on_create" {
+  type    = bool
+  default = false
 }
 
-variable "gcp_compute_instance_machine_disk_size" {
-  type    = string
-  default = "40"
-}
-
-variable "gcp_zone_names" {
-  type = list(string)
-}
-
-variable "gcp_site_name" {
+variable "gcp_compute_network_name" {
   type = string
-}
-
-variable "gcp_compute_instance_inside_subnet_name" {
-  type = string
-}
-
-variable "gcp_compute_firewall_name" {
-  type    = string
-  default = "allow-ssh"
-}
-
-variable "gcp_compute_instance_machine_name" {
-  type = string
-}
-
-variable "gcp_google_compute_instance_image" {
-  type    = string
-  default = "ubuntu-os-cloud/ubuntu-2004-lts"
-}
-
-variable "gcp_compute_instance_metadata_startup_script" {
-  type    = string
-  default = "<<-EOF #!/bin/bash sleep 30 sudo apt-get update sudo apt-get -y install net-tools tcpdump traceroute iputils-ping EOF"
-}
-
-variable "gcp_google_credentials" {
-  type    = string
-  default = ""
 }
 
 variable "public_ssh_key" {

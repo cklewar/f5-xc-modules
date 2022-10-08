@@ -35,6 +35,7 @@ variable "gcp_compute_firewall_direction" {
 
   validation {
     condition = contains(["INGRESS", "EGRESS"], var.gcp_compute_firewall_direction)
+    error_message = "gcp_compute_firewall_direction valid options: INGRESS, EGRESS"
   }
 }
 

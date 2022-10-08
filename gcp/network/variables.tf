@@ -23,7 +23,7 @@ variable "gcp_compute_network_routing_mode" {
 
   validation {
     condition = contains([
-      "REGIONAL", "GLOBAL"
+      "REGIONAL", "GLOBAL", ""
     ], var.gcp_compute_network_routing_mode)
     error_message = format("Valid values for gcp_compute_network_routing_mode: REGIONAL, GLOBAL")
   }

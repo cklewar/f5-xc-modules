@@ -34,7 +34,7 @@ variable "gcp_compute_firewall_direction" {
   default = "INGRESS"
 
   validation {
-    condition = contains(["INGRESS", "EGRESS"], var.gcp_compute_firewall_direction)
+    condition     = contains(["INGRESS", "EGRESS"], var.gcp_compute_firewall_direction)
     error_message = "gcp_compute_firewall_direction valid options: INGRESS, EGRESS"
   }
 }
@@ -47,7 +47,7 @@ variable "gcp_compute_firewall_disabled" {
 variable "compute_firewall_allow_rules" {
   type = list(object({
     protocol = string
-    port     = list(string)
+    ports    = list(string)
   }))
   default = []
 }
@@ -55,7 +55,7 @@ variable "compute_firewall_allow_rules" {
 variable "compute_firewall_deny_rules" {
   type = list(object({
     protocol = string
-    port     = list(string)
+    ports    = list(string)
   }))
   default = []
 }

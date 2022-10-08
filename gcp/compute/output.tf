@@ -6,6 +6,5 @@ output "gcp_compute" {
     "machine_type"      = google_compute_instance.compute.machine_type
     "current_status"    = google_compute_instance.compute.current_status
     "hostname"          = google_compute_instance.compute.hostname
-    "subnetwork_inside" = data.google_compute_subnetwork.subnetwork_inside
   }
 }

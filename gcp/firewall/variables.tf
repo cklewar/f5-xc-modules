@@ -21,7 +21,7 @@ variable "gcp_compute_firewall_description" {
 
 variable "gcp_compute_firewall_destination_ranges" {
   type    = list(string)
-  default = ()
+  default = []
 }
 
 variable "gcp_compute_firewall_priority" {

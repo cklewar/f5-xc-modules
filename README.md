@@ -85,10 +85,10 @@ module "my_test_modul" {
 
 # GCP Modules
 
-| Module  | Documentation | Status |
-|---------|---------------|--------|
-| Compute |               |        |
-|         |               |        |
+| Module  | Documentation                                              | Status                                                                                                                                                                                             |
+|---------|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Compute | **[gcp_compute](https://github.com/cklewar/gcp-compute/)** | [![GCP Compute module](https://github.com/cklewar/gcp-compute/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/gcp-compute/actions/workflows/module_test.yml)  |
+|         |                                                            |                                                                                                                                                                                                    |
 
 # Azure Modules
 

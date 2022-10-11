@@ -3,7 +3,6 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
   namespace                       = var.f5xc_namespace
   labels                          = var.f5xc_labels
   description                     = var.f5xc_http_loadbalancer_description
-  advertise_custom                = var.f5xc_http_loadbalancer_advertise_custom
   advertise_on_public_default_vip = var.f5xc_http_loadbalancer_advertise_on_public_default_vip
   do_not_advertise                = var.f5xc_http_loadbalancer_do_not_advertise
   disable_api_definition          = var.f5xc_http_loadbalancer_disable_api_definition
@@ -20,12 +19,13 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
   least_active                    = var.f5xc_http_loadbalancer_least_active
   random                          = var.f5xc_http_loadbalancer_random
   source_ip_stickiness            = var.f5xc_http_loadbalancer_source_ip_stickiness
-  cookie_stickiness               = var.f5xc_http_loadbalancer_cookie_stickiness
-  ring_hash                       = var.f5xc_http_loadbalancer_ring_hash
   add_location                    = var.f5xc_http_loadbalancer_add_location
+  # cookie_stickiness               = var.f5xc_http_loadbalancer_cookie_stickiness
+  # ring_hash                       = var.f5xc_http_loadbalancer_ring_hash
+  # advertise_custom                = var.f5xc_http_loadbalancer_advertise_custom
 
   dynamic "advertise_on_public" {
-    for_each = var.f5xc_http_loadbalancer_advertise_on_public_public_ip_name != "" && var.f5xc_http_loadbalancer_advertise_on_public_default_vip == false
+    for_each = var.f5xc_http_loadbalancer_advertise_on_public_public_ip_name != "" && var.f5xc_http_loadbalancer_advertise_on_public_default_vip == false ? [1] : []
     content {
       public_ip {
         tenant    = var.f5xc_tenant
@@ -36,23 +36,23 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
   }
 
   dynamic "advertise_custom" {
-    for_each = var.f5xc_http_loadbalancer_advertise_on_public_default_vip == false ? var.f5xc_http_loadbalancer_advertise_custom : []
+    for_each = var.f5xc_http_loadbalancer_advertise_on_public_default_vip == false ? var.f5xc_http_loadbalancer_advertise_custom : {}
     content {
 
     }
   }
 
   dynamic "api_rate_limit" {
-    for_each = var.f5xc_http_loadbalancer_disable_rate_limit == false
+    for_each = var.f5xc_http_loadbalancer_disable_rate_limit == false ? [1] : []
     content {
       no_ip_allowed_list = var.f5xc_http_loadbalancer_api_rate_limit_no_ip_allowed_list
       dynamic "server_url_rules" {
         for_each = var.f5xc_http_loadbalancer_rate_limit_server_url_rules
         content {
-          any_domain          = server_url_rules.value.any_domain
-          specific_domain     = server_url_rules.value.specific_domain
-          base_path           = server_url_rules.value.base_path
-          inline_rate_limiter = {
+          any_domain      = server_url_rules.value.any_domain
+          specific_domain = server_url_rules.value.specific_domain
+          base_path       = server_url_rules.value.base_path
+          inline_rate_limiter {
             threshold           = server_url_rules.value.inline_rate_limiter.threshold
             unit                = server_url_rules.value.inline_rate_limiter.unit
             use_http_lb_user_id = server_url_rules.value.inline_rate_limiter.use_http_lb_user_id
@@ -76,9 +76,11 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
       http_redirect         = var.f5xc_http_loadbalancer_type_https_http_redirect
       add_hsts              = var.f5xc_http_loadbalancer_type_https_add_hsts
       port                  = var.f5xc_http_loadbalancer_type_https_port
-      tls_parameters        = null
       default_header        = {}
       enable_path_normalize = {}
+      tls_parameters {
+
+      }
     }
   }
 
@@ -88,10 +90,9 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
       http_redirect = var.f5xc_http_loadbalancer_type_https_auto_cert_http_redirect
       add_hsts      = var.f5xc_http_loadbalancer_type_https_auto_cert_add_hsts
       port          = var.f5xc_http_loadbalancer_type_https_auto_cert_http_port
-      tls_config    = {
+      tls_config {
         default_security = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_high_security
         medium_security  = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_medium_security
-        low_security     = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_low_security
         low_security     = var.f5xc_http_loadbalancer_type_https_auto_cert_tls_config_low_security
       }
       no_mtls               = var.f5xc_http_loadbalancer_type_https_auto_cert_no_mtls
@@ -104,9 +105,9 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
     for_each = var.f5xc_http_loadbalancer_default_route_pools
     content {
       pool {
-        tenant    = default_route_pools.value.tenant
-        namespace = default_route_pools.value.namespace
-        name      = default_route_pools.value.name
+        tenant    = default_route_pools.value.pool.tenant
+        namespace = default_route_pools.value.pool.namespace
+        name      = default_route_pools.value.pool.name
       }
       weight           = default_route_pools.value.weight
       priority         = default_route_pools.value.priority
@@ -114,8 +115,8 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
     }
   }
 
-  dynamic "bot_defense" {
-    for_each = var.f5xc_http_loadbalancer_disable_bot_defense == false ? var.f5xc_http_loadbalancer_bot_defense : []
+  /*dynamic "bot_defense" {
+    for_each = var.f5xc_http_loadbalancer_disable_bot_defense == false ? var.f5xc_http_loadbalancer_bot_defense : {}
     content {
       regional_endpoint = bot_defense.value.regional_endpoint
       policy {
@@ -156,5 +157,5 @@ resource "volterra_http_loadbalancer" "loadbalancer" {
       }
       timeout = bot_defense.value.timeout
     }
-  }
+  }*/
 }

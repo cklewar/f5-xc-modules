@@ -426,7 +426,8 @@ variable "f5xc_http_loadbalancer_bot_defense" {
       disable_mobile_sdk = bool
     })
     timeout = number
-  }), default = {}
+  })
+  default = null
 }
 
 /*

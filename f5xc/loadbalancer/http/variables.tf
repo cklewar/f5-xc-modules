@@ -224,7 +224,7 @@ variable "f5xc_http_loadbalancer_rate_limit_server_url_rules" {
         unit                = "SECOND"
         use_http_lb_user_id = true
       }
-    }
+    },
     {
       any_domain          = false
       specific_domain     = "example.net"

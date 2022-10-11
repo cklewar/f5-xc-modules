@@ -39,11 +39,11 @@ module "my_test_modul" {
 
 # F5XC Uses Cases
 
-| Use Case             | Documentation                                                                           | Status                                                                                                                                                                                                                  |
-|----------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| NFV BigIP            | **[f5xc_nfv_bigip](https://github.com/cklewar/f5-xc-nfv-bigip)**                        |                                                                                                                                                                                                                         |
-| Azure VNET Hub/Spoke | **[f5xc_azure_vnet_hub_spoke](https://github.com/cklewar/f5-xc-azure-vnet-hub-spoke)**  | [![F5XC Azure VNET module](https://github.com/cklewar/f5-xc-azure-vnet-hub-spoke/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/f5-xc-azure-vnet-hub-spoke/actions/workflows/module_test.yml) |
-| AWS Azure Lan        | **[f5xc_aws_azure_lab](https://github.com/cklewar/f5xc-aws-azure-lab)**                 |                                                                                                                                                                                                                         |
+| Use Case                     | Documentation                                                                                             | Status         |
+|------------------------------|-----------------------------------------------------------------------------------------------------------|----------------|
+| NFV BigIP                    | **[f5xc_nfv_bigip](https://github.com/cklewar/f5-xc-nfv-bigip)**                                          |                |
+| Azure VNET Hub/Spoke Peering | **[f5xc_azure_vnet_hub_spoke_peering](https://github.com/cklewar/f5-xc-uc-azure-vnet-hub-spoke-peering)** |                |
+| AWS Azure Lab                | **[f5xc_aws_azure_lab](https://github.com/cklewar/f5xc-aws-azure-lab)**                                   |                |
 
 # F5XC Modules
 

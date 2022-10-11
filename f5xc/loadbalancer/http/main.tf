@@ -1,4 +1,4 @@
-resource "volterra_http_lb" "lb" {
+resource "volterra_http_loadbalancer" "lb" {
   name                            = var.f5xc_http_lb_name
   namespace                       = var.f5xc_namespace
   labels                          = var.f5xc_labels

@@ -388,8 +388,8 @@ variable "f5xc_http_loadbalancer_type_https_add_hsts" {
 
 variable "f5xc_http_loadbalancer_bot_defense" {
   type = object({
-    regional_endpoint = string
-    policy            = object({
+    regional_endpoint = optional(string)
+    policy            = optional(object({
       protected_app_endpoints = list(object({
         metadata = object({
           name        = string
@@ -424,9 +424,10 @@ variable "f5xc_http_loadbalancer_bot_defense" {
       })
       js_download_path   = string
       disable_mobile_sdk = bool
-    })
-    timeout = number
-  }), default = {}
+    }))
+    timeout = optional(number)
+  })
+  default = {}
 }
 
 /*

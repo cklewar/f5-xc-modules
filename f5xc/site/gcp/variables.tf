@@ -6,10 +6,6 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_gcp_project_id" {
-  type = string
-}
-
 variable "f5xc_gcp_site_name" {
   type = string
 

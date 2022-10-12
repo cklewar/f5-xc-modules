@@ -59,3 +59,8 @@ variable "compute_firewall_deny_rules" {
   }))
   default = []
 }
+
+variable "gcp_compute_firewall_target_tags" {
+  type    = list(string)
+  default = []
+}

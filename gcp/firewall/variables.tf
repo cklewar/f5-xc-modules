@@ -47,7 +47,7 @@ variable "gcp_compute_firewall_disabled" {
 variable "compute_firewall_allow_rules" {
   type = list(object({
     protocol = string
-    ports    = list(string)
+    ports    = optional(list(string))
   }))
   default = []
 }
@@ -55,7 +55,7 @@ variable "compute_firewall_allow_rules" {
 variable "compute_firewall_deny_rules" {
   type = list(object({
     protocol = string
-    ports    = list(string)
+    ports    = optional(list(string))
   }))
   default = []
 }

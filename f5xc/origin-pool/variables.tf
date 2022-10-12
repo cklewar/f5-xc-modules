@@ -34,7 +34,8 @@ variable "f5xc_origin_pool_loadbalancer_algorithm" {
 }
 
 variable "f5xc_origin_pool_labels" {
-  type = map(string)
+  type    = map(string)
+  default = {}
 }
 
 variable "f5xc_origin_pool_port" {

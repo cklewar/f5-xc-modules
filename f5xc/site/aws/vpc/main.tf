@@ -1,10 +1,10 @@
 resource "volterra_aws_vpc_site" "site" {
-  name                     = var.f5xc_aws_vpc_site_name
-  namespace                = var.f5xc_namespace
-  aws_region               = var.f5xc_aws_region
-  tags                     = var.custom_tags
-  labels                   = var.f5xc_labels
-  direct_connect_disabled  = var.f5xc_aws_vpc_direct_connect_disabled
+  name                    = var.f5xc_aws_vpc_site_name
+  namespace               = var.f5xc_namespace
+  aws_region              = var.f5xc_aws_region
+  tags                    = var.custom_tags
+  labels                  = var.f5xc_labels
+  direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
 
   aws_cred {
     name      = var.f5xc_aws_cred
@@ -20,13 +20,15 @@ resource "volterra_aws_vpc_site" "site" {
       manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == true ? true : null
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
+          1
+        ] : []
         content {
           vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
         }
       }
       custom_asn = var.f5xc_aws_vpc_direct_connect_custom_asn
-      auto_asn = var.f5xc_aws_vpc_direct_connect_custom_asn == 0 ? true : null
+      auto_asn   = var.f5xc_aws_vpc_direct_connect_custom_asn == 0 ? true : null
     }
   }
 
@@ -175,8 +177,19 @@ resource "volterra_aws_vpc_site" "site" {
       no_global_network        = var.f5xc_aws_vpc_no_global_network
       no_outside_static_routes = var.f5xc_aws_vpc_no_outside_static_routes
       no_inside_static_routes  = var.f5xc_aws_vpc_no_inside_static_routes
-      no_network_policy        = var.f5xc_aws_vpc_no_network_policy
-      no_forward_proxy         = var.f5xc_aws_vpc_no_forward_proxy
+      dynamic "inside_static_routes" {
+        for_each = no_inside_static_routes == false ? [1] : [0]
+        content {
+          dynamic "static_route_list" {
+            for_each = var.f5xc_aws_vpc_inside_static_routes
+            content {
+              simple_static_route = static_route_list.value
+            }
+          }
+        }
+      }
+      no_network_policy = var.f5xc_aws_vpc_no_network_policy
+      no_forward_proxy  = var.f5xc_aws_vpc_no_forward_proxy
     }
   }
 

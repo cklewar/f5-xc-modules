@@ -24,7 +24,7 @@ variable "azure_linux_security_rules" {
     source_port_range          = string
     destination_port_range     = string
     source_address_prefix      = optional(list(string))
-    destination_address_prefix = optional(list(string))
+    destination_address_prefix = optional(string)
   }))
 }
 

@@ -16,26 +16,26 @@ resource "volterra_origin_pool" "origin-pool" {
   }
 
   dynamic "origin_servers" {
-    for_each = var.f5xc_origin_pool_origin_servers
+    for_each = {for k, v in var.f5xc_origin_pool_origin_servers : k => v if v != null}
 
     content {
       labels = var.f5xc_origin_pool_labels
       dynamic "public_ip" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "public_ip") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "public_ip") ? [1] : []
         content {
           ip = public_ip.value.ip
         }
       }
 
       dynamic "public_name" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "public_name") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "public_name") ? [1] : []
         content {
           dns_name = public_name.value.dns_name
         }
       }
 
       dynamic "private_name" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "private_name") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "private_name") ? [1] : []
         content {
           dns_name        = private_name.value.dns_name
           inside_network  = private_name.value.inside_network
@@ -66,7 +66,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "vn_private_name" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "vn_private_name") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "vn_private_name") ? [1] : []
         content {
           dns_name = vn_private_name.value.dns_name
           private_network {
@@ -78,7 +78,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "private_ip" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "private_ip") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "private_ip") ? [1] : []
         content {
           ip              = private_ip.value.ip
           inside_network  = private_ip.value.inside_network
@@ -110,7 +110,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "k8s_service" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "k8s_service") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "k8s_service") ? [1] : []
         content {
           service_name    = k8s_service.value.service_name
           inside_network  = k8s_service.value.inside_network
@@ -142,7 +142,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "consul_service" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "consul_service") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "consul_service") ? [1] : []
         content {
           service_name    = consul_service.value.service_name
           inside_network  = consul_service.value.inside_network
@@ -174,7 +174,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "vn_private_ip" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "vn_private_ip") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "vn_private_ip") ? [1] : []
         content {
           ip = vn_private_ip.value.ip
           virtual_network {
@@ -186,7 +186,7 @@ resource "volterra_origin_pool" "origin-pool" {
       }
 
       dynamic "custom_endpoint_object" {
-        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "custom_endpoint_object") ? [1] : []
+        for_each = contains(keys(origin_servers.value), "custom_endpoint_object") ? [1] : []
         content {
           endpoint {
             name      = custom_endpoint_object.value.endpoint.name

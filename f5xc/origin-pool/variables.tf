@@ -276,3 +276,18 @@ variable "f5xc_origin_pool_healthcheck_name" {
   type    = string
   default = ""
 }
+
+variable "f5xc_origin_pool_disable_outlier_detection" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_origin_pool_outlier_detection" {
+  type = object({
+    base_ejection_time          = optional(number)
+      consecutive_5xx             = optional(number)
+      consecutive_gateway_failure = optional(number)
+      interval                    = optional(number)
+      max_ejection_percent        = optional(number)
+  })
+}

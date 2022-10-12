@@ -222,4 +222,19 @@ resource "volterra_origin_pool" "origin-pool" {
       }
     }
   }
+
+  advanced_options {
+    disable_outlier_detection = var.f5xc_origin_pool_disable_outlier_detection
+
+    dynamic "outlier_detection" {
+      for_each = var.f5xc_origin_pool_disable_outlier_detection == false ? [1] : []
+      content {
+        base_ejection_time          = outlier_detection.value.base_ejection_time
+        consecutive_5xx             = outlier_detection.value.consecutive_5xx
+        consecutive_gateway_failure = outlier_detection.value.consecutive_gateway_failure
+        interval                    = outlier_detection.value.interval
+        max_ejection_percent        = outlier_detection.value.max_ejection_percent
+      }
+    }
+  }
 }

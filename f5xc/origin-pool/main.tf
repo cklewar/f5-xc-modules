@@ -16,10 +16,10 @@ resource "volterra_origin_pool" "origin-pool" {
   }
 
   dynamic "origin_servers" {
-    labels   = var.f5xc_origin_pool_labels
     for_each = var.f5xc_origin_pool_origin_servers
 
     content {
+      labels = var.f5xc_origin_pool_labels
       dynamic "public_ip" {
         for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "public_ip") ? [1] : []
         content {

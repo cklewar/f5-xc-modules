@@ -123,8 +123,8 @@ variable "f5xc_origin_pool_health_check_port" {
 }
 
 variable "f5xc_origin_pool_healthcheck_names" {
-  type    = string
-  default = list(string)
+  type    = list(string)
+  default = []
 }
 
 variable "f5xc_origin_pool_disable_outlier_detection" {

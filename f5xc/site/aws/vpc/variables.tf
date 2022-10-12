@@ -244,3 +244,8 @@ variable "f5xc_aws_vpc_dc_connect_aggregated_prefix" {
   default = []
 }
 
+variable "f5xc_aws_vpc_inside_static_routes" {
+  type    = list(string)
+  default = []
+}
+

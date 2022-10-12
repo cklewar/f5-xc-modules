@@ -1,193 +1,203 @@
 resource "volterra_origin_pool" "origin-pool" {
+  port                   = var.f5xc_origin_pool_port
   name                   = var.f5xc_origin_pool_name
+  no_tls                 = var.f5xc_origin_pool_no_tls
   namespace              = var.f5xc_namespace
   health_check_port      = var.f5xc_origin_pool_health_check_port != "" ? var.f5xc_origin_pool_health_check_port : null
   endpoint_selection     = var.f5xc_origin_pool_endpoint_selection
   same_as_endpoint_port  = var.f5xc_origin_pool_same_as_endpoint_port
   loadbalancer_algorithm = var.f5xc_origin_pool_loadbalancer_algorithm
+
   dynamic "healthcheck" {
-    for_each = var.f5xc_origin_pool_healthcheck_name != "" ? [1] : []
+    for_each = var.f5xc_origin_pool_healthcheck_names
     content {
-      tenant    = var.f5xc_tenant
-      namespace = var.f5xc_namespace
-      name      = var.f5xc_origin_pool_healthcheck_name
+      name = healthcheck.value
     }
   }
 
-  origin_servers {
-    dynamic "public_ip" {
-      for_each = var.f5xc_origin_pool_public_ip != "" ? [1] : []
-      content {
-        ip = var.f5xc_origin_pool_public_ip
-      }
-    }
+  dynamic "origin_servers" {
+    labels   = var.f5xc_origin_pool_labels
+    for_each = var.f5xc_origin_pool_origin_servers
 
-    dynamic "public_name" {
-      for_each = var.f5xc_origin_pool_public_name != "" ? [1] : []
-      content {
-        dns_name = var.f5xc_origin_pool_public_name
+    content {
+      dynamic "public_ip" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "public_ip") ? [1] : []
+        content {
+          ip = public_ip.value.ip
+        }
       }
-    }
 
-    dynamic "private_name" {
-      for_each = var.f5xc_origin_pool_private_name != "" ? [1] : []
-      content {
-        dns_name = var.f5xc_origin_pool_private_name
-        dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_private_name_site_locator != "" || var.f5xc_origin_pool_private_name_site_locator_virtual_site_name != "" ? [1] : []
-          content {
-            dynamic "site" {
-              for_each = var.f5xc_origin_pool_private_name_site_locator != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_private_name_site_locator_site_name
+      dynamic "public_name" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "public_name") ? [1] : []
+        content {
+          dns_name = public_name.value.dns_name
+        }
+      }
+
+      dynamic "private_name" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "private_name") ? [1] : []
+        content {
+          dns_name        = private_name.value.dns_name
+          inside_network  = private_name.value.inside_network
+          outside_network = private_name.value.outside_network
+
+          dynamic "site_locator" {
+            for_each = contains(keys(private_name.value), "site_locator") ? [1] : []
+            content {
+              dynamic "site" {
+                for_each = contains(keys(site_locator.value), "site") ? [1] : []
+                content {
+                  tenant    = site.value.tenant
+                  namespace = site.value.namespace
+                  name      = site.value.name
+                }
               }
-            }
-            dynamic "virtual_site" {
-              for_each = var.f5xc_origin_pool_private_name_site_locator_virtual_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_private_name_site_locator_virtual_site_name
+              dynamic "virtual_site" {
+                for_each = contains(keys(site_locator.value), "virtual_site") ? [1] : []
+                content {
+                  tenant    = virtual_site.value.tenant
+                  namespace = virtual_site.value.namespace
+                  name      = virtual_site.value.name
+                }
               }
             }
           }
         }
-        inside_network  = var.f5xc_origin_pool_private_name_inside_network
-        outside_network = var.f5xc_origin_pool_private_name_outside_network
       }
-    }
 
-    dynamic "vn_private_name" {
-      for_each = var.f5xc_origin_pool_vn_private_dns_name != "" ? [1] : []
-      content {
-        dns_name = var.f5xc_origin_pool_vn_private_dns_name
-        private_network {
-          tenant    = var.f5xc_tenant
-          namespace = var.f5xc_namespace
-          name      = var.f5xc_origin_pool_vn_private_name_site_locator_site_name
+      dynamic "vn_private_name" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "vn_private_name") ? [1] : []
+        content {
+          dns_name = vn_private_name.value.dns_name
+          private_network {
+            tenant    = vn_private_name.value.private_network.tenant
+            namespace = vn_private_name.value.private_network.namespace
+            name      = vn_private_name.value.private_network.name
+          }
         }
       }
-    }
 
-    dynamic "private_ip" {
-      for_each = var.f5xc_origin_pool_private_ip != "" ? [1] : []
-      content {
-        ip = var.f5xc_origin_pool_private_ip
-        dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" || var.f5xc_origin_pool_private_ip_site_locator_virtual_site_name != "" ? [1] : []
-          content {
-            dynamic "site" {
-              for_each = var.f5xc_origin_pool_private_ip_site_locator_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_private_ip_site_locator_site_name
+      dynamic "private_ip" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "private_ip") ? [1] : []
+        content {
+          ip              = private_ip.value.ip
+          inside_network  = private_ip.value.inside_network
+          outside_network = private_ip.value.outside_network
+
+          dynamic "site_locator" {
+            for_each = contains(keys(private_ip.value), "site_locator") ? [1] : []
+            content {
+
+              dynamic "site" {
+                for_each = contains(keys(site_locator.value), "site") ? [1] : []
+                content {
+                  tenant    = site.value.tenant
+                  namespace = site.value.namespace
+                  name      = site.value.name
+                }
               }
-            }
-            dynamic "virtual_site" {
-              for_each = var.f5xc_origin_pool_private_ip_site_locator_virtual_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_private_ip_site_locator_virtual_site_name
+              dynamic "virtual_site" {
+                for_each = contains(keys(site_locator.value), "virtual_site") ? [1] : []
+                content {
+                  tenant    = virtual_site.value.tenant
+                  namespace = virtual_site.value.namespace
+                  name      = virtual_site.value.name
+                }
               }
             }
           }
         }
-        inside_network  = var.f5xc_origin_pool_private_ip_inside_network
-        outside_network = var.f5xc_origin_pool_private_ip_outside_network
       }
-    }
 
-    dynamic "k8s_service" {
-      for_each = var.f5xc_origin_pool_k8s_service_name != "" ? [1] : []
-      content {
-        service_name = var.f5xc_origin_pool_k8s_service_name
-        dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" || var.f5xc_origin_pool_k8s_service_site_locator_virtual_site_name != "" ? [1] : []
-          content {
-            dynamic "site" {
-              for_each = var.f5xc_origin_pool_k8s_service_site_locator_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_k8s_service_site_locator_site_name
-              }
-            }
-            dynamic "virtual_site" {
-              for_each = var.f5xc_origin_pool_k8s_service_site_locator_virtual_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_k8s_service_site_locator_virtual_site_name
-              }
-            }
-          }
-        }
-        inside_network  = var.f5xc_origin_pool_k8s_service_inside_network
-        outside_network = var.f5xc_origin_pool_k8s_service_outside_network
-      }
-    }
+      dynamic "k8s_service" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "k8s_service") ? [1] : []
+        content {
+          service_name    = k8s_service.value.service_name
+          inside_network  = k8s_service.value.inside_network
+          outside_network = k8s_service.value.outside_network
 
-    dynamic "consul_service" {
-      for_each = var.f5xc_origin_pool_consul_service != "" ? [1] : []
-      content {
-        service_name = var.f5xc_origin_pool_consul_service_name
-        dynamic "site_locator" {
-          for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" || var.f5xc_origin_pool_consul_service_site_locator_virtual_site_name != "" ? [1] : []
-          content {
-            dynamic "site" {
-              for_each = var.f5xc_origin_pool_consul_service_site_locator_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_consul_service_site_locator_site_name
+          dynamic "site_locator" {
+            for_each = contains(keys(k8s_service.value), "site_locator") ? [1] : []
+            content {
+
+              dynamic "site" {
+                for_each = contains(keys(site_locator.value), "site") ? [1] : []
+                content {
+                  tenant    = site.value.tenant
+                  namespace = site.value.namespace
+                  name      = site.value.name
+                }
               }
-            }
-            dynamic "virtual_site" {
-              for_each = var.f5xc_origin_pool_k8s_service_site_locator_virtual_site_name != "" ? [1] : []
-              content {
-                tenant    = var.f5xc_tenant
-                namespace = var.f5xc_namespace
-                name      = var.f5xc_origin_pool_consul_service_site_locator_virtual_site_name
+              dynamic "virtual_site" {
+                for_each = contains(keys(site_locator.value), "virtual_site") ? [1] : []
+                content {
+                  tenant    = virtual_site.value.tenant
+                  namespace = virtual_site.value.namespace
+                  name      = virtual_site.value.name
+                }
               }
             }
           }
         }
-        inside_network  = var.f5xc_origin_pool_consul_service_inside_network
-        outside_network = var.f5xc_origin_pool_consul_service_outside_network
       }
-    }
 
-    dynamic "vn_private_ip" {
-      for_each = var.f5xc_origin_pool_vn_private_ip != "" ? [1] : []
-      content {
-        ip = var.f5xc_origin_pool_vn_private_ip
-        virtual_network {
-          tenant    = var.f5xc_tenant
-          namespace = var.f5xc_namespace
-          name      = var.f5xc_origin_pool_vn_private_ip_virtual_network_name
+      dynamic "consul_service" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "consul_service") ? [1] : []
+        content {
+          service_name    = consul_service.value.service_name
+          inside_network  = consul_service.value.inside_network
+          outside_network = consul_service.value.outside_network
+
+          dynamic "site_locator" {
+            for_each = contains(keys(consul_service.value), "site_locator") ? [1] : []
+            content {
+
+              dynamic "site" {
+                for_each = contains(keys(site_locator.value), "site") ? [1] : []
+                content {
+                  tenant    = site.value.tenant
+                  namespace = site.value.namespace
+                  name      = site.value.name
+                }
+              }
+              dynamic "virtual_site" {
+                for_each = contains(keys(site_locator.value), "virtual_site") ? [1] : []
+                content {
+                  tenant    = virtual_site.value.tenant
+                  namespace = virtual_site.value.namespace
+                  name      = virtual_site.value.name
+                }
+              }
+            }
+          }
+        }
+      }
+
+      dynamic "vn_private_ip" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "vn_private_ip") ? [1] : []
+        content {
+          ip = vn_private_ip.value.ip
+          virtual_network {
+            tenant    = vn_private_ip.value.virtual_network.tenant
+            namespace = vn_private_ip.value.virtual_network.namespace
+            name      = vn_private_ip.value.virtual_network.name
+          }
+        }
+      }
+
+      dynamic "custom_endpoint_object" {
+        for_each = contains(keys(var.f5xc_origin_pool_origin_servers), "custom_endpoint_object") ? [1] : []
+        content {
+          endpoint {
+            name      = custom_endpoint_object.value.endpoint.name
+            namespace = custom_endpoint_object.value.endpoint.namespace
+            tenant    = custom_endpoint_object.value.endpoint.tenant
+          }
         }
       }
     }
-
-    dynamic "custom_endpoint_object" {
-      for_each = var.f5xc_origin_pool_custom_endpoint_object_name != "" ? [1] : []
-      content {
-        endpoint {
-          name      = var.f5xc_origin_pool_custom_endpoint_object_name
-          namespace = var.f5xc_namespace
-          tenant    = var.f5xc_tenant
-        }
-      }
-    }
-    labels = var.f5xc_origin_pool_labels
   }
 
-  port   = var.f5xc_origin_pool_port
-  no_tls = var.f5xc_origin_pool_no_tls
   dynamic "use_tls" {
     for_each = var.f5xc_origin_pool_no_tls == false ? [1] : []
     content {

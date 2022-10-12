@@ -112,51 +112,6 @@ variable "f5xc_origin_pool_mtls_custom_hash_algorithms" {
   default = []
 }
 
-variable "f5xc_origin_pool_public_ip" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_public_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_vn_private_dns_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_ip" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_k8s_service_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_consul_service" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_vn_private_ip" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_custom_endpoint_object_name" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_origin_pool_same_as_endpoint_port" {
   type    = bool
   default = true
@@ -167,114 +122,9 @@ variable "f5xc_origin_pool_health_check_port" {
   default = ""
 }
 
-variable "f5xc_origin_pool_private_ip_site_locator" {
+variable "f5xc_origin_pool_healthcheck_names" {
   type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_ip_site_locator_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_ip_inside_network" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_origin_pool_private_ip_outside_network" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_origin_pool_private_name_site_locator" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_name_site_locator_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_name_inside_network" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_origin_pool_private_name_outside_network" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_origin_pool_k8s_service_site_locator_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_k8s_service_inside_network" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_origin_pool_k8s_service_outside_network" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_origin_pool_consul_service_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_consul_service_inside_network" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_origin_pool_consul_service_outside_network" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_origin_pool_consul_service_site_locator_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_vn_private_ip_virtual_network_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_vn_private_name_site_locator_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_k8s_service_site_locator_virtual_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_consul_service_site_locator_virtual_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_name_site_locator_virtual_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_private_ip_site_locator_virtual_site_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_origin_pool_healthcheck_name" {
-  type    = string
-  default = ""
+  default = list(string)
 }
 
 variable "f5xc_origin_pool_disable_outlier_detection" {
@@ -284,11 +134,115 @@ variable "f5xc_origin_pool_disable_outlier_detection" {
 
 variable "f5xc_origin_pool_outlier_detection" {
   type = object({
-    base_ejection_time          = optional(number)
-    consecutive_5xx             = optional(number)
-    consecutive_gateway_failure = optional(number)
     interval                    = optional(number)
+    consecutive_5xx             = optional(number)
+    base_ejection_time          = optional(number)
     max_ejection_percent        = optional(number)
+    consecutive_gateway_failure = optional(number)
   })
   default = {}
+}
+
+variable "f5xc_origin_pool_origin_servers" {
+  type = list(object({
+    public_ip = optional(object({
+      ip = string
+    }))
+    public_name = optional(object({
+      dns_name = string
+    }))
+    private_name = optional(object({
+      dns_name        = string
+      inside_network  = bool
+      outside_network = bool
+      site_locator    = optional(object({
+        site = object({
+          name      = string
+          namespace = string
+        })
+        virtual_site = optional(object({
+          tenant    = string
+          name      = string
+          namespace = string
+        }))
+      }))
+    }))
+    vn_private_name = optional(object({
+      dns_name        = string
+      private_network = object({
+        tenant    = string
+        name      = string
+        namespace = string
+      })
+    }))
+    private_ip = optional(object({
+      ip              = string
+      inside_network  = bool
+      outside_network = bool
+      site_locator    = optional(object({
+        site = object({
+          name      = string
+          namespace = string
+        })
+        virtual_site = optional(object({
+          tenant    = string
+          name      = string
+          namespace = string
+        }))
+      }))
+    }))
+    k8s_service = optional(object({
+      service_name    = string
+      inside_network  = bool
+      outside_network = bool
+      site_locator    = optional(object({
+        site = object({
+          name      = string
+          namespace = string
+        })
+        virtual_site = optional(object({
+          tenant    = string
+          name      = string
+          namespace = string
+        }))
+      }))
+    }))
+    consul_service = optional(object({
+      service_name    = string
+      inside_network  = bool
+      outside_network = bool
+      site_locator    = optional(object({
+        site = object({
+          name      = string
+          namespace = string
+        })
+        virtual_site = optional(object({
+          tenant    = string
+          name      = string
+          namespace = string
+        }))
+      }))
+    }))
+    vn_private_ip = optional(object({
+      ip              = string
+      virtual_network = object({
+        tenant    = string
+        name      = string
+        namespace = string
+      })
+    }))
+    custom_endpoint_object = optional(object({
+      endpoint = object({
+        tenant    = string
+        name      = string
+        namespace = string
+      })
+    }))
+  }))
+  default = []
+
+  validation {
+    condition     = length(var.f5xc_origin_pool_origin_servers) > 0
+    error_message = "f5xc_origin_pool_origin_servers is a mandatory field."
+  }
 }

@@ -49,7 +49,7 @@ variable "gcp_compute_instance_metadata_startup_script" {
   default = "<<-EOF #!/bin/bash sleep 30 sudo apt-get update sudo apt-get -y install net-tools tcpdump traceroute iputils-ping EOF"
 }
 
-variable "gcp_compute_instance_tags" {
+variable "gcp_compute_instance_target_tags" {
   type    = list(string)
   default = []
 }

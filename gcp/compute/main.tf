@@ -1,9 +1,9 @@
 resource "google_compute_instance" "compute" {
   name         = var.gcp_compute_instance_machine_name
   zone         = var.gcp_zone_name
-  machine_type = var.gcp_compute_instance_machine_type
-  tags         = var.gcp_compute_instance_tags
+  tags         = var.gcp_compute_instance_target_tags
   labels       = var.gcp_compute_instance_labels
+  machine_type = var.gcp_compute_instance_machine_type
 
   boot_disk {
     initialize_params {

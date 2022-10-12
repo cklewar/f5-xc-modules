@@ -249,3 +249,8 @@ variable "f5xc_aws_vpc_inside_static_routes" {
   default = []
 }
 
+variable "f5xc_aws_vpc_outside_static_routes" {
+  type    = list(string)
+  default = []
+}
+

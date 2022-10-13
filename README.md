@@ -39,11 +39,11 @@ module "my_test_modul" {
 
 # F5XC Uses Cases
 
-| Use Case                     | Documentation                                                                                             | Status         |
-|------------------------------|-----------------------------------------------------------------------------------------------------------|----------------|
-| NFV BigIP                    | **[f5xc_nfv_bigip](https://github.com/cklewar/f5-xc-nfv-bigip)**                                          |                |
-| Azure VNET Hub/Spoke Peering | **[f5xc_azure_vnet_hub_spoke_peering](https://github.com/cklewar/f5-xc-uc-azure-vnet-hub-spoke-peering)** |                |
-| AWS Azure GCP Lab            | **[f5xc_aws_azure_gcp_lab](https://github.com/cklewar/f5xc-aws-azure-gcp-lab)**                           |                |
+| Use Case                     | Documentation                                                                                             | Status                                                                                                                                                                                                                                              |
+|------------------------------|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NFV BigIP                    | **[f5xc_nfv_bigip](https://github.com/cklewar/f5-xc-nfv-bigip)**                                          |                                                                                                                                                                                                                                                     |
+| Azure VNET Hub/Spoke Peering | **[f5xc_azure_vnet_hub_spoke_peering](https://github.com/cklewar/f5-xc-uc-azure-vnet-hub-spoke-peering)** |                                                                                                                                                                                                                                                     |
+| AWS Azure GCP Lab            | **[f5xc_aws_azure_gcp_lab](https://github.com/cklewar/f5xc-aws-azure-gcp-lab)**                           | [![F5XC AWS Azure GCP lab use case module](https://github.com/cklewar/f5-xc-uc-aws-azure-gcp-lab/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/f5-xc-uc-aws-azure-gcp-lab/actions/workflows/module_test.yml) |
 
 # F5XC Modules
 

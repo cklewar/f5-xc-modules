@@ -12,7 +12,7 @@ resource "volterra_azure_vnet_site" "site" {
 
   logs_streaming_disabled = var.f5xc_azure_logs_streaming_disabled
   azure_region            = var.f5xc_azure_region
-  resource_group          = var.f5xc_azure_vnet_resource_group
+  resource_group          = var.f5xc_azure_vnet_site_resource_group
 
   os {
     default_os_version       = var.f5xc_azure_default_ce_os_version
@@ -48,8 +48,8 @@ resource "volterra_azure_vnet_site" "site" {
               for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_local_subnet_name") ? [1] : []
               content {
                 subnet_name         = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_local_subnet_name"]
-                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false && var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] != "" ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
-                vnet_resource_group = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_same_as_vnet_resource_group") ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] : true
+                vnet_resource_group = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false ? false : true
+                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
               }
             }
           }
@@ -78,8 +78,8 @@ resource "volterra_azure_vnet_site" "site" {
               for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_inside_subnet_name") ? [1] : []
               content {
                 subnet_name         = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_inside_subnet_name"]
-                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false && var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] != "" ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
-                vnet_resource_group = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_same_as_vnet_resource_group") ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] : true
+                vnet_resource_group = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false && var.f5xc_azure_existing_vnet_name != "" && var.f5xc_azure_existing_vnet_resource_group != "" ? false : true
+                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
               }
             }
           }
@@ -95,8 +95,8 @@ resource "volterra_azure_vnet_site" "site" {
               for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_outside_subnet_name") ? [1] : []
               content {
                 subnet_name         = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet_name"]
-                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false && var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] != "" ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
-                vnet_resource_group = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_same_as_vnet_resource_group") ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] : true
+                vnet_resource_group = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false && var.f5xc_azure_existing_vnet_name != "" && var.f5xc_azure_existing_vnet_resource_group != "" ? false : true
+                subnet_resource_grp = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_same_as_vnet_resource_group"] == false ? var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_subnet_resource_grp_name"] : null
               }
             }
           }
@@ -145,18 +145,18 @@ resource "volterra_azure_vnet_site" "site" {
 
   vnet {
     dynamic "new_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_existing_vnet_name == "" && var.f5xc_azure_existing_vnet_resource_group == "" ? [1] : []
       content {
-        autogenerate = var.f5xc_azure_vnet_name == "" ? true : false
-        name         = var.f5xc_azure_vnet_name != "" ? var.f5xc_azure_vnet_name : null
+        autogenerate = var.f5xc_azure_new_vnet_name == "" ? true : false
+        name         = var.f5xc_azure_new_vnet_name != "" ? var.f5xc_azure_new_vnet_name : null
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }
     }
     dynamic "existing_vnet" {
-      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_vnet_name != "" ? [1] : []
+      for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_existing_vnet_name != "" && var.f5xc_azure_existing_vnet_resource_group != "" ? [1] : []
       content {
-        resource_group = var.f5xc_azure_vnet_resource_group
-        vnet_name      = var.f5xc_azure_vnet_name
+        resource_group = var.f5xc_azure_existing_vnet_resource_group
+        vnet_name      = var.f5xc_azure_existing_vnet_name
       }
     }
   }

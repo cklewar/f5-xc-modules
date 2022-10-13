@@ -157,11 +157,21 @@ variable "f5xc_azure_no_worker_nodes" {
   type = bool
 }
 
-variable "f5xc_azure_vnet_resource_group" {
+variable "f5xc_azure_vnet_site_resource_group" {
   type = string
 }
 
-variable "f5xc_azure_vnet_name" {
+variable "f5xc_azure_new_vnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_existing_vnet_resource_group" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_existing_vnet_name" {
   type    = string
   default = ""
 }

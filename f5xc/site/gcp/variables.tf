@@ -236,3 +236,9 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "custom_labels" {
+  description = "Custom labels to set on resources"
+  type        = map(string)
+  default     = {}
+}

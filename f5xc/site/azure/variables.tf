@@ -196,16 +196,6 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
   default = true
 }
 
-variable "f5xc_same_as_vnet_resource_group" {
-  type    = bool
-  default = true
-}
-
-variable "subnet_resource_grp_name" {
-  type    = string
-  default = ""
-}
-
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

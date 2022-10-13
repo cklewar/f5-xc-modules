@@ -144,6 +144,43 @@ variable "f5xc_origin_pool_outlier_detection" {
 }
 
 variable "f5xc_origin_pool_origin_servers" {
+  type = object(
+    {
+      public_ip = optional(list(object({
+        ip = string
+      })))
+      public_name = optional(list(object({
+        dns_name = string
+      })))
+      private_ip = optional(list(
+        object({
+          ip              = string
+          inside_network  = bool
+          outside_network = bool
+          site_locator    = optional(object({
+            site = object({
+              name      = string
+              namespace = string
+            })
+            virtual_site = optional(object({
+              tenant    = string
+              name      = string
+              namespace = string
+            }))
+          }))
+        })
+      ))
+    }
+  )
+  default = {}
+
+  validation {
+    condition     = length(var.f5xc_origin_pool_origin_servers) > 0
+    error_message = "f5xc_origin_pool_origin_servers is a mandatory field."
+  }
+}
+
+/*variable "f5xc_origin_pool_origin_servers" {
   type = list(object({
     public_ip = optional(object({
       ip = string
@@ -245,4 +282,4 @@ variable "f5xc_origin_pool_origin_servers" {
     condition     = length(var.f5xc_origin_pool_origin_servers) > 0
     error_message = "f5xc_origin_pool_origin_servers is a mandatory field."
   }
-}
+}*/

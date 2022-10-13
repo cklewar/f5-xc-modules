@@ -43,7 +43,7 @@ module "my_test_modul" {
 |------------------------------|-----------------------------------------------------------------------------------------------------------|----------------|
 | NFV BigIP                    | **[f5xc_nfv_bigip](https://github.com/cklewar/f5-xc-nfv-bigip)**                                          |                |
 | Azure VNET Hub/Spoke Peering | **[f5xc_azure_vnet_hub_spoke_peering](https://github.com/cklewar/f5-xc-uc-azure-vnet-hub-spoke-peering)** |                |
-| AWS Azure GCP Lab            | **[f5xc_aws_azure_lab](https://github.com/cklewar/f5xc-aws-azure-lab)**                                   |                |
+| AWS Azure GCP Lab            | **[f5xc_aws_azure_gcp_lab](https://github.com/cklewar/f5xc-aws-azure-gcp-lab)**                           |                |
 
 # F5XC Modules
 

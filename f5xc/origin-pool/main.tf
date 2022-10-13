@@ -239,11 +239,19 @@ resource "volterra_origin_pool" "origin-pool" {
     dynamic "outlier_detection" {
       for_each = var.f5xc_origin_pool_outlier_detection
       content {
+<<<<<<< HEAD
         base_ejection_time          = var.f5xc_origin_pool_outlier_detection.base_ejection_time
         consecutive_5xx             = var.f5xc_origin_pool_outlier_detection.consecutive_5xx
         consecutive_gateway_failure = var.f5xc_origin_pool_outlier_detection.consecutive_gateway_failure
         interval                    = var.f5xc_origin_pool_outlier_detection.interval
         max_ejection_percent        = var.f5xc_origin_pool_outlier_detection.max_ejection_percent
+=======
+        base_ejection_time          = outlier_detection.value.base_ejection_time
+        consecutive_5xx             = outlier_detection.value.consecutive_5xx
+        consecutive_gateway_failure = outlier_detection.value.consecutive_gateway_failure
+        interval                    = outlier_detection.value.interval
+        max_ejection_percent        = outlier_detection.value.max_ejection_percent
+>>>>>>> 90ee73a (update)
       }
     }
   }

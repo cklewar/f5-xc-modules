@@ -1,6 +1,6 @@
 resource "aws_key_pair" "aws-key" {
   key_name   = format("%s-key", var.aws_ec2_instance_name)
-  public_key = file(var.ssh_public_key_file)
+  public_key = var.ssh_public_key_file
 }
 
 resource "aws_security_group" "public" {
@@ -107,13 +107,13 @@ resource "local_file" "instance_script" {
 
 resource "null_resource" "ec2_instance_provision_custom_data" {
   depends_on = [aws_instance.instance, local_file.instance_script]
-  for_each = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
+  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
   connection {
     type        = var.provisioner_connection_type
     host        = aws_eip.eip.public_ip
     user        = var.provisioner_connection_user
-    private_key = file(var.ssh_private_key_file)
+    private_key = var.ssh_private_key_file
   }
 
   provisioner "file" {
@@ -128,7 +128,7 @@ resource "null_resource" "ec2_execute_script_file" {
     type        = var.provisioner_connection_type
     host        = aws_eip.eip.public_ip
     user        = var.provisioner_connection_user
-    private_key = file(var.ssh_private_key_file)
+    private_key = var.ssh_private_key_file
   }
 
   provisioner "remote-exec" {

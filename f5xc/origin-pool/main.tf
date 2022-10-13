@@ -243,7 +243,7 @@ resource "volterra_origin_pool" "origin-pool" {
         consecutive_5xx             = outlier_detection.value.consecutive_5xx
         consecutive_gateway_failure = outlier_detection.value.consecutive_gateway_failure
         interval                    = outlier_detection.value.interval
-        max_ejection_percent        = outlier_detection.value.max_ejection_percent
+        max_ejection_percent        = outlier_detection.key.max_ejection_percent
       }
     }
   }

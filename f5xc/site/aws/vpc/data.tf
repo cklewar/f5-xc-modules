@@ -1,8 +1,8 @@
-/*data "aws_network_interface" "slo" {
-  # depends_on = [module.site_wait_for_online]
+data "aws_network_interface" "slo" {
+  depends_on = [volterra_aws_vpc_site.site.id]
   filter {
     name   = "tag:ves-io-site-name"
-    values = [volterra_tf_params_action.aws_vpc_action.site_name]
+    values = [var.f5xc_aws_vpc_site_name]
   }
   filter {
     name   = "tag:ves.io/interface-type"
@@ -11,13 +11,13 @@
 }
 
 data "aws_network_interface" "sli" {
-  # depends_on = [module.site_wait_for_online]
+  depends_on = [volterra_aws_vpc_site.site.id]
   filter {
     name   = "tag:ves-io-site-name"
-    values = [volterra_tf_params_action.aws_vpc_action.site_name]
+    values = [var.f5xc_aws_vpc_site_name]
   }
   filter {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-inside"]
   }
-}*/
+}

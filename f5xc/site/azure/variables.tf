@@ -52,7 +52,7 @@ variable "f5xc_azure_vnet_primary_ipv4" {
 }
 
 variable "f5xc_azure_az_nodes" {
-  type = map(map(any))
+  type = map(map(string))
 }
 
 variable "f5xc_azure_hub_spoke_vnets" {

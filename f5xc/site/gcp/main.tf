@@ -73,7 +73,6 @@ resource "volterra_gcp_vpc_site" "site" {
           }
         }
       }
-      node_number = var.f5xc_gcp_node_number
     }
   }
 

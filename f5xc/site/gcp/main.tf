@@ -29,6 +29,7 @@ resource "volterra_gcp_vpc_site" "site" {
     content {
       gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
       gcp_zone_names   = var.f5xc_gcp_zone_names
+      node_number      = var.f5xc_gcp_node_number
 
       dynamic "local_network" {
         for_each = var.f5xc_gcp_local_network_name != "" || (var.f5xc_gcp_local_network_name == "" && var.f5xc_gcp_new_network_autogenerate == true) || var.f5xc_gcp_existing_local_network_name != "" ? [1] : []
@@ -189,6 +190,7 @@ resource "volterra_gcp_vpc_site" "site" {
       node_number              = var.f5xc_gcp_node_number
     }
   }
+
   ssh_key = var.public_ssh_key
 }
 

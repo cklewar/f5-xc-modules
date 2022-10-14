@@ -83,9 +83,7 @@ resource "volterra_gcp_vpc_site" "site" {
       gcp_zone_names   = var.f5xc_gcp_zone_names
 
       dynamic "outside_network" {
-        for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [
-          1
-        ] : []
+        for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
         content {
           dynamic "new_network" {
             for_each = var.f5xc_gcp_outside_network_name != "" ? [1] : []
@@ -109,9 +107,7 @@ resource "volterra_gcp_vpc_site" "site" {
       }
 
       dynamic "inside_network" {
-        for_each = var.f5xc_gcp_inside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "") || var.f5xc_gcp_existing_inside_network_name != "" ? [
-          1
-        ] : []
+        for_each = var.f5xc_gcp_inside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_inside_network_name == "") || var.f5xc_gcp_existing_inside_network_name != "" ? [1] : []
         content {
           dynamic "new_network" {
             for_each = var.f5xc_gcp_inside_network_name != "" ? [1] : []

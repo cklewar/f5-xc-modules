@@ -33,7 +33,7 @@ resource "null_resource" "ec2_instance_provision_custom_data" {
 
   connection {
     type        = var.provisioner_connection_type
-    host        = var.aws_ec2_public_ip
+    host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
     private_key = var.ssh_private_key_file
   }
@@ -48,7 +48,7 @@ resource "null_resource" "ec2_execute_script_file" {
   depends_on = [null_resource.ec2_instance_provision_custom_data]
   connection {
     type        = var.provisioner_connection_type
-    host        = var.aws_ec2_public_ip
+    host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
     private_key = var.ssh_private_key_file
   }

@@ -82,11 +82,6 @@ variable "aws_ec2_user_data_replace_on_change" {
   default = true
 }
 
-variable "aws_ec2_public_ip" {
-  type    = string
-  default = ""
-}
-
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

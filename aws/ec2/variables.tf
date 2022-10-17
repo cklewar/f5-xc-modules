@@ -75,7 +75,6 @@ variable "aws_ec2_network_interfaces" {
     device_index         = number
     network_interface_id = string
   }))
-  default = []
 }
 
 variable "aws_ec2_user_data_replace_on_change" {

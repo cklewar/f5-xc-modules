@@ -45,28 +45,12 @@ variable "aws_ec2_instance_type" {
   type = string
 }
 
-variable "aws_ec2_private_interface_ips" {
-  type = list(string)
-}
-
-variable "aws_ec2_public_interface_ips" {
-  type = list(string)
-}
-
 variable "aws_ec2_instance_custom_data_dirs" {
   type = list(object({
     name        = string
     source      = string
     destination = string
   }))
-}
-
-variable "aws_subnet_public_id" {
-  type = string
-}
-
-variable "aws_subnet_private_id" {
-  type = string
 }
 
 variable "amis" {
@@ -84,15 +68,6 @@ variable "amis" {
     "eu-west-3"    = "ami-06c781daa01c5c4d9"
     "eu-north-1"   = "ami-0d86b044a70ecfc6e"
   }
-}
-
-variable "aws_vpc_id" {
-  type = string
-}
-
-variable "aws_subnet_id" {
-  type    = string
-  default = ""
 }
 
 variable "aws_ec2_network_interfaces" {

@@ -12,3 +12,7 @@ output "aws_ec2_instance" {
     script_destination = format("/tmp/%s", var.aws_ec2_instance_script_file)
   }
 }
+
+output "test123" {
+  value = var.aws_ec2_instance_custom_data_dirs
+}

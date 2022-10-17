@@ -7,11 +7,6 @@ terraform {
       version = ">= 4.34.0"
     }
 
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-      version = "2.14.0"
-    }
-
     local = ">= 2.2.3"
     null  = ">= 3.1.1"
   }

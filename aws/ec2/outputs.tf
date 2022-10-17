@@ -10,9 +10,6 @@ output "aws_ec2_instance" {
     script_source      = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
     network_interface  = aws_instance.instance.network_interface
     script_destination = format("/tmp/%s", var.aws_ec2_instance_script_file)
+    custom_data_dirs   = var.aws_ec2_instance_custom_data_dirs
   }
-}
-
-output "test123" {
-  value = var.aws_ec2_instance_custom_data_dirs
 }

@@ -90,6 +90,29 @@ variable "aws_vpc_id" {
   type = string
 }
 
+variable "aws_subnet_id" {
+  type    = string
+  default = ""
+}
+
+variable "aws_ec2_network_interfaces" {
+  type = list(object({
+    device_index         = number
+    network_interface_id = string
+  }))
+  default = []
+}
+
+variable "aws_ec2_user_data_replace_on_change" {
+  type    = bool
+  default = true
+}
+
+variable "aws_ec2_public_ip" {
+  type    = string
+  default = ""
+}
+
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

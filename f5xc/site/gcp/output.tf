@@ -5,5 +5,7 @@ output "gcp_vpc" {
     region        = volterra_gcp_vpc_site.site.gcp_region
     instance_type = volterra_gcp_vpc_site.site.instance_type
     params        = volterra_tf_params_action.gcp_vpc_action
+    sli_interface = ""
+    slo_interface = ""
   }
 }

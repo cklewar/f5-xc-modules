@@ -4,7 +4,6 @@ resource "google_compute_instance" "compute" {
   tags         = var.gcp_compute_instance_target_tags
   labels       = var.gcp_compute_instance_labels
   machine_type = var.gcp_compute_instance_machine_type
-
   boot_disk {
     initialize_params {
       image = var.gcp_google_compute_instance_image

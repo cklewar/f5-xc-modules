@@ -4,6 +4,7 @@ output "virtual_machine" {
     "name"                  = azurerm_linux_virtual_machine.vm.name
     "public_ip"             = azurerm_linux_virtual_machine.vm.public_ip_address
     "private_ip"            = azurerm_linux_virtual_machine.vm.private_ip_address
+    "public_ip_address"     = azurerm_linux_virtual_machine.vm.public_ip_address
     "admin_username"        = azurerm_linux_virtual_machine.vm.admin_username
     "admin_ssh_key"         = azurerm_linux_virtual_machine.vm.admin_ssh_key
     "resource_group_name"   = azurerm_linux_virtual_machine.vm.resource_group_name

@@ -6,7 +6,7 @@ resource "volterra_virtual_k8s" "vk8s" {
   labels      = local.f5xc_labels
 
   dynamic "vsite_refs" {
-    for_each = length(var.f5xc_virtual_site_refs) > 0 ? var.f5xc_virtual_site_refs : []
+    for_each = var.f5xc_virtual_site_refs
     content {
       name      = var.f5xc_virtual_site_refs
       namespace = var.f5xc_namespace
@@ -22,4 +22,14 @@ resource "volterra_virtual_k8s" "vk8s" {
       namespace = var.f5xc_namespace
     }
   }*/
+}
+
+module "vk8s_wait_for_online" {
+  depends_on     = [volterra_virtual_k8s.vk8s]
+  source         = "../status/vk8s"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_tenant    = var.f5xc_tenant
+  f5xc_vk8s_name = volterra_virtual_k8s.vk8s.name
 }

@@ -30,7 +30,8 @@ variable "f5xc_tenant" {
 }
 
 variable "f5xc_namespace" {
-  type = string
+  type    = string
+  default = "shared"
 }
 
 variable "f5xc_vk8s_name" {

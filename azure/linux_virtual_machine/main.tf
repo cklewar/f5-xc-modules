@@ -23,6 +23,20 @@ resource "azurerm_network_interface" "network_interface" {
   }
 }
 
+resource "azurerm_network_interface" "network_interface" {
+  name                = var.azure_network_interface_name
+  location            = var.azure_region
+  resource_group_name = var.azure_resource_group_name
+
+  ip_configuration {
+    name                          = var.azure_network_interface_ip_cfg_name
+    subnet_id                     = var.azure_vnet_subnet_id
+    public_ip_address_id          = var.create_public_ip == true ? azurerm_public_ip.ip[0].id : null
+    private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
+  }
+  tags = var.custom_tags
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
   name                  = var.azure_virtual_machine_name
   location              = var.azure_region
@@ -30,7 +44,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   size                  = var.azure_virtual_machine_size
   resource_group_name   = var.azure_resource_group_name
   network_interface_ids = [for interface in azurerm_network_interface.network_interface : interface.id]
-
+  
   os_disk {
     name                 = var.azure_virtual_machine_name
     caching              = var.azure_linux_virtual_machine_os_disk_caching

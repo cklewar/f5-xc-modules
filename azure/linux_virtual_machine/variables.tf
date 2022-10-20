@@ -96,7 +96,7 @@ variable "azure_linux_virtual_machine_custom_data" {
   default = ""
 }
 
-variable "azurerm_network_interfaces" {
+variable "azure_network_interfaces" {
   type = list(object({
     name             = string
     ip_configuration = object({

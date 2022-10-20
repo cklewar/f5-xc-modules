@@ -96,6 +96,18 @@ variable "azure_linux_virtual_machine_custom_data" {
   default = ""
 }
 
+variable "azurerm_network_interfaces" {
+  type = list(object({
+    name             = string
+    ip_configuration = object({
+      subnet_id                     = string
+      create_public_ip_address      = bool
+      private_ip_address_allocation = string
+    })
+    tags = optional(map(string))
+  }))
+}
+
 variable "public_ssh_key" {
   type = string
 }

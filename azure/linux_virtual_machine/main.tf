@@ -1,14 +1,3 @@
-/*resource "azurerm_public_ip" "ip" {
-  count               = var.create_public_ip == true ? 1 : 0
-  name                = var.azure_virtual_machine_name
-  resource_group_name = var.azure_resource_group_name
-  location            = var.azure_region
-  zones               = var.azure_zones
-  allocation_method   = var.azure_virtual_machine_allocation_method
-  sku                 = var.azure_virtual_machine_sku
-  tags                = var.custom_tags
-}*/
-
 resource "azurerm_public_ip" "ip" {
   for_each            = {for interface in var.azurerm_network_interfaces : interface.name => interface if interface.ip_configuration.create_public_ip_address}
   name                = format("%s-public-ip", each.value.name)

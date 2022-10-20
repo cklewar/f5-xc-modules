@@ -42,15 +42,6 @@ variable "azure_virtual_machine_sku" {
   default = "Standard"
 }
 
-variable "azure_network_interface_name" {
-  type = string
-}
-
-variable "azure_network_interface_ip_cfg_name" {
-  type    = string
-  default = "internal"
-}
-
 variable "azure_linux_virtual_machine_source_image_reference_publisher" {
   type    = string
   default = "Canonical"

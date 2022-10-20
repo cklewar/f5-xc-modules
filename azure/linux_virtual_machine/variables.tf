@@ -20,10 +20,6 @@ variable "azure_linux_virtual_machine_admin_username" {
   default = "azureuser"
 }
 
-variable "azure_vnet_subnet_id" {
-  type = string
-}
-
 variable "azure_region" {
   type = string
 }

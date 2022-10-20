@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "ip" {
-  for_each            = {for interface in var.azurerm_network_interfaces : interface.name => interface if interface.ip_configuration.create_public_ip_address}
+  for_each            = {for interface in var.azure_network_interfaces : interface.name => interface if interface.ip_configuration.create_public_ip_address}
   name                = format("%s-public-ip", each.value.name)
   resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
@@ -10,16 +10,16 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_network_interface" "network_interface" {
-  count               = length(var.azurerm_network_interfaces)
-  name                = var.azurerm_network_interfaces[count.index].name
+  count               = length(var.azure_network_interfaces)
+  name                = var.azure_network_interfaces[count.index].name
   location            = var.azure_region
   resource_group_name = var.azure_resource_group_name
-  tags                = var.azurerm_network_interfaces[count.index].tags
+  tags                = var.azure_network_interfaces[count.index].tags
   ip_configuration    = {
-    name                          = format("%s-ip-cfg", var.azurerm_network_interfaces[count.index].name)
-    subnet_id                     = var.azurerm_network_interfaces[count.index].ip_configuration.subnet_id
-    public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azurerm_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azurerm_network_interfaces[count.index].name].id : null
-    private_ip_address_allocation = var.azurerm_network_interfaces[count.index].ip_configuration.private_ip_address_allocation
+    name                          = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
+    subnet_id                     = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azure_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azure_network_interfaces[count.index].name].id : null
+    private_ip_address_allocation = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation
   }
 }
 

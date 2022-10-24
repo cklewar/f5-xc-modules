@@ -220,7 +220,7 @@ module "site_wait_for_online" {
 }
 
 resource "azurerm_route" "route" {
-  for_each            = var.f5xc_azure_vnet_static_routes
+  for_each            = [for route in var.f5xc_azure_vnet_static_routes : route]
   name                = each.value.name
   resource_group_name = volterra_azure_vnet_site.site.resource_group
   route_table_name    = format("rt-%s", volterra_azure_vnet_site.site.resource_group)

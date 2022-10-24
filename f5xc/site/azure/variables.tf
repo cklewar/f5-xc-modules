@@ -214,6 +214,15 @@ variable "f5xc_azure_existing_vnet_name" {
   default = ""
 }
 
+variable "f5xc_azure_vnet_static_routes" {
+  type = list(object({
+    name           = string
+    address_prefix = string
+    next_hop_type  = string
+  }))
+  default = []
+}
+
 variable "f5xc_nic_type_single_nic" {
   type    = string
   default = "single_nic"
@@ -242,15 +251,6 @@ variable "f5xc_tf_wait_for_action" {
 variable "f5xc_cloud_site_labels_ignore_on_delete" {
   type    = bool
   default = true
-}
-
-variable "f5xc_vnet_static_routes" {
-  type = list(object({
-    name           = string
-    address_prefix = string
-    next_hop_type  = string
-  }))
-  default = []
 }
 
 variable "custom_tags" {

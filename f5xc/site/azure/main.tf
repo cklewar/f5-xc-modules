@@ -223,7 +223,7 @@ resource "azurerm_route" "route" {
   for_each            = {for route in var.f5xc_azure_vnet_static_routes : route.name => route}
   name                = each.value.name
   resource_group_name = volterra_azure_vnet_site.site.resource_group
-  route_table_name    = format("rt-%s", volterra_azure_vnet_site.site.resource_group)
+  route_table_name    = each.value.route_table_name
   address_prefix      = each.value.address_prefix
   next_hop_type       = each.value.next_hop_type
 }

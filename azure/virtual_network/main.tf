@@ -17,7 +17,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_route" "route" {
-  for_each            = var.azure_vnet_static_routes
+  for_each            = {for route in var.azure_vnet_static_routes : route.name => route}
   name                = each.value.name
   resource_group_name = var.azure_vnet_resource_group_name
   route_table_name    = format("rt-%s", azurerm_virtual_network.vnet.resource_group_name)

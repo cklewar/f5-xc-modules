@@ -27,7 +27,7 @@ resource "null_resource" "apply_credential" {
     delete_uri            = local.credential_delete_uri
     namespace             = var.f5xc_namespace
     name                  = var.f5xc_api_credentials_name
-    virtual_k8s_namespace = f5xc_virtual_k8s_name != "" ? var.f5xc_virtual_k8s_namespace : null
+    virtual_k8s_namespace = var.f5xc_virtual_k8s_name != "" ? var.f5xc_virtual_k8s_namespace : null
     virtual_k8s_name      = var.f5xc_virtual_k8s_name
     filename              = "${path.module}/_out/response.json"
   }

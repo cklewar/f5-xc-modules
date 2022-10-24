@@ -131,9 +131,9 @@ resource "volterra_azure_vnet_site" "site" {
               labels = spoke_vnets.value.labels
             }
           }
-        dynamic "express_route_enabled" {
-          for_each = length(var.f5xc_azure_express_route_connections) > 0 ? [1] : []
-          content {
+          dynamic "express_route_enabled" {
+            for_each = length(var.f5xc_azure_express_route_connections) > 0 ? [1] : []
+            content {
               dynamic "connections" {
                 for_each = var.f5xc_azure_express_route_connections
                 content {
@@ -142,15 +142,15 @@ resource "volterra_azure_vnet_site" "site" {
                     description = connections.value.description
                   }
                   other_subscription {
-                    circuit_id  = connections.value.circuit_id
+                    circuit_id = connections.value.circuit_id
                   }
-                  weight        = connections.value.weight
+                  weight = connections.value.weight
                 }
               }
-              sku_standard      = var.f5xc_azure_express_route_sku_standard
-              sku_high_perf     = var.f5xc_azure_express_route_sku_high_perf
-              sku_ergw1az       = var.f5xc_azure_express_route_sku_ergw1az
-              sku_ergw2az       = var.f5xc_azure_express_route_sku_ergw2az
+              sku_standard  = var.f5xc_azure_express_route_sku_standard
+              sku_high_perf = var.f5xc_azure_express_route_sku_high_perf
+              sku_ergw1az   = var.f5xc_azure_express_route_sku_ergw1az
+              sku_ergw2az   = var.f5xc_azure_express_route_sku_ergw2az
               // gateway_subnet TODO
               // route_server_subnet TODO
             }
@@ -220,10 +220,10 @@ module "site_wait_for_online" {
 }
 
 resource "azurerm_route" "route" {
-  for_each            = var.azure_vnet_static_routes
+  for_each            = var.f5xc_vnet_static_routes
   name                = each.value.name
-  resource_group_name = var.azure_vnet_resource_group_name
-  route_table_name    = format("rt-%s", azurerm_virtual_network.vnet.resource_group_name)
+  resource_group_name = volterra_azure_vnet_site.site.resource_group
+  route_table_name    = format("rt-%s", volterra_azure_vnet_site.site.resource_group)
   address_prefix      = each.value.address_prefix
   next_hop_type       = each.value.next_hop_type
 }

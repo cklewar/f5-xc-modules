@@ -216,9 +216,10 @@ variable "f5xc_azure_existing_vnet_name" {
 
 variable "f5xc_azure_vnet_static_routes" {
   type = list(object({
-    name           = string
-    address_prefix = string
-    next_hop_type  = string
+    name             = string
+    address_prefix   = string
+    route_table_name = string
+    next_hop_type    = string
   }))
   default = []
 }

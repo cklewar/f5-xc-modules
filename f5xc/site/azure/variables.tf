@@ -75,31 +75,31 @@ variable "f5xc_azure_hub_spoke_vnets" {
 }
 
 variable "f5xc_azure_express_route_sku_standard" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "f5xc_azure_express_route_sku_high_perf" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "f5xc_azure_express_route_sku_ergw1az" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "f5xc_azure_express_route_sku_ergw2az" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "f5xc_azure_express_route_connections" {
   type = list(object({
-    name           = string
-    description    = string
-    circuit_id     = string
-    weight         = number
+    name        = string
+    description = string
+    circuit_id  = string
+    weight      = number
   }))
   default = []
 }
@@ -242,6 +242,15 @@ variable "f5xc_tf_wait_for_action" {
 variable "f5xc_cloud_site_labels_ignore_on_delete" {
   type    = bool
   default = true
+}
+
+variable "f5xc_vnet_static_routes" {
+  type = list(object({
+    name           = string
+    address_prefix = string
+    next_hop_type  = string
+  }))
+  default = []
 }
 
 variable "custom_tags" {

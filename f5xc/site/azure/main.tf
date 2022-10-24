@@ -218,3 +218,12 @@ module "site_wait_for_online" {
   f5xc_site_name = volterra_azure_vnet_site.site.name
   f5xc_tenant    = var.f5xc_tenant
 }
+
+resource "azurerm_route" "route" {
+  for_each            = var.azure_vnet_static_routes
+  name                = each.value.name
+  resource_group_name = var.azure_vnet_resource_group_name
+  route_table_name    = format("rt-%s", azurerm_virtual_network.vnet.resource_group_name)
+  address_prefix      = each.value.address_prefix
+  next_hop_type       = each.value.next_hop_type
+}

@@ -21,3 +21,21 @@ data "aws_network_interface" "sli" {
     values = ["site-local-inside"]
   }
 }
+
+data "aws_subnet" "workload" {
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_vpc_site_name]
+  }
+  filter {
+    name   = "tag:ves.io/subnet-type"
+    values = ["workload"]
+  }
+}
+
+data "aws_vpc" "vpc" {
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_vpc_site_name]
+  }
+}

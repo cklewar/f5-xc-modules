@@ -74,6 +74,36 @@ variable "f5xc_azure_hub_spoke_vnets" {
   default = []
 }
 
+variable "f5xc_azure_express_route_sku_standard" {
+  type = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_high_perf" {
+  type = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_ergw1az" {
+  type = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_ergw2az" {
+  type = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_connections" {
+  type = list(object({
+    name           = string
+    description    = string
+    circuit_id     = string
+    weight         = number
+  }))
+  default = []
+}
+
 variable "f5xc_azure_global_network_name" {
   type    = list(string)
   default = []

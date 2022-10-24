@@ -131,6 +131,30 @@ resource "volterra_azure_vnet_site" "site" {
               labels = spoke_vnets.value.labels
             }
           }
+        dynamic "express_route_enabled" {
+          for_each = length(var.f5xc_azure_express_route_connections) > 0 ? [1] : []
+          content {
+              dynamic "connections" {
+                for_each = var.f5xc_azure_express_route_connections
+                content {
+                  metadata {
+                    name        = connections.value.name
+                    description = connections.value.description
+                  }
+                  other_subscription {
+                    circuit_id  = connections.value.circuit_id
+                  }
+                  weight        = connections.value.weight
+                }
+              }
+              sku_standard      = var.f5xc_azure_express_route_sku_standard
+              sku_high_perf     = var.f5xc_azure_express_route_sku_high_perf
+              sku_ergw1az       = var.f5xc_azure_express_route_sku_ergw1az
+              sku_ergw2az       = var.f5xc_azure_express_route_sku_ergw2az
+              // gateway_subnet TODO
+              // route_server_subnet TODO
+            }
+          }
         }
       }
 

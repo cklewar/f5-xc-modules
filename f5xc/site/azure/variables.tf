@@ -18,8 +18,8 @@ variable "f5xc_azure_site_name" {
   type = string
 
   validation {
-    condition     = length(var.f5xc_azure_site_name) <= 16
-    error_message = "f5xc_azure_site_name must contain no more than 16 symbols."
+    condition     = length(var.f5xc_azure_site_name) <= 20
+    error_message = "f5xc_azure_site_name must contain no more than 20 symbols."
   }
 }
 

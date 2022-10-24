@@ -48,6 +48,15 @@ variable "azure_vnet_subnets" {
   default = []
 }
 
+variable "azure_vnet_static_routes" {
+  type = list(object({
+    name           = string
+    address_prefix = string
+    next_hop_type  = string
+  }))
+  default = []
+}
+
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

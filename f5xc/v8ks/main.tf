@@ -8,7 +8,7 @@ resource "volterra_virtual_k8s" "vk8s" {
   dynamic "vsite_refs" {
     for_each = var.f5xc_virtual_site_refs
     content {
-      name      = var.f5xc_virtual_site_refs
+      name      = vsite_refs.value
       namespace = var.f5xc_namespace
       tenant    = var.f5xc_tenant
     }

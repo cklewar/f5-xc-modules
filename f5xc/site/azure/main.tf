@@ -151,8 +151,27 @@ resource "volterra_azure_vnet_site" "site" {
               sku_high_perf = var.f5xc_azure_express_route_sku_high_perf
               sku_ergw1az   = var.f5xc_azure_express_route_sku_ergw1az
               sku_ergw2az   = var.f5xc_azure_express_route_sku_ergw2az
-              // gateway_subnet TODO
-              // route_server_subnet TODO
+              gateway_subnet {
+                dynamic "subnet_param" {
+                  for_each = length(var.f5xc_azure_express_gateway_subnet) > 0 ? [1] : []
+                  content {
+                    ipv4 = var.f5xc_azure_express_gateway_subnet
+                  }
+                }
+                auto = length(var.f5xc_azure_express_gateway_subnet) > 0 ? false : true
+              }
+              route_server_subnet {
+                subnet_param {
+                  ipv4 = var.f5xc_azure_express_route_server_subnet
+                }
+                dynamic "subnet_param" {
+                  for_each = length(var.f5xc_azure_express_route_server_subnet) > 0 ? [1] : []
+                  content {
+                    ipv4 = var.f5xc_azure_express_route_server_subnet
+                  }
+                }
+                auto = length(var.f5xc_azure_express_route_server_subnet) > 0 ? false : true
+              }
             }
           }
         }

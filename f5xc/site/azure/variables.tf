@@ -260,6 +260,16 @@ variable "custom_tags" {
   default     = {}
 }
 
+variable "f5xc_azure_express_route_server_subnet" {
+  type        = string
+  default     = ""
+}
+
+variable "f5xc_azure_express_gateway_subnet" {
+  type        = string
+  default     = ""
+}
+
 variable "custom_labels" {
   description = "Custom labels to set on resources"
   type        = map(string)

@@ -23,6 +23,7 @@ data "aws_network_interface" "sli" {
 }
 
 data "aws_subnet" "workload" {
+  depends_on = [module.site_wait_for_online]
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
@@ -34,6 +35,7 @@ data "aws_subnet" "workload" {
 }
 
 data "aws_vpc" "vpc" {
+  depends_on = [module.site_wait_for_online]
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]

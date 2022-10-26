@@ -26,6 +26,6 @@ resource "google_compute_instance" "compute" {
 
   metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
   metadata                = {
-    ssh-keys = var.public_ssh_key
+    ssh-keys = var.ssh_public_key
   }
 }

@@ -177,7 +177,7 @@ variable "f5xc_azure_ce_disk_size" {
   default = "80"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

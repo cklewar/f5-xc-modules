@@ -8,7 +8,7 @@ resource "null_resource" "create_secret_policy_rule" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local., var.f5xc_api_token, local.f5xc_blindfold_policy_rule_payload)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env bash", "-c"]
   }
 
   provisioner "local-exec" {
@@ -34,7 +34,7 @@ resource "null_resource" "create_secret_policys" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env bash", "-c"]
   }
 
   provisioner "local-exec" {
@@ -68,7 +68,7 @@ resource "null_resource" "get_policy_document" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env bash", "-c"]
   }
 
   provisioner "local-exec" {
@@ -102,7 +102,7 @@ resource "null_resource" "get_public_key" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env bash", "-c"]
   }
 
   provisioner "local-exec" {
@@ -135,7 +135,7 @@ resource "null_resource" "secrets_encrypt" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env bash", "-c"]
   }
 }
 

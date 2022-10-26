@@ -208,7 +208,7 @@ resource "volterra_aws_vpc_site" "site" {
   no_worker_nodes = var.f5xc_aws_vpc_no_worker_nodes
   nodes_per_az    = var.f5xc_aws_vpc_worker_nodes_per_az > 0 ? var.f5xc_aws_vpc_worker_nodes_per_az : null
   total_nodes     = var.f5xc_aws_vpc_total_worker_nodes > 0 ? var.f5xc_aws_vpc_total_worker_nodes : null
-  ssh_key         = var.public_ssh_key
+  ssh_key         = var.ssh_public_key
   lifecycle {
     ignore_changes = [labels]
   }

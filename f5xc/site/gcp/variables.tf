@@ -215,7 +215,7 @@ variable "f5xc_nic_type_multi_nic" {
   default = "multi_nic"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

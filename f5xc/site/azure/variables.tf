@@ -177,7 +177,7 @@ variable "f5xc_azure_ce_disk_size" {
   default = "80"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 
@@ -258,6 +258,16 @@ variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
+}
+
+variable "f5xc_azure_express_route_server_subnet" {
+  type        = string
+  default     = ""
+}
+
+variable "f5xc_azure_express_gateway_subnet" {
+  type        = string
+  default     = ""
 }
 
 variable "custom_labels" {

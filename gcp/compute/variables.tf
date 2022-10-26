@@ -58,6 +58,6 @@ variable "gcp_compute_instance_labels" {
   type = map(string)
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }

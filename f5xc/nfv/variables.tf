@@ -18,7 +18,7 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

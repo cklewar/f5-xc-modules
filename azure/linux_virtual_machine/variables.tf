@@ -95,7 +95,7 @@ variable "azure_network_interfaces" {
   }))
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

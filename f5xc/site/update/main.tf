@@ -10,6 +10,6 @@ resource "null_resource" "apply_site_update" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'PUT' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.site_update_uri, var.f5xc_api_token, local.content)
-    interpreter = ["/usr/bin/env bash", "-c"]
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 }

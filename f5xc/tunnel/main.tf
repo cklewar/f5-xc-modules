@@ -15,7 +15,7 @@ resource "null_resource" "apply_tunnel" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.tunnel_create_uri, var.f5xc_api_token, local.content)
-    interpreter = ["/usr/bin/env bash", "-c"]
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {

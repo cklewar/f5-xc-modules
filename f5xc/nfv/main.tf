@@ -15,7 +15,7 @@ resource "null_resource" "apply_nfv" {
 
   provisioner "local-exec" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.nfv_create_uri, var.f5xc_api_token, local.manifest_content)
-    interpreter = ["/usr/bin/env bash", "-c"]
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {

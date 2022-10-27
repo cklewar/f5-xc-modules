@@ -21,7 +21,7 @@ data "aws_instance" "ce_master" {
   depends_on = [module.site_wait_for_online]
 
   filter {
-    name = "instance-state-name"
+    name   = "instance-state-name"
     values = ["running"]
   }
 
@@ -59,8 +59,10 @@ data "aws_vpc" "tgw_vpc" {
   }
 }
 
-/*data "aws_subnet" "tgw_subnet_sli" {
+data "aws_subnet" "tgw_subnet_sli" {
   depends_on = [module.site_wait_for_online]
+  for_each   = var.f5xc_aws_tgw_az_nodes
+  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_inside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {
@@ -77,12 +79,11 @@ data "aws_vpc" "tgw_vpc" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
-}*/
+}
 
 data "aws_subnet" "tgw_subnet_slo" {
   depends_on = [module.site_wait_for_online]
   for_each   = var.f5xc_aws_tgw_az_nodes
-
   cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 

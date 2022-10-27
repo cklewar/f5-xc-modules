@@ -139,10 +139,10 @@ resource "null_resource" "secrets_encrypt" {
   }
 }
 
-data "http" "example" {
+/*data "http" "example" {
   url = format("%s/%s", var.f5xc_api_url, var.f5xc)
 
   request_headers = {
     Accept = "application/json"
   }
-}
+}*/

@@ -12,6 +12,7 @@ data "aws_network_interface" "slo" {
 
 data "aws_network_interface" "sli" {
   depends_on = [module.site_wait_for_online]
+  count = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
@@ -24,6 +25,7 @@ data "aws_network_interface" "sli" {
 
 data "aws_subnet" "workload" {
   depends_on = [module.site_wait_for_online]
+  count = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]

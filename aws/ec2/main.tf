@@ -10,7 +10,7 @@ resource "aws_instance" "instance" {
   # subnet_id                   = var.aws_subnet_id != "" ? var.aws_subnet_id : null
   user_data                   = local.cloud_init_content
   user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
-  tags                        = var.custom_tags
+  tags                        = merge(var.custom_tags, { "Name" = var.aws_ec2_instance_name })
 
   dynamic "network_interface" {
     for_each = var.aws_ec2_network_interfaces

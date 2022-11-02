@@ -3,7 +3,8 @@ variable "f5xc_tenant" {
 }
 
 variable "f5xc_namespace" {
-  type = string
+  type    = string
+  default = "shared"
 }
 
 variable "f5xc_site_mesh_group_name" {

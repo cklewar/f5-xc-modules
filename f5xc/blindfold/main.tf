@@ -7,7 +7,7 @@ resource "null_resource" "create_secret_policy_rule" {
   }
 
   provisioner "local-exec" {
-    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local., var.f5xc_api_token, local.f5xc_blindfold_policy_rule_payload)
+    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policy_rules, var.f5xc_api_token, local.f5xc_blindfold_policy_rule_payload)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

@@ -1,5 +1,5 @@
 resource "null_resource" "create_secret_policy_rule" {
-  triggers   = {
+  triggers = {
     manifest_sha1 = sha1(local.f5xc_blindfold_policy_rule_payload)
     api_url       = var.f5xc_api_url
     api_token     = var.f5xc_api_token
@@ -16,9 +16,9 @@ resource "null_resource" "create_secret_policy_rule" {
     command     = "${path.module}/scripts/delete.sh"
     on_failure  = fail
     environment = {
-      api_token  = self.triggers.api_token
-      api_url    = self.triggers.api_url
-      namespace  = self.triggers.namespace
+      api_token = self.triggers.api_token
+      api_url   = self.triggers.api_url
+      namespace = self.triggers.namespace
     }
   }
 }
@@ -42,9 +42,9 @@ resource "null_resource" "create_secret_policys" {
     command     = "${path.module}/scripts/delete.sh"
     on_failure  = fail
     environment = {
-      api_token  = self.triggers.api_token
-      api_url    = self.triggers.api_url
-      namespace  = self.triggers.namespace
+      api_token = self.triggers.api_token
+      api_url   = self.triggers.api_url
+      namespace = self.triggers.namespace
     }
   }
 }
@@ -55,9 +55,27 @@ resource "null_resource" "create_secret_policys" {
       --cacert file:///$HOME/.ves-internal/demo1/cacerts/public_server_ca.crt  \
       --server-urls https://ves-io.demo1.volterra.us/api \
       request secrets get-policy-document --namespace system --name ver-secret-policy
+
+      curl -X 'GET' \
+  'https://playground.staging.volterra.us/api/secret_management/namespaces/system/secret_policys/site-secret-policy/get_policy_document' \
+  -H 'accept: application/json' \
+  -H 'Access-Control-Allow-Origin: *' \
+  -H 'Authorization: APIToken LhqZ7DZgLxNk3ib/DUydAc+8JPQ=' \
+  -H 'x-volterra-apigw-tenant: playground'
 */
 
-resource "null_resource" "get_policy_document" {
+data "http" "policy_document" {
+  depends_on = [null_resource.create_secret_policy_rule, null_resource.create_secret_policys]
+  url        = format("%s/%s", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys_policy_document)
+
+  request_headers = {
+    Authorization           = format("APIToken %s", var.f5xc_api_token)
+    Accept                  = "application/json"
+    x-volterra-apigw-tenant = var.f5xc_namespace
+  }
+}
+
+/*resource "null_resource" "get_policy_document" {
   depends_on = [null_resource.create_secret_policy_rule]
   triggers   = {
     manifest_sha1 = sha1(local.f5xc_blindfold_policys_payload)
@@ -76,12 +94,12 @@ resource "null_resource" "get_policy_document" {
     command     = "${path.module}/scripts/delete.sh"
     on_failure  = fail
     environment = {
-      api_token  = self.triggers.api_token
-      api_url    = self.triggers.api_url
-      namespace  = self.triggers.namespace
+      api_token = self.triggers.api_token
+      api_url   = self.triggers.api_url
+      namespace = self.triggers.namespace
     }
   }
-}
+}*/
 
 /*vesctl \
       --cert file:///<absolute_path_to_crt> \
@@ -89,9 +107,27 @@ resource "null_resource" "get_policy_document" {
       --cacert file:///<absolute_path_to_truststore> \
       --server-urls https://ves-io.demo1.volterra.us/api \
       request secrets get-public-key
+
+      curl -X 'GET' \
+  'https://playground.staging.volterra.us/api/secret_management/get_public_key?key_version=0' \
+  -H 'accept: application/json' \
+  -H 'Access-Control-Allow-Origin: *' \
+  -H 'Authorization: APIToken LhqZ7DZgLxNk3ib/DUydAc+8JPQ=' \
+  -H 'x-volterra-apigw-tenant: playground'
 */
 
-resource "null_resource" "get_public_key" {
+data "http" "public_key" {
+  depends_on = [null_resource.create_secret_policy_rule, null_resource.create_secret_policys]
+  url        = format("%s/%s", var.f5xc_api_url, var.f5xc_uri_secret_management_public_key)
+
+  request_headers = {
+    Authorization           = format("APIToken %s", var.f5xc_api_token)
+    Accept                  = "application/json"
+    x-volterra-apigw-tenant = var.f5xc_namespace
+  }
+}
+
+/*resource "null_resource" "get_public_key" {
   depends_on = [null_resource.create_secret_policy_rule]
   triggers   = {
     manifest_sha1 = sha1(local.f5xc_blindfold_policys_payload)
@@ -115,7 +151,7 @@ resource "null_resource" "get_public_key" {
       namespace  = self.triggers.namespace
     }
   }
-}
+}*/
 
 /*
 ./vesctl request secrets encrypt \
@@ -124,7 +160,7 @@ resource "null_resource" "get_public_key" {
         <path to secret file>
 */
 
-resource "null_resource" "secrets_encrypt" {
+/*resource "null_resource" "secrets_encrypt" {
   depends_on = [null_resource.create_secret_policy_rule]
   triggers   = {
     manifest_sha1 = sha1(local.f5xc_blindfold_policys_payload)
@@ -137,12 +173,4 @@ resource "null_resource" "secrets_encrypt" {
     command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
-}
-
-data "http" "example" {
-  url = format("%s/%s", var.f5xc_api_url, var.f5xc)
-
-  request_headers = {
-    Accept = "application/json"
-  }
-}
+}*/

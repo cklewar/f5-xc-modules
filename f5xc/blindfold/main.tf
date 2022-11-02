@@ -48,27 +48,3 @@ resource "null_resource" "create_secret_policys" {
     }
   }
 }
-
-
-
-/*
-./vesctl request secrets encrypt \
-        --policy-document <path to Policy Doc file>
-        --public-key <path to Key Parameters Doc file> \
-        <path to secret file>
-*/
-
-/*resource "null_resource" "secrets_encrypt" {
-  depends_on = [null_resource.create_secret_policy_rule]
-  triggers   = {
-    manifest_sha1 = sha1(local.f5xc_blindfold_policys_payload)
-    api_url       = var.f5xc_api_url
-    api_token     = var.f5xc_api_token
-    namespace     = var.f5xc_namespace
-  }
-
-  provisioner "local-exec" {
-    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, var.f5xc_uri_secret_management_secret_policys, var.f5xc_api_token, local.f5xc_blindfold_policys_payload)
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-  }
-}*/

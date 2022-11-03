@@ -1,5 +1,5 @@
-data "aws_instances" "_nodes" {
-  depends_on = [module.site_wait_for_online]
+data "aws_instances" "nodes" {
+  depends_on           = [volterra_aws_vpc_site.site, module.site_wait_for_online]
   instance_state_names = ["running"]
 
   filter {
@@ -12,19 +12,12 @@ data "aws_instances" "_nodes" {
   }
 }
 
-data "aws_instance" "nodes" {
-  depends_on  = [module.site_wait_for_online]
-  count       = length(data.aws_instances._nodes.ids)
-  instance_id = data.aws_instances._nodes.ids[count.index]
-}
-
 data "aws_network_interface" "slo" {
-  depends_on = [module.site_wait_for_online]
-  count      = length(data.aws_instance.nodes)
+  depends_on = [volterra_aws_vpc_site.site, module.site_wait_for_online]
 
   filter {
     name   = "attachment.instance-id"
-    values = [data.aws_instance.nodes[count.index].id]
+    values = data.aws_instances.nodes.ids
   }
   filter {
     name   = "tag:ves.io/interface-type"
@@ -34,11 +27,11 @@ data "aws_network_interface" "slo" {
 
 data "aws_network_interface" "sli" {
   depends_on = [module.site_wait_for_online]
-  count      = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? length(data.aws_instance.nodes) : 0
+  count      = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
 
   filter {
     name   = "attachment.instance-id"
-    values = [data.aws_instance.nodes[count.index].id]
+    values = data.aws_instances.nodes.ids
   }
   filter {
     name   = "tag:ves.io/interface-type"

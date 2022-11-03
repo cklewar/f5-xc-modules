@@ -6,8 +6,7 @@ output "f5xc_aws_vpc" {
     params = volterra_tf_params_action.aws_vpc_action
     vpc_id = data.aws_vpc.vpc.id
     nodes  = {
-    for node in data.aws_instance.nodes : node.tags["Name"] => {
-      id         = node.id
+    for id in data.aws_instances.nodes.ids : id => {
       interfaces = {
         slo = {
           id               = data.aws_network_interface.slo.*.id

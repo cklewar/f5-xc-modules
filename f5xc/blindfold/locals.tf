@@ -13,7 +13,7 @@ locals {
     policy_rule_name = var.f5xc_blindfold_secret_policy_rule_name
   })
 
-  f5xc_blindfold_service_policy_delete_uri      = format("%s/%s", var.f5xc_api_url, format(var.f5xc_blindfold_secret_policy_delete_uri, var.f5xc_namespace, var.f5xc_blindfold_secret_policy_name))
-  f5xc_blindfold_service_policy_rule_delete_uri = format("%s/%s", var.f5xc_api_url, format(var.f5xc_blindfold_secret_policy_rule_delete_uri, var.f5xc_namespace, var.f5xc_blindfold_secret_policy_rule_name))
+  f5xc_blindfold_service_policy_delete_uri      = format(var.f5xc_blindfold_secret_policy_delete_uri, var.f5xc_namespace, var.f5xc_blindfold_secret_policy_name)
+  f5xc_blindfold_service_policy_rule_delete_uri = format(var.f5xc_blindfold_secret_policy_rule_delete_uri, var.f5xc_namespace, var.f5xc_blindfold_secret_policy_rule_name)
 }
 

@@ -1,4 +1,4 @@
-resource "null_resource" "create_secret_policy_rule" {
+resource "null_resource" "action_secret_policy_rule" {
   triggers = {
     name          = var.f5xc_blindfold_secret_policy_rule_name
     api_url       = var.f5xc_api_url
@@ -27,8 +27,8 @@ resource "null_resource" "create_secret_policy_rule" {
   }
 }
 
-resource "null_resource" "create_secret_policys" {
-  depends_on = [null_resource.create_secret_policy_rule]
+resource "null_resource" "action_secret_policys" {
+  depends_on = [null_resource.action_secret_policy_rule]
   triggers   = {
     name          = var.f5xc_blindfold_secret_policy_name
     api_url       = var.f5xc_api_url

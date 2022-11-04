@@ -4,6 +4,7 @@ resource "null_resource" "create_secret_policy_rule" {
     api_url       = var.f5xc_api_url
     api_token     = var.f5xc_api_token
     namespace     = var.f5xc_namespace
+    delete_uri    = var.f5xc_blindfold_secret_policy_rule_delete_uri
   }
 
   provisioner "local-exec" {
@@ -16,9 +17,10 @@ resource "null_resource" "create_secret_policy_rule" {
     command     = "${path.module}/scripts/delete.sh"
     on_failure  = fail
     environment = {
-      api_token = self.triggers.api_token
-      api_url   = self.triggers.api_url
-      namespace = self.triggers.namespace
+      api_token  = self.triggers.api_token
+      api_url    = self.triggers.api_url
+      namespace  = self.triggers.namespace
+      delete_uri = self.triggers.delete_uri
     }
   }
 }
@@ -30,6 +32,7 @@ resource "null_resource" "create_secret_policys" {
     api_url       = var.f5xc_api_url
     api_token     = var.f5xc_api_token
     namespace     = var.f5xc_namespace
+    delete_uri    = local.f5xc_blindfold_service_policy_delete_uri
   }
 
   provisioner "local-exec" {
@@ -42,9 +45,10 @@ resource "null_resource" "create_secret_policys" {
     command     = "${path.module}/scripts/delete.sh"
     on_failure  = fail
     environment = {
-      api_token = self.triggers.api_token
-      api_url   = self.triggers.api_url
-      namespace = self.triggers.namespace
+      api_token  = self.triggers.api_token
+      api_url    = self.triggers.api_url
+      namespace  = self.triggers.namespace
+      delete_uri = self.triggers.delete_uri
     }
   }
 }

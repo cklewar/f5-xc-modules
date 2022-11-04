@@ -9,13 +9,13 @@ data "http" "policy_document" {
   }
 }
 
-/*data "http" "public_key" {
-  depends_on = [null_resource.create_secret_policy_rule, null_resource.create_secret_policys]
-  url        = format("%s/%s", var.f5xc_api_url, var.f5xc_uri_secret_management_public_key)
+data "http" "public_key" {
+  depends_on = [null_resource.action_secret_policy_rule, null_resource.action_secret_policys]
+  url        = format("%s/%s", var.f5xc_api_url, var.f5xc_secret_management_public_key_get_uri)
 
   request_headers = {
     Authorization           = format("APIToken %s", var.f5xc_api_token)
     Accept                  = "application/json"
     x-volterra-apigw-tenant = var.f5xc_namespace
   }
-}*/
+}

@@ -40,7 +40,6 @@ variable "f5xc_aws_cred" {
   type = string
 }
 
-
 variable "f5xc_aws_vpc_owner" {
   type = string
 }
@@ -173,6 +172,11 @@ variable "f5xc_aws_vpc_no_local_control_plane" {
 }
 
 variable "f5xc_aws_vpc_existing_id" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_vpc_existing_name" {
   type    = string
   default = ""
 }

@@ -214,7 +214,7 @@ data "aws_subnets" "workload" {
 
 data "aws_vpc" "vpc_new" {
   depends_on = [module.site_wait_for_online]
-  count      = var.f5xc_aws_vpc_existing_name == "" && var.f5xc_aws_vpc_existing_id == "" ? 1 : 0
+  count      = var.f5xc_aws_vpc_existing_id == "" ? 1 : 0
 
   filter {
     name   = "tag:ves-io-site-name"
@@ -228,6 +228,6 @@ data "aws_vpc" "vpc_new" {
 
 data "aws_vpc" "vpc_exists" {
   depends_on = [module.site_wait_for_online]
-  count      = var.f5xc_aws_vpc_existing_name != "" && var.f5xc_aws_vpc_existing_id != "" ? 1 : 0
+  count      = var.f5xc_aws_vpc_existing_id != "" ? 1 : 0
   id         = var.f5xc_aws_vpc_existing_id
 }

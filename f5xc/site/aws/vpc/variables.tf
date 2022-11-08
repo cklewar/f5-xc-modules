@@ -40,6 +40,11 @@ variable "f5xc_aws_cred" {
   type = string
 }
 
+
+variable "f5xc_aws_vpc_owner" {
+  type = string
+}
+
 variable "f5xc_aws_vpc_name_tag" {
   type = string
 }

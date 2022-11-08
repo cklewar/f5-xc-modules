@@ -218,8 +218,7 @@ data "aws_vpc" "vpc_new" {
 
   filter {
     name   = "tag:ves-io-site-name"
-    #  values = [var.f5xc_aws_vpc_site_name]
-    values = ["f5xc-lab-aws-01a-vpc"]
+    values = [var.f5xc_aws_vpc_site_name]
   }
   filter {
     name   = "tag:ves-io-creator-id"

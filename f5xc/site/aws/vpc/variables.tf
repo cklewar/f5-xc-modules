@@ -45,11 +45,6 @@ variable "f5xc_aws_vpc_owner" {
   type = string
 }
 
-variable "f5xc_aws_vpc_name_tag" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_aws_vpc_primary_ipv4" {
   type    = string
   default = ""

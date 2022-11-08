@@ -2,7 +2,9 @@ resource "volterra_aws_vpc_site" "site" {
   name                    = var.f5xc_aws_vpc_site_name
   namespace               = var.f5xc_namespace
   aws_region              = var.f5xc_aws_region
-  tags                    = var.custom_tags
+  tags                    = var.f5xc_aws_vpc_existing_id != "" && var.f5xc_aws_vpc_primary_ipv4 == "" ? merge({
+    "ves-io-site-name" : var.f5xc_aws_vpc_site_name
+  }, var.custom_tags) : var.custom_tags
   labels                  = var.f5xc_labels
   direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
 

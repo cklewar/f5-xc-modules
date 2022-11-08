@@ -13,6 +13,10 @@ data "aws_instance" "master-0" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }
 
 data "aws_instance" "master-1" {
@@ -30,6 +34,10 @@ data "aws_instance" "master-1" {
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
   }
 }
 
@@ -49,6 +57,10 @@ data "aws_instance" "master-2" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }
 
 data "aws_network_interface" "master-0-slo" {
@@ -65,6 +77,10 @@ data "aws_network_interface" "master-0-slo" {
   filter {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
   }
 }
 
@@ -84,6 +100,10 @@ data "aws_network_interface" "master-0-sli" {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-inside"]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }
 
 data "aws_network_interface" "master-1-slo" {
@@ -101,6 +121,10 @@ data "aws_network_interface" "master-1-slo" {
   filter {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
   }
 }
 
@@ -120,6 +144,10 @@ data "aws_network_interface" "master-1-sli" {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-inside"]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }
 
 data "aws_network_interface" "master-2-slo" {
@@ -137,6 +165,10 @@ data "aws_network_interface" "master-2-slo" {
   filter {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
   }
 }
 
@@ -156,6 +188,10 @@ data "aws_network_interface" "master-2-sli" {
     name   = "tag:ves.io/interface-type"
     values = ["site-local-inside"]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }
 
 data "aws_subnets" "workload" {
@@ -169,6 +205,10 @@ data "aws_subnets" "workload" {
   filter {
     name   = "tag:ves.io/subnet-type"
     values = ["workload"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
   }
 }
 

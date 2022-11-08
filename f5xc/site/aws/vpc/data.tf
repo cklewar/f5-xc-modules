@@ -15,7 +15,7 @@ data "aws_instance" "master-0" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -37,7 +37,7 @@ data "aws_instance" "master-1" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -59,7 +59,7 @@ data "aws_instance" "master-2" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -80,7 +80,7 @@ data "aws_network_interface" "master-0-slo" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -102,7 +102,7 @@ data "aws_network_interface" "master-0-sli" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -124,7 +124,7 @@ data "aws_network_interface" "master-1-slo" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -146,7 +146,7 @@ data "aws_network_interface" "master-1-sli" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -168,7 +168,7 @@ data "aws_network_interface" "master-2-slo" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -190,7 +190,7 @@ data "aws_network_interface" "master-2-sli" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -208,7 +208,7 @@ data "aws_subnets" "workload" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }
 
@@ -221,6 +221,6 @@ data "aws_vpc" "vpc" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_vpc_owner]
   }
 }

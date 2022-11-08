@@ -214,13 +214,30 @@ data "aws_subnets" "workload" {
 
 data "aws_vpc" "vpc" {
   depends_on = [module.site_wait_for_online]
+<<<<<<< HEAD
+=======
+  id         = var.f5xc_aws_vpc_existing_id != "" ? var.f5xc_aws_vpc_existing_id : null
+>>>>>>> cfae012 (update)
 
-  filter {
-    name   = "tag:ves-io-site-name"
-    values = [var.f5xc_aws_vpc_site_name]
+  dynamic "filter" {
+    for_each = var.f5xc_aws_vpc_existing_id == "" ? [1] : []
+    content {
+      name   = "tag:ves-io-site-name"
+      values = [var.f5xc_aws_vpc_site_name]
+    }
   }
+<<<<<<< HEAD
   filter {
     name   = "tag:ves-io-creator-id"
     values = [var.f5xc_aws_vpc_owner]
+=======
+
+  dynamic "filter" {
+    for_each = var.f5xc_aws_vpc_existing_id == "" ? [1] : []
+    content {
+      name   = "tag:ves-io-creator-id"
+      values = [var.f5xc_aws_vpc_owner]
+    }
+>>>>>>> cfae012 (update)
   }
 }

@@ -36,7 +36,7 @@ resource "volterra_aws_vpc_site" "site" {
     for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : []
     content {
       new_vpc {
-        name_tag     = var.f5xc_aws_vpc_name_tag
+        name_tag     = var.f5xc_aws_vpc_site_name
         primary_ipv4 = var.f5xc_aws_vpc_primary_ipv4
       }
     }

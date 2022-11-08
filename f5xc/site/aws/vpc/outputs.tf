@@ -4,7 +4,7 @@ output "f5xc_aws_vpc" {
     name   = volterra_aws_vpc_site.site.name
     region = volterra_aws_vpc_site.site.aws_region
     params = volterra_tf_params_action.aws_vpc_action
-    vpc_id = data.aws_vpc.vpc_exists != null ? data.aws_vpc.vpc_exists : data.aws_vpc.vpc_new
+    vpc_id = length(data.aws_vpc.vpc_exists) > 0 ? data.aws_vpc.vpc_exists[0].id : data.aws_vpc.vpc_new[0].id
     nodes  = {
       master-0 = {
         interfaces = {

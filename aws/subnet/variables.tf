@@ -13,6 +13,7 @@ variable "aws_vpc_subnets" {
     map_public_ip_on_launch = bool
     cidr_block              = string
     availability_zone       = string
+    owner                   = string
     custom_tags             = map(string)
   }))
 }

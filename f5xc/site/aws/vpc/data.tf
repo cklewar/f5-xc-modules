@@ -212,8 +212,9 @@ data "aws_subnets" "workload" {
   }
 }
 
-data "aws_vpc" "vpc" {
+data "aws_vpc" "vpc_new" {
   depends_on = [module.site_wait_for_online]
+  count      = var.f5xc_aws_vpc_existing_name == "" && var.f5xc_aws_vpc_existing_id == "" ? 1 : 0
 
   filter {
     name   = "tag:ves-io-site-name"
@@ -221,6 +222,20 @@ data "aws_vpc" "vpc" {
   }
   filter {
     name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_vpc_owner]
+  }
+}
+
+data "aws_vpc" "vpc_exists" {
+  depends_on = [module.site_wait_for_online]
+  count      = var.f5xc_aws_vpc_existing_name != "" && var.f5xc_aws_vpc_existing_id != "" ? 1 : 0
+
+  filter {
+    name   = "tag:Name"
+    values = [var.f5xc_aws_vpc_existing_name]
+  }
+  filter {
+    name   = "tag:Owner"
     values = [var.f5xc_aws_vpc_owner]
   }
 }

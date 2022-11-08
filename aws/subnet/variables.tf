@@ -4,10 +4,11 @@ variable "aws_vpc_id" {
 
 variable "aws_vpc_subnets" {
   type = list(object({
-    map_public_ip_on_launch = bool
-    cidr_block              = string
-    availability_zone       = string
+    name                    = string
     owner                   = string
+    cidr_block              = string
     custom_tags             = map(string)
+    availability_zone       = string
+    map_public_ip_on_launch = bool
   }))
 }

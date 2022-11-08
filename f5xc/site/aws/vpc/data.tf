@@ -179,4 +179,8 @@ data "aws_vpc" "vpc" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_vpc_site_name]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
 }

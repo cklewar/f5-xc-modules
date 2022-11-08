@@ -176,11 +176,6 @@ variable "f5xc_aws_vpc_existing_id" {
   default = ""
 }
 
-variable "f5xc_aws_vpc_existing_name" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_nic_type_single_nic" {
   type    = string
   default = "single_nic"

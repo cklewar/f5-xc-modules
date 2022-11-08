@@ -5,7 +5,6 @@ resource "aws_subnet" "subnet" {
   map_public_ip_on_launch = each.value.map_public_ip_on_launch
   availability_zone       = each.value.availability_zone
   tags                    = merge({ Name = each.value.name }, each.value.custom_tags)
-  
   lifecycle {
     ignore_changes = [tags]
   }

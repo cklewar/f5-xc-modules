@@ -29,7 +29,7 @@ variable "aws_vpc_name" {
   type = string
 }
 
-variable "owner" {
+variable "aws_owner" {
   type = string
 }
 

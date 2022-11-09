@@ -74,7 +74,7 @@ variable "aws_ec2_network_interfaces_ref" {
   type = list(object({
     device_index         = number
     network_interface_id = string
-  })),
+  }))
   default = []
 }
 

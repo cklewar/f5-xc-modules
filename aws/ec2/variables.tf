@@ -84,6 +84,7 @@ variable "aws_ec2_network_interfaces" {
     private_ips     = list(string)
     security_groups = list(string)
     subnet_id       = string
+    custom_tags     = optional(map(string))
   }))
   default = []
 }

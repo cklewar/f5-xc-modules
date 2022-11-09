@@ -3,14 +3,13 @@ resource "aws_key_pair" "aws-key" {
   public_key = var.ssh_public_key_file
 }
 
-module "aws_network_interface" {
+module "network_interfaces" {
   source                        = "../network_interface"
-  for_each                      = var.aws_ec2_network_interfaces
-  aws_interface_create_eip      = each.value.create_eip
-  aws_interface_private_ips     = each.value.private_ips
-  aws_interface_security_groups = each.value.security_groups
-  aws_interface_subnet_id       = each.value.subnet_id
-  custom_tags                   = each.value.custom_tags
+  count                         = length(var.aws_ec2_network_interfaces)
+  aws_interface_create_eip      = var.aws_ec2_network_interfaces[count.index].create_eip
+  aws_interface_private_ips     = var.aws_ec2_network_interfaces[count.index].private_ips
+  aws_interface_security_groups = var.aws_ec2_network_interfaces[count.index].security_groups
+  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
 }
 
 resource "aws_instance" "instance" {
@@ -31,9 +30,9 @@ resource "aws_instance" "instance" {
   }
 
   dynamic "network_interface" {
-    for_each = module.aws_network_interface.aws_network_interface
+    for_each = [for interface in module.network_interfaces : interface.aws_network_interface]
     content {
-      device_index         = index(network_interface.value)
+      device_index         = network_interface.key
       network_interface_id = network_interface.value.id
     }
   }

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 timeout=60
 counter=0

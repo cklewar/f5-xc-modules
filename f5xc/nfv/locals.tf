@@ -7,7 +7,7 @@ locals {
   manifest_content      = templatefile(format("%s/templates/%s", path.module, var.f5xc_nfv_payload_template), {
     tenant             = var.f5xc_tenant
     namespace          = var.f5xc_namespace
-    ssh_key            = var.public_ssh_key
+    ssh_key            = var.ssh_public_key
     aws_az_name        = var.f5xc_aws_az_name
     tgw_name           = var.f5xc_tgw_name
     nfv_name           = var.f5xc_nfv_name

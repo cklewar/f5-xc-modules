@@ -20,10 +20,6 @@ variable "azure_linux_virtual_machine_admin_username" {
   default = "azureuser"
 }
 
-variable "azure_vnet_subnet_id" {
-  type = string
-}
-
 variable "azure_region" {
   type = string
 }
@@ -40,15 +36,6 @@ variable "azure_virtual_machine_allocation_method" {
 variable "azure_virtual_machine_sku" {
   type    = string
   default = "Standard"
-}
-
-variable "azure_network_interface_name" {
-  type = string
-}
-
-variable "azure_network_interface_ip_cfg_name" {
-  type    = string
-  default = "internal"
 }
 
 variable "azure_linux_virtual_machine_source_image_reference_publisher" {
@@ -96,7 +83,19 @@ variable "azure_linux_virtual_machine_custom_data" {
   default = ""
 }
 
-variable "public_ssh_key" {
+variable "azure_network_interfaces" {
+  type = list(object({
+    name             = string
+    ip_configuration = object({
+      subnet_id                     = string
+      create_public_ip_address      = bool
+      private_ip_address_allocation = string
+    })
+    tags = optional(map(string))
+  }))
+}
+
+variable "ssh_public_key" {
   type = string
 }
 

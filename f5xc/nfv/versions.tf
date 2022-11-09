@@ -5,7 +5,6 @@ terraform {
     volterra = {
       source  = "volterraedge/volterra"
       version =  " >= 0.11.14"
-      # configuration_aliases = [ volterra.default ]
     }
 
     aws = {

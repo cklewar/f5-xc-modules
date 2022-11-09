@@ -184,7 +184,7 @@ resource "volterra_aws_tgw_site" "site" {
     no_worker_nodes = var.f5xc_aws_tgw_no_worker_nodes
     nodes_per_az    = var.f5xc_aws_tgw_no_worker_nodes != false && var.f5xc_aws_tgw_worker_nodes_per_az > 0 ? var.f5xc_aws_tgw_worker_nodes_per_az : null
     total_nodes     = var.f5xc_aws_tgw_no_worker_nodes != false && var.f5xc_aws_tgw_total_worker_nodes > 0 ? var.f5xc_aws_tgw_total_worker_nodes : null
-    ssh_key         = var.public_ssh_key
+    ssh_key         = var.ssh_public_key
   }
 
   dynamic "vpc_attachments" {
@@ -216,4 +216,14 @@ resource "volterra_tf_params_action" "aws_tgw_action" {
   site_kind       = var.f5xc_site_kind
   action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action
+}
+
+module "site_wait_for_online" {
+  depends_on     = [volterra_tf_params_action.aws_tgw_action]
+  source         = "../../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = volterra_aws_tgw_site.site.name
+  f5xc_tenant    = var.f5xc_tenant
 }

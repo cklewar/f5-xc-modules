@@ -18,7 +18,7 @@ resource "volterra_aws_vpc_site" "site" {
       cloud_aggregated_prefix      = var.f5xc_aws_vpc_cloud_aggregated_prefix
       dc_connect_aggregated_prefix = var.f5xc_aws_vpc_dc_connect_aggregated_prefix
       manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
-      standard_vifs                = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == true ? true : null
+      standard_vifs                = var.f5xc_aws_vpc_direct_connect_standard_vifs
       dynamic "hosted_vifs" {
         for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
           1
@@ -36,7 +36,7 @@ resource "volterra_aws_vpc_site" "site" {
     for_each = var.f5xc_aws_vpc_existing_id == "" && var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : []
     content {
       new_vpc {
-        name_tag     = var.f5xc_aws_vpc_name_tag
+        name_tag     = var.f5xc_aws_vpc_site_name
         primary_ipv4 = var.f5xc_aws_vpc_primary_ipv4
       }
     }
@@ -208,7 +208,7 @@ resource "volterra_aws_vpc_site" "site" {
   no_worker_nodes = var.f5xc_aws_vpc_no_worker_nodes
   nodes_per_az    = var.f5xc_aws_vpc_worker_nodes_per_az > 0 ? var.f5xc_aws_vpc_worker_nodes_per_az : null
   total_nodes     = var.f5xc_aws_vpc_total_worker_nodes > 0 ? var.f5xc_aws_vpc_total_worker_nodes : null
-  ssh_key         = var.public_ssh_key
+  ssh_key         = var.ssh_public_key
   lifecycle {
     ignore_changes = [labels]
   }

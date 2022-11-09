@@ -1,7 +1,7 @@
 output "vnet" {
   value = {
-    name           = volterra_azure_vnet_site.site.name
     id             = volterra_azure_vnet_site.site.id
+    name           = volterra_azure_vnet_site.site.name
     sli_ip         = data.azurerm_network_interface.sli.private_ip_address
     slo_ip         = data.azurerm_network_interface.slo.private_ip_address
     region         = volterra_azure_vnet_site.site.azure_region

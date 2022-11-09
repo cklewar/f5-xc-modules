@@ -131,6 +131,49 @@ resource "volterra_azure_vnet_site" "site" {
               labels = spoke_vnets.value.labels
             }
           }
+          dynamic "express_route_enabled" {
+            for_each = length(var.f5xc_azure_express_route_connections) > 0 ? [1] : []
+            content {
+              dynamic "connections" {
+                for_each = var.f5xc_azure_express_route_connections
+                content {
+                  metadata {
+                    name        = connections.value.name
+                    description = connections.value.description
+                  }
+                  other_subscription {
+                    circuit_id = connections.value.circuit_id
+                  }
+                  weight = connections.value.weight
+                }
+              }
+              sku_standard  = var.f5xc_azure_express_route_sku_standard
+              sku_high_perf = var.f5xc_azure_express_route_sku_high_perf
+              sku_ergw1az   = var.f5xc_azure_express_route_sku_ergw1az
+              sku_ergw2az   = var.f5xc_azure_express_route_sku_ergw2az
+              gateway_subnet {
+                dynamic "subnet_param" {
+                  for_each = length(var.f5xc_azure_express_gateway_subnet) > 0 ? [1] : []
+                  content {
+                    ipv4 = var.f5xc_azure_express_gateway_subnet
+                  }
+                }
+                auto = length(var.f5xc_azure_express_gateway_subnet) > 0 ? false : true
+              }
+              route_server_subnet {
+                subnet_param {
+                  ipv4 = var.f5xc_azure_express_route_server_subnet
+                }
+                dynamic "subnet_param" {
+                  for_each = length(var.f5xc_azure_express_route_server_subnet) > 0 ? [1] : []
+                  content {
+                    ipv4 = var.f5xc_azure_express_route_server_subnet
+                  }
+                }
+                auto = length(var.f5xc_azure_express_route_server_subnet) > 0 ? false : true
+              }
+            }
+          }
         }
       }
 
@@ -164,7 +207,7 @@ resource "volterra_azure_vnet_site" "site" {
   no_worker_nodes = var.f5xc_azure_no_worker_nodes
   nodes_per_az    = var.f5xc_azure_worker_nodes_per_az > 0 ? var.f5xc_azure_worker_nodes_per_az : null
   total_nodes     = var.f5xc_azure_total_worker_nodes > 0 ? var.f5xc_azure_total_worker_nodes : null
-  ssh_key         = var.public_ssh_key
+  ssh_key         = var.ssh_public_key
   lifecycle {
     ignore_changes = [labels]
   }
@@ -193,4 +236,14 @@ module "site_wait_for_online" {
   f5xc_namespace = var.f5xc_namespace
   f5xc_site_name = volterra_azure_vnet_site.site.name
   f5xc_tenant    = var.f5xc_tenant
+}
+
+resource "azurerm_route" "route" {
+  depends_on = [module.site_wait_for_online]
+  for_each            = {for route in var.f5xc_azure_vnet_static_routes : route.name => route}
+  name                = each.value.name
+  resource_group_name = volterra_azure_vnet_site.site.resource_group
+  route_table_name    = each.value.route_table_name
+  address_prefix      = each.value.address_prefix
+  next_hop_type       = each.value.next_hop_type
 }

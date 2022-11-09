@@ -40,7 +40,7 @@ variable "f5xc_aws_cred" {
   type = string
 }
 
-variable "f5xc_aws_vpc_name_tag" {
+variable "f5xc_aws_vpc_owner" {
   type = string
 }
 
@@ -125,7 +125,7 @@ variable "f5xc_aws_site_kind" {
   default = "aws_vpc_site"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

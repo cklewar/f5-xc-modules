@@ -1,14 +1,16 @@
+${jsonencode(
 {
   "metadata": {
-    "name": ${policy_name},
-    "namespace": ${namespace}
+    "name": policy_rule_name,
+    "namespace": namespace
   },
   "spec": {
     "action": "ALLOW",
     "clientNameMatcher": {
       "regexValues": [
-        "ver\\..*\\.int.ves.io"
+        regexValues
       ]
     }
   }
 }
+)}

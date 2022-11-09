@@ -1,6 +1,6 @@
 resource "azurerm_public_ip" "ip" {
-  count               = var.create_public_ip == true ? 1 : 0
-  name                = var.azure_virtual_machine_name
+  for_each            = {for interface in var.azure_network_interfaces : interface.name => interface if interface.ip_configuration.create_public_ip_address}
+  name                = format("%s-public-ip", each.value.name)
   resource_group_name = var.azure_resource_group_name
   location            = var.azure_region
   zones               = var.azure_zones
@@ -10,17 +10,17 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_network_interface" "network_interface" {
-  name                = var.azure_network_interface_name
+  count               = length(var.azure_network_interfaces)
+  name                = var.azure_network_interfaces[count.index].name
   location            = var.azure_region
   resource_group_name = var.azure_resource_group_name
-
+  tags                = var.azure_network_interfaces[count.index].tags
   ip_configuration {
-    name                          = var.azure_network_interface_ip_cfg_name
-    subnet_id                     = var.azure_vnet_subnet_id
-    public_ip_address_id          = var.create_public_ip == true ? azurerm_public_ip.ip[0].id : null
-    private_ip_address_allocation = var.azure_network_interface_private_ip_address_allocation
+    name                          = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
+    subnet_id                     = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
+    public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azure_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azure_network_interfaces[count.index].name].id : null
+    private_ip_address_allocation = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation
   }
-  tags = var.custom_tags
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
@@ -29,7 +29,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   zone                  = var.azure_zone
   size                  = var.azure_virtual_machine_size
   resource_group_name   = var.azure_resource_group_name
-  network_interface_ids = [azurerm_network_interface.network_interface.id]
+  network_interface_ids = [for interface in azurerm_network_interface.network_interface : interface.id]
 
   os_disk {
     name                 = var.azure_virtual_machine_name
@@ -50,8 +50,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = var.azure_linux_virtual_machine_admin_username
-    public_key = var.public_ssh_key
+    public_key = var.ssh_public_key
   }
   tags        = var.custom_tags
-  custom_data = var.azure_linux_virtual_machine_custom_data != "" ? base64encode(var.azure_linux_virtual_machine_custom_data) : null
+  custom_data = var.azure_linux_virtual_machine_custom_data != "" ? var.azure_linux_virtual_machine_custom_data : null
 }

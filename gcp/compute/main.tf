@@ -4,7 +4,6 @@ resource "google_compute_instance" "compute" {
   tags         = var.gcp_compute_instance_target_tags
   labels       = var.gcp_compute_instance_labels
   machine_type = var.gcp_compute_instance_machine_type
-
   boot_disk {
     initialize_params {
       image = var.gcp_google_compute_instance_image
@@ -27,6 +26,6 @@ resource "google_compute_instance" "compute" {
 
   metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
   metadata                = {
-    ssh-keys = var.public_ssh_key
+    ssh-keys = var.ssh_public_key
   }
 }

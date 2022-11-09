@@ -2,25 +2,6 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_api_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_key" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_ca_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
 variable "f5xc_api_token" {
   type = string
 }
@@ -83,7 +64,7 @@ variable "f5xc_api_credential_type" {
 
 variable "f5xc_virtual_k8s_namespace" {
   type    = string
-  default = ""
+  default = "shared"
 }
 
 variable "f5xc_virtual_k8s_name" {

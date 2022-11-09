@@ -27,14 +27,14 @@ resource "null_resource" "apply_credential" {
     delete_uri            = local.credential_delete_uri
     namespace             = var.f5xc_namespace
     name                  = var.f5xc_api_credentials_name
-    virtual_k8s_namespace = var.f5xc_virtual_k8s_namespace
+    virtual_k8s_namespace = var.f5xc_virtual_k8s_name != "" ? var.f5xc_virtual_k8s_namespace : null
     virtual_k8s_name      = var.f5xc_virtual_k8s_name
     filename              = "${path.module}/_out/response.json"
   }
 
   provisioner "local-exec" {
     command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null https://playground.staging.volterra.us/api/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_token, local.api_credential_content)
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   /*provisioner "local-exec" {

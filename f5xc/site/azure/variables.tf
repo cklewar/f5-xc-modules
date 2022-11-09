@@ -18,8 +18,8 @@ variable "f5xc_azure_site_name" {
   type = string
 
   validation {
-    condition     = length(var.f5xc_azure_site_name) <= 16
-    error_message = "f5xc_azure_site_name must contain no more than 16 symbols."
+    condition     = length(var.f5xc_azure_site_name) <= 22
+    error_message = "f5xc_azure_site_name must contain no more than 22 symbols."
   }
 }
 
@@ -70,6 +70,36 @@ variable "f5xc_azure_hub_spoke_vnets" {
     auto           = bool
     manual         = bool
     labels         = map(string)
+  }))
+  default = []
+}
+
+variable "f5xc_azure_express_route_sku_standard" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_high_perf" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_ergw1az" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_sku_ergw2az" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_azure_express_route_connections" {
+  type = list(object({
+    name        = string
+    description = string
+    circuit_id  = string
+    weight      = number
   }))
   default = []
 }
@@ -147,7 +177,7 @@ variable "f5xc_azure_ce_disk_size" {
   default = "80"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 
@@ -184,6 +214,16 @@ variable "f5xc_azure_existing_vnet_name" {
   default = ""
 }
 
+variable "f5xc_azure_vnet_static_routes" {
+  type = list(object({
+    name             = string
+    address_prefix   = string
+    route_table_name = string
+    next_hop_type    = string
+  }))
+  default = []
+}
+
 variable "f5xc_nic_type_single_nic" {
   type    = string
   default = "single_nic"
@@ -218,6 +258,16 @@ variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
+}
+
+variable "f5xc_azure_express_route_server_subnet" {
+  type        = string
+  default     = ""
+}
+
+variable "f5xc_azure_express_gateway_subnet" {
+  type        = string
+  default     = ""
 }
 
 variable "custom_labels" {

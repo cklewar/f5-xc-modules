@@ -70,10 +70,21 @@ variable "amis" {
   }
 }
 
-variable "aws_ec2_network_interfaces" {
+/*variable "aws_ec2_network_interfaces" {
   type = list(object({
     device_index         = number
     network_interface_id = string
+  }))
+}*/
+
+variable "aws_ec2_network_interfaces" {
+  type = list(object({
+    device_index    = number
+    create_eip      = bool
+    private_ips     = list(string)
+    security_groups = list(string)
+    subnet_id       = string
+    custom_tags     = map(string)
   }))
 }
 

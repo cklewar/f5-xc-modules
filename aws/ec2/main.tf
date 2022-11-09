@@ -3,6 +3,16 @@ resource "aws_key_pair" "aws-key" {
   public_key = var.ssh_public_key_file
 }
 
+module "aws_network_interface" {
+  source                        = "../network_interface"
+  for_each                      = var.aws_ec2_network_interfaces
+  aws_interface_create_eip      = each.value.create_eip
+  aws_interface_private_ips     = each.value.private_ips
+  aws_interface_security_groups = each.value.security_groups
+  aws_interface_subnet_id       = each.value.subnet_id
+  custom_tags                   = each.value.custom_tags
+}
+
 resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
   instance_type               = var.aws_ec2_instance_type
@@ -12,11 +22,19 @@ resource "aws_instance" "instance" {
   user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
   tags                        = var.custom_tags
 
-  dynamic "network_interface" {
+  /*dynamic "network_interface" {
     for_each = var.aws_ec2_network_interfaces
     content {
       device_index         = network_interface.value.device_index
       network_interface_id = network_interface.value.network_interface_id
+    }
+  }*/
+
+  dynamic "network_interface" {
+    for_each = module.aws_network_interface.aws_network_interface
+    content {
+      device_index         = index(network_interface.value)
+      network_interface_id = network_interface.value.id
     }
   }
 }

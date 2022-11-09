@@ -20,15 +20,15 @@ resource "aws_instance" "instance" {
   # subnet_id                   = var.aws_subnet_id != "" ? var.aws_subnet_id : null
   user_data                   = local.cloud_init_content
   user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
-  tags                        = merge(var.custom_tags, { "Name" = var.aws_ec2_instance_name })
+  tags                        = var.custom_tags
 
-  /*dynamic "network_interface" {
-    for_each = var.aws_ec2_network_interfaces
+  dynamic "network_interface" {
+    for_each = var.aws_ec2_network_interfaces_ref
     content {
       device_index         = network_interface.value.device_index
       network_interface_id = network_interface.value.network_interface_id
     }
-  }*/
+  }
 
   dynamic "network_interface" {
     for_each = module.aws_network_interface.aws_network_interface

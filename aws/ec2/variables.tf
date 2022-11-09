@@ -70,12 +70,13 @@ variable "amis" {
   }
 }
 
-/*variable "aws_ec2_network_interfaces" {
+variable "aws_ec2_network_interfaces_ref" {
   type = list(object({
     device_index         = number
     network_interface_id = string
-  }))
-}*/
+  })),
+  default = []
+}
 
 variable "aws_ec2_network_interfaces" {
   type = list(object({
@@ -86,6 +87,7 @@ variable "aws_ec2_network_interfaces" {
     subnet_id       = string
     custom_tags     = map(string)
   }))
+  default = []
 }
 
 variable "aws_ec2_user_data_replace_on_change" {

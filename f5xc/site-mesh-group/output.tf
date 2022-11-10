@@ -3,6 +3,6 @@ output "site-mesh-group" {
     "name"        = volterra_site_mesh_group.site_mesh_group.name
     "id"          = volterra_site_mesh_group.site_mesh_group.id
     "type"        = volterra_site_mesh_group.site_mesh_group.type
-    # "tunnel_type" = volterra_site_mesh_group.site_mesh_group.tunnel_type
+    "tunnel_type" = volterra_site_mesh_group.site_mesh_group.tunnel_type
   }
 }

@@ -166,11 +166,6 @@ variable "f5xc_aws_vpc_logs_streaming_disabled" {
   default = true
 }
 
-variable "f5xc_aws_vpc_no_local_control_plane" {
-  type    = bool
-  default = true
-}
-
 variable "f5xc_aws_vpc_existing_id" {
   type    = string
   default = ""

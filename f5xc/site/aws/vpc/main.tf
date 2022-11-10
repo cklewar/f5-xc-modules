@@ -52,9 +52,6 @@ resource "volterra_aws_vpc_site" "site" {
   disk_size               = var.f5xc_aws_vpc_ce_instance_disk_size
   instance_type           = var.f5xc_aws_vpc_ce_instance_type
   logs_streaming_disabled = var.f5xc_aws_vpc_logs_streaming_disabled
-  site_local_control_plane {
-    no_local_control_plane = var.f5xc_aws_vpc_no_local_control_plane
-  }
 
   os {
     default_os_version       = var.f5xc_aws_default_ce_os_version

@@ -67,6 +67,11 @@ variable "f5xc_origin_pool_tls_skip_server_verification" {
   default = true
 }
 
+variable "f5xc_origin_pool_custom_endpoint_object_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_origin_pool_tls_sni" {
   type    = string
   default = ""

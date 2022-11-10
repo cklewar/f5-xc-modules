@@ -8,6 +8,6 @@ output "gcp_vpc" {
     params            = volterra_tf_params_action.gcp_vpc_action
     public_ip         = data.google_compute_instance.instance.network_interface.0.access_config.0.nat_ip
     instance_type     = volterra_gcp_vpc_site.site.instance_type
-    network_interface = data.google_compute_instance.instance.network_interface.network_interface
+    network_interface = data.google_compute_instance.instance.network_interface
   }
 }

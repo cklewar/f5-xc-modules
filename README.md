@@ -1,4 +1,4 @@
-# F5-XC-MODULES v.0.11.14
+# F5-XC-MODULES v0.11.14
 
 This repository consists of Terraform template modules to bring up various F5XC components.
 

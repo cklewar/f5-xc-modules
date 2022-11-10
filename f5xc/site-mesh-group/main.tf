@@ -1,7 +1,7 @@
 resource "volterra_site_mesh_group" "site_mesh_group" {
   name        = var.f5xc_site_mesh_group_name
   namespace   = var.f5xc_namespace
-  tunnel_type = var.f5xc_tunnel_type
+  # tunnel_type = var.f5xc_tunnel_type
   type        = var.f5xc_site_2_site_connection_type
   description = var.f5xc_site_mesh_group_description
   hub_mesh    = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_hub_mesh ? true : false

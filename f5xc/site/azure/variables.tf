@@ -162,11 +162,6 @@ variable "f5xc_azure_logs_streaming_disabled" {
   default = true
 }
 
-variable "f5xc_azure_no_local_control_plane" {
-  type    = bool
-  default = true
-}
-
 variable "f5xc_azure_site_kind" {
   type    = string
   default = "azure_vnet_site"

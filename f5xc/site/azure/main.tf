@@ -22,9 +22,6 @@ resource "volterra_azure_vnet_site" "site" {
     default_sw_version        = var.f5xc_azure_default_ce_sw_version
     volterra_software_version = local.f5xc_azure_ce_sw_version
   }
-  site_local_control_plane {
-    no_local_control_plane = var.f5xc_azure_no_local_control_plane
-  }
 
   dynamic "ingress_gw" {
     for_each = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []

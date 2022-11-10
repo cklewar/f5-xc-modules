@@ -82,6 +82,11 @@ variable "f5xc_origin_pool_k8s_service_site_locator_site_name" {
   default = ""
 }
 
+variable "f5xc_origin_pool_k8s_service_site_locator_virtual_site_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_origin_pool_custom_endpoint_object_name" {
   type    = string
   default = ""

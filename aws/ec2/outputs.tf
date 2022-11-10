@@ -3,7 +3,7 @@ output "aws_ec2_instance" {
     id                 = aws_instance.instance.id
     public_ip          = aws_instance.instance.public_ip
     subnet_id          = aws_instance.instance.subnet_id
-    private_ip         = aws_instance.instance.id
+    private_ip         = aws_instance.instance.private_ip
     public_dns         = aws_instance.instance.public_dns
     private_dns        = aws_instance.instance.private_dns
     script_file        = var.aws_ec2_instance_script_file

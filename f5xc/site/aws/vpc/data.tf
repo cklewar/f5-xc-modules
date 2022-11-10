@@ -231,3 +231,11 @@ data "aws_vpc" "vpc" {
     }
   }
 }
+
+data "aws_internet_gateway" "igw" {
+  depends_on = [module.site_wait_for_online]
+  filter {
+    name   = "attachment.vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+}

@@ -5,6 +5,7 @@ output "f5xc_aws_vpc" {
     region = volterra_aws_vpc_site.site.aws_region
     params = volterra_tf_params_action.aws_vpc_action
     vpc_id = data.aws_vpc.vpc.id
+    igw_id = data.aws_internet_gateway.igw.id
     nodes  = {
       master-0 = {
         interfaces = {

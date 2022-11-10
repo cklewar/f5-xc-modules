@@ -72,6 +72,11 @@ variable "f5xc_origin_pool_tls_sni" {
   default = ""
 }
 
+variable "f5xc_origin_pool_custom_endpoint_object_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_origin_pool_tls_use_host_header_as_sni" {
   type    = bool
   default = false

@@ -216,3 +216,15 @@ module "site_wait_for_online" {
   f5xc_site_name = volterra_gcp_vpc_site.site.name
   f5xc_tenant    = var.f5xc_tenant
 }
+
+resource "null_resource" "hcl2json_get" {
+  depends_on = [module.site_wait_for_online]
+  triggers = {
+    url = var.hcl2json_bin_url
+    filename = "hcl2json"
+  }
+  provisioner "local-exec" {
+    command     = "curl -o ${path.module}/scripts/${self.triggers.filename} -X 'GET' 2>/dev/null ${self.triggers.url}"
+    interpreter = ["/usr/bin/env", "bash", "-c", ""]
+  }
+}

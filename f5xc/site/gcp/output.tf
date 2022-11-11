@@ -1,3 +1,7 @@
+output "hcl2json" {
+  value = data.external.instance.result
+}
+
 output "gcp_vpc" {
   value = {
     name              = volterra_gcp_vpc_site.site.name

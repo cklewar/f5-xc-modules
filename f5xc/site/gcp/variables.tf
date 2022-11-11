@@ -244,3 +244,8 @@ variable "custom_labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "hcl2json_bin_url" {
+  type    = string
+  default = "https://github.com/tmccombs/hcl2json/releases/download/0.3.5/hcl2json_darwin_arm64"
+}

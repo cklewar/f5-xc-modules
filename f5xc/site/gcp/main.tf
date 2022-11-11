@@ -228,7 +228,6 @@ resource "null_resource" "hcl2json_get" {
     command     = <<-EOT
       PLATFORM=$(echo "$(uname)" | tr '[:upper:]' '[:lower:]')
       ARCH=$(uname -m)
-      https://github.com/tmccombs/hcl2json/releases/download/0.3.5/hcl2json_darwin_arm64
       curl -o ${path.module}/scripts/${self.triggers.filename} -X 'GET' 2>/dev/null ${self.triggers.url}/${self.triggers.version}/hcl2json_$PLATFORM_$ARCH
     EOT
     interpreter = ["/usr/bin/env", "bash", "-c"]

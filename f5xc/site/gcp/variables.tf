@@ -244,3 +244,13 @@ variable "custom_labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "hcl2json_version" {
+  type    = string
+  default = "0.3.5"
+}
+
+variable "hcl2json_bin_url" {
+  type    = string
+  default = "https://github.com/tmccombs/hcl2json/releases/download"
+}

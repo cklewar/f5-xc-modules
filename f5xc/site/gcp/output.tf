@@ -1,7 +1,7 @@
 output "gcp_vpc" {
   value = {
-    name          = volterra_gcp_vpc_site.site.name
     id            = volterra_gcp_vpc_site.site.id
+    name          = volterra_gcp_vpc_site.site.name
     region        = volterra_gcp_vpc_site.site.gcp_region
     slo_ip        = data.google_compute_instance.instance.network_interface.0.network_ip
     sli_ip        = data.google_compute_instance.instance.network_interface.1.network_ip

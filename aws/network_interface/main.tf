@@ -6,7 +6,7 @@ resource "aws_network_interface" "interface" {
 }
 
 resource "aws_eip" "eip" {
-  count = var.aws_interface_create_eip ? 1 : 0
+  count             = var.aws_interface_create_eip ? 1 : 0
   vpc               = true
   network_interface = aws_network_interface.interface.id
   tags              = var.custom_tags

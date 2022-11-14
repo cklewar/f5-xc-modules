@@ -1,7 +1,7 @@
-data "external" "instance" {
+/*data "external" "instance" {
   depends_on = [module.site_wait_for_online]
   program = ["./scripts/script.sh"]
-}
+}*/
 
 data "google_compute_instance" "instance" {
   depends_on = [module.site_wait_for_online]

@@ -9,6 +9,5 @@ output "gcp_vpc" {
     public_ip         = data.google_compute_instance.instance.network_interface.0.access_config.0.nat_ip
     instance_type     = volterra_gcp_vpc_site.site.instance_type
     network_interface = data.google_compute_instance.instance.network_interface
-    instance          = data.google_compute_instance.instance
   }
 }

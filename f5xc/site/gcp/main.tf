@@ -216,7 +216,7 @@ module "site_wait_for_online" {
   f5xc_tenant    = var.f5xc_tenant
 }
 
-resource "null_resource" "hcl2json_get" {
+/*resource "null_resource" "hcl2json_get" {
   depends_on = [module.site_wait_for_online]
   triggers   = {
     url      = var.hcl2json_bin_url
@@ -231,4 +231,4 @@ resource "null_resource" "hcl2json_get" {
     EOT
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
-}
+}*/

@@ -54,12 +54,13 @@ resource "null_resource" "apply_credential" {
 
 resource "null_resource" "destroy" {
   depends_on = [local_file.api_credentials]
+  count = length(data.local_file.response.*.content) > 0 ? 1 : 0
   triggers   = {
     api_url    = var.f5xc_api_url
     delete_uri = local.credential_delete_uri
     api_token  = var.f5xc_api_token
     namespace  = var.f5xc_namespace
-    name       = jsondecode(data.local_file.response.content).name
+    name       = jsondecode(data.local_file.response.*.content).name
   }
 
   provisioner "local-exec" {

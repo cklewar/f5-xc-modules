@@ -34,7 +34,7 @@ resource "null_resource" "apply_credential" {
   }
 }
 
-/*resource "null_resource" "destroy" {
+resource "null_resource" "destroy" {
   # depends_on = [local_file.api_credentials]
   count      = length(data.local_file.response.*.content) > 0 ? 1 : 0
   triggers   = {
@@ -57,4 +57,4 @@ resource "null_resource" "apply_credential" {
       name       = self.triggers.name
     }
   }
-}*/
+}

@@ -11,6 +11,7 @@
 
 output "api_credential" {
   value = {
+<<<<<<< HEAD
     "name"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.metadata.name : null
     "type"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.type : null
     "virtual_k8s_name"      = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.virtual_k8s_name : null
@@ -18,5 +19,14 @@ output "api_credential" {
     "expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.expiration_timestamp : null
     "k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config ? base64decode(jsondecode(data.local_file.response[0].content).data) : null
     "api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate ? jsondecode(data.local_file.response.*.content[0]).data : ""
+=======
+    "name"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.metadata.name : null
+    "type"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.type : null
+    "virtual_k8s_name"      = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.virtual_k8s_name : null
+    "virtual_k8s_namespace" = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.virtual_k8s_namespace : null
+    "expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.expiration_timestamp : null
+    "k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response.*.content) > 0 ? jsondecode(base64decode(data.local_file.response.*.content).data) : ""
+    "api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response.*.content) > 0 ? jsondecode(data.local_file.response.*.content).data : ""
+>>>>>>> 0a23b41 (update)
   }
 }

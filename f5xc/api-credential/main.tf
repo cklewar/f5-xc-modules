@@ -42,7 +42,7 @@ resource "null_resource" "destroy" {
     delete_uri = local.credential_delete_uri
     api_token  = var.f5xc_api_token
     namespace  = var.f5xc_namespace
-    name       = jsondecode(data.local_file.response.*.content).name
+    name       = jsondecode(data.local_file.response.*.content[0]).name
   }
 
   provisioner "local-exec" {

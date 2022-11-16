@@ -21,25 +21,22 @@ resource "local_file" "api_credentials" {
 
 resource "null_resource" "apply_credential" {
   triggers = {
-    manifest_sha1         = sha1(local.api_credential_content)
-    api_url               = var.f5xc_api_url
-    api_token             = var.f5xc_api_token
-    namespace             = var.f5xc_namespace
-    name                  = var.f5xc_api_credentials_name
-    virtual_k8s_namespace = var.f5xc_virtual_k8s_name != "" ? var.f5xc_virtual_k8s_namespace : null
-    virtual_k8s_name      = var.f5xc_virtual_k8s_name
-    filename              = "${path.module}/_out/response.json"
+    manifest_sha1 = sha1(local.api_credential_content)
+    api_url       = var.f5xc_api_url
+    api_token     = var.f5xc_api_token
+    uri           = local.credential_create_uri
+    filename      = "${path.module}/_out/response.json"
   }
 
   provisioner "local-exec" {
-    command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null %s/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", self.triggers.api_url, var.f5xc_api_token, local.api_credential_content)
+    command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null %s/%s -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", self.triggers.api_url, self.triggers.uri, var.f5xc_api_token, local.api_credential_content)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 }
 
 resource "null_resource" "destroy" {
   depends_on = [local_file.api_credentials]
-  count = length(data.local_file.response.*.content) > 0 ? 1 : 0
+  count      = length(data.local_file.response.*.content) > 0 ? 1 : 0
   triggers   = {
     api_url    = var.f5xc_api_url
     delete_uri = local.credential_delete_uri

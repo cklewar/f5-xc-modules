@@ -33,3 +33,15 @@ module "vk8s_wait_for_online" {
   f5xc_tenant    = var.f5xc_tenant
   f5xc_vk8s_name = volterra_virtual_k8s.vk8s.name
 }
+
+module "api_credential_kubeconfig" {
+  count                     = var.f5xc_create_k8s_creds == true && var.f5xc_k8s_credentials_name != "" ? 1 : 0
+  source                    = "../api-credential"
+  f5xc_tenant               = var.f5xc_tenant
+  f5xc_api_url              = var.f5xc_api_url
+  f5xc_api_token            = var.f5xc_api_token
+  f5xc_namespace            = var.f5xc_namespace
+  f5xc_virtual_k8s_name     = volterra_virtual_k8s.vk8s.name
+  f5xc_api_credential_type  = "KUBE_CONFIG"
+  f5xc_api_credentials_name = var.f5xc_k8s_credentials_name
+}

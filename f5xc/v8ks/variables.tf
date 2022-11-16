@@ -43,6 +43,21 @@ variable "f5xc_virtual_site_refs" {
   default = []
 }
 
+variable "f5xc_create_k8s_creds" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_namespace" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_k8s_credentials_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_labels" {
   type    = map(string)
   default = {}

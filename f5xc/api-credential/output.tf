@@ -16,7 +16,7 @@ output "api_credential" {
     "virtual_k8s_name"      = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.virtual_k8s_name : null
     "virtual_k8s_namespace" = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.virtual_k8s_namespace : null
     "expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body).object.spec.gc_spec.expiration_timestamp : null
-    "k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response.*.content) > 0 ? base64encode(jsondecode(data.local_file.response.*.content).data) : ""
+    "k8s_config"            = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response.*.content) > 0 ? base64encode(jsondecode(data.local_file.response.*.content).data) : ""
     "data"                  = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response.*.content) > 0 ? jsondecode(data.local_file.response.*.content).data : ""
   }
 }

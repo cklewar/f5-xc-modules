@@ -35,7 +35,7 @@ module "vk8s_wait_for_online" {
 }
 
 module "api_credential_kubeconfig" {
-  count                     = var.f5xc_create_k8s_creds == true && f5xc_k8s_credentials_name != "" ? 1 : 0
+  count                     = var.f5xc_create_k8s_creds == true && var.f5xc_k8s_credentials_name != "" ? 1 : 0
   source                    = "../api-credential"
   f5xc_tenant               = var.f5xc_tenant
   f5xc_api_url              = var.f5xc_api_url

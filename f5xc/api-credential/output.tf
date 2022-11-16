@@ -16,6 +16,6 @@ output "api_credential" {
     "virtual_k8s_name"      = jsondecode(data.http.credential.response_body).object.spec.gc_spec.virtual_k8s_name
     "virtual_k8s_namespace" = jsondecode(data.http.credential.response_body).object.spec.gc_spec.virtual_k8s_namespace
     "expiration_timestamp"  = jsondecode(data.http.credential.response_body).object.spec.gc_spec.expiration_timestamp
-    "data"                  = jsondecode(data.local_file.response.content).data
+    "data"                  = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config ? base64encode(jsondecode(data.local_file.response.content).data) : jsondecode(data.local_file.response.content).data
   }
 }

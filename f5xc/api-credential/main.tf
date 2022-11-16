@@ -24,7 +24,6 @@ resource "null_resource" "apply_credential" {
     manifest_sha1         = sha1(local.api_credential_content)
     api_url               = var.f5xc_api_url
     api_token             = var.f5xc_api_token
-    delete_uri            = local.credential_delete_uri
     namespace             = var.f5xc_namespace
     name                  = var.f5xc_api_credentials_name
     virtual_k8s_namespace = var.f5xc_virtual_k8s_name != "" ? var.f5xc_virtual_k8s_namespace : null
@@ -33,23 +32,9 @@ resource "null_resource" "apply_credential" {
   }
 
   provisioner "local-exec" {
-    command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null https://playground.staging.volterra.us/api/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_token, local.api_credential_content)
+    command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null %s/web/namespaces/system/api_credentials -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", self.triggers.api_url, var.f5xc_api_token, local.api_credential_content)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
-
-  /*provisioner "local-exec" {
-    when        = destroy
-    command     = "${path.module}/scripts/delete.sh"
-    on_failure  = continue
-    environment = {
-      api_token             = self.triggers.api_token
-      api_url               = self.triggers.api_url
-      delete_uri            = self.triggers.delete_uri
-      namespace             = self.triggers.namespace
-      virtual_k8s_namespace = self.triggers.virtual_k8s_namespace
-      virtual_k8s_name      = self.triggers.virtual_k8s_name
-    }
-  }*/
 }
 
 resource "null_resource" "destroy" {

@@ -48,8 +48,7 @@ variable "aws_route_table_id" {
 }
 
 variable "aws_endpoint_private_access" {
-  type    = bool
-
+  type = bool
 }
 
 variable "aws_endpoint_public_access" {

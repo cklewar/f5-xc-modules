@@ -15,7 +15,6 @@ locals {
   tmp_list_map   = local.tmp_list[0]
   base64_ca_data = lookup(local.tmp_list_map[0], "data", "")
   ca_data        = base64decode(local.base64_ca_data)
-
   node_userdata = templatefile(format("%s/templates/eks_node_userdata.yml", path.module), {
     endpoint         = aws_eks_cluster.eks.endpoint
     certificate_data = local.base64_ca_data

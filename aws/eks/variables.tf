@@ -1,3 +1,11 @@
+variable "aws_access_key" {
+  type = string
+}
+
+variable "aws_secret_key" {
+  type = string
+}
+
 variable "aws_region" {
   type = string
 }
@@ -40,7 +48,8 @@ variable "aws_route_table_id" {
 }
 
 variable "aws_endpoint_private_access" {
-  type = bool
+  type    = bool
+
 }
 
 variable "aws_endpoint_public_access" {

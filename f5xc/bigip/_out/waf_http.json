@@ -18,7 +18,7 @@
 					"class": "Service_HTTP",
 					"virtualPort": 80,
 					"virtualAddresses": [
-						"192.168.27.236"
+						"192.168.168.106"
 					],
 					"snat": "auto",
 					"pool": "Pool1",
@@ -34,14 +34,14 @@
 					"members": [{
 							"servicePort": 80,
 							"serverAddresses": [
-								"172.16.29.5"
+								"172.16.184.10"
 							]
 						}
 					]
 				},
 				"WAF_Policy": {
 					"class": "WAF_Policy",
-					"url": "https://raw.githubusercontent.com/cklewar/waf_policy/main/policy.json",
+					"url": "http://172.16.184.12:3000/gitea/awaf/raw/branch/main/waf_policy.json",
                     "enforcementMode": "blocking",
 					"ignoreChanges": true
 				}

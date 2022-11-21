@@ -1,10 +1,10 @@
 resource "volterra_virtual_site" "virtual-site" {
-  name      = "ck-virtual-site-ams"
+  name      = var.f5xc_virtual_site_name
   namespace = var.f5xc_namespace
 
   site_selector {
-    expressions = ["ves.io/siteName in (ves-io-ams9-ams)"]
+    expressions = var.f5xc_virtual_site_selector_expression
   }
 
-  site_type = "REGIONAL_EDGE"
+  site_type = var.f5xc_virtual_site_type
 }

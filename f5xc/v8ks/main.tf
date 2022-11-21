@@ -1,70 +1,48 @@
 resource "volterra_virtual_k8s" "vk8s" {
-  name      = "vk8s-01"
-  namespace = var.f5xc_namespace
+  name        = var.f5xc_vk8s_name
+  namespace   = var.f5xc_vk8s_namespace
+  description = var.f5xc_vk8s_description
+  isolated    = var.f5xc_vk8s_isolated
+  labels      = local.f5xc_labels
 
-  vsite_refs {
-    name      = var.f5xc_virtual_site_refs
-    namespace = var.f5xc_namespace
-  }
-
-  provisioner "local-exec" {
-    command = "sleep 120s"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "sleep 30s"
-  }
-}
-
-resource "local_file" "manifest" {
-  content  = local.manifest_content
-  filename = format("%s/_output/manifest.yml", path.root)
-}
-
-resource "volterra_api_credential" "cred_vk8s" {
-  depends_on            = [volterra_virtual_k8s.vk8s]
-  name                  = "vk8s-cred"
-  api_credential_type   = "KUBE_CONFIG"
-  virtual_k8s_namespace = var.f5xc_namespace
-  virtual_k8s_name      = volterra_virtual_k8s.vk8s.name
-  lifecycle {
-    ignore_changes = [name]
-  }
-}
-
-resource "local_file" "this_kubeconfig" {
-  content  = base64decode(volterra_api_credential.cred_vk8s.data)
-  filename = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
-}
-
-resource "null_resource" "apply_creds" {
-  depends_on = [local_file.this_kubeconfig]
-  provisioner "local-exec" {
-    command     = format("kubectl create secret docker-registry regcred --docker-server=docker.io --docker-password=abc --docker-username=abc --docker-email=test@example.net --namespace=%s", var.f5xc_namespace)
-    environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
+  dynamic "vsite_refs" {
+    for_each = var.f5xc_virtual_site_refs
+    content {
+      name      = vsite_refs.value
+      namespace = var.f5xc_vsite_refs_namespace
+      tenant    = var.f5xc_tenant
     }
   }
+
+  /*dynamic "default_flavor_ref" {
+    for_each = var.f5xc_vk8s_default_flavor_name != "" ? [1] : []
+    content {
+      name      = var.f5xc_vk8s_default_flavor_name
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }
+  }*/
 }
 
-resource "null_resource" "apply_manifest" {
-  depends_on = [null_resource.apply_creds, local_file.this_kubeconfig, local_file.manifest]
-  triggers   = {
-    manifest_sha1 = sha1(local.manifest_content)
-  }
-  provisioner "local-exec" {
-    command     = format("kubectl apply -f _output/demo_ams.yml --namespace=%s", var.f5xc_namespace)
-    environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
-    }
-  }
-  provisioner "local-exec" {
-    when        = destroy
-    command     = "kubectl delete -f _output/demo.yml --ignore-not-found=true"
-    environment = {
-      KUBECONFIG = format("%s/_output/ves_cklewar-ns-01_ck-vk8s-ams.yaml", path.root)
-    }
-    on_failure = continue
-  }
+module "vk8s_wait_for_online" {
+  depends_on     = [volterra_virtual_k8s.vk8s]
+  source         = "../status/vk8s"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_vk8s_namespace
+  f5xc_tenant    = var.f5xc_tenant
+  f5xc_vk8s_name = volterra_virtual_k8s.vk8s.name
+}
+
+module "api_credential_kubeconfig" {
+  depends_on                = [module.vk8s_wait_for_online]
+  count                     = var.f5xc_create_k8s_creds == true && var.f5xc_k8s_credentials_name != "" ? 1 : 0
+  source                    = "../api-credential"
+  f5xc_tenant               = var.f5xc_tenant
+  f5xc_api_url              = var.f5xc_api_url
+  f5xc_api_token            = var.f5xc_api_token
+  f5xc_namespace            = var.f5xc_namespace
+  f5xc_virtual_k8s_name     = volterra_virtual_k8s.vk8s.name
+  f5xc_api_credential_type  = "KUBE_CONFIG"
+  f5xc_api_credentials_name = var.f5xc_k8s_credentials_name
 }

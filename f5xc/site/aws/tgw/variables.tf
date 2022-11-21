@@ -2,22 +2,7 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_api_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_key" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_ca_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_p12_file" {
+variable "f5xc_api_token" {
   type = string
 }
 
@@ -29,7 +14,7 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 
@@ -61,7 +46,8 @@ variable "f5xc_aws_tgw_ce_instance_disk_size" {
 }
 
 variable "f5xc_aws_tgw_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_aws_cred" {
@@ -79,7 +65,8 @@ variable "f5xc_aws_tgw_az_nodes" {
 }
 
 variable "f5xc_aws_tgw_vpc_attach_label_deploy" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_aws_default_ce_os_version" {
@@ -113,6 +100,16 @@ variable "f5xc_aws_vpc_attachment_ids" {
 variable "f5xc_site_kind" {
   type    = string
   default = "aws_tgw_site"
+}
+
+variable "f5xc_aws_tgw_id" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_vpc_id" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_aws_tgw_logs_streaming_disabled" {
@@ -154,6 +151,66 @@ variable "f5xc_aws_tgw_no_worker_nodes" {
   type = bool
 }
 
+variable "f5xc_aws_tgw_asn" {
+  type    = number
+  default = 0
+}
+
+variable "f5xc_aws_tgw_site_asn" {
+  type    = number
+  default = 0
+}
+
+variable "f5xc_aws_tgw_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_annotations" {
+  type    = map(string)
+  default = {}
+}
+
+variable "f5xc_aws_tgw_labels" {
+  type    = map(string)
+  default = {}
+}
+
+variable "f5xc_aws_tgw_default_blocked_services" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_aws_tgw_direct_connect_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_aws_tgw_direct_connect_manual_gw" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_tgw_direct_connect_hosted_vifs" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_aws_tgw_direct_connect_standard_vifs" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_tgw_cloud_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_tgw_dc_connect_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
 variable "f5xc_tf_params_action" {
   type    = string
   default = "apply"
@@ -169,8 +226,9 @@ variable "f5xc_tf_wait_for_action" {
   default = true
 }
 
-variable "aws_owner_tag" {
-  type = string
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
+  type    = bool
+  default = true
 }
 
 variable "custom_tags" {

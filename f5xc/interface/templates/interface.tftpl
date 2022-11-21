@@ -1,26 +1,29 @@
-{
-	"metadata": {
-		"annotations": {},
-		"description": "${interface_description}",
-		"labels": {},
-		"name": "${interface_name}",
-		"namespace": "${namespace}"
+${jsonencode({
+    "metadata": {
+		"description": interface_description,
+		"labels": labels,
+		"name": interface_name,
+		"namespace": namespace
 	},
 	"spec": {
 		"tunnel_interface": {
-			"mtu": 1450,
-			"node": "${node_name}",
-			"site_local_network": {},
+			"mtu": mtu,
+			"node": node_name,
+			"site_local_network": site_local_network,
+			"site_local_inside_network": site_local_inside_network,
+			"inside_network": inside_network,
 			"static_ip": {
 				"node_static_ip": {
-					"ip_address": "${interface_static_ip}"
+				    "default_gw": interface_default_gw
+				    "dns_server": interface_dns_server
+				    "ip_address": interface_static_ip
 				}
 			},
 			"tunnel": {
-				"name": "${tunnel_name}",
-				"namespace": "${namespace}",
-				"tenant": "${tenant}"
+				"name": tunnel_name,
+				"namespace": namespace,
+				"tenant": tenant
 			}
 		}
 	}
-}
+})}

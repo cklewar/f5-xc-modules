@@ -1,44 +1,31 @@
 resource "google_compute_instance" "compute" {
-  name         = var.compute_instance_machine_name
+  name         = var.gcp_compute_instance_machine_name
+  zone         = var.gcp_zone_name
+  tags         = var.gcp_compute_instance_target_tags
+  labels       = var.gcp_compute_instance_labels
   machine_type = var.gcp_compute_instance_machine_type
-  zone         = element(var.zone_names, 0)
-  //tags         = ["ssh"]
-
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = var.gcp_google_compute_instance_image
     }
   }
 
-  network_interface {
-    subnetwork = data.google_compute_subnetwork.subnetwork_inside.name
-    access_config {}
+  dynamic "network_interface" {
+    for_each = var.gcp_compute_instance_network_interfaces
+    content {
+      network    = network_interface.value.network_name
+      subnetwork = network_interface.value.subnetwork_name
+      network_ip = network_interface.value.network_ip
+      access_config {
+        nat_ip                 = network_interface.value.access_config.nat_ip
+        public_ptr_domain_name = network_interface.value.access_config.public_ptr_domain_name
+        network_tier           = network_interface.value.access_config.network_tier
+      }
+    }
   }
 
-  metadata_startup_script = <<-EOF
-#!/bin/bash
-sleep 30
-sudo apt-get update
-sudo apt-get -y install net-tools tcpdump traceroute iputils-ping
-EOF
-
-  metadata = {
-    ssh-keys = var.public_ssh_key
+  metadata_startup_script = var.gcp_compute_instance_metadata_startup_script
+  metadata                = {
+    ssh-keys = var.ssh_public_key
   }
-}
-
-resource "google_compute_firewall" "allow-ssh" {
-  name    = var.google_compute_firewall_name
-  network = format("%s-inside", var.site_name)
-
-  allow {
-    protocol = "icmp"
-  }
-
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-  source_ranges = ["0.0.0.0/0"]
-  //target_tags = ["ssh"]
 }

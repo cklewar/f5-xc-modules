@@ -1,31 +1,3 @@
-variable "f5xc_api_url" {
-  type = string
-}
-
-variable "f5xc_api_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_key" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_ca_cert" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_api_p12_file" {
-  type = string
-}
-
-variable "f5xc_api_token" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_tenant" {
   type = string
 }
@@ -61,4 +33,9 @@ variable "f5xc_site_local_inside_network" {
 variable "f5xc_ip_prefixes" {
   type    = list(string)
   default = []
+}
+
+variable "f5xc_static_routes_attrs" {
+  type = list(string)
+  default = ["ROUTE_ATTR_INSTALL_FORWARDING"]
 }

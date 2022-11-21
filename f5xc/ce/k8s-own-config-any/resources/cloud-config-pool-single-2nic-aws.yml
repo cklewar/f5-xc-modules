@@ -25,7 +25,7 @@ coreos:
         Description=Restart systemd-networkd to be sure we are using correct network settings
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/bash -c 'systemctl restart systemd-networkd'
+        ExecStart=/usr/usr/bin/env bash -c 'systemctl restart systemd-networkd'
 write_files:
   #ves
   - path: /etc/hosts

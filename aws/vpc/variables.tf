@@ -16,11 +16,6 @@ variable "enable_dns_hostnames" {
   default = true
 }
 
-variable "enable_classiclink" {
-  type    = bool
-  default = false
-}
-
 variable "instance_tenancy" {
   type    = string
   default = "default"
@@ -31,6 +26,10 @@ variable "aws_vpc_cidr_block" {
 }
 
 variable "aws_vpc_name" {
+  type = string
+}
+
+variable "aws_owner" {
   type = string
 }
 

@@ -1,140 +1,58 @@
 resource "aws_key_pair" "aws-key" {
   key_name   = format("%s-key", var.aws_ec2_instance_name)
-  public_key = file(format("%s/keys/%s", path.module, var.ssh_public_key_file))
+  public_key = var.ssh_public_key_file
 }
 
-resource "aws_security_group" "public" {
-  name   = format("%s-public-sg", var.aws_ec2_instance_name, )
-  vpc_id = var.aws_vpc_workload_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Owner = var.owner_tag
-  }
-}
-
-resource "aws_security_group" "private" {
-  name   = format("%s-private-sg", var.aws_ec2_instance_name)
-  vpc_id = var.aws_vpc_workload_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["10.0.0.0/8"]
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["172.16.0.0/16"]
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["192.168.0.0/16"]
-  }
-
-  tags = {
-    Owner = var.owner_tag
-  }
-}
-
-resource "aws_network_interface" "public" {
-  subnet_id       = var.aws_subnet_public_id
-  private_ips     = var.aws_ec2_public_ips
-  security_groups = [aws_security_group.public.id]
-
-  tags = {
-    Owner = var.owner_tag
-  }
-}
-
-resource "aws_network_interface" "private" {
-  subnet_id       = var.aws_subnet_private_id
-  private_ips     = var.aws_ec2_private_ips
-  security_groups = [aws_security_group.private.id]
-
-  tags = {
-    Owner = var.owner_tag
-  }
-}
-
-resource "aws_eip" "eip" {
-  vpc               = true
-  network_interface = aws_network_interface.public.id
-
-  tags = {
-    Owner = var.owner_tag
-  }
+module "network_interfaces" {
+  source                        = "../network_interface"
+  count                         = length(var.aws_ec2_network_interfaces)
+  aws_interface_create_eip      = var.aws_ec2_network_interfaces[count.index].create_eip
+  aws_interface_private_ips     = var.aws_ec2_network_interfaces[count.index].private_ips
+  aws_interface_security_groups = var.aws_ec2_network_interfaces[count.index].security_groups
+  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
 }
 
 resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
   instance_type               = var.aws_ec2_instance_type
   key_name                    = aws_key_pair.aws-key.id
-  user_data_replace_on_change = true
+  # subnet_id                   = var.aws_subnet_id != "" ? var.aws_subnet_id : null
+  user_data                   = local.cloud_init_content
+  user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
+  tags                        = merge({ "Name" : var.aws_ec2_instance_name }, var.custom_tags)
 
-  network_interface {
-    device_index         = 0
-    network_interface_id = aws_network_interface.public.id
+  dynamic "network_interface" {
+    for_each = var.aws_ec2_network_interfaces_ref
+    content {
+      device_index         = network_interface.value.device_index
+      network_interface_id = network_interface.value.network_interface_id
+    }
   }
 
-  network_interface {
-    device_index         = 1
-    network_interface_id = aws_network_interface.private.id
-  }
-
-  tags = {
-    Name        = var.aws_ec2_instance_name
-    Environment = var.environment
-    Version     = "1"
-    Owner       = var.owner_tag
+  dynamic "network_interface" {
+    for_each = [for interface in module.network_interfaces : interface.aws_network_interface]
+    content {
+      device_index         = network_interface.key
+      network_interface_id = network_interface.value.id
+    }
   }
 }
 
-resource "local_file" "payload" {
+resource "local_file" "instance_script" {
   depends_on = [aws_instance.instance]
-  content    = local.userdata_content
-  filename   = format("%s/_out/%s", path.module, var.aws_ec2_instance_script_file)
+  content    = local.script_content
+  filename   = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
 }
 
-resource "null_resource" "ec2_instance_provision_custom_files" {
-  depends_on = [aws_instance.instance, local_file.payload]
-  for_each   = {for item in var.aws_ec2_instance_userdata_dirs : item.name => item}
-
-  /*triggers = {
-    always_run = timestamp()
-  }*/
+resource "null_resource" "ec2_instance_provision_custom_data" {
+  depends_on = [aws_instance.instance, local_file.instance_script]
+  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
   connection {
-    type        = "ssh"
-    host        = aws_eip.eip.public_ip
-    user        = "ubuntu"
-    private_key = file(format("%s/keys/%s", path.module, var.ssh_private_key_file))
+    type        = var.provisioner_connection_type
+    host        = aws_instance.instance.public_ip
+    user        = var.provisioner_connection_user
+    private_key = var.ssh_private_key_file
   }
 
   provisioner "file" {
@@ -143,16 +61,16 @@ resource "null_resource" "ec2_instance_provision_custom_files" {
   }
 }
 
-resource "null_resource" "ec2_provision_script_file" {
-  depends_on = [null_resource.ec2_instance_provision_custom_files]
+resource "null_resource" "ec2_execute_script_file" {
+  depends_on = [null_resource.ec2_instance_provision_custom_data]
   connection {
-    type        = "ssh"
-    host        = aws_eip.eip.public_ip
-    user        = "ubuntu"
-    private_key = file(format("%s/keys/%s", path.module, var.ssh_private_key_file))
+    type        = var.provisioner_connection_type
+    host        = aws_instance.instance.public_ip
+    user        = var.provisioner_connection_user
+    private_key = var.ssh_private_key_file
   }
 
   provisioner "remote-exec" {
-    inline = var.aws_ec2_instance_data.inline
+    inline = var.aws_ec2_instance_script.actions
   }
 }

@@ -2,19 +2,7 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_api_cert" {
-  default = ""
-}
-
-variable "f5xc_api_key" {
-  default = ""
-}
-
-variable "f5xc_api_ca_cert" {
-  default = ""
-}
-
-variable "f5xc_api_p12_file" {
+variable "f5xc_api_token" {
   type = string
 }
 
@@ -26,12 +14,13 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_gcp_project_id" {
-  type = string
-}
-
 variable "f5xc_gcp_site_name" {
   type = string
+
+  validation {
+    condition     = length(var.f5xc_gcp_site_name) <= 37
+    error_message = format("Max length for f5xc_gcp_site_name ist 37 characters")
+  }
 }
 
 variable "f5xc_gcp_cred" {
@@ -51,12 +40,69 @@ variable "f5xc_gcp_ce_instance_type" {
   default = "n1-standard-4"
 }
 
+variable "f5xc_gcp_local_primary_ipv4" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_gcp_outside_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_gcp_inside_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_outside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_inside_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_inside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_local_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_local_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_outside_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_local_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_local_subnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_outside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_existing_inside_network_name" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_gcp_node_number" {
@@ -114,6 +160,11 @@ variable "f5xc_gcp_no_forward_proxy" {
 variable "f5xc_gcp_ce_gw_type" {
   type    = string
   default = "multi_nic"
+
+  validation {
+    condition     = contains(["multi_nic", "single_nic"], var.f5xc_gcp_ce_gw_type)
+    error_message = format("Valid values for f5xc_gcp_ce_gw_type: multi_nic, single_nic")
+  }
 }
 
 variable "f5xc_gcp_ce_certified_hw" {
@@ -149,8 +200,28 @@ variable "f5xc_gcp_no_local_control_plane" {
   default = true
 }
 
-variable "public_ssh_key" {
+variable "f5xc_gcp_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
+}
+
+variable "ssh_public_key" {
   type = string
+}
+
+variable "f5xc_tf_wait_for_action" {
+  type    = bool
+  default = true
 }
 
 variable "f5xc_tf_params_action" {
@@ -158,7 +229,28 @@ variable "f5xc_tf_params_action" {
   default = "apply"
 
   validation {
-    condition = contains(["apply", "plan"], var.f5xc_tf_params_action)
+    condition     = contains(["apply", "plan"], var.f5xc_tf_params_action)
     error_message = format("Valid values for f5xc_tf_params_action: apply, plan")
   }
+}
+
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
+  type    = bool
+  default = true
+}
+
+variable "custom_labels" {
+  description = "Custom labels to set on resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "hcl2json_version" {
+  type    = string
+  default = "0.3.5"
+}
+
+variable "hcl2json_bin_url" {
+  type    = string
+  default = "https://github.com/tmccombs/hcl2json/releases/download"
 }

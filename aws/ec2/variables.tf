@@ -1,9 +1,9 @@
 variable "ssh_private_key_file" {
-  type    = string
+  type = string
 }
 
 variable "ssh_public_key_file" {
-  type    = string
+  type = string
 }
 
 variable "aws_region" {
@@ -14,13 +14,22 @@ variable "aws_az_name" {
   type = string
 }
 
-variable "aws_ec2_instance_data_key" {
+variable "aws_ec2_instance_script" {}
+
+variable "aws_ec2_instance_script_template" {
   type = string
 }
 
-variable "aws_ec2_instance_data" {}
+variable "aws_ec2_instance_cloud_init_template" {
+  type    = string
+  default = ""
+}
 
-variable "aws_ec2_instance_script_template" {
+variable "template_output_dir_path" {
+  type = string
+}
+
+variable "template_input_dir_path" {
   type = string
 }
 
@@ -36,32 +45,12 @@ variable "aws_ec2_instance_type" {
   type = string
 }
 
-variable "aws_ec2_private_interface_ips" {
-  type = list(string)
-}
-
-variable "aws_ec2_public_interface_ips" {
-  type = list(string)
-}
-
-variable "aws_ec2_instance_userdata_dirs" {
+variable "aws_ec2_instance_custom_data_dirs" {
   type = list(object({
     name        = string
     source      = string
     destination = string
   }))
-}
-
-variable "aws_subnet_public_id" {
-  type = string
-}
-
-variable "aws_subnet_private_id" {
-  type = string
-}
-
-variable "aws_subnet_cidr" {
-  type = string
 }
 
 variable "amis" {
@@ -81,12 +70,42 @@ variable "amis" {
   }
 }
 
-variable "aws_vpc_id" {
-  type = string
+variable "aws_ec2_network_interfaces_ref" {
+  type = list(object({
+    device_index         = number
+    network_interface_id = string
+  }))
+  default = []
+}
+
+variable "aws_ec2_network_interfaces" {
+  type = list(object({
+    create_eip      = bool
+    private_ips     = list(string)
+    security_groups = list(string)
+    subnet_id       = string
+    custom_tags     = optional(map(string))
+  }))
+  default = []
+}
+
+variable "aws_ec2_user_data_replace_on_change" {
+  type    = bool
+  default = true
 }
 
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
+}
+
+variable "provisioner_connection_type" {
+  type    = string
+  default = "ssh"
+}
+
+variable "provisioner_connection_user" {
+  type    = string
+  default = "ubuntu"
 }

@@ -2,19 +2,7 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_api_cert" {
-  default = ""
-}
-
-variable "f5xc_api_key" {
-  default = ""
-}
-
-variable "f5xc_api_ca_cert" {
-  default = ""
-}
-
-variable "f5xc_api_p12_file" {
+variable "f5xc_api_token" {
   type = string
 }
 
@@ -28,6 +16,11 @@ variable "f5xc_namespace" {
 
 variable "f5xc_aws_vpc_site_name" {
   type = string
+
+  validation {
+    condition     = length(var.f5xc_aws_vpc_site_name) <= 64
+    error_message = format("Max length for f5xc_aws_vpc_site_name ist 64 characters")
+  }
 }
 
 variable "f5xc_aws_region" {
@@ -47,12 +40,13 @@ variable "f5xc_aws_cred" {
   type = string
 }
 
-variable "f5xc_aws_vpc_name_tag" {
+variable "f5xc_aws_vpc_owner" {
   type = string
 }
 
 variable "f5xc_aws_vpc_primary_ipv4" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_aws_vpc_az_nodes" {
@@ -80,6 +74,11 @@ variable "f5xc_aws_ce_sw_version" {
 variable "f5xc_aws_ce_gw_type" {
   type    = string
   default = "multi_nic"
+
+  validation {
+    condition     = contains(["multi_nic", "single_nic"], var.f5xc_aws_ce_gw_type)
+    error_message = format("Valid values for f5xc_aws_ce_gw_type: multi_nic, single_nic")
+  }
 }
 
 variable "f5xc_aws_ce_certified_hw" {
@@ -126,7 +125,7 @@ variable "f5xc_aws_site_kind" {
   default = "aws_vpc_site"
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 
@@ -167,9 +166,19 @@ variable "f5xc_aws_vpc_logs_streaming_disabled" {
   default = true
 }
 
-variable "f5xc_aws_vpc_no_local_control_plane" {
-  type    = bool
-  default = true
+variable "f5xc_aws_vpc_existing_id" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_nic_type_single_nic" {
+  type    = string
+  default = "single_nic"
+}
+
+variable "f5xc_nic_type_multi_nic" {
+  type    = string
+  default = "multi_nic"
 }
 
 variable "f5xc_tf_params_action" {
@@ -187,8 +196,14 @@ variable "f5xc_tf_wait_for_action" {
   default = true
 }
 
-variable "aws_owner_tag" {
-  type = string
+variable "f5xc_cloud_site_labels_ignore_on_delete" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_labels" {
+  type    = map(string)
+  default = {}
 }
 
 variable "custom_tags" {
@@ -196,3 +211,49 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "f5xc_aws_vpc_direct_connect_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_aws_vpc_direct_connect_manual_gw" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_vpc_direct_connect_hosted_vifs" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_direct_connect_standard_vifs" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_aws_vpc_direct_connect_custom_asn" {
+  type    = number
+  default = 0
+}
+
+variable "f5xc_aws_vpc_cloud_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_dc_connect_aggregated_prefix" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_inside_static_routes" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_vpc_outside_static_routes" {
+  type    = list(string)
+  default = []
+}
+

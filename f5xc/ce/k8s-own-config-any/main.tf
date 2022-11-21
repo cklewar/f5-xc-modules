@@ -6,7 +6,7 @@ resource "local_file" "vp_manager_environment" {
 resource "local_file" "vp_manager_pool" {
   content  = local.vp_manager_pool
   filename = format("%s/_out/%s", path.module, "vp_manager_pool.yml")
-}
+} w
 
 resource "local_file" "vp_manager_master" {
   content  = local.vp_manager_master

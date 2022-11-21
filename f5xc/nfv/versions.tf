@@ -1,24 +1,23 @@
 terraform {
-  required_version = ">= 1.1.9"
+  required_version = ">= 1.3.0"
 
   required_providers {
-
     volterra = {
       source  = "volterraedge/volterra"
-      version = ">= 0.11.9"
+      version =  "= 0.11.16"
     }
 
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.18.0"
+      version = ">= 4.40.0"
     }
 
     http = {
       source  = "hashicorp/http"
-      version = ">= 2.2.0"
+      version = ">= 3.1.0"
     }
 
-    local = ">= 2.0"
-    null  = ">= 3.0"
+    local = ">= 2.2.3"
+    null  = ">= 3.1.1"
   }
 }

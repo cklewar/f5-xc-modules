@@ -1,5 +1,5 @@
 data "aws_ec2_transit_gateway" "tgw" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
+  depends_on = [module.site_wait_for_online]
 
   filter {
     name   = "state"
@@ -13,12 +13,17 @@ data "aws_ec2_transit_gateway" "tgw" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.aws_owner_tag]
+    values = [var.custom_tags["Owner"]]
   }
 }
 
 data "aws_instance" "ce_master" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
+  depends_on = [module.site_wait_for_online]
+
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
 
   filter {
     name   = "tag:ves-io-site-name"
@@ -27,7 +32,7 @@ data "aws_instance" "ce_master" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.aws_owner_tag]
+    values = [var.custom_tags["Owner"]]
   }
 
   filter {
@@ -54,9 +59,10 @@ data "aws_vpc" "tgw_vpc" {
   }
 }
 
-
-/*data "aws_subnet" "tgw_subnet_sli" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
+data "aws_subnet" "tgw_subnet_sli" {
+  depends_on = [module.site_wait_for_online]
+  for_each   = var.f5xc_aws_tgw_az_nodes
+  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_inside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {
@@ -73,13 +79,12 @@ data "aws_vpc" "tgw_vpc" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
-}*/
+}
 
 data "aws_subnet" "tgw_subnet_slo" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
-  for_each = var.f5xc_aws_tgw_az_nodes
-
-  cidr_block = var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"]
+  depends_on = [module.site_wait_for_online]
+  for_each   = var.f5xc_aws_tgw_az_nodes
+  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {
@@ -99,10 +104,9 @@ data "aws_subnet" "tgw_subnet_slo" {
 }
 
 data "aws_subnet" "tgw_subnet_workload" {
-  depends_on = [volterra_tf_params_action.aws_tgw_action]
-  for_each = var.f5xc_aws_tgw_az_nodes
-
-  cidr_block = var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"]
+  depends_on = [module.site_wait_for_online]
+  for_each   = var.f5xc_aws_tgw_az_nodes
+  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_workload_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_existing_subnet_id"]
   vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {

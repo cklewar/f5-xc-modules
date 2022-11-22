@@ -41,6 +41,11 @@ variable "aws_az_b" {
   default = "b"
 }
 
+variable "aws_existing_subnet_ids" {
+  type    = string
+  default = ""
+}
+
 variable "eks_version" {
   type    = string
   default = "1.24"

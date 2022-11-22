@@ -3,15 +3,18 @@ variable "aws_eks_cluster_name" {
 }
 
 variable "aws_vpc_cidr_block" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "aws_vpc_subnet_a" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "aws_vpc_subnet_b" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "aws_region" {

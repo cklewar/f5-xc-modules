@@ -1,5 +1,6 @@
 variable "f5xc_namespace" {
-  type = string
+  type    = string
+  default = "shared"
 }
 
 variable "f5xc_virtual_site_name" {
@@ -7,7 +8,7 @@ variable "f5xc_virtual_site_name" {
 }
 
 variable "f5xc_virtual_site_selector_expression" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 

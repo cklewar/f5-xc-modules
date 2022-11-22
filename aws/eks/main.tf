@@ -75,7 +75,7 @@ module "aws_vpc" {
 module "aws_subnets" {
   source          = "../subnet"
   count           = var.aws_existing_subnet_ids == "" ? 1 : 0
-  aws_vpc_id      = module.aws_vpc.*.aws_vpc["id"]
+  aws_vpc_id      = module.aws_vpc.aws_vpc["id"]
   aws_vpc_subnets = [
     {
       name                    = format("%s-snet-a", var.aws_eks_cluster_name)

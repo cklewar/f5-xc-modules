@@ -120,7 +120,7 @@ resource "aws_route_table" "k8s" {
 }
 
 resource "aws_route_table_association" "k8s" {
-  for_each       = module.aws_subnets[0].aws_subnets
+  for_each       = {for k, v in module.aws_subnets[0].aws_subnets : k => v if length(var.aws_existing_subnet_ids) > 0}
   subnet_id      = each.value.id
   route_table_id = aws_route_table.k8s[0].id
 }
@@ -130,7 +130,7 @@ resource "aws_eks_cluster" "eks" {
   version  = var.eks_version
   role_arn = aws_iam_role.k8s-cluster.arn
   vpc_config {
-    subnet_ids = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids :  [for s in module.aws_subnets[0].aws_subnets : s["id"]]
+    subnet_ids = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids : [for s in module.aws_subnets[0].aws_subnets : s["id"]]
   }
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
@@ -144,7 +144,7 @@ resource "aws_eks_node_group" "eks" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = var.aws_eks_cluster_name
   node_role_arn   = aws_iam_role.k8s-node.arn
-  subnet_ids      = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids :  [for s in module.aws_subnets[0].aws_subnets : s["id"]]
+  subnet_ids      = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids : [for s in module.aws_subnets[0].aws_subnets : s["id"]]
   scaling_config {
     desired_size = 1
     max_size     = 1

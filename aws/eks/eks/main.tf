@@ -1,6 +1,5 @@
 resource "aws_iam_role" "k8s-cluster" {
-  name = var.aws_eks_cluster_name
-
+  name               = var.aws_eks_cluster_name
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -61,42 +60,57 @@ resource "aws_iam_role_policy_attachment" "k8s-AmazonEC2ContainerRegistryReadOnl
   role       = aws_iam_role.k8s-node.name
 }
 
-resource "aws_vpc" "vpc" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-  tags                 = {
-    "Name"                                              = "terraform-eks-k8s-node"
+
+module "aws_vpc" {
+  source             = "../../vpc"
+  aws_az_name        = var.aws_az_name
+  aws_owner          = var.owner
+  aws_region         = var.aws_region
+  aws_vpc_cidr_block = var.aws_vpc_cidr_block
+  aws_vpc_name       = format("%s-vpc", var.aws_eks_cluster_name)
+  custom_tags        = merge({
     "kubernetes.io/cluster/${var.aws_eks_cluster_name}" = "shared"
-  }
+  }, var.custom_tags)
 }
 
-resource "aws_subnet" "k8s" {
-  count = 2
-
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
-  cidr_block              = "10.0.${count.index}.0/24"
-  vpc_id                  = aws_vpc.vpc.id
-  map_public_ip_on_launch = true
-
-  tags = {
-    "Name"                                              = "terraform-eks-k8s-node"
-    "kubernetes.io/cluster/${var.aws_eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                            = 1
-  }
+module "aws_subnet" {
+  source          = "../../subnet"
+  aws_vpc_id      = module.aws_vpc.aws_vpc["id"]
+  aws_vpc_subnets = [
+    {
+      name                    = format("%s-snet-a", var.aws_eks_cluster_name)
+      owner                   = var.owner
+      map_public_ip_on_launch = true
+      cidr_block              = var.aws_vpc_subnet_a
+      availability_zone       = format("%s%s", var.aws_region, var.aws_az_a)
+      custom_tags             = merge({
+        "kubernetes.io/cluster/${var.aws_eks_cluster_name}" = "shared"
+        "kubernetes.io/role/elb"                            = 1
+      }, var.custom_tags)
+    },
+    {
+      name                    = format("%s-snet-b", var.aws_eks_cluster_name)
+      owner                   = var.owner
+      map_public_ip_on_launch = true
+      cidr_block              = var.aws_vpc_subnet_b
+      availability_zone       = format("%s%s", var.aws_region, var.aws_az_b)
+      custom_tags             = merge({
+        "kubernetes.io/cluster/${var.aws_eks_cluster_name}" = "shared"
+        "kubernetes.io/role/elb"                            = 1
+      }, var.custom_tags)
+    }
+  ]
 }
 
 resource "aws_internet_gateway" "k8s" {
-  vpc_id = aws_vpc.vpc.id
-
-  tags = {
-    Name = "terraform-eks-k8s"
+  vpc_id = module.aws_vpc.aws_vpc["id"]
+  tags   = {
+    Name = format("%s-igw", var.aws_eks_cluster_name)
   }
 }
 
 resource "aws_route_table" "k8s" {
-  vpc_id = aws_vpc.vpc.id
-
+  vpc_id = module.aws_vpc.aws_vpc["id"]
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.k8s.id
@@ -104,9 +118,8 @@ resource "aws_route_table" "k8s" {
 }
 
 resource "aws_route_table_association" "k8s" {
-  count = 2
-
-  subnet_id      = aws_subnet.k8s[count.index].id
+  count          = 2
+  subnet_id      = module.aws_subnet.aws_subnets[count.index]["id"]
   route_table_id = aws_route_table.k8s.id
 }
 
@@ -116,7 +129,7 @@ resource "aws_eks_cluster" "k8s" {
   role_arn = aws_iam_role.k8s-cluster.arn
 
   vpc_config {
-    subnet_ids = aws_subnet.k8s.*.id
+    subnet_ids = module.aws_subnet.aws_subnets.*["id"]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
@@ -131,7 +144,7 @@ resource "aws_eks_node_group" "k8s" {
   cluster_name    = aws_eks_cluster.k8s.name
   node_group_name = var.aws_eks_cluster_name
   node_role_arn   = aws_iam_role.k8s-node.arn
-  subnet_ids      = aws_subnet.k8s.*.id
+  subnet_ids      = module.aws_subnet.aws_subnets.*["id"]
 
   scaling_config {
     desired_size = 1

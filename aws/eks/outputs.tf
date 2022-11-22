@@ -7,7 +7,7 @@ output "aws_eks" {
     "version"                   = module.aws_eks.aws_eks["version"]
     "kubeconfig"                = module.k8s.kubeconfig
     "vpc_config"                = module.aws_eks.aws_eks["vpc_config"]
-    "node_group_id"             = aws_eks_node_group["id"]
+    "node_group_id"             = module.aws_eks.aws_eks["node_group_id"]
     "platform_version"          = module.aws_eks.aws_eks["platform_version"]
     "kubernetes_network_config" = module.aws_eks.aws_eks["kubernetes_network_config"]
   }

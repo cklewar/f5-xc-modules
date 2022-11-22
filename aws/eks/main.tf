@@ -61,7 +61,7 @@ resource "aws_iam_role_policy_attachment" "k8s-AmazonEC2ContainerRegistryReadOnl
 
 module "aws_vpc" {
   source             = "../vpc"
-  count              = var.aws_existing_subnet_ids == "" ? 1 : 0
+  count              = length(var.aws_existing_subnet_ids) > 0 ? 0 : 1
   aws_az_name        = var.aws_az_name
   aws_owner          = var.owner
   aws_region         = var.aws_region
@@ -74,8 +74,8 @@ module "aws_vpc" {
 
 module "aws_subnets" {
   source          = "../subnet"
-  count           = var.aws_existing_subnet_ids == "" ? 1 : 0
-  aws_vpc_id      = module.aws_vpc.aws_vpc["id"]
+  count           = length(var.aws_existing_subnet_ids) > 0 ? 0 : 1
+  aws_vpc_id      = module.aws_vpc[0].aws_vpc["id"]
   aws_vpc_subnets = [
     {
       name                    = format("%s-snet-a", var.aws_eks_cluster_name)
@@ -103,26 +103,26 @@ module "aws_subnets" {
 }
 
 resource "aws_internet_gateway" "k8s" {
-  count  = var.aws_existing_subnet_ids == "" ? 1 : 0
-  vpc_id = module.aws_vpc.*.aws_vpc["id"]
+  count  = length(var.aws_existing_subnet_ids) > 0 ? 0 : 1
+  vpc_id = module.aws_vpc[0].aws_vpc["id"]
   tags   = {
     Name = format("%s-igw", var.aws_eks_cluster_name)
   }
 }
 
 resource "aws_route_table" "k8s" {
-  count  = var.aws_existing_subnet_ids == "" ? 1 : 0
-  vpc_id = module.aws_vpc.*.aws_vpc["id"]
+  count  = length(var.aws_existing_subnet_ids) > 0 ? 0 : 1
+  vpc_id = module.aws_vpc[0].aws_vpc["id"]
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.k8s.id
+    gateway_id = aws_internet_gateway.k8s[0].id
   }
 }
 
 resource "aws_route_table_association" "k8s" {
-  for_each       = module.aws_subnets.aws_subnets
+  for_each       = module.aws_subnets[0].aws_subnets
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.k8s.id
+  route_table_id = aws_route_table.k8s[0].id
 }
 
 resource "aws_eks_cluster" "eks" {
@@ -130,7 +130,7 @@ resource "aws_eks_cluster" "eks" {
   version  = var.eks_version
   role_arn = aws_iam_role.k8s-cluster.arn
   vpc_config {
-    subnet_ids = var.aws_existing_subnet_ids == "" ? [for s in module.aws_subnets.aws_subnets : s["id"]] : var.aws_existing_subnet_ids
+    subnet_ids = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids :  [for s in module.aws_subnets[0].aws_subnets : s["id"]]
   }
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
@@ -144,7 +144,7 @@ resource "aws_eks_node_group" "eks" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = var.aws_eks_cluster_name
   node_role_arn   = aws_iam_role.k8s-node.arn
-  subnet_ids      = var.aws_existing_subnet_ids == "" ? [for s in module.aws_subnets.aws_subnets : s["id"]] : var.aws_existing_subnet_ids
+  subnet_ids      = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids :  [for s in module.aws_subnets[0].aws_subnets : s["id"]]
   scaling_config {
     desired_size = 1
     max_size     = 1

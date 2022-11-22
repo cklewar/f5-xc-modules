@@ -12,11 +12,6 @@ terraform {
       version = ">= 2.16.0"
     }
 
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.7.1"
-    }
-
     local = ">= 2.2.3"
     null  = ">= 3.1.1"
   }

@@ -1,14 +1,24 @@
 output "aws_eks" {
   value = {
-    "id"                        = module.aws_eks.aws_eks["id"]
-    "name"                      = module.aws_eks.aws_eks["name"]
-    "tags"                      = module.aws_eks.aws_eks["tags"]
-    "vpc_id"                    = module.aws_eks.aws_eks["vpc_id"]
-    "version"                   = module.aws_eks.aws_eks["version"]
-    "kubeconfig"                = module.k8s.kubeconfig
-    "vpc_config"                = module.aws_eks.aws_eks["vpc_config"]
-    "node_group_id"             = module.aws_eks.aws_eks["node_group_id"]
-    "platform_version"          = module.aws_eks.aws_eks["platform_version"]
-    "kubernetes_network_config" = module.aws_eks.aws_eks["kubernetes_network_config"]
+    "id"                        = aws_eks_cluster.k8s.id
+    "name"                      = aws_eks_cluster.k8s.name
+    "tags"                      = aws_eks_cluster.k8s.tags
+    "vpc_id"                    = module.aws_vpc.aws_vpc["id"]
+    "version"                   = aws_eks_cluster.k8s.version
+    "vpc_config"                = aws_eks_cluster.k8s.vpc_config
+    "node_group_id"             = aws_eks_node_group.k8s.id
+    "platform_version"          = aws_eks_cluster.k8s.platform_version
+    "kubernetes_network_config" = aws_eks_cluster.k8s.kubernetes_network_config
+    "subnets"                   = {
+      format("%s-snet-a", var.aws_eks_cluster_name) = {
+        "id"     = module.aws_subnets.aws_subnets[format("%s-snet-a", var.aws_eks_cluster_name)]["id"]
+        "vpc_id" = module.aws_subnets.aws_subnets[format("%s-snet-a", var.aws_eks_cluster_name)]["vpc_id"]
+      }
+      format("%s-snet-b", var.aws_eks_cluster_name) = {
+        "id"     = module.aws_subnets.aws_subnets[format("%s-snet-b", var.aws_eks_cluster_name)]["id"]
+        "vpc_id" = module.aws_subnets.aws_subnets[format("%s-snet-b", var.aws_eks_cluster_name)]["vpc_id"]
+      }
+    }
+    subnet_ids = [for s in module.aws_subnets.aws_subnets : s["id"]]
   }
 }

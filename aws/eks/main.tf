@@ -120,12 +120,8 @@ resource "aws_route_table" "k8s" {
 }
 
 resource "aws_route_table_association" "k8s" {
-  # { for site in local.site_data : site.site_name => site }
-  # for_each = { for s in module.aws_subnets[0].aws_subnets : s => s if length( module.aws_subnets) > 0 }
-  # for_each       = length(var.aws_existing_subnet_ids) > 0 ? [] : module.aws_subnets[0].aws_subnets
-  count =  length(var.aws_existing_subnet_ids) > 0 ? 0 : module.aws_subnets[0].aws_subnets
-  # subnet_id      = each.value.id
-  subnet_id = module.aws_subnets[0].aws_subnets[count.index]
+  for_each       = length(module.aws_subnets) > 0 ? module.aws_subnets[0].aws_subnets : {}
+  subnet_id      = each.value["id"]
   route_table_id = aws_route_table.k8s[0].id
 }
 

@@ -12,11 +12,11 @@ output "aws_eks" {
     "platform_version"          = aws_eks_cluster.eks.platform_version
     "kubernetes_network_config" = aws_eks_cluster.eks.kubernetes_network_config
     "subnets"                   = length(var.aws_existing_subnet_ids) > 0 ? null : {
-     local.snetA = {
+     (local.snetA) = {
         "id"     = module.aws_subnets[0].aws_subnets[format("%s-snet-a", var.aws_eks_cluster_name)]["id"]
         "vpc_id" = module.aws_subnets[0].aws_subnets[format("%s-snet-a", var.aws_eks_cluster_name)]["vpc_id"]
       }
-     local.snetB = {
+     (local.snetB) = {
         "id"     = module.aws_subnets[0].aws_subnets[format("%s-snet-b", var.aws_eks_cluster_name)]["id"]
         "vpc_id" = module.aws_subnets[0].aws_subnets[format("%s-snet-b", var.aws_eks_cluster_name)]["vpc_id"]
       }

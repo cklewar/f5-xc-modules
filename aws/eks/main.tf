@@ -120,7 +120,7 @@ resource "aws_route_table" "k8s" {
 }
 
 resource "aws_route_table_association" "k8s" {
-  for_each       = {for k, v in module.aws_subnets[0].aws_subnets : k => v if length(var.aws_existing_subnet_ids) > 0}
+  for_each       = {for k, v in module.aws_subnets[0].aws_subnets : k => v if length(var.aws_existing_subnet_ids) < 1}
   subnet_id      = each.value.id
   route_table_id = aws_route_table.k8s[0].id
 }

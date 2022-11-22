@@ -121,7 +121,7 @@ resource "aws_route_table_association" "k8s" {
   route_table_id = aws_route_table.k8s.id
 }
 
-resource "aws_eks_cluster" "k8s" {
+resource "aws_eks_cluster" "eks" {
   name     = var.aws_eks_cluster_name
   version  = var.eks_version
   role_arn = aws_iam_role.k8s-cluster.arn
@@ -136,8 +136,8 @@ resource "aws_eks_cluster" "k8s" {
   ]
 }
 
-resource "aws_eks_node_group" "k8s" {
-  cluster_name    = aws_eks_cluster.k8s.name
+resource "aws_eks_node_group" "eks" {
+  cluster_name    = aws_eks_cluster.eks.name
   node_group_name = var.aws_eks_cluster_name
   node_role_arn   = aws_iam_role.k8s-node.arn
   subnet_ids      = [for s in module.aws_subnets.aws_subnets: s["id"]]

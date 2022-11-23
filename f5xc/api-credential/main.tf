@@ -10,15 +10,6 @@
   }
 }*/
 
-/*resource "local_file" "api_credentials" {
-  content  = local.api_credential_content
-  filename = format("%s/_out/%s", path.module, var.f5xc_api_credentials_payload_file)
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}*/
-
 resource "null_resource" "apply_credential" {
   triggers = {
     manifest_sha1 = sha1(local.api_credential_content)
@@ -34,8 +25,7 @@ resource "null_resource" "apply_credential" {
   }
 }
 
-resource "null_resource" "destroy" {
-  # depends_on = [local_file.api_credentials]
+resource "null_resource" "destroy_credential" {
   count      = length(data.local_file.response.*.content) > 0 ? 1 : 0
   triggers   = {
     api_url    = var.f5xc_api_url

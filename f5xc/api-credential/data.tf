@@ -1,6 +1,6 @@
 data "local_file" "response" {
   depends_on = [null_resource.apply_credential]
-  count      = fileexists(null_resource.apply_credential.triggers.filename) == true ? 1 : 0
+  # count      = fileexists(null_resource.apply_credential.triggers.filename) == true ? 1 : 0
   filename   = null_resource.apply_credential.triggers.filename
 }
 

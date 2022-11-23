@@ -94,6 +94,10 @@ variable "aws_ec2_user_data_replace_on_change" {
   default = true
 }
 
+variable "owner" {
+  type = string
+}
+
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)

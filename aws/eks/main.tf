@@ -129,6 +129,7 @@ resource "aws_eks_cluster" "eks" {
   name     = var.aws_eks_cluster_name
   version  = var.eks_version
   role_arn = aws_iam_role.k8s-cluster.arn
+  tags     = merge( { "Name" = var.aws_eks_cluster_name, "Owner" : var.owner }, var.custom_tags)
   vpc_config {
     subnet_ids = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids : [for s in module.aws_subnets[0].aws_subnets : s["id"]]
   }
@@ -142,9 +143,10 @@ resource "aws_eks_cluster" "eks" {
 
 resource "aws_eks_node_group" "eks" {
   cluster_name    = aws_eks_cluster.eks.name
-  node_group_name = var.aws_eks_cluster_name
+  node_group_name = aws_eks_cluster.eks.name
   node_role_arn   = aws_iam_role.k8s-node.arn
   subnet_ids      = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids : [for s in module.aws_subnets[0].aws_subnets : s["id"]]
+  tags            = merge( { "Name" = aws_eks_cluster.eks.name, "Owner" : var.owner }, var.custom_tags)
   scaling_config {
     desired_size = 1
     max_size     = 1

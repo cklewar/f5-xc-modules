@@ -21,10 +21,14 @@ output "api_credential" {
     "data1"                 = fileexists(null_resource.apply_credential.triggers.filename)
     "data2"                 = fileexists("./_out/response.json")
     "data3"                 = null_resource.apply_credential.triggers.filename
-    "data4"                 = fileexists("${path.root}./_out/response.json")
+    "data4"                 = fileexists("${path.root}/_out/response.json")
     "data5"                 = abspath(path.root)
     "data6"                 = abspath(path.module)
     "data7"                 = abspath(path.cwd)
-    "data8"                 = "${path.root}./_out/response.json"
+    "data8"                 = "${path.root}/_out/response.json"
+    "data9"                 = abspath("./_out/response.json")
+    "data10"                = fileexists("${path.module}/_out/response.json")
+    "data11"                = fileexists("${path.cwd}/_out/response.json")
+    "data12"                = fileexists(abspath("${path.module}/_out/response.json"))
   }
 }

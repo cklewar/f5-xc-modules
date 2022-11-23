@@ -20,5 +20,6 @@ output "api_credential" {
     "api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response) > 0 ? jsondecode(data.local_file.response.*.content[0]).data : ""
     "data"                  = fileexists(null_resource.apply_credential.triggers.filename)
     "data1"                 = fileexists("./_out/response.json")
+    "data3"                 = null_resource.apply_credential.triggers.filename
   }
 }

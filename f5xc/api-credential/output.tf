@@ -18,5 +18,6 @@ output "api_credential" {
     "expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.expiration_timestamp : null
     "k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response) > 0 ? base64decode(jsondecode(data.local_file.response[0].content).data) : ""
     "api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response) > 0 ? jsondecode(data.local_file.response.*.content[0]).data : ""
+    "data"                  = data.local_file.response
   }
 }

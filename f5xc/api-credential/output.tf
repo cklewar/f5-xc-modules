@@ -31,5 +31,7 @@ output "api_credential" {
     "data11"                = fileexists("${path.cwd}/_out/response.json")
     "data12"                = fileexists(abspath("${path.module}/_out/response.json"))
     "data13"                = "${abspath(path.module)}/_out/response.json"
+    "data14"                = fileexists("${abspath(path.module)}/_out/response.json")
+    "data15"                = fileexists(abspath(null_resource.apply_credential.triggers.filename))
   }
 }

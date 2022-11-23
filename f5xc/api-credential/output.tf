@@ -30,5 +30,6 @@ output "api_credential" {
     "data10"                = fileexists("${path.module}/_out/response.json")
     "data11"                = fileexists("${path.cwd}/_out/response.json")
     "data12"                = fileexists(abspath("${path.module}/_out/response.json"))
+    "data13"                = "${abspath(path.module)}/_out/response.json"
   }
 }

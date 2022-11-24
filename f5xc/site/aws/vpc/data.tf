@@ -203,11 +203,11 @@ data "aws_route_table" "master-0-sli-rt" {
     values = [data.aws_network_interface.master-0-sli[0].subnet_id]
   }
   filter {
-    name   = "ves-io-route-table-type"
+    name   = "tag:ves-io-route-table-type"
     values = ["inside-network"]
   }
   filter {
-    name = "ves-io-route-table-az"
+    name   = "tag:ves-io-route-table-az"
     values = [data.aws_instance.master-0.availability_zone]
   }
   filter {
@@ -229,11 +229,11 @@ data "aws_route_table" "master-1-sli-rt" {
     values = [data.aws_network_interface.master-0-sli[0].subnet_id]
   }
   filter {
-    name   = "ves-io-route-table-type"
+    name   = "tag:ves-io-route-table-type"
     values = ["inside-network"]
   }
   filter {
-    name = "ves-io-route-table-az"
+    name   = "tag:ves-io-route-table-az"
     values = [data.aws_instance.master-0.availability_zone]
   }
   filter {
@@ -255,11 +255,11 @@ data "aws_route_table" "master-2-sli-rt" {
     values = [data.aws_network_interface.master-0-sli[0].subnet_id]
   }
   filter {
-    name   = "ves-io-route-table-type"
+    name   = "tag:ves-io-route-table-type"
     values = ["inside-network"]
   }
   filter {
-    name = "ves-io-route-table-az"
+    name   = "tag:ves-io-route-table-az"
     values = [data.aws_instance.master-0.availability_zone]
   }
   filter {
@@ -271,7 +271,6 @@ data "aws_route_table" "master-2-sli-rt" {
     values = [var.f5xc_aws_vpc_owner]
   }
 }
-
 
 data "aws_subnets" "workload" {
   depends_on = [module.site_wait_for_online]

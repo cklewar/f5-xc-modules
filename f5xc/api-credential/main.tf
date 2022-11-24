@@ -17,22 +17,14 @@ resource "null_resource" "apply_credential" {
     api_token     = var.f5xc_api_token
     uri           = local.credential_create_uri
     filename      = "${path.module}/_out/response.json"
+    delete_uri    = local.credential_delete_uri
+    namespace     = var.f5xc_namespace
+    name          = jsondecode(data.local_file.response.*.content[0]).name
   }
 
   provisioner "local-exec" {
     command     = format("curl -o ${self.triggers.filename} -X 'POST' 2>/dev/null %s/%s -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", self.triggers.api_url, self.triggers.uri, var.f5xc_api_token, local.api_credential_content)
     interpreter = ["/usr/bin/env", "bash", "-c"]
-  }
-}
-
-resource "null_resource" "destroy_credential" {
-  count      = length(data.local_file.response.*.content) > 0 ? 1 : 0
-  triggers   = {
-    api_url    = var.f5xc_api_url
-    delete_uri = local.credential_delete_uri
-    api_token  = var.f5xc_api_token
-    namespace  = var.f5xc_namespace
-    name       = jsondecode(data.local_file.response.*.content[0]).name
   }
 
   provisioner "local-exec" {

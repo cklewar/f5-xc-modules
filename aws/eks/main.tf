@@ -132,7 +132,7 @@ resource "aws_eks_cluster" "eks" {
   tags     = merge( { "Name" = var.aws_eks_cluster_name, "Owner" : var.owner }, var.custom_tags)
   vpc_config {
     subnet_ids              = length(var.aws_existing_subnet_ids) > 0 ? var.aws_existing_subnet_ids : [for s in module.aws_subnets[0].aws_subnets : s["id"]]
-    endpoint_private_access = true
+    endpoint_private_access = var.aws_eks_endpoint_private_access
 
   }
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.

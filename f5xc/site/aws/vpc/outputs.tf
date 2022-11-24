@@ -22,6 +22,7 @@ output "f5xc_aws_vpc" {
             private_ip       = data.aws_network_interface.master-0-sli.*.private_ip
             private_dns_name = data.aws_network_interface.master-0-sli.*.private_dns_name
             subnet_id        = data.aws_network_interface.master-0-sli.*.subnet_id
+            route_table_id   = data.aws_route_table.master-0-sli-rt.*.id
           } : null
         }
       },
@@ -40,6 +41,7 @@ output "f5xc_aws_vpc" {
             private_ip       = data.aws_network_interface.master-1-sli.*.private_ip
             private_dns_name = data.aws_network_interface.master-1-sli.*.private_dns_name
             subnet_id        = data.aws_network_interface.master-1-sli.*.subnet_id
+            route_table_id   = data.aws_route_table.master-1-sli-rt.*.id
           } : null
         }
       } : null,
@@ -58,6 +60,7 @@ output "f5xc_aws_vpc" {
             private_ip       = data.aws_network_interface.master-2-sli.*.private_ip
             private_dns_name = data.aws_network_interface.master-2-sli.*.private_dns_name
             subnet_id        = data.aws_network_interface.master-2-sli.*.subnet_id
+            route_table_id   = data.aws_route_table.master-2-sli-rt.*.id
           } : null
         }
       } : null

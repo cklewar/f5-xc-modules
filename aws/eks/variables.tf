@@ -53,3 +53,8 @@ variable "eks_version" {
   type    = string
   default = "1.24"
 }
+
+variable "aws_eks_endpoint_private_access" {
+  type    = bool
+  default = false
+}

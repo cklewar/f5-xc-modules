@@ -100,7 +100,7 @@ variable "f5xc_aws_vpc_no_global_network" {
   default = true
 }
 
-variable "f5xc_aws_vpc_no_outside_static_routes" {
+/*variable "f5xc_aws_vpc_no_outside_static_routes" {
   type    = bool
   default = true
 }
@@ -108,7 +108,7 @@ variable "f5xc_aws_vpc_no_outside_static_routes" {
 variable "f5xc_aws_vpc_no_inside_static_routes" {
   type    = bool
   default = true
-}
+}*/
 
 variable "f5xc_aws_vpc_no_network_policy" {
   type    = bool

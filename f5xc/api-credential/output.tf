@@ -11,12 +11,14 @@
 
 output "api_credential" {
   value = {
-    "name"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.metadata.name : null
-    "type"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.type : null
-    "virtual_k8s_name"      = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.virtual_k8s_name : null
-    "virtual_k8s_namespace" = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.virtual_k8s_namespace : null
-    "expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.expiration_timestamp : null
-    "k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response) > 0 ? base64decode(jsondecode(data.local_file.response.content).data) : ""
-    "api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response) > 0 ? jsondecode(data.local_file.response.*.content[0]).data : ""
+    name = jsondecode(data.http.credential.*.response_body[0]).object.metadata.name
+    #"name"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.metadata.name : null
+    # "name"                  = data.http.credential.*.response_body
+    #"type"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.type : null
+    #"virtual_k8s_name"      = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.virtual_k8s_name : null
+    #"virtual_k8s_namespace" = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.virtual_k8s_namespace : null
+    #"expiration_timestamp"  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.expiration_timestamp : null
+    #"k8s_conf"              = var.f5xc_api_credential_type == var.f5xc_api_credential_type_kube_config && length(data.local_file.response) > 0 ? base64decode(jsondecode(data.local_file.response.content).data) : ""
+    #"api_certificate"       = var.f5xc_api_credential_type == var.f5xc_api_credential_type_api_certificate && length(data.local_file.response) > 0 ? jsondecode(data.local_file.response.*.content[0]).data : ""
   }
 }

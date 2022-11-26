@@ -8,18 +8,43 @@
   lifecycle {
     ignore_changes = [name]
   }
+
+  provisioner "local-exec" {
+    when        = destroy
+    command     = "${path.module}/scripts/delete.sh"
+    on_failure  = fail
+    environment = {
+      api_token  = self.triggers.api_token
+      api_url    = self.triggers.api_url
+      delete_uri = self.triggers.delete_uri
+      namespace  = self.triggers.namespace
+      name       = self.triggers.name
+    }
+  }
 }*/
+
+resource "local_file" "response" {
+  filename = "${path.module}/_out/response.json"
+  content  = <<-EOF
+  {
+  "data": "",
+  "name": "",
+  "active": false,
+  "expiration_timestamp": ""
+}
+EOF
+}
 
 resource "null_resource" "apply_credential" {
   triggers = {
-    manifest_sha1 = sha1(local.api_credential_content)
+    # manifest_sha1 = sha1(local.api_credential_content)
     api_url       = var.f5xc_api_url
     api_token     = var.f5xc_api_token
     uri           = local.credential_create_uri
     filename      = "${path.module}/_out/response.json"
     delete_uri    = local.credential_delete_uri
     namespace     = var.f5xc_namespace
-    name          = jsondecode(data.local_file.response.*.content[0]).name
+    name          = fileexists(("${path.module}/_out/response.json")) == true ? jsondecode(file("${path.module}/_out/response.json"))["name"] : null
   }
 
   provisioner "local-exec" {

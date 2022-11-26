@@ -1,4 +1,5 @@
 locals {
+  credential_name        = null_resource.apply_credential.id != null ? jsondecode(file("${path.module}/_out/response.json"))["name"] : null
   api_credential_content = templatefile(format("%s/templates/%s", path.module, var.f5xc_api_credential_template_file), {
     namespace             = var.f5xc_namespace
     tenant                = var.f5xc_tenant

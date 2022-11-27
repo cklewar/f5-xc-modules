@@ -11,7 +11,6 @@
 
 output "api_credential" {
   value = {
-    name = jsondecode(data.http.credential.*.response_body[0]).object.metadata.name
     #"name"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.metadata.name : null
     # "name"                  = data.http.credential.*.response_body
     #"type"                  = length(data.http.credential.*.response_body) > 0 ? jsondecode(data.http.credential.*.response_body[0]).object.spec.gc_spec.type : null

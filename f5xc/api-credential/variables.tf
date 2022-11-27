@@ -6,6 +6,11 @@ variable "f5xc_api_token" {
   type = string
 }
 
+variable "f5xc_credential_get_uri" {
+  type    = string
+  default = "web/namespaces/%s/api_credentials"
+}
+
 variable "f5xc_tenant" {
   type = string
 }

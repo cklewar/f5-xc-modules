@@ -1,13 +1,11 @@
-echo "URL: $api_url"/"$delete_uri"
-echo "NAME: $name"
+#!/usr/bin/env bash
 
-curl -X 'POST' "$api_url"/"$delete_uri" 2>/dev/null \
--H 'accept: application/data' \
--H 'Content-Type: application/data' \
--H 'Access-Control-Allow-Origin: *' \
--H "Authorization: APIToken $api_token" \
--H "x-volterra-apigw-tenant: $tenant" \
--d "{
-  \"name\": \"$name\",
-  \"namespace\": \"$namespace\"
-  }"
+MODULES_PATH="modules/f5xc/api-credential"
+
+echo "$PWD"
+python3 -m venv "$PWD"/modules/f5xc/api-credential/venv
+source "$PWD"/$MODULES_PATH/venv/bin/activate
+python3 -m pip install install --upgrade pip
+python3 -m pip install -r "$PWD/$MODULES_PATH/scripts/requirements.txt"
+python3 "$PWD"/$MODULES_PATH/scripts/script.py delete $api_url $api_token $tenant
+rm -Rf "$PWD"/modules/f5xc/api-credential/venv

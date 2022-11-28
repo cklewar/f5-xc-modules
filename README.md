@@ -20,7 +20,16 @@ This repository consists of Terraform template modules to bring up various F5XC 
 * [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
 >>>>>>> 5d6f589 (update readme)
 
+<<<<<<< HEAD
 # Contributors
+=======
+# Version 
+
+* [v0.11.14](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
+* [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
+
+Folder structure example:
+>>>>>>> 595fbdf (rework eks module)
 
 <<<<<<< HEAD
 ```bash

@@ -2,39 +2,23 @@
 
 This repository consists of Terraform template modules to bring up various F5XC components.
 
-# Version 
+# Table of Contents
 
-<<<<<<< HEAD
-* v0.11.14 - [v0.11.14 f5-xc-modules](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
-* v0.11.16 - [v0.11.16 f5-xc-modules](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
+- [Usage](#usage)
+- [F5XC Modules](#f5xc-modules)
+- [AWS Modules](#aws-modules)
+- [GCP Modules](#gcp-modules)
+- [Azure Modules](#azure-modules)
 
-<<<<<<< HEAD
+# Usage
+
 - The Terraform templates in this repository ment to be used as modules in any root Terraform template environment
 - Create a new Terraform project e.g. __f5xc-mcn__
 - Clone this repo with: `git clone -b 0.11.16 https://github.com/cklewar/f5-xc-modules` into the new created project folder
 - Export P12 cert file password as environment variable: `export VES_P12_PASSWORD=MyPassword`
-=======
->>>>>>> 51951d2 (update readme)
-=======
-* [v0.11.14](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
-* [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
->>>>>>> 5d6f589 (update readme)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Contributors
-=======
-# Version 
-
-* [v0.11.14](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
-* [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
-
-=======
->>>>>>> 3211dba (rework eks module)
 Folder structure example:
->>>>>>> 595fbdf (rework eks module)
 
-<<<<<<< HEAD
 ```bash
 .
 ├── cert
@@ -117,7 +101,3 @@ module "my_test_modul" {
 | Virtual Network       | **[azure_virtual_network](https://github.com/cklewar/azure-virtual-network/)**             | [![Azure virtual network module](https://github.com/cklewar/azure-virtual-network/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/azure-virtual-network/actions/workflows/module_test.yml)                   |
 | Subnet                | **[azure_subnet](https://github.com/cklewar/azure-subnet )**                               | [![Azure subnet module](https://github.com/cklewar/azure-subnet/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/azure-subnet/actions/workflows/module_test.yml)                                              |
 | Marketplace Agreement | **[azure_marketplace_agreement](https://github.com/cklewar/azure-marketplace-agreement/)** | [![Azure marketplace agreement module](https://github.com/cklewar/azure-marketplace-agreement/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/azure-marketplace-agreement/actions/workflows/module_test.yml)             |
-=======
-- mwiget
-- cklewar
->>>>>>> 51951d2 (update readme)

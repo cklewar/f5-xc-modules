@@ -2,9 +2,9 @@
 
 This repository consists of Terraform template modules to bring up various F5XC components.
 
-
 # Version 
 
+<<<<<<< HEAD
 * v0.11.14 - [v0.11.14 f5-xc-modules](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
 * v0.11.16 - [v0.11.16 f5-xc-modules](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
 
@@ -15,6 +15,10 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - Export P12 cert file password as environment variable: `export VES_P12_PASSWORD=MyPassword`
 =======
 >>>>>>> 51951d2 (update readme)
+=======
+* [v0.11.14](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
+* [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
+>>>>>>> 5d6f589 (update readme)
 
 # Contributors
 

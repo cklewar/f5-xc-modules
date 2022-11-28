@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="687fc582-d769-4f07-954e-70d5541f3ee6" name="Changes" comment="rework eks module">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
+=======
+    <list default="true" id="687fc582-d769-4f07-954e-70d5541f3ee6" name="Changes" comment="rework eks module" />
+>>>>>>> 71ef1ae (update)
     <list id="d5069ce6-5731-47bc-bd51-043c5c5f4fbf" name="Add gw_subnet support" comment="Add gw_subnet support" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,11 +70,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
       <recent name="$PROJECT_DIR$" />
+=======
+>>>>>>> 71ef1ae (update)
       <recent name="$PROJECT_DIR$/aws/eks" />
       <recent name="$PROJECT_DIR$/f5xc/v8ks" />
       <recent name="$PROJECT_DIR$/f5xc/blindfold/scripts" />
       <recent name="$PROJECT_DIR$/aws/network_interface" />
+<<<<<<< HEAD
+=======
+      <recent name="$PROJECT_DIR$/aws/security_group" />
+>>>>>>> 71ef1ae (update)
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/aws/eks/k8s" />

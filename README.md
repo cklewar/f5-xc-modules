@@ -78,12 +78,12 @@ module "my_test_modul" {
 
 # AWS Modules
 
-| Module | Documentation                                                  | Status                                                                                                                                                                                          |
-|--------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| EC2    | **[aws_ec2](https://github.com/cklewar/aws-ec2/tree/0.11.16)** | [![F5 XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg?branch=0.11.16)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml)) |
-| VPC    | **[aws_vpc](https://github.com/cklewar/aws-vpc)**              | [![AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)                       |
-| Subnet | **[aws_subnet](https://github.com/cklewar/aws-subnet)**        | [![AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml)            |
-| EKS    | **[aws_eks](https://github.com/cklewar/aws-eks)**              | [![AWS EKS module](https://github.com/cklewar/aws-eks/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/aws-eks/actions/workflows/module_test.yml)           |
+| Module | Documentation                                                  | Status                                                                                                                                                                                         |
+|--------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| EC2    | **[aws_ec2](https://github.com/cklewar/aws-ec2/tree/0.11.16)** | [![F5 XC AWS EC2 module](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml/badge.svg?branch=0.11.16)](https://github.com/cklewar/aws-ec2/actions/workflows/module_test.yml) |
+| VPC    | **[aws_vpc](https://github.com/cklewar/aws-vpc)**              | [![AWS VPC module](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-vpc/actions/workflows/module_test.yml)                      |
+| Subnet | **[aws_subnet](https://github.com/cklewar/aws-subnet)**        | [![AWS Subnet module](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml/badge.svg)](https://github.com/cklewar/aws-subnets/actions/workflows/module_test.yml)           |
+| EKS    | **[aws_eks](https://github.com/cklewar/aws-eks)**              | [![AWS EKS module](https://github.com/cklewar/aws-eks/actions/workflows/module_test.yml/badge.svg?branch=main)](https://github.com/cklewar/aws-eks/actions/workflows/module_test.yml)          |
 
 # GCP Modules
 

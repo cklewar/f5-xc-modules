@@ -1,0 +1,51 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.27.0",
+		"id": "1000000000",
+		"label": "ASM_policy_external_URL",
+		"remark": "ASM_policy_external_URL",
+		"Application_Security_01": {
+			"class": "Tenant",
+			"defaultRouteDomain": 0,
+			"HTTP_Service": {
+				"class": "Application",
+				"template": "http",
+				"serviceMain": {
+					"class": "Service_HTTP",
+					"virtualPort": 80,
+					"virtualAddresses": [
+						"192.168.168.106"
+					],
+					"snat": "auto",
+					"pool": "Pool1",
+					"policyWAF": {
+						"use": "WAF_Policy"
+					}
+				},
+				"Pool1": {
+					"class": "Pool",
+					"monitors": [
+						"http"
+					],
+					"members": [{
+							"servicePort": 80,
+							"serverAddresses": [
+								"172.16.184.10"
+							]
+						}
+					]
+				},
+				"WAF_Policy": {
+					"class": "WAF_Policy",
+					"url": "http://172.16.184.12:3000/gitea/awaf/raw/branch/main/waf_policy.json",
+                    "enforcementMode": "blocking",
+					"ignoreChanges": true
+				}
+			}
+		}
+	}
+}

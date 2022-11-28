@@ -1,0 +1,14 @@
+#cloud-config
+ssh_authorized_keys:
+  - "${user_pubkey}"
+write_files:
+  - path: /etc/hosts
+    content: ${hosts_context}
+    permissions: 0644
+    owner: root
+    encoding: b64
+  - path: /etc/vpm/config.yaml
+    permissions: 0644
+    owner: root
+    encoding: b64
+    content: ${vp_manager_context}

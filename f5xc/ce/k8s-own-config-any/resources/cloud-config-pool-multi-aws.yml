@@ -1,0 +1,43 @@
+#cloud-config
+ssh_authorized_keys:
+  - "${user_pubkey}"
+coreos:
+  locksmith:
+  update:
+    reboot-strategy: "${reboot_strategy}"
+  units:
+    - name: set-timezone.service
+      enable: true
+      content: |
+        [Unit]
+        Description=Set the time zone
+        [Service]
+        ExecStart=/usr/bin/timedatectl set-timezone UTC
+        RemainAfterExit=yes
+        Type=oneshot
+        [Install]
+        WantedBy=multi-user.target
+write_files:
+  #ves
+  - path: /etc/hosts
+    content: ${hosts_context}
+    permissions: 0644
+    owner: root
+    encoding: b64
+  - path: /etc/vpm/config.yaml
+    permissions: 0644
+    owner: root
+    encoding: b64
+    content: ${vp_manager_context}
+  - path: /etc/default/vpm
+    content: ${vp_manager_environment_context}
+    permissions: 0644
+    owner: root
+    encoding: b64
+#  - path: "/etc/systemd/timesyncd.conf"
+#   permissions: 0420
+#   owner: root
+#   content: |
+#     [Time]
+#     NTP=${ntp_servers}
+

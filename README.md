@@ -17,11 +17,6 @@ This repository consists of Terraform template modules to bring up various F5XC 
 - Clone this repo with: `git clone -b 0.11.16 https://github.com/cklewar/f5-xc-modules` into the new created project folder
 - Export P12 cert file password as environment variable: `export VES_P12_PASSWORD=MyPassword`
 
-# Version 
-
-* [v0.11.14](https://github.com/cklewar/f5-xc-modules/tree/0.11.14) 
-* [v0.11.16](https://github.com/cklewar/f5-xc-modules/tree/0.11.16)
-
 Folder structure example:
 
 ```bash

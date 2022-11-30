@@ -94,9 +94,9 @@ class APICredential:
             self._tenant = tenant
         self._expiration_days = F5XC_API_CERT_EXPIRATION_DAYS if expiration_days is None else expiration_days
         self._namespace = F5XC_SYSTEM_NAMESPACE if namespace is None else namespace
-        self._password = password
         self._credential_type = credential_type
         self._virtual_k8s_name = virtual_k8s_name
+        self._certificate_password = None
         self._virtual_k8s_namespace = F5XC_VIRTUAL_K8S_NAMESPACE
         if headers is None:
             HEADERS["Authorization"] = f"APIToken {api_token}"
@@ -163,19 +163,6 @@ class APICredential:
             raise ValueError('"name" must be string') from None
 
     @property
-    def password(self) -> str:
-        return self._password
-
-    @password.setter
-    def password(self, password: str = None):
-        if password is None:
-            raise ValueError('"password" must not be none') from None
-        try:
-            self._password = str(password)
-        except ValueError:
-            raise ValueError('"password" must be string') from None
-
-    @property
     def credential_type(self) -> str:
         return self._credential_type
 
@@ -233,6 +220,19 @@ class APICredential:
             raise ValueError('"headers" must be dict') from None
 
     @property
+    def certificate_password(self) -> str:
+        return self._certificate_password
+
+    @certificate_password.setter
+    def certificate_password(self, password: str = None):
+        if password is None:
+            raise ValueError('"password" must not be none') from None
+        try:
+            self._certificate_password = str(password)
+        except ValueError:
+            raise ValueError('"password" must be str') from None
+
+    @property
     def state(self) -> dict:
         return self._state
 
@@ -241,7 +241,7 @@ class APICredential:
             "expiration_days": self.expiration_days,
             "name": self.name,
             "namespace": self.namespace,
-            "password": self.password,
+            "password": self.certificate_password,
             "type": self.credential_type,
             "virtual_k8s_name": self.virtual_k8s_name,
             "virtual_k8s_namespace": self.virtual_k8s_namespace
@@ -311,6 +311,7 @@ if __name__ == '__main__':
     parser.add_argument("-n", "--name", help="API Credential Object Name", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k8s Name", type=str)
     parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
+    parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     args = parser.parse_args()
     apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant)
 
@@ -334,7 +335,8 @@ if __name__ == '__main__':
                 raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
             apic.name = args.name
             apic.credential_type = args.ctype
-            apic.virtual_k8s_name = args.vk8s
+            apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
+            apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
             print(f"Initiate {Action.POST.name} request")
 
             if apic.state is None:

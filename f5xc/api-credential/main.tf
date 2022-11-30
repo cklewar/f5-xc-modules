@@ -10,12 +10,13 @@ resource "null_resource" "apply_credential" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     on_failure  = fail
     environment = {
-      api_url                         = var.f5xc_api_url
-      api_token                       = var.f5xc_api_token
-      tenant                          = var.f5xc_tenant
-      api_credentials_name            = var.f5xc_api_credentials_name
-      virtual_k8s_name                = var.f5xc_virtual_k8s_name
-      api_credential_type_kube_config = var.f5xc_api_credential_type_kube_config
+      api_url                 = var.f5xc_api_url
+      api_token               = var.f5xc_api_token
+      tenant                  = var.f5xc_tenant
+      api_credentials_name    = var.f5xc_api_credentials_name
+      virtual_k8s_name        = var.f5xc_virtual_k8s_name
+      api_credential_type     = var.f5xc_api_credential_type
+      api_credential_password = var.f5xc_api_credential_password
     }
   }
 

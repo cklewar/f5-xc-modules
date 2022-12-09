@@ -6,6 +6,8 @@ resource "volterra_gcp_vpc_site" "site" {
   instance_type            = var.f5xc_gcp_ce_instance_type
   logs_streaming_disabled  = var.f5xc_gcp_logs_streaming_disabled
   default_blocked_services = var.f5xc_gcp_default_blocked_services
+  labels                   = var.f5xc_labels
+  gcp_labels               = var.f5xc_gcp_labels
   cloud_credentials {
     name      = var.f5xc_gcp_cred
     namespace = var.f5xc_namespace
@@ -195,7 +197,7 @@ resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_gcp_vpc_site.site.name
   site_type        = var.f5xc_gcp_site_kind
   # need at least one label, otherwise site_type is ignored
-  labels           = merge({ "key" = "value" }, var.custom_labels)
+  labels           = merge({ "key" = "value" }, var.f5xc_labels)
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 

@@ -246,6 +246,6 @@ variable "f5xc_labels" {
 }
 
 variable "f5xc_gcp_labels" {
-  type    = string
-  default = ""
+  type        = map(string)
+  default     = {}
 }

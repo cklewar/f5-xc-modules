@@ -239,18 +239,13 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
   default = true
 }
 
-variable "custom_labels" {
+variable "f5xc_labels" {
   description = "Custom labels to set on resources"
   type        = map(string)
   default     = {}
 }
 
-variable "hcl2json_version" {
+variable "f5xc_gcp_labels" {
   type    = string
-  default = "0.3.5"
-}
-
-variable "hcl2json_bin_url" {
-  type    = string
-  default = "https://github.com/tmccombs/hcl2json/releases/download"
+  default = ""
 }

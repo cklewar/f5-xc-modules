@@ -315,58 +315,58 @@ if __name__ == '__main__':
     args = parser.parse_args()
     apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant)
 
-    match args.action:
-        case Action.GET.value:
-            if apic.state is None:
-                print("No local state found... Leaving now...")
-            else:
-                print(f"Initiate {Action.GET.name} request")
-                r = apic.get()
-                if r.status_code == 200:
-                    print("GET request... Done")
-                else:
-                    print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-        case Action.POST.value:
-            if args.name is None:
-                raise ValueError(f'"name" must not be None')
-            if F5XCApiCredentialTypes.is_member(value=args.ctype) is False:
-                raise ValueError(f'"ctype" must be one of "{F5XCApiCredentialTypes.get_credential_types()}"')
-            if args.ctype == F5XCApiCredentialTypes.KUBE_CONFIG.name and args.vk8s is None:
-                raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
-            apic.name = args.name
-            apic.credential_type = args.ctype
-            apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
-            apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
-            print(f"Initiate {Action.POST.name} request")
 
-            if apic.state is None:
-                print("Found no local state... Creating new object...")
+    if args.action ==  Action.GET.value:
+        if apic.state is None:
+            print("No local state found... Leaving now...")
+        else:
+            print(f"Initiate {Action.GET.name} request")
+            r = apic.get()
+            if r.status_code == 200:
+                print("GET request... Done")
+            else:
+                print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
+    elif args.action ==  Action.POST.value:
+        if args.name is None:
+            raise ValueError(f'"name" must not be None')
+        if F5XCApiCredentialTypes.is_member(value=args.ctype) is False:
+            raise ValueError(f'"ctype" must be one of "{F5XCApiCredentialTypes.get_credential_types()}"')
+        if args.ctype == F5XCApiCredentialTypes.KUBE_CONFIG.name and args.vk8s is None:
+            raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
+        apic.name = args.name
+        apic.credential_type = args.ctype
+        apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
+        apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
+        print(f"Initiate {Action.POST.name} request")
+
+        if apic.state is None:
+            print("Found no local state... Creating new object...")
+            r = apic.post()
+            if r.status_code == 200:
+                print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
+            else:
+                print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
+        else:
+            print("Found local state... Checking object exists...")
+            r = apic.get()
+            if r.status_code == 200:
+                print("Checking object exists... Done. Not creating new object")
+            else:
+                print("Found local state, but object does not exists. Creating object...")
                 r = apic.post()
                 if r.status_code == 200:
                     print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
                 else:
                     print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
+    if args.action == Action.DELETE.value:
+        if apic.state is None:
+            print("No local state found... Leaving now...")
+        else:
+            print(f"Initiate {Action.DELETE.name} request")
+            r = apic.delete()
+            if r.status_code == 200:
+                print("DELETE request... Done. Removing state:", APICredential.delete_state_file(data=r.json()))
             else:
-                print("Found local state... Checking object exists...")
-                r = apic.get()
-                if r.status_code == 200:
-                    print("Checking object exists... Done. Not creating new object")
-                else:
-                    print("Found local state, but object does not exists. Creating object...")
-                    r = apic.post()
-                    if r.status_code == 200:
-                        print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
-                    else:
-                        print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-        case Action.DELETE.value:
-            if apic.state is None:
-                print("No local state found... Leaving now...")
-            else:
-                print(f"Initiate {Action.DELETE.name} request")
-                r = apic.delete()
-                if r.status_code == 200:
-                    print("DELETE request... Done. Removing state:", APICredential.delete_state_file(data=r.json()))
-                else:
-                    print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-        case _:
-            raise ValueError("Action not implemented")
+                print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
+    else:
+        raise ValueError("Action not implemented")

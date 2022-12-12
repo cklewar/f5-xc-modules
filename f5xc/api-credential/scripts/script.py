@@ -315,8 +315,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant)
 
-
-    if args.action ==  Action.GET.value:
+    if args.action == Action.GET.value:
         if apic.state is None:
             print("No local state found... Leaving now...")
         else:
@@ -326,7 +325,7 @@ if __name__ == '__main__':
                 print("GET request... Done")
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-    elif args.action ==  Action.POST.value:
+    elif args.action == Action.POST.value:
         if args.name is None:
             raise ValueError(f'"name" must not be None')
         if F5XCApiCredentialTypes.is_member(value=args.ctype) is False:
@@ -358,7 +357,7 @@ if __name__ == '__main__':
                     print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
                 else:
                     print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-    if args.action == Action.DELETE.value:
+    elif args.action == Action.DELETE.value:
         if apic.state is None:
             print("No local state found... Leaving now...")
         else:

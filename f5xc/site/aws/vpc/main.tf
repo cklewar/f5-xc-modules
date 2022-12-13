@@ -98,7 +98,9 @@ resource "volterra_aws_vpc_site" "site" {
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
-      aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
+      sm_connection_public_ip = var.f5xc_sm_connection_public_ip
+      sm_connection_pvt_ip    = var.f5xc_sm_connection_pvt_ip
+      aws_certified_hw        = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
         use_http_https_port = var.f5xc_aws_vpc_use_http_https_port
       }
@@ -171,11 +173,11 @@ resource "volterra_aws_vpc_site" "site" {
         }
       }
 
-      no_global_network        = var.f5xc_aws_vpc_no_global_network
+      no_global_network = var.f5xc_aws_vpc_no_global_network
       # no_outside_static_routes = var.f5xc_aws_vpc_no_outside_static_routes
       dynamic "outside_static_routes" {
         # for_each = var.f5xc_aws_vpc_no_outside_static_routes == false ? [1] : []
-        for_each =  length(var.f5xc_aws_vpc_outside_static_routes) > 0 ? [1] : []
+        for_each = length(var.f5xc_aws_vpc_outside_static_routes) > 0 ? [1] : []
         content {
           dynamic "static_route_list" {
             for_each = var.f5xc_aws_vpc_outside_static_routes

@@ -358,7 +358,7 @@ if __name__ == '__main__':
                     print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
                 else:
                     print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-    if args.action == Action.DELETE.value:
+    elif args.action == Action.DELETE.value:
         if apic.state is None:
             print("No local state found... Leaving now...")
         else:
@@ -369,4 +369,4 @@ if __name__ == '__main__':
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     else:
-        raise ValueError("Action not implemented")
+        raise ValueError(f"Action <{args.action}> not implemented")

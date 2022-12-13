@@ -256,13 +256,23 @@ variable "custom_tags" {
 }
 
 variable "f5xc_azure_express_route_server_subnet" {
-  type        = string
-  default     = ""
+  type    = string
+  default = ""
 }
 
 variable "f5xc_azure_express_gateway_subnet" {
-  type        = string
-  default     = ""
+  type    = string
+  default = ""
+}
+
+variable "f5xc_sm_connection_public_ip" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_sm_connection_pvt_ip" {
+  type    = bool
+  default = false
 }
 
 variable "custom_labels" {

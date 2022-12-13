@@ -61,8 +61,10 @@ resource "volterra_azure_vnet_site" "site" {
       dynamic az_nodes {
         for_each = var.f5xc_azure_az_nodes
         content {
-          azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
-          disk_size = var.f5xc_azure_ce_disk_size
+          sm_connection_public_ip = var.f5xc_sm_connection_public_ip
+          sm_connection_pvt_ip    = var.f5xc_sm_connection_pvt_ip
+          azure_az                = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
+          disk_size               = var.f5xc_azure_ce_disk_size
 
           inside_subnet {
             dynamic "subnet_param" {
@@ -236,7 +238,7 @@ module "site_wait_for_online" {
 }
 
 resource "azurerm_route" "route" {
-  depends_on = [module.site_wait_for_online]
+  depends_on          = [module.site_wait_for_online]
   for_each            = {for route in var.f5xc_azure_vnet_static_routes : route.name => route}
   name                = each.value.name
   resource_group_name = volterra_azure_vnet_site.site.resource_group

@@ -8,7 +8,7 @@ resource "volterra_aws_vpc_site" "site" {
 
   aws_cred {
     name      = var.f5xc_aws_cred
-    namespace = var.f5xc_namespac
+    namespace = var.f5xc_namespace
     tenant    = var.f5xc_tenant
   }
 
@@ -20,9 +20,7 @@ resource "volterra_aws_vpc_site" "site" {
       manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_vpc_direct_connect_standard_vifs
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
-          1
-        ] : []
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
         content {
           vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
         }

@@ -9,7 +9,7 @@ output "vnet" {
     nodes          = {
       master-0 = {
         interfaces = {
-          sli_ip    = data.azurerm_network_interface.master-0-sli.private_ip_address
+          sli_ip    = data.azurerm_network_interface.master-0-sli.*.private_ip_address
           slo_ip    = data.azurerm_network_interface.master-0-slo.private_ip_address
           public_ip = data.azurerm_public_ip.master-0-pib.ip_address
         }

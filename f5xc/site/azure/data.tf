@@ -21,7 +21,7 @@ data "azurerm_public_ip" "master-0-pib" {
 
 data "azurerm_network_interface" "master-1-sli" {
   depends_on          = [module.site_wait_for_online]
-  count               = length(var.f5xc_azure_az_nodes) >= 2 ? 1 : 0 && var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
+  count               = length(var.f5xc_azure_az_nodes) >= 2 && var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
   name                = "master-1-sli"
   resource_group_name = volterra_azure_vnet_site.site.resource_group
 
@@ -44,7 +44,7 @@ data "azurerm_public_ip" "master-1-pib" {
 
 data "azurerm_network_interface" "master-2-sli" {
   depends_on          = [module.site_wait_for_online]
-  count               = length(var.f5xc_azure_az_nodes) >= 2 ? 1 : 0 && var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
+  count               = length(var.f5xc_azure_az_nodes) >= 2 && var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0
   name                = "master-2-sli"
   resource_group_name = volterra_azure_vnet_site.site.resource_group
 

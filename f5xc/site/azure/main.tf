@@ -61,10 +61,8 @@ resource "volterra_azure_vnet_site" "site" {
       dynamic az_nodes {
         for_each = var.f5xc_azure_az_nodes
         content {
-          sm_connection_public_ip = var.f5xc_sm_connection_public_ip
-          sm_connection_pvt_ip    = var.f5xc_sm_connection_pvt_ip
-          azure_az                = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
-          disk_size               = var.f5xc_azure_ce_disk_size
+          azure_az  = tonumber(var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_az"])
+          disk_size = var.f5xc_azure_ce_disk_size
 
           inside_subnet {
             dynamic "subnet_param" {
@@ -175,7 +173,8 @@ resource "volterra_azure_vnet_site" "site" {
           }
         }
       }
-
+      sm_connection_public_ip  = var.f5xc_sm_connection_public_ip
+      sm_connection_pvt_ip     = var.f5xc_sm_connection_pvt_ip
       azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       no_global_network        = var.f5xc_azure_no_global_network
       no_outside_static_routes = var.f5xc_azure_no_outside_static_routes

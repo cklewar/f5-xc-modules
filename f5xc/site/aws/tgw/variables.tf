@@ -31,13 +31,17 @@ variable "f5xc_aws_region" {
   }
 }
 
-variable "f5xc_aws_tgw_name" {
+variable "f5xc_aws_tgw_site_name" {
   type = string
 }
 
 variable "f5xc_aws_tgw_instance_type" {
   type    = string
   default = "t3.xlarge"
+}
+
+variable "f5xc_aws_tgw_owner" {
+  type = string
 }
 
 variable "f5xc_aws_tgw_ce_instance_disk_size" {

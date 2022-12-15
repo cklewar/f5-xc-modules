@@ -9,7 +9,7 @@ output "vnet" {
     nodes          = {
       master-0 = {
         interfaces = {
-          sli_ip    = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-0-sli.private_ip_address : null
+          sli_ip    = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-0-sli.*.private_ip_address : null
           slo_ip    = data.azurerm_network_interface.master-0-slo.private_ip_address
           public_ip = data.azurerm_public_ip.master-0-pib.ip_address
         }

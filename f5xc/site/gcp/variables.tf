@@ -107,6 +107,10 @@ variable "f5xc_gcp_existing_inside_network_name" {
 
 variable "f5xc_gcp_node_number" {
   type = number
+  validation {
+    condition     = var.f5xc_gcp_node_number == 1 || var.f5xc_gcp_node_number == 3
+    error_message = "Node Number must be 1 or 3"
+  }
 }
 
 variable "f5xc_gcp_default_ce_os_version" {

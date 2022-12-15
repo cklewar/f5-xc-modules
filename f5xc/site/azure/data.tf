@@ -1,5 +1,6 @@
 data "azurerm_network_interface" "master-0-sli" {
   depends_on          = [module.site_wait_for_online]
+  count               = length(var.f5xc_azure_az_nodes) >= 2 ? 1 : 0
   name                = "master-0-sli"
   resource_group_name = volterra_azure_vnet_site.site.resource_group
 

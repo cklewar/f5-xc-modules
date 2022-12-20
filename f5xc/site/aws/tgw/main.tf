@@ -150,7 +150,6 @@ resource "volterra_aws_tgw_site" "site" {
     aws_cred {
       name      = var.f5xc_aws_cred
       namespace = var.f5xc_namespace
-      tenant    = var.f5xc_tenant
     }
     instance_type = var.f5xc_aws_tgw_instance_type
 

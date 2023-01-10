@@ -19,13 +19,11 @@ variable "gateway_type" {
 }
 
 variable "cluster_latitude" {
-  type    = string
-  default = "39.8282"
+  type = string
 }
 
 variable "cluster_longitude" {
-  type    = string
-  default = "-98.5795"
+  type = string
 }
 
 variable "slo_nic" {
@@ -51,7 +49,7 @@ variable "volterra_token" {
   type = string
 }
 
-variable "machine_public_key" {
+variable "ssh_public_key" {
   type = string
 }
 

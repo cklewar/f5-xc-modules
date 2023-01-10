@@ -3,7 +3,7 @@ resource "google_compute_instance" "instance" {
   machine_type = var.machine_type
   boot_disk {
     initialize_params {
-      image = var.image
+      image = var.machine_image
       size  = var.machine_disk_size
     }
   }

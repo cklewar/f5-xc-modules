@@ -16,6 +16,10 @@ variable "maurice_mtls_endpoint" {
 variable "gateway_type" {
   type    = string
   default = "ingress_gateway"
+  validation {
+    condition = contains(["ingress_egress_gateway", "ingress_gateway"], var.gateway_type)
+    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
+  }
 }
 
 variable "cluster_latitude" {

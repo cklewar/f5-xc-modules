@@ -1,5 +1,5 @@
 resource "google_compute_instance" "instance" {
-  name         = var.name
+  name         = var.instance_name
   machine_type = var.machine_type
   boot_disk {
     initialize_params {
@@ -24,20 +24,20 @@ resource "google_compute_instance" "instance" {
   }
 }
 
-resource "volterra_registration_approval" "master_nodes" {
+resource "volterra_registration_approval" "nodes" {
   depends_on   = [google_compute_instance.instance]
-  cluster_name = var.name
-  cluster_size = 1
-  hostname     = var.name
-  wait_time    = 60
-  retry        = 20
+  cluster_name = var.instance_name
+  cluster_size = var.cluster_size
+  hostname     = var.instance_name
+  wait_time    = var.registration_wait_time
+  retry        = var.registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
-  depends_on = [volterra_registration_approval.master_nodes]
-  name       = var.name
+  depends_on = [volterra_registration_approval.nodes]
+  name       = var.instance_name
   when       = "delete"
   state      = "DECOMMISSIONING"
-  wait_time  = 60
-  retry      = 5
+  wait_time  = var.registration_wait_time
+  retry      = var.registration_retry
 }

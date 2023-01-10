@@ -1,28 +1,4 @@
-variable "api_p12_file" {
-  type = string
-}
-
-variable "api_url" {
-  type = string
-}
-
-variable "project_name" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "zone" {
-  type = string
-}
-
-variable "credentials_file_path" {
-  type = string
-}
-
-variable "name" {
+variable "instance_name" {
   type = string
 }
 
@@ -52,4 +28,19 @@ variable "ssh_public_key" {
 
 variable "user_data" {
   type = string
+}
+
+variable "cluster_size" {
+  type    = number
+  default = 1
+}
+
+variable "registration_wait_time" {
+  type    = number
+  default = 60
+}
+
+variable "registration_retry" {
+  type    = number
+  default = 20
 }

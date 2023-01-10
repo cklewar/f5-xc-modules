@@ -79,7 +79,7 @@ locals {
   cloud_init_master = {
     vp_manager_context = base64encode(local.vpm_config.config)
     hosts_context      = base64encode(local.hosts_localhost.config)
-    user_pubkey        = var.machine_public_key
+    user_pubkey        = var.ssh_public_key
   }
   # /etc/hosts
   hosts_localhost = {

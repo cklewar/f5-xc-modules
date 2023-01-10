@@ -6,7 +6,7 @@ variable "machine_type" {
   type = string
 }
 
-variable "image" {
+variable "machine_image" {
   type = string
 }
 

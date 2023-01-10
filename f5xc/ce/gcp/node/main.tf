@@ -1,4 +1,4 @@
-resource "google_compute_instance" "vm_instance" {
+resource "google_compute_instance" "instance" {
   name         = var.name
   machine_type = var.machine_type
   boot_disk {
@@ -16,7 +16,7 @@ resource "google_compute_instance" "vm_instance" {
     access_config {}
   }
   metadata = {
-    ssh-keys  = "centos:${var.machine_public_key}"
+    ssh-keys  = "centos:${var.ssh_public_key}"
     user-data = var.user_data
   }
   service_account {
@@ -25,7 +25,7 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "volterra_registration_approval" "master_nodes" {
-  depends_on   = [google_compute_instance.vm_instance]
+  depends_on   = [google_compute_instance.instance]
   cluster_name = var.name
   cluster_size = 1
   hostname     = var.name
@@ -34,10 +34,10 @@ resource "volterra_registration_approval" "master_nodes" {
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
+  depends_on = [volterra_registration_approval.master_nodes]
   name       = var.name
   when       = "delete"
   state      = "DECOMMISSIONING"
   wait_time  = 60
   retry      = 5
-  depends_on = [volterra_registration_approval.master_nodes]
 }

@@ -85,17 +85,17 @@ locals {
   }
   # /etc/hosts
   hosts_localhost = {
-    config = templatefile("${path.module}/resources/hosts", local.hosts_localhost_vars)
+    config = templatefile("${path.module}/templates/hosts", local.hosts_localhost_vars)
   }
 
   # vpm config
   vpm_config = {
-    config = templatefile("${path.module}/resources/vpm-${local.gateway_type}.yml", local.vpm_vars)
+    config = templatefile("${path.module}/templates/vpm-${local.gateway_type}.yml", local.vpm_vars)
   }
 
   # ssh public key and cloud_init files
   cloud_init_master_config = {
-    config = templatefile("${path.module}/resources/cloud-init.yml", local.cloud_init_master)
+    config = templatefile("${path.module}/templates/cloud-init.yml", local.cloud_init_master)
   }
 }
 

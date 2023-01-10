@@ -6,26 +6,6 @@ variable "api_url" {
   type = string
 }
 
-variable "api_ca_cert" {
-  type    = string
-  default = ""
-}
-
-variable "api_cert" {
-  type    = string
-  default = ""
-}
-
-variable "api_key" {
-  type    = string
-  default = ""
-}
-
-variable "api_token" {
-  type    = string
-  default = ""
-}
-
 variable "project_name" {
   type = string
 }
@@ -66,7 +46,7 @@ variable "slo_subnetwork" {
   type = string
 }
 
-variable "machine_public_key" {
+variable "ssh_public_key" {
   type = string
 }
 

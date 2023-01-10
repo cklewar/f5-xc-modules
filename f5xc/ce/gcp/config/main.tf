@@ -43,7 +43,7 @@ variable "certified_hardware_endpoint" {
   default = "https://vesio.blob.core.windows.net/releases/certified-hardware/gcp.yml"
 }
 
-variable "name" {
+variable "instance_name" {
   type = string
 }
 
@@ -64,7 +64,7 @@ locals {
   vpm_vars     = {
     service_ip                  = var.public_name
     cluster_type                = var.cluster_type
-    cluster_name                = var.name
+    cluster_name                = var.instance_name
     private_nic                 = var.slo_nic
     cluster_token               = var.volterra_token
     cluster_latitude            = var.cluster_latitude
@@ -99,14 +99,3 @@ locals {
   }
 }
 
-output "gateway_type" {
-  value = local.gateway_type
-}
-
-output "hosts_context" {
-  value = local.hosts_localhost.config
-}
-
-output "user_data" {
-  value = local.cloud_init_master_config.config
-}

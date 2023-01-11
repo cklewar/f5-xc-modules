@@ -4,7 +4,7 @@ resource "volterra_token" "site" {
 }
 
 module "network" {
-  count                 = var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "" ? 1 : 0
+  count                 = var.fabric_subnet_inside != "" || (var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "") ? 1 : 0
   source                = "./network"
   gcp_region            = var.gcp_region
   network_name          = var.network_name

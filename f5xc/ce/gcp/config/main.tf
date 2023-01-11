@@ -31,7 +31,12 @@ variable "slo_nic" {
 }
 
 variable "host_localhost_public_name" {
+  type = string
+}
+
+variable "host_localhost_public_address" {
   type    = string
+  default = "127.0.1.1"
 }
 
 variable "certified_hardware_endpoint" {
@@ -71,7 +76,7 @@ locals {
     cluster_labels              = var.cluster_labels
   }
   hosts_localhost_vars = {
-    public_address = "127.0.1.1"
+    public_address = var.host_localhost_public_address
     public_name    = var.host_localhost_public_name
   }
   cloud_init_master = {

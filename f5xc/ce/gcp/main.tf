@@ -26,7 +26,7 @@ module "config" {
 }
 
 module "node" {
-  source                      = "./node"
+  source                      = "nodes"
   machine_type                = var.machine_type
   ssh_username                = var.ssh_username
   machine_image               = var.machine_image

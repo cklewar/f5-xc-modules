@@ -4,6 +4,7 @@ resource "volterra_token" "site" {
 }
 
 module "network" {
+  count                 = var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "" ? 1 : 0
   source                = "./network"
   gcp_region            = var.gcp_region
   network_name          = var.network_name
@@ -30,8 +31,8 @@ module "node" {
   ssh_username                = var.ssh_username
   machine_image               = var.machine_image
   instance_name               = var.instance_name
-  sli_subnetwork              = module.network.ce["sli_subnetwork"]
-  slo_subnetwork              = module.network.ce["slo_subnetwork"]
+  sli_subnetwork              = var.fabric_subnet_inside != "" ? module.network.ce["sli_subnetwork"] : var.existing_fabric_subnet_inside
+  slo_subnetwork              = var.fabric_subnet_outside != "" ? module.network.ce["slo_subnetwork"] : var.existing_fabric_subnet_outside
   ssh_public_key              = var.ssh_public_key
   machine_disk_size           = var.machine_disk_size
   f5xc_tenant                 = var.f5xc_tenant
@@ -40,7 +41,7 @@ module "node" {
   f5xc_namespace              = var.f5xc_namespace
   f5xc_ce_user_data           = module.config.ce["user_data"]
   f5xc_cluster_size           = var.f5xc_cluster_size
-  f5xc_ce_gateway_type       = var.f5xc_ce_gateway_type
+  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
 }

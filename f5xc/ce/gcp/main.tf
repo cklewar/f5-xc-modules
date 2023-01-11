@@ -31,8 +31,8 @@ module "node" {
   ssh_username                = var.ssh_username
   machine_image               = var.machine_image
   instance_name               = var.instance_name
-  sli_subnetwork              = var.fabric_subnet_inside != "" ? module.network.*.ce["sli_subnetwork"] : var.existing_fabric_subnet_inside
-  slo_subnetwork              = var.fabric_subnet_outside != "" ? module.network.*.ce["slo_subnetwork"] : var.existing_fabric_subnet_outside
+  sli_subnetwork              = var.fabric_subnet_inside != "" ? module.network.0.ce["sli_subnetwork"] : var.existing_fabric_subnet_inside
+  slo_subnetwork              = var.fabric_subnet_outside != "" ? module.network.0.ce["slo_subnetwork"] : var.existing_fabric_subnet_outside
   ssh_public_key              = var.ssh_public_key
   machine_disk_size           = var.machine_disk_size
   f5xc_tenant                 = var.f5xc_tenant

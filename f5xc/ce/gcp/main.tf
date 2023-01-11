@@ -10,7 +10,6 @@ module "network" {
   network_name          = var.network_name
   fabric_subnet_outside = var.fabric_subnet_outside
   fabric_subnet_inside  = var.fabric_subnet_inside
-  f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
 }
 
 module "config" {

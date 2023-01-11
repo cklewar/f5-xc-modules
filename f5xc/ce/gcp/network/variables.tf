@@ -18,17 +18,3 @@ variable "auto_create_subnetworks" {
   type    = bool
   default = false
 }
-
-variable "f5xc_ce_gateway_type_ingress" {
-  type    = string
-  default = "ingress_gateway"
-}
-
-variable "f5xc_ce_gateway_type_ingress_egress" {
-  type    = string
-  default = "ingress_egress_gateway"
-}
-
-variable "f5xc_ce_gateway_type" {
-  type = string
-}

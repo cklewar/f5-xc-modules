@@ -4,7 +4,7 @@ resource "volterra_token" "site" {
 }
 
 module "network" {
-  count                 = var.fabric_subnet_inside != "" || (var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "") ? 1 : 0
+  # count                 = var.fabric_subnet_inside != "" || (var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "") ? 1 : 0
   source                = "./network"
   gcp_region            = var.gcp_region
   network_name          = var.network_name
@@ -42,5 +42,5 @@ module "node" {
   f5xc_cluster_size           = var.f5xc_cluster_size
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
-  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
+  # f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
 }

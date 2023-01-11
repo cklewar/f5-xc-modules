@@ -2,7 +2,7 @@ variable "gcp_region" {
   type = string
 }
 
-variable "fabric_subnet_public" {
+variable "fabric_subnet_outside" {
   type = string
 }
 

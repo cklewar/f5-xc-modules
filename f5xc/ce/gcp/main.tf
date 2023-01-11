@@ -1,25 +1,24 @@
 resource "volterra_token" "site" {
   name      = var.f5xc_token_name
   namespace = var.f5xc_namespace
-  provider  = volterra.default
 }
 
 module "network" {
-  source               = "./network"
-  network_name         = var.network_name
-  gcp_region           = var.gcp_region
-  fabric_subnet_public = var.fabric_subnet_public
-  fabric_subnet_inside = var.fabric_subnet_inside
+  source                = "./network"
+  gcp_region            = var.gcp_region
+  network_name          = var.network_name
+  fabric_subnet_outside = var.fabric_subnet_public
+  fabric_subnet_inside  = var.fabric_subnet_inside
 }
 
 module "config" {
   source                 = "./config"
-  public_name            = "vip"
+  public_name            = var.public_name
   instance_name          = var.instance_name
   volterra_token         = volterra_token.site.id
   cluster_labels         = local.cluster_labels
   ssh_public_key         = var.ssh_public_key
-  f5xc_ce_gateway_type   = "ingress_egress_gateway"
+  f5xc_ce_gateway_type   = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude  = var.f5xc_cluster_latitude
   f5xc_cluster_longitude = var.f5xc_cluster_longitude
 }

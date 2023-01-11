@@ -10,7 +10,7 @@ resource "google_compute_network" "sli_vpc_network" {
 
 resource "google_compute_subnetwork" "slo_subnet" {
   name          = "${var.network_name}-slo-subnetwork"
-  ip_cidr_range = var.fabric_subnet_public
+  ip_cidr_range = var.fabric_subnet_outside
   region        = var.gcp_region
   network       = google_compute_network.slo_vpc_network.id
 }

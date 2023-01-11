@@ -30,11 +30,7 @@ variable "machine_disk_size" {
   type = string
 }
 
-variable "sli_subnetwork" {
-  type = string
-}
-
-variable "slo_subnetwork" {
+variable "public_name" {
   type = string
 }
 

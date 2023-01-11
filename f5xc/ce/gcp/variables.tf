@@ -10,16 +10,6 @@ variable "fabric_subnet_inside" {
   type = string
 }
 
-variable "existing_fabric_subnet_inside" {
-  type    = string
-  default = ""
-}
-
-variable "existing_fabric_subnet_outside" {
-  type    = string
-  default = ""
-}
-
 variable "network_name" {
   type = string
 }
@@ -66,16 +56,6 @@ variable "f5xc_registration_wait_time" {
 variable "f5xc_registration_retry" {
   type    = number
   default = 20
-}
-
-variable "f5xc_ce_gateway_type_ingress" {
-  type    = string
-  default = "ingress_gateway"
-}
-
-variable "f5xc_ce_gateway_type_ingress_egress" {
-  type    = string
-  default = "ingress_egress_gateway"
 }
 
 variable "f5xc_ce_gateway_type" {

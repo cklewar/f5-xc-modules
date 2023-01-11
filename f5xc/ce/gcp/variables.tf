@@ -2,7 +2,7 @@ variable "gcp_region" {
   type = string
 }
 
-variable "fabric_subnet_public" {
+variable "fabric_subnet_outside" {
   type = string
 }
 
@@ -43,11 +43,7 @@ variable "ssh_username" {
   default = "centos"
 }
 
-variable "user_data" {
-  type = string
-}
-
-variable "cluster_size" {
+variable "f5xc_cluster_size" {
   type    = number
   default = 1
 }

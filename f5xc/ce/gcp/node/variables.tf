@@ -46,11 +46,11 @@ variable "ssh_username" {
   type = string
 }
 
-variable "user_data" {
+variable "f5xc_ce_user_data" {
   type = string
 }
 
-variable "cluster_size" {
+variable "f5xc_cluster_size" {
   type = number
 }
 

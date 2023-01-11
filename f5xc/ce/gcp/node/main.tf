@@ -21,7 +21,7 @@ resource "google_compute_instance" "instance" {
 
   metadata = {
     ssh-keys  = "${var.ssh_username}:${var.ssh_public_key}"
-    user-data = var.user_data
+    user-data = var.f5xc_ce_user_data
   }
 
   service_account {
@@ -32,7 +32,7 @@ resource "google_compute_instance" "instance" {
 resource "volterra_registration_approval" "nodes" {
   depends_on   = [google_compute_instance.instance]
   cluster_name = var.instance_name
-  cluster_size = var.cluster_size
+  cluster_size = var.f5xc_cluster_size
   hostname     = var.instance_name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry

@@ -1,9 +1,9 @@
 output "ce" {
   value = {
-    master = {
-      node    = module.node.ce
-      config  = module.config.ce
-      network = module.network.*.ce
+    master-0 = {
+      node    = module.node.ce["master-0"]
+      config  = module.config.ce["master-0"]
+      network = module.network.*.ce["master-0"]
     }
   }
 }

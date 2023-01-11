@@ -3,7 +3,7 @@ output "ce" {
     master = {
       node    = module.node.ce
       config  = module.config.ce
-      network = module.network.ce[0]
+      network = module.network.*.ce
     }
   }
 }

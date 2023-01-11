@@ -10,6 +10,16 @@ variable "fabric_subnet_inside" {
   type = string
 }
 
+variable "existing_fabric_subnet_inside" {
+  type    = string
+  default = ""
+}
+
+variable "existing_fabric_subnet_outside" {
+  type    = string
+  default = ""
+}
+
 variable "network_name" {
   type = string
 }

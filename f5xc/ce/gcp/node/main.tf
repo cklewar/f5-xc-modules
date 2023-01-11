@@ -14,9 +14,12 @@ resource "google_compute_instance" "instance" {
     access_config {}
   }
 
-  network_interface {
-    subnetwork = var.sli_subnetwork
-    access_config {}
+  dynamic "network_interface" {
+    for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
+    content {
+      subnetwork = var.sli_subnetwork
+      access_config {}
+    }
   }
 
   metadata = {

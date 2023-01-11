@@ -9,6 +9,7 @@ module "network" {
   network_name          = var.network_name
   fabric_subnet_outside = var.fabric_subnet_outside
   fabric_subnet_inside  = var.fabric_subnet_inside
+  f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
 }
 
 module "config" {
@@ -39,6 +40,7 @@ module "node" {
   f5xc_namespace              = var.f5xc_namespace
   f5xc_ce_user_data           = module.config.ce["user_data"]
   f5xc_cluster_size           = var.f5xc_cluster_size
+  f5xc_ce_gateway_type       = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
 }

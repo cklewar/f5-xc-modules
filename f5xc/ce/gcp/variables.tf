@@ -58,6 +58,16 @@ variable "f5xc_registration_retry" {
   default = 20
 }
 
+variable "f5xc_ce_gateway_type_ingress" {
+  type    = string
+  default = "ingress_gateway"
+}
+
+variable "f5xc_ce_gateway_type_ingress_egress" {
+  type    = string
+  default = "ingress_egress_gateway"
+}
+
 variable "f5xc_ce_gateway_type" {
   type    = string
   default = "ingress_gateway"

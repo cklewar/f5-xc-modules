@@ -86,6 +86,11 @@ variable "f5xc_ce_gateway_type" {
   }
 }
 
+variable "f5xc_ce_gateway_multi_node" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_cluster_latitude" {
   type = string
 }

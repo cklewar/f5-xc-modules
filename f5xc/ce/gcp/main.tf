@@ -39,7 +39,7 @@ module "node" {
   f5xc_api_url                = var.f5xc_api_url
   f5xc_api_token              = var.f5xc_api_token
   f5xc_namespace              = var.f5xc_namespace
-  f5xc_ce_user_data           = module.config.ce["user_data"]
+  f5xc_ce_user_data           = module.config.ce["master-0"]["user_data"]
   f5xc_cluster_size           = var.f5xc_cluster_size
   f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry

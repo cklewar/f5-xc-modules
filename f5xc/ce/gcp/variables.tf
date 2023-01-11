@@ -30,7 +30,7 @@ variable "machine_disk_size" {
   type = string
 }
 
-variable "public_name" {
+variable "host_localhost_public_name" {
   type = string
 }
 

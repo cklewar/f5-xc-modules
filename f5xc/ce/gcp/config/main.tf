@@ -30,9 +30,8 @@ variable "slo_nic" {
   default = "eth0"
 }
 
-variable "public_name" {
+variable "host_localhost_public_name" {
   type    = string
-  default = "vip"
 }
 
 variable "certified_hardware_endpoint" {
@@ -59,7 +58,7 @@ variable "cluster_labels" {
 locals {
   gateway_type = replace(var.f5xc_ce_gateway_type, "_", "-")
   vpm_vars     = {
-    service_ip                  = var.public_name
+    service_ip                  = var.host_localhost_public_name
     cluster_type                = var.cluster_type
     cluster_name                = var.instance_name
     private_nic                 = var.slo_nic
@@ -73,7 +72,7 @@ locals {
   }
   hosts_localhost_vars = {
     public_address = "127.0.1.1"
-    public_name    = var.public_name
+    public_name    = var.host_localhost_public_name
   }
   cloud_init_master = {
     vp_manager_context = base64encode(local.vpm_config.config)

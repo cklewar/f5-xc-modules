@@ -1,4 +1,4 @@
-output "network" {
+output "ce" {
   value = {
     slo_subnetwork = google_compute_subnetwork.slo_subnet.name
     slo_network    = google_compute_network.slo_vpc_network.name

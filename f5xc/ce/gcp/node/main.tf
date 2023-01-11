@@ -1,24 +1,29 @@
 resource "google_compute_instance" "instance" {
   name         = var.instance_name
   machine_type = var.machine_type
+
   boot_disk {
     initialize_params {
       image = var.machine_image
       size  = var.machine_disk_size
     }
   }
+
   network_interface {
     subnetwork = var.slo_subnetwork
     access_config {}
   }
+
   network_interface {
     subnetwork = var.sli_subnetwork
     access_config {}
   }
+
   metadata = {
-    ssh-keys  = "centos:${var.ssh_public_key}"
+    ssh-keys  = "${var.ssh_username}:${var.ssh_public_key}"
     user-data = var.user_data
   }
+
   service_account {
     scopes = ["cloud-platform"]
   }
@@ -29,8 +34,8 @@ resource "volterra_registration_approval" "nodes" {
   cluster_name = var.instance_name
   cluster_size = var.cluster_size
   hostname     = var.instance_name
-  wait_time    = var.registration_wait_time
-  retry        = var.registration_retry
+  wait_time    = var.f5xc_registration_wait_time
+  retry        = var.f5xc_registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
@@ -38,6 +43,16 @@ resource "volterra_site_state" "decommission_when_delete" {
   name       = var.instance_name
   when       = "delete"
   state      = "DECOMMISSIONING"
-  wait_time  = var.registration_wait_time
-  retry      = var.registration_retry
+  wait_time  = var.f5xc_registration_wait_time
+  retry      = var.f5xc_registration_retry
+}
+
+module "site_wait_for_online" {
+  depends_on     = [volterra_site_state.decommission_when_delete]
+  source         = "../../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = google_compute_instance.instance.name
+  f5xc_tenant    = var.f5xc_tenant
 }

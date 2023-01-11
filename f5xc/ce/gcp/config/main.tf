@@ -13,20 +13,15 @@ variable "maurice_mtls_endpoint" {
   default = "https://register-tls.ves.volterra.io"
 }
 
-variable "gateway_type" {
-  type    = string
-  default = "ingress_gateway"
-  validation {
-    condition = contains(["ingress_egress_gateway", "ingress_gateway"], var.gateway_type)
-    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
-  }
-}
-
-variable "cluster_latitude" {
+variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "cluster_longitude" {
+variable "f5xc_cluster_latitude" {
+  type = string
+}
+
+variable "f5xc_cluster_longitude" {
   type = string
 }
 
@@ -62,15 +57,15 @@ variable "cluster_labels" {
 }
 
 locals {
-  gateway_type = replace(var.gateway_type, "_", "-")
+  gateway_type = replace(var.f5xc_ce_gateway_type, "_", "-")
   vpm_vars     = {
     service_ip                  = var.public_name
     cluster_type                = var.cluster_type
     cluster_name                = var.instance_name
     private_nic                 = var.slo_nic
     cluster_token               = var.volterra_token
-    cluster_latitude            = var.cluster_latitude
-    cluster_longitude           = var.cluster_longitude
+    cluster_latitude            = var.f5xc_cluster_latitude
+    cluster_longitude           = var.f5xc_cluster_longitude
     maurice_endpoint            = var.maurice_endpoint
     maurice_mtls_endpoint       = var.maurice_mtls_endpoint
     certified_hardware_endpoint = var.certified_hardware_endpoint

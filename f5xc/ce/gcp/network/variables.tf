@@ -13,3 +13,8 @@ variable "fabric_subnet_inside" {
 variable "network_name" {
   type = string
 }
+
+variable "auto_create_subnetworks" {
+  type    = bool
+  default = false
+}

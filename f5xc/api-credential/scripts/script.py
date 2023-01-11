@@ -368,4 +368,4 @@ if __name__ == '__main__':
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     else:
-        raise ValueError("Action not implemented")
+        raise ValueError(f"Action <{args.action}> not implemented")

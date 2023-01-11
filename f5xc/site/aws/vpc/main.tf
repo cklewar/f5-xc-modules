@@ -20,9 +20,7 @@ resource "volterra_aws_vpc_site" "site" {
       manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_vpc_direct_connect_standard_vifs
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
-          1
-        ] : []
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
         content {
           vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
         }
@@ -176,7 +174,6 @@ resource "volterra_aws_vpc_site" "site" {
       no_global_network = var.f5xc_aws_vpc_no_global_network
       # no_outside_static_routes = var.f5xc_aws_vpc_no_outside_static_routes
       dynamic "outside_static_routes" {
-        # for_each = var.f5xc_aws_vpc_no_outside_static_routes == false ? [1] : []
         for_each = length(var.f5xc_aws_vpc_outside_static_routes) > 0 ? [1] : []
         content {
           dynamic "static_route_list" {
@@ -190,7 +187,6 @@ resource "volterra_aws_vpc_site" "site" {
 
       # no_inside_static_routes = var.f5xc_aws_vpc_no_inside_static_routes
       dynamic "inside_static_routes" {
-        # for_each = var.f5xc_aws_vpc_no_inside_static_routes == false ? [1] : []
         for_each = length(var.f5xc_aws_vpc_inside_static_routes) > 0 ? [1] : [0]
         content {
           dynamic "static_route_list" {

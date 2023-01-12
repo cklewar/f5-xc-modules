@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-timeout=60
+timeout=120
 counter=0
 sleep_step=1
 end_outer=0

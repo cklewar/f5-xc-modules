@@ -17,7 +17,7 @@ F5XC_CREDENTIAL_DELETE_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/revoke/api
 F5XC_CREDENTIAL_POST_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_CREDENTIAL_GET_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_API_CERT_EXPIRATION_DAYS = "10"
-F5XC_VIRTUAL_K8S_NAMESPACE = "default"
+F5XC_VIRTUAL_K8S_NAMESPACE = "shared"
 F5XC_API_CERT_PASSWORD = ""
 HEADERS = {
     'Accept': 'application/data',

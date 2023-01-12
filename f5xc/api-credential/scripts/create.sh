@@ -10,7 +10,7 @@ python3 -m pip -qqq --exists-action ignore --no-input --no-color install --progr
 
 if [[ $api_credential_type = "KUBE_CONFIG" ]]
 then
-  python3 $MODULES_PATH/scripts/script.py post $api_url $api_token $tenant -n $api_credentials_name -v $virtual_k8s_name -c $api_credential_type
+  python3 $MODULES_PATH/scripts/script.py post $api_url $api_token $tenant $api_credentials_name -v $virtual_k8s_name -c $api_credential_type
 else
-  python3 $MODULES_PATH/scripts/script.py post $api_url $api_token $tenant -n $api_credentials_name -c $api_credential_type -p $api_credential_password
+  python3 $MODULES_PATH/scripts/script.py post $api_url $api_token $tenant $api_credentials_name -c $api_credential_type -p $api_credential_password
 fi

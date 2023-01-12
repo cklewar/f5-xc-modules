@@ -17,7 +17,7 @@ F5XC_CREDENTIAL_DELETE_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/revoke/api
 F5XC_CREDENTIAL_POST_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_CREDENTIAL_GET_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_API_CERT_EXPIRATION_DAYS = "10"
-F5XC_VIRTUAL_K8S_NAMESPACE = "shared"
+F5XC_VIRTUAL_K8S_NAMESPACE = "default"
 F5XC_API_CERT_PASSWORD = ""
 HEADERS = {
     'Accept': 'application/data',
@@ -28,13 +28,14 @@ HEADERS = {
 }
 POST_PAYLOAD_TEMPLATE_FILE = "post.tpl"
 DELETE_PAYLOAD_TEMPLATE_FILE = "delete.tpl"
-API_MODULE_PATH = "modules/f5xc/api-credential"
+# API_MODULE_PATH = "modules/f5xc/api-credential"
 TEMPLATE_DIRECTORY_NAME = "templates"
-TEMPLATE_DIRECTORY = f"{os.getcwd()}/{API_MODULE_PATH}/{TEMPLATE_DIRECTORY_NAME}"
-STATE_FILE_DIR_NAME = "_out"
-STATE_FILE_DIR = f"{os.getcwd()}/{API_MODULE_PATH}/{STATE_FILE_DIR_NAME}"
+# TEMPLATE_DIRECTORY = f"{os.getcwd()}/{API_MODULE_PATH}/{TEMPLATE_DIRECTORY_NAME}"
+TEMPLATE_DIRECTORY = f"{os.getcwd()}/{TEMPLATE_DIRECTORY_NAME}"
+STATE_FILE_DIR_ROOT = "_out"
+# STATE_FILE_DIR = f"{os.getcwd()}/{API_MODULE_PATH}/{STATE_FILE_DIR_ROOT}"
+STATE_FILE_DIR = f"{os.getcwd()}/{STATE_FILE_DIR_ROOT}"
 STATE_FILE_NAME = "state.json"
-STATE_FILE = f"{STATE_FILE_DIR}/{STATE_FILE_NAME}"
 
 
 class Action(Enum):
@@ -73,9 +74,9 @@ class State:
 
 
 class APICredential:
-    def __init__(self, api_url: str = None, api_token: str = None, tenant: str = None, expiration_days: str = None, namespace: str = None, password: str = None,
-                 credential_type: str = None, virtual_k8s_name: str = None, post_payload_template_file: str = None, delete_payload_template_file: str = None,
-                 template_directory: str = None, headers: dict = None):
+    def __init__(self, api_url: str = None, api_token: str = None, tenant: str = None, expiration_days: str = None, namespace: str = None, credential_type: str = None,
+                 virtual_k8s_name: str = None, post_payload_template_file: str = None, delete_payload_template_file: str = None,
+                 template_directory: str = None, headers: dict = None, name: str = None):
         if api_url is None:
             raise ValueError('"api_url" must not be None')
         else:
@@ -87,7 +88,7 @@ class APICredential:
             raise ValueError('"api_token" must not be None')
         else:
             self._api_token = api_token
-        self._name = None
+        self._name = name
         if tenant is None:
             raise ValueError('"tenant" must not be None')
         else:
@@ -108,10 +109,12 @@ class APICredential:
         self._delete_payload_template_file = DELETE_PAYLOAD_TEMPLATE_FILE if delete_payload_template_file is None else delete_payload_template_file
         self._template_directory = TEMPLATE_DIRECTORY if template_directory is None else template_directory
         self._session = Session()
+        self._state_file_dir = f"{STATE_FILE_DIR}/{self.name}"
+        self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
 
-        if Path(STATE_FILE).is_file():
+        if Path(self._state_file).is_file():
             print("Loading state...")
-            with open(STATE_FILE, "r") as fp:
+            with open(self._state_file, "r") as fp:
                 try:
                     self._state = State.from_dict(json.load(fp))
                     print("Loading state... Done")
@@ -277,29 +280,43 @@ class APICredential:
             print("DELETE request url:", self._delete_url)
             return s.post(url=self._delete_url, headers=self.headers, data=(self._get_template_file(self.delete_payload_template_file).render(vars=self._gen_delete_template_vars())))
 
-    @classmethod
-    def create_state_file(cls, data: dict) -> bool:
-        try:
-            with open(STATE_FILE, "w") as fd:
-                fd.write(json.dumps(data, indent=4))
-                return True
-        except (FileNotFoundError, FileExistsError) as err:
-            print("Error:", err)
+    def create_state_file(self, data: dict) -> bool:
+        if not Path(self._state_file_dir).exists():
+            print(f"Creating state file output directory <{self._state_file_dir}>...")
+            try:
+                path = Path(self._state_file_dir)
+                path.mkdir(parents=True)
+                print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
+                try:
+                    with open(self._state_file, "w") as fd:
+                        fd.write(json.dumps(data, indent=4))
+                        return True
+                except (FileNotFoundError, FileExistsError) as err:
+                    print("Error:", err)
+                    return False
+            except OSError as error:
+                if error.errno == 17:
+                    return True
+                else:
+                    print(f"Create state file output directory <{data['name']}> failed with error: <{error}> ")
+                    return False
+        else:
+            print(f"State file directory <{data['name']}> does not exists. Stopping here")
             return False
 
-    @classmethod
-    def delete_state_file(cls, data: dict) -> bool:
+    def delete_state_file(self) -> bool:
         try:
-            os.remove(STATE_FILE)
+            Path(self._state_file).unlink()
             print(f"Removing state file successful")
+            Path(self._state_file_dir).rmdir()
+            print(f"Removing state file directory successful")
             return True
         except FileNotFoundError as err:
             print(f"Removing state file failed with error: {err}")
             return False
 
-    @classmethod
-    def check_state_file(cls, data: dict) -> bool:
-        return Path(STATE_FILE).is_file()
+    def check_state_file(self) -> bool:
+        return Path(self._state_file).is_file()
 
 
 if __name__ == '__main__':
@@ -308,15 +325,14 @@ if __name__ == '__main__':
     parser.add_argument("api_url", help="F5XC API URL", type=str)
     parser.add_argument("api_token", help="F5XC API TOKEN", type=str)
     parser.add_argument("tenant", help="F5XC Tenant", type=str)
-    parser.add_argument("-n", "--name", help="API Credential Object Name", type=str)
+    parser.add_argument("name", help="API Credential Object Name", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k8s Name", type=str)
     parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     args = parser.parse_args()
-    apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant)
+    apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant, name=args.name)
 
-
-    if args.action ==  Action.GET.value:
+    if args.action == Action.GET.value:
         if apic.state is None:
             print("No local state found... Leaving now...")
         else:
@@ -326,14 +342,11 @@ if __name__ == '__main__':
                 print("GET request... Done")
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
-    elif args.action ==  Action.POST.value:
-        if args.name is None:
-            raise ValueError(f'"name" must not be None')
+    elif args.action == Action.POST.value:
         if F5XCApiCredentialTypes.is_member(value=args.ctype) is False:
             raise ValueError(f'"ctype" must be one of "{F5XCApiCredentialTypes.get_credential_types()}"')
         if args.ctype == F5XCApiCredentialTypes.KUBE_CONFIG.name and args.vk8s is None:
             raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
-        apic.name = args.name
         apic.credential_type = args.ctype
         apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
         apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
@@ -343,7 +356,7 @@ if __name__ == '__main__':
             print("Found no local state... Creating new object...")
             r = apic.post()
             if r.status_code == 200:
-                print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
+                print("Creating new object... Done. Creating state:", apic.create_state_file(data=r.json()))
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
         else:
@@ -355,7 +368,7 @@ if __name__ == '__main__':
                 print("Found local state, but object does not exists. Creating object...")
                 r = apic.post()
                 if r.status_code == 200:
-                    print("Creating new object... Done. Creating state:", APICredential.create_state_file(data=r.json()))
+                    print("Creating new object... Done. Creating state:", apic.create_state_file(data=r.json()))
                 else:
                     print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     elif args.action == Action.DELETE.value:
@@ -365,7 +378,7 @@ if __name__ == '__main__':
             print(f"Initiate {Action.DELETE.name} request")
             r = apic.delete()
             if r.status_code == 200:
-                print("DELETE request... Done. Removing state:", APICredential.delete_state_file(data=r.json()))
+                print("DELETE request... Done. Removing state:", apic.delete_state_file())
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     else:

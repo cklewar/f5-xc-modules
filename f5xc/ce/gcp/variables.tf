@@ -61,6 +61,11 @@ variable "gcp_service_account_email" {
   default = ""
 }
 
+variable "auto_create_subnetworks" {
+  type    = bool
+  default = false
+}
+
 variable "ssh_public_key" {
   type = string
 }

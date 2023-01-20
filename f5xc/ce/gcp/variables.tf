@@ -3,11 +3,13 @@ variable "gcp_region" {
 }
 
 variable "fabric_subnet_outside" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "fabric_subnet_inside" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "existing_fabric_subnet_inside" {

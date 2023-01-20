@@ -14,8 +14,10 @@ resource "google_compute_instance" "instance" {
   network_interface {
     subnetwork = var.slo_subnetwork
     dynamic "access_config" {
-      for_each = var.use_public_ip ? [1] : []
-      content {}
+      for_each = var.has_public_ip ? [1] : []
+      content {
+        nat_ip = var.access_config_nat_ip != "" ? var.access_config_nat_ip : null
+      }
     }
   }
 
@@ -32,7 +34,7 @@ resource "google_compute_instance" "instance" {
   }
 
   service_account {
-    email = var.gcp_service_account_email
+    email  = var.gcp_service_account_email
     scopes = ["cloud-platform"]
   }
 }

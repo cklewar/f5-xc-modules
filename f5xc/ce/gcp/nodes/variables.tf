@@ -58,6 +58,10 @@ variable "gcp_service_account_email" {
   type = string
 }
 
+variable "access_config_nat_ip" {
+  type = string
+}
+
 variable "f5xc_ce_user_data" {
   type = string
 }
@@ -88,8 +92,7 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "use_public_ip" {
+variable "has_public_ip" {
   type        = bool
-  default     = true
   description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
 }

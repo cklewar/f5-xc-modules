@@ -66,6 +66,17 @@ variable "auto_create_subnetworks" {
   default = false
 }
 
+variable "access_config_nat_ip" {
+  type    = string
+  default = ""
+}
+
+variable "has_public_ip" {
+  type        = bool
+  default     = true
+  description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
+}
+
 variable "ssh_public_key" {
   type = string
 }
@@ -195,12 +206,6 @@ variable "f5xc_token_name" {
 
 variable "f5xc_namespace" {
   type = string
-}
-
-variable "use_public_ip" {
-  type        = bool
-  default     = true
-  description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
 }
 
 locals {

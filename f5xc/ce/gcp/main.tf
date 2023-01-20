@@ -15,6 +15,7 @@ module "network" {
   fabric_subnet_outside          = var.fabric_subnet_outside
   fabric_subnet_inside           = var.fabric_subnet_inside
   f5xc_ce_gateway_type           = var.f5xc_ce_gateway_type
+  f5xc_slo_ingress_allow         = var.f5xc_slo_ingress_allow
   f5xc_sli_egress_source_ranges  = var.f5xc_sli_egress_source_ranges
   f5xc_sli_egress_target_tags    = var.f5xc_sli_egress_target_tags
   f5xc_sli_ingress_source_ranges = var.f5xc_sli_ingress_source_ranges

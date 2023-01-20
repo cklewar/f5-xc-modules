@@ -13,14 +13,16 @@ resource "google_compute_instance" "instance" {
 
   network_interface {
     subnetwork = var.slo_subnetwork
-    access_config {}
+    dynamic "access_config" {
+      for_each = var.use_public_ip ? [1] : []
+      content {}
+    }
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
       subnetwork = var.sli_subnetwork
-      access_config {}
     }
   }
 

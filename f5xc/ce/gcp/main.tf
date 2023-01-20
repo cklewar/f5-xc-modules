@@ -63,4 +63,5 @@ module "node" {
   f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
+  use_public_ip               = var.use_public_ip
 }

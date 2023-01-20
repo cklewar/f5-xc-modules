@@ -1,8 +1,9 @@
 resource "null_resource" "apply_credential" {
   triggers = {
-    api_url   = var.f5xc_api_url
-    api_token = var.f5xc_api_token
-    tenant    = var.f5xc_tenant
+    tenant               = var.f5xc_tenant
+    api_url              = var.f5xc_api_url
+    api_token            = var.f5xc_api_token
+    api_credentials_name = var.f5xc_api_credentials_name
   }
 
   provisioner "local-exec" {
@@ -10,12 +11,12 @@ resource "null_resource" "apply_credential" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     on_failure  = fail
     environment = {
+      tenant                  = var.f5xc_tenant
       api_url                 = var.f5xc_api_url
       api_token               = var.f5xc_api_token
-      tenant                  = var.f5xc_tenant
-      api_credentials_name    = var.f5xc_api_credentials_name
       virtual_k8s_name        = var.f5xc_virtual_k8s_name
       api_credential_type     = var.f5xc_api_credential_type
+      api_credentials_name    = var.f5xc_api_credentials_name
       api_credential_password = var.f5xc_api_credential_password
     }
   }
@@ -26,9 +27,10 @@ resource "null_resource" "apply_credential" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
     on_failure  = fail
     environment = {
-      api_url   = self.triggers.api_url
-      api_token = self.triggers.api_token
-      tenant    = self.triggers.tenant
+      tenant               = self.triggers.tenant
+      api_url              = self.triggers.api_url
+      api_token            = self.triggers.api_token
+      api_credentials_name = self.triggers.api_credentials_name
     }
   }
 }

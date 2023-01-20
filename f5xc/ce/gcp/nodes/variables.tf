@@ -38,11 +38,23 @@ variable "slo_subnetwork" {
   type = string
 }
 
+variable "allow_stopping_for_update" {
+  type = bool
+}
+
+variable "instance_tags" {
+  type = list(string)
+}
+
 variable "ssh_public_key" {
   type = string
 }
 
 variable "ssh_username" {
+  type = string
+}
+
+variable "gcp_service_account_email" {
   type = string
 }
 

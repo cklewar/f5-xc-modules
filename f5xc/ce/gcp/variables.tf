@@ -46,6 +46,21 @@ variable "host_localhost_public_name" {
   type = string
 }
 
+variable "allow_stopping_for_update" {
+  type    = bool
+  default = true
+}
+
+variable "instance_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "gcp_service_account_email" {
+  type    = string
+  default = ""
+}
+
 variable "ssh_public_key" {
   type = string
 }
@@ -53,6 +68,46 @@ variable "ssh_public_key" {
 variable "ssh_username" {
   type    = string
   default = "centos"
+}
+
+variable "f5xc_sli_ingress_target_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_sli_egress_target_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_slo_ingress_target_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_slo_egress_target_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_sli_ingress_source_ranges" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_sli_egress_source_ranges" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_slo_ingress_source_ranges" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_slo_egress_source_ranges" {
+  type    = list(string)
+  default = []
 }
 
 variable "f5xc_cluster_size" {

@@ -33,6 +33,7 @@ module "config" {
 module "node" {
   count                       = var.f5xc_ce_gateway_multi_node ? 2 : 1
   source                      = "./nodes"
+  tags                        = var.f5xc_ce_gcp_tags
   machine_type                = var.machine_type
   ssh_username                = var.ssh_username
   machine_image               = var.machine_image

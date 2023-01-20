@@ -1,6 +1,8 @@
 resource "google_compute_instance" "instance" {
-  name         = var.instance_name
-  machine_type = var.machine_type
+  name                      = var.instance_name
+  machine_type              = var.machine_type
+  allow_stopping_for_update = var.allow_stopping_for_update
+  tags                      = var.instance_tags
 
   boot_disk {
     initialize_params {
@@ -28,6 +30,7 @@ resource "google_compute_instance" "instance" {
   }
 
   service_account {
+    email = var.gcp_service_account_email
     scopes = ["cloud-platform"]
   }
 }

@@ -41,9 +41,9 @@ module "config" {
 module "node" {
   count                       = var.f5xc_ce_gateway_multi_node ? 2 : 1
   source                      = "./nodes"
-  instance_tags               = var.instance_tags
   machine_type                = var.machine_type
   ssh_username                = var.ssh_username
+  instance_tags               = var.instance_tags
   machine_image               = var.machine_image
   instance_name               = var.instance_name
   sli_subnetwork              = var.fabric_subnet_inside != "" ? module.network[0].ce["master-${count.index}"]["sli_subnetwork"] : var.existing_fabric_subnet_inside

@@ -64,3 +64,10 @@ variable "f5xc_slo_ingress_source_ranges" {
 variable "f5xc_slo_egress_source_ranges" {
   type = list(string)
 }
+
+variable "f5xc_slo_ingress_allow" {
+  type = list(object({
+    protocol = string
+    ports    = optional(list(string))
+  }))
+}

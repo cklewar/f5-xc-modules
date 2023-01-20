@@ -110,6 +110,18 @@ variable "f5xc_slo_egress_source_ranges" {
   default = []
 }
 
+variable "f5xc_slo_ingress_allow" {
+  type = list(object({
+    protocol = string
+    ports    = optional(list(string))
+  }))
+  default = [
+    {
+      protocol = "all"
+    }
+  ]
+}
+
 variable "f5xc_cluster_size" {
   type    = number
   default = 1

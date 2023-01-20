@@ -27,8 +27,13 @@ resource "google_compute_subnetwork" "sli_subnet" {
 resource "google_compute_firewall" "slo_ingress" {
   name    = "${var.network_name}-slo-ingress"
   network = google_compute_network.slo_vpc_network.name
-  allow {
-    protocol = "all"
+
+  dynamic "allow" {
+    for_each = var.f5xc_slo_ingress_allow
+    content {
+      protocol = allow.value.protocol
+      ports    = allow.value.ports
+    }
   }
   target_tags   = var.f5xc_slo_ingress_target_tags
   source_ranges = var.f5xc_slo_ingress_source_ranges

@@ -123,6 +123,12 @@ variable "f5xc_namespace" {
   type = string
 }
 
+variable "use_public_ip" {
+  type        = bool
+  default     = true
+  description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
+}
+
 locals {
   cluster_labels = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
 }

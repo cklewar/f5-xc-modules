@@ -2,7 +2,7 @@ resource "null_resource" "apply_credential" {
   triggers = {
     tenant               = var.f5xc_tenant
     api_url              = var.f5xc_api_url
-    api_token            = var.f5xc_api_token
+    api_token            = local.f5xc_api_token
     api_credentials_name = var.f5xc_api_credentials_name
   }
 
@@ -13,7 +13,7 @@ resource "null_resource" "apply_credential" {
     environment = {
       tenant                  = var.f5xc_tenant
       api_url                 = var.f5xc_api_url
-      api_token               = var.f5xc_api_token
+      api_token               = local.f5xc_api_token
       virtual_k8s_name        = var.f5xc_virtual_k8s_name
       api_credential_type     = var.f5xc_api_credential_type
       api_credentials_name    = var.f5xc_api_credentials_name

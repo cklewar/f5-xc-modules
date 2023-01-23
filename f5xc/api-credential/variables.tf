@@ -3,8 +3,7 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
-  sensitive = true
+  type = string
 }
 
 variable "f5xc_credential_get_uri" {
@@ -61,4 +60,9 @@ variable "f5xc_virtual_k8s_namespace" {
 variable "f5xc_virtual_k8s_name" {
   type    = string
   default = ""
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

@@ -11,6 +11,6 @@ data "http" "credential" {
 
   request_headers = {
     Content-Type  = "application/json"
-    Authorization = format("APIToken %s", var.f5xc_api_token)
+    Authorization = format("APIToken %s", local.f5xc_api_token)
   }
 }

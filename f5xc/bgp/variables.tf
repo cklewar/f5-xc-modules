@@ -22,12 +22,14 @@ variable "f5xc_api_p12_file" {
 }
 
 variable "f5xc_api_token" {
-  type    = string
-  default = ""
+  type      = string
+  default   = ""
+  sensitive = true
 }
 
 variable "f5xc_tenant" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "f5xc_namespace" {
@@ -82,11 +84,11 @@ variable "f5xc_bgp_interface_name" {
 }
 
 variable "f5xc_bgp_local_address" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "f5xc_bgp_target_service" {
-  type = string
+  type    = string
   default = "frr"
 }

@@ -22,11 +22,13 @@ variable "f5xc_api_p12_file" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "f5xc_tenant" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "f5xc_namespace" {

@@ -60,6 +60,10 @@ variable "gcp_service_account_email" {
   type = string
 }
 
+variable "gcp_service_account_scopes" {
+  type    = list(string)
+}
+
 variable "access_config_nat_ip" {
   type = string
 }

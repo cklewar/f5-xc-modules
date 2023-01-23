@@ -61,6 +61,11 @@ variable "gcp_service_account_email" {
   default = ""
 }
 
+variable "gcp_service_account_scopes" {
+  type    = list(string)
+  default = ["cloud-platform"]
+}
+
 variable "auto_create_subnetworks" {
   type    = bool
   default = false

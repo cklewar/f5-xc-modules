@@ -17,7 +17,8 @@ F5XC_CREDENTIAL_DELETE_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/revoke/api
 F5XC_CREDENTIAL_POST_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_CREDENTIAL_GET_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_API_CERT_EXPIRATION_DAYS = "10"
-F5XC_VIRTUAL_K8S_NAMESPACE = "shared"
+# F5XC_VIRTUAL_K8S_NAMESPACE = "shared"
+F5XC_VIRTUAL_K8S_NAMESPACE = "default"
 F5XC_API_CERT_PASSWORD = ""
 HEADERS = {
     'Accept': 'application/data',
@@ -273,6 +274,7 @@ class APICredential:
     def post(self) -> Response:
         with self._session as s:
             print("POST request url:", self._create_url)
+            print((self._get_template_file(self.post_payload_template_file).render(vars=self._gen_post_template_vars())))
             return s.post(url=self._create_url, headers=self.headers, data=(self._get_template_file(self.post_payload_template_file).render(vars=self._gen_post_template_vars())))
 
     def delete(self) -> Response:

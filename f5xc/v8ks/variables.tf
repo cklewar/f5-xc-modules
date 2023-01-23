@@ -4,12 +4,10 @@ variable "f5xc_api_url" {
 
 variable "f5xc_api_token" {
   type      = string
-  sensitive = true
 }
 
 variable "f5xc_tenant" {
   type      = string
-  sensitive = true
 }
 
 variable "f5xc_vsite_refs_namespace" {
@@ -63,4 +61,9 @@ variable "f5xc_k8s_credentials_name" {
 variable "f5xc_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

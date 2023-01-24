@@ -1,7 +1,7 @@
 resource "volterra_aws_tgw_site" "site" {
   name                     = var.f5xc_aws_tgw_name
   labels                   = var.f5xc_aws_tgw_labels
-  tags                     = merge({ "Owner" = var. }, var.custom_tags)
+  tags                     = merge({ "Owner" = var.f5xc_aws_tgw_owner }, var.custom_tags)
   namespace                = var.f5xc_namespace
   description              = var.f5xc_aws_tgw_description
   annotations              = var.f5xc_aws_tgw_annotations

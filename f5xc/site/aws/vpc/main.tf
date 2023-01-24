@@ -187,7 +187,7 @@ resource "volterra_aws_vpc_site" "site" {
 
       # no_inside_static_routes = var.f5xc_aws_vpc_no_inside_static_routes
       dynamic "inside_static_routes" {
-        for_each = length(var.f5xc_aws_vpc_inside_static_routes) > 0 ? [1] : [0]
+        for_each = length(var.f5xc_aws_vpc_inside_static_routes) > 0 ? [1] : []
         content {
           dynamic "static_route_list" {
             for_each = var.f5xc_aws_vpc_inside_static_routes
@@ -234,4 +234,5 @@ module "site_wait_for_online" {
   f5xc_namespace = var.f5xc_namespace
   f5xc_site_name = volterra_aws_vpc_site.site.name
   f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

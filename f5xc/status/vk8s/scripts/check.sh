@@ -35,7 +35,7 @@ while true; do
       -H 'x-volterra-apigw-tenant: '"$3" 2>/dev/null
   )
   status=$(jq 'if (.items | length) > 0 then (.items | length) else empty end' <<<"${content}")
-  echo "$content"
+
   if [[ "${status}" == 1 ]]; then
     echo "Found labeled vK8s entry. Checking initializers now..."
 

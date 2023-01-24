@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -265,5 +265,10 @@ variable "f5xc_aws_vpc_inside_static_routes" {
 variable "f5xc_aws_vpc_outside_static_routes" {
   type    = list(string)
   default = []
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }
 

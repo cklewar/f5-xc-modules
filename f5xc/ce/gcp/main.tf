@@ -56,6 +56,7 @@ module "node" {
   access_config_nat_ip        = var.access_config_nat_ip
   allow_stopping_for_update   = var.allow_stopping_for_update
   gcp_service_account_email   = var.gcp_service_account_email
+  gcp_service_account_scopes  = var.gcp_service_account_scopes
   f5xc_tenant                 = var.f5xc_tenant
   f5xc_api_url                = var.f5xc_api_url
   f5xc_api_token              = var.f5xc_api_token

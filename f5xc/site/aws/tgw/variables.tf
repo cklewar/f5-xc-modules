@@ -231,9 +231,9 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
   default = true
 }
 
-/*variable "f5xc_aws_tgw_owner" {
+variable "f5xc_aws_tgw_owner" {
   type = string
-}*/
+}
 
 variable "custom_tags" {
   description = "Custom tags to set on resources"

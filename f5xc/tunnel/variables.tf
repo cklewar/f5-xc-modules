@@ -4,12 +4,6 @@ variable "f5xc_api_url" {
 
 variable "f5xc_api_token" {
   type      = string
-  sensitive = true
-}
-
-variable "f5xc_tenant" {
-  type      = string
-  sensitive = true
 }
 
 variable "f5xc_namespace" {
@@ -51,4 +45,9 @@ variable "f5xc_tunnel_clear_secret" {
 
 variable "f5xc_tunnel_remote_ip_address" {
   type = string
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

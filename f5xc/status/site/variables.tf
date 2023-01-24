@@ -4,12 +4,10 @@ variable "f5xc_api_url" {
 
 variable "f5xc_api_token" {
   type      = string
-  sensitive = true
 }
 
 variable "f5xc_tenant" {
   type      = string
-  sensitive = true
 }
 
 variable "f5xc_namespace" {
@@ -23,4 +21,9 @@ variable "f5xc_site_get_uri" {
 
 variable "f5xc_site_name" {
   type = string
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

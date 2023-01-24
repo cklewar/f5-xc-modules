@@ -6,7 +6,7 @@ resource "volterra_fleet" "fleet" {
   dynamic "network_connectors" {
     for_each = var.f5xc_network_connectors
     content {
-      tenant    = var.f5xc_tenant
+      tenant    = local.f5xc_tenant
       namespace = var.f5xc_namespace
       name      = network_connectors.value
     }
@@ -16,7 +16,7 @@ resource "volterra_fleet" "fleet" {
     dynamic "interfaces" {
       for_each = var.f5xc_networks_interface_list
       content {
-        tenant    = var.f5xc_tenant
+        tenant    = local.f5xc_tenant
         namespace = var.f5xc_namespace
         name      = interfaces.value
       }
@@ -26,7 +26,7 @@ resource "volterra_fleet" "fleet" {
   dynamic "outside_virtual_network" {
     for_each = var.f5xc_outside_virtual_network
     content {
-      tenant    = var.f5xc_tenant
+      tenant    = local.f5xc_tenant
       namespace = var.f5xc_namespace
       name      = outside_virtual_network.value
     }
@@ -35,7 +35,7 @@ resource "volterra_fleet" "fleet" {
   dynamic "inside_virtual_network" {
     for_each = var.f5xc_inside_virtual_network
     content {
-      tenant    = var.f5xc_tenant
+      tenant    = local.f5xc_tenant
       namespace = var.f5xc_namespace
       name      = inside_virtual_network.value
     }

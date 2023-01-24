@@ -83,3 +83,8 @@ variable "f5xc_networks_interface_list" {
   type    = list(string)
   default = []
 }
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
+}

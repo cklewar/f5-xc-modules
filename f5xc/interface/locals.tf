@@ -1,7 +1,9 @@
 locals {
+  f5xc_api_token           = var.is_sensitive ? sensitive(var.f5xc_api_token) : var.f5xc_api_token
+  f5xc_tenant              = var.is_sensitive ? sensitive(var.f5xc_tenant) : var.f5xc_tenant
   tunnel_interface_content = templatefile(format("%s/templates/%s", path.module, var.f5xc_tunnel_interface_template_file), {
     namespace                 = var.f5xc_namespace
-    tenant                    = var.f5xc_tenant
+    tenant                    = local.f5xc_tenant
     interface_name            = var.f5xc_interface_name
     tunnel_name               = var.f5xc_tunnel_name
     cluster                   = var.f5xc_apply_to_cluster

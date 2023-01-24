@@ -91,3 +91,8 @@ variable "f5xc_nfv_labels" {
   type    = map(string)
   default = {}
 }
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
+}

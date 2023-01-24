@@ -24,7 +24,7 @@ resource "volterra_bgp" "bgp" {
       interface {
         name      = var.f5xc_bgp_interface_name
         namespace = var.f5xc_namespace
-        tenant    = var.f5xc_tenant
+        tenant    = local.f5xc_tenant
       }
     }
   }
@@ -36,7 +36,7 @@ resource "volterra_bgp" "bgp" {
       ref {
         name      = var.f5xc_site_name
         namespace = var.f5xc_namespace
-        tenant    = var.f5xc_tenant
+        tenant    = local.f5xc_tenant
       }
     }
   }

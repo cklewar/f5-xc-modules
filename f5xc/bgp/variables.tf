@@ -21,12 +21,6 @@ variable "f5xc_api_p12_file" {
   type = string
 }
 
-variable "f5xc_api_token" {
-  type      = string
-  default   = ""
-  sensitive = true
-}
-
 variable "f5xc_tenant" {
   type      = string
   sensitive = true
@@ -91,4 +85,9 @@ variable "f5xc_bgp_local_address" {
 variable "f5xc_bgp_target_service" {
   type    = string
   default = "frr"
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

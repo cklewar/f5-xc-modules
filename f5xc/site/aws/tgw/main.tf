@@ -1,5 +1,5 @@
 resource "volterra_aws_tgw_site" "site" {
-  name                     = var.f5xc_aws_tgw_site_name
+  name                     = var.f5xc_aws_tgw_name
   labels                   = var.f5xc_aws_tgw_labels
   tags                     = merge({ "Owner" = var.f5xc_aws_tgw_owner }, var.custom_tags)
   namespace                = var.f5xc_namespace
@@ -36,7 +36,6 @@ resource "volterra_aws_tgw_site" "site" {
     default_sw_version        = var.f5xc_aws_default_ce_sw_version
     volterra_software_version = local.f5xc_aws_ce_sw_version
   }
-  tags = var.custom_tags
 
   aws_parameters {
     aws_certified_hw = var.f5xc_aws_certified_hw

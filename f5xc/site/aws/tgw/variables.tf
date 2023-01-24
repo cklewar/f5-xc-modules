@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -229,6 +229,10 @@ variable "f5xc_tf_wait_for_action" {
 variable "f5xc_cloud_site_labels_ignore_on_delete" {
   type    = bool
   default = true
+}
+
+variable "f5xc_aws_tgw_owner" {
+  type = string
 }
 
 variable "custom_tags" {

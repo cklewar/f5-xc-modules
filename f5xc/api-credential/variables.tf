@@ -63,6 +63,7 @@ variable "f5xc_virtual_k8s_name" {
 }
 
 variable "is_sensitive" {
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

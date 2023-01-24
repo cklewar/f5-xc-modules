@@ -91,6 +91,12 @@ variable "ssh_username" {
   default = "centos"
 }
 
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
+}
+
 variable "f5xc_sli_ingress_target_tags" {
   type    = list(string)
   default = []
@@ -198,11 +204,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_token_name" {
@@ -212,5 +218,3 @@ variable "f5xc_token_name" {
 variable "f5xc_namespace" {
   type = string
 }
-
-

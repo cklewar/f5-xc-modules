@@ -61,11 +61,19 @@ variable "gcp_service_account_email" {
 }
 
 variable "gcp_service_account_scopes" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "access_config_nat_ip" {
   type = string
+}
+
+variable "has_public_ip" {
+  type = bool
+}
+
+variable "is_sensitive" {
+  type = bool
 }
 
 variable "f5xc_ce_user_data" {
@@ -96,9 +104,4 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 
 variable "f5xc_ce_gateway_type" {
   type = string
-}
-
-variable "has_public_ip" {
-  type        = bool
-  description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
 }

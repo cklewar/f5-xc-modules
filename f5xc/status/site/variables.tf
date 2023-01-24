@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -24,6 +24,7 @@ variable "f5xc_site_name" {
 }
 
 variable "is_sensitive" {
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

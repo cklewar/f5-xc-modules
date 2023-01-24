@@ -43,6 +43,7 @@ module "config" {
 module "node" {
   count                       = var.f5xc_ce_gateway_multi_node ? 2 : 1
   source                      = "./nodes"
+  is_sensitive                = var.is_sensitive
   machine_type                = var.machine_type
   ssh_username                = var.ssh_username
   has_public_ip               = var.has_public_ip

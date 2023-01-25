@@ -4,12 +4,15 @@ timeout=3600
 counter=0
 sleep_first_step=1
 sleep_second_step=30
+is_verbose=false
 
-echo "Status check URL: $1" \
-  -H 'accept: application/data' \
-  -H 'Access-Control-Allow-Origin: *' \
-  -H 'Authorization: APIToken '"$2" \
-  -H 'x-volterra-apigw-tenant: '"$3"
+if [[ "$is_verbose" == true ]] ; then
+  echo "Status check URL: $1" \
+    -H 'accept: application/data' \
+    -H 'Access-Control-Allow-Origin: *' \
+    -H 'Authorization: APIToken '"$2" \
+    -H 'x-volterra-apigw-tenant: '"$3"
+fi
 
 status_code=$(curl --write-out '%{http_code}' -s --output /dev/null -X 'GET' \
     "$1" \

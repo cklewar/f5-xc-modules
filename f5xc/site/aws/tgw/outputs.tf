@@ -27,8 +27,8 @@ output "f5xc_aws_tgw" {
         }
       }
       master-1 = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? {
-        id         = data.aws_instance.master-1.id
-        name       = data.aws_instance.master-1.tags["Name"]
+        id         = data.aws_instance.master-1[0].id
+        name       = data.aws_instance.master-1[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-1-slo.*.id[0]
@@ -48,8 +48,8 @@ output "f5xc_aws_tgw" {
         }
       } : null,
       master-2 = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? {
-        id         = data.aws_instance.master-2.id
-        name       = data.aws_instance.master-2.tags["Name"]
+        id         = data.aws_instance.master-2[0].id
+        name       = data.aws_instance.master-2[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-2-slo.*.id[0]

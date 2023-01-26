@@ -3,7 +3,7 @@ output "f5xc_aws_tgw" {
     tgw     = data.aws_ec2_transit_gateway.tgw
     tgw_vpc = data.aws_vpc.tgw_vpc
     # params       = volterra_tf_params_action.aws_tgw_action
-    workload_subnet_ids = length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload[0].ids : null
+    workload_subnet_ids = length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload.ids : null
     nodes   = {
       master-0 = {
         id         = data.aws_instance.master-0.id

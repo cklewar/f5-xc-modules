@@ -1,10 +1,10 @@
 output "f5xc_aws_tgw" {
   value = {
-    tgw     = data.aws_ec2_transit_gateway.tgw
-    tgw_vpc = data.aws_vpc.tgw_vpc
-    # params       = volterra_tf_params_action.aws_tgw_action
+    tgw                 = data.aws_ec2_transit_gateway.tgw
+    tgw_vpc             = data.aws_vpc.tgw_vpc
+    params              = volterra_tf_params_action.aws_tgw_action
     workload_subnet_ids = length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload.ids : null
-    nodes   = {
+    nodes               = {
       master-0 = {
         id         = data.aws_instance.master-0.id
         name       = data.aws_instance.master-0.tags["Name"]

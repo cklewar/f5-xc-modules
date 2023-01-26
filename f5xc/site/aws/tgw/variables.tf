@@ -240,3 +240,8 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
+}

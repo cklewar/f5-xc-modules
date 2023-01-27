@@ -33,7 +33,7 @@ resource "null_resource" "apply_nfv" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "sleep 60s"
+    command = "sleep 180s"
   }
 
 }

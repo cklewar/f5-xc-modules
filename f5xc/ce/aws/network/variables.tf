@@ -22,6 +22,10 @@ variable "aws_eip_vpc" {
   default = true
 }
 
+variable "aws_vpc_subnet_prefix" {
+  type = string
+}
+
 variable "f5xc_ce_gateway_type_ingress" {
   type    = string
   default = "ingress_gateway"
@@ -36,14 +40,12 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "fabric_subnet_public" {
-  type    = string
-  default = "192.168.0.0/24"
+variable "f5xc_ce_slo_subnet" {
+  type = string
 }
 
-variable "disable_public_ip" {
-  type    = bool
-  default = false
+variable "f5xc_ce_sli_subnet" {
+  type = string
 }
 
 variable "service_port" {
@@ -59,18 +61,6 @@ variable "ver_rest_port" {
 variable "ver_grpc_port" {
   type    = string
   default = "8505"
-}
-
-variable "fabric_address_pool" {
-  type = string
-}
-
-variable "fabric_subnet_private" {
-  type = string
-}
-
-variable "fabric_subnet_inside" {
-  type = string
 }
 
 variable "cluster_name" {

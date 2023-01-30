@@ -5,14 +5,12 @@ resource "volterra_token" "site" {
 
 module "network" {
   source                = "./network"
-  deployment            = var.deployment
-  fabric_address_pool   = var.fabric_address_pool
-  # fabric_subnet_public      = var.fabric_subnet_public
   cluster_name          = var.cluster_name
   owner_tag             = var.owner_tag
   aws_region            = var.f5xc_aws_region
-  fabric_subnet_inside  = ""
-  fabric_subnet_private = ""
+  aws_vpc_subnet_prefix = "192.168.0.0/20"
+  f5xc_ce_sli_subnet    = "192.168.0.0/22"
+  f5xc_ce_slo_subnet    = "192.168.4.0/22"
   f5xc_ce_gateway_type  = "ingress"
 }
 

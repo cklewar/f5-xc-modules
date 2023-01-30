@@ -1,6 +1,6 @@
 resource "aws_vpc" "vpc" {
   count                = var.aws_existing_vpc_id == "" ? 1 : 0
-  cidr_block           = var.fabric_address_pool
+  cidr_block           = var.aws_vpc_subnet_prefix
   enable_dns_support   = var.aws_vpc_enable_dns_support
   enable_dns_hostnames = var.aws_vp_enable_dns_hostnames
   tags                 = local.common_tags
@@ -23,17 +23,17 @@ resource "aws_route" "route_ipv6" {
   gateway_id                  = aws_internet_gateway.igw.id
 }
 
-resource "aws_subnet" "subnet_public" {
+resource "aws_subnet" "slo" {
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
-  cidr_block        = var.fabric_subnet_public
+  cidr_block        = var.f5xc_ce_slo_subnet
   availability_zone = data.aws_availability_zones.available_az.names[0]
   tags              = local.common_tags
 }
 
-resource "aws_subnet" "subnet_private" {
+resource "aws_subnet" "sli" {
   count             = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
-  cidr_block        = local.private_subnet_cidr
+  cidr_block        = var.f5xc_ce_sli_subnet
   availability_zone = data.aws_availability_zones.available_az.names[0]
   tags              = local.common_tags
 }
@@ -44,10 +44,10 @@ resource "aws_eip" "nat_gw_eip" {
   tags  = local.common_tags
 }
 
-resource "aws_nat_gateway" "nat_gw" {
+resource "aws_nat_gateway" "gw" {
   count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   allocation_id = element(aws_eip.nat_gw_eip.*.id, count.index)
-  subnet_id     = aws_subnet.subnet_public.id
+  subnet_id     = aws_subnet.public.id
   tags          = local.common_tags
 }
 
@@ -57,14 +57,14 @@ resource "aws_route_table" "rt_private_subnet" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = element(aws_nat_gateway.nat_gw.*.id, count.index)
+    gateway_id = element(aws_nat_gateway.gw.*.id, count.index)
   }
   tags = local.common_tags
 }
 
 resource "aws_route_table_association" "rta_private_subnet" {
   count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  subnet_id      = element(aws_subnet.subnet_private.*.id, count.index)
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.rt_private_subnet.*.id, count.index)
 }
 
@@ -74,7 +74,7 @@ resource "aws_security_group" "sg" {
   tags       = local.common_tags
   depends_on = [
     aws_internet_gateway.igw,
-    aws_nat_gateway.nat_gw,
+    aws_nat_gateway.gw,
   ]
 
   ingress {
@@ -186,7 +186,6 @@ resource "aws_lb_target_group" "controllers" {
 
 resource "aws_iam_role" "role" {
   name = "${var.cluster_name}-role"
-
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

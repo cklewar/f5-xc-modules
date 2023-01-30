@@ -28,6 +28,14 @@ variable "cluster_longitude" {
   type = string
 }
 
+variable "private_subnet" {
+  type = string
+}
+
+variable "public_subnet" {
+  type = string
+}
+
 variable "ssh_public_key" {
   type = string
 }
@@ -92,4 +100,8 @@ variable "f5xc_aws_region" {
 variable "f5xc_aws_availability_zone" {
   type    = string
   default = "a"
+}
+
+variable "aws_vpc_subnet_prefix" {
+  type = string
 }

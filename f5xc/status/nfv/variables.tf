@@ -25,3 +25,9 @@ variable "f5xc_nfv_domain_suffix" {
 variable "f5xc_nfv_node_name" {
   type = string
 }
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
+}

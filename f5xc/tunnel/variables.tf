@@ -6,10 +6,6 @@ variable "f5xc_api_token" {
   type = string
 }
 
-variable "f5xc_tenant" {
-  type = string
-}
-
 variable "f5xc_namespace" {
   type = string
 }
@@ -49,4 +45,10 @@ variable "f5xc_tunnel_clear_secret" {
 
 variable "f5xc_tunnel_remote_ip_address" {
   type = string
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

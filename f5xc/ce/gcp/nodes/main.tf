@@ -34,8 +34,8 @@ resource "google_compute_instance" "instance" {
   }
 
   service_account {
-    email  = var.gcp_service_account_email
-    scopes = ["cloud-platform"]
+    email  = var.gcp_service_account_email != "" ? var.gcp_service_account_email : null
+    scopes = var.gcp_service_account_scopes
   }
 }
 
@@ -65,4 +65,5 @@ module "site_wait_for_online" {
   f5xc_namespace = var.f5xc_namespace
   f5xc_site_name = google_compute_instance.instance.name
   f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

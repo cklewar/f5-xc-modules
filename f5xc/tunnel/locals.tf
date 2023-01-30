@@ -1,5 +1,6 @@
 locals {
-  content = templatefile(format("%s/templates/%s", path.module, var.f5xc_tunnel_template_file), {
+  f5xc_api_token = var.is_sensitive ? sensitive(var.f5xc_api_token) : var.f5xc_api_token
+  content        = templatefile(format("%s/templates/%s", path.module, var.f5xc_tunnel_template_file), {
     namespace          = var.f5xc_namespace
     tunnel_name        = var.f5xc_tunnel_name
     tunnel_description = var.f5xc_tunnel_description

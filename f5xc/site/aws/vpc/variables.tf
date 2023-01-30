@@ -267,3 +267,8 @@ variable "f5xc_aws_vpc_outside_static_routes" {
   default = []
 }
 
+variable "is_sensitive" {
+  type    = bool
+  default = false
+}
+

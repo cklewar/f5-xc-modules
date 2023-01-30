@@ -27,3 +27,9 @@ variable "f5xc_vk8s_get_uri_filter" {
 variable "f5xc_vk8s_name" {
   type = string
 }
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
+}

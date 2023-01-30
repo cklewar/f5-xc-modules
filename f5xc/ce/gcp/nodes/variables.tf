@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_tenant" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_namespace" {
@@ -58,8 +58,20 @@ variable "gcp_service_account_email" {
   type = string
 }
 
+variable "gcp_service_account_scopes" {
+  type = list(string)
+}
+
 variable "access_config_nat_ip" {
   type = string
+}
+
+variable "has_public_ip" {
+  type = bool
+}
+
+variable "is_sensitive" {
+  type = bool
 }
 
 variable "f5xc_ce_user_data" {
@@ -90,9 +102,4 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 
 variable "f5xc_ce_gateway_type" {
   type = string
-}
-
-variable "has_public_ip" {
-  type        = bool
-  description = "Whether to include the access_config{} into the instance, adding a public Internet IP address, otherwise use NAT."
 }

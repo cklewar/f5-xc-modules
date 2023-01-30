@@ -226,4 +226,5 @@ module "site_wait_for_online" {
   f5xc_namespace = var.f5xc_namespace
   f5xc_site_name = volterra_aws_tgw_site.site.name
   f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

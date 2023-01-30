@@ -7,11 +7,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_tenant" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_namespace" {
@@ -88,4 +88,9 @@ variable "custom_tags" {
 variable "f5xc_nfv_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
 }

@@ -7,14 +7,14 @@ resource "null_resource" "apply_tunnel" {
   triggers = {
     manifest_sha1 = sha1(local.content)
     api_url       = var.f5xc_api_url
-    api_token     = var.f5xc_api_token
+    api_token     = local.f5xc_api_token
     delete_uri    = local.tunnel_delete_uri
     namespace     = var.f5xc_namespace
     tunnel_name   = var.f5xc_tunnel_name
   }
 
   provisioner "local-exec" {
-    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.tunnel_create_uri, var.f5xc_api_token, local.content)
+    command     = format("curl -v -X 'POST' '%s/%s' -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.tunnel_create_uri, local.f5xc_api_token, local.content)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

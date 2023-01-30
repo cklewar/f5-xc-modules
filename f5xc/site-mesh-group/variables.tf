@@ -16,11 +16,6 @@ variable "f5xc_site_mesh_group_description" {
   default = ""
 }
 
-#variable "f5xc_tunnel_type" {
-#  type    = string
-#  default = "SITE_TO_SITE_TUNNEL_IPSEC"
-#}
-
 variable "f5xc_site_2_site_connection_type" {
   type = string
 
@@ -61,6 +56,16 @@ variable "f5xc_site_mesh_group_full_mesh_control_and_data_plane_mesh" {
 }
 
 variable "f5xc_site_mesh_group_full_mesh_data_plane_mesh" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_site_mesh_group_hub_mesh_control_and_data_plane_mesh" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_site_mesh_group_hub_mesh_data_plane_mesh" {
   type    = bool
   default = false
 }

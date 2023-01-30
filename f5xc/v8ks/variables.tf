@@ -16,7 +16,8 @@ variable "f5xc_vsite_refs_namespace" {
 
 variable "f5xc_vk8s_namespace" {
   type    = string
-  default = "shared"
+  # default = "shared"
+  default = "default"
 }
 
 variable "f5xc_vk8s_name" {
@@ -61,4 +62,10 @@ variable "f5xc_k8s_credentials_name" {
 variable "f5xc_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

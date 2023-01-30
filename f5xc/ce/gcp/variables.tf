@@ -61,6 +61,11 @@ variable "gcp_service_account_email" {
   default = ""
 }
 
+variable "gcp_service_account_scopes" {
+  type    = list(string)
+  default = ["cloud-platform"]
+}
+
 variable "auto_create_subnetworks" {
   type    = bool
   default = false
@@ -84,6 +89,12 @@ variable "ssh_public_key" {
 variable "ssh_username" {
   type    = string
   default = "centos"
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }
 
 variable "f5xc_sli_ingress_target_tags" {
@@ -206,8 +217,4 @@ variable "f5xc_token_name" {
 
 variable "f5xc_namespace" {
   type = string
-}
-
-locals {
-  cluster_labels = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
 }

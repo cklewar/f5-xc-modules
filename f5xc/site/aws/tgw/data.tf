@@ -13,36 +13,7 @@ data "aws_ec2_transit_gateway" "tgw" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
-  }
-}
-
-data "aws_instance" "ce_master" {
-  depends_on = [module.site_wait_for_online]
-
-  filter {
-    name   = "instance-state-name"
-    values = ["running"]
-  }
-
-  filter {
-    name   = "tag:ves-io-site-name"
-    values = [var.f5xc_aws_tgw_name]
-  }
-
-  filter {
-    name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
-  }
-
-  filter {
-    name   = "tag:Name"
-    values = ["master-0"]
-  }
-
-  filter {
-    name   = format("tag:kubernetes.io/cluster/%s", var.f5xc_aws_tgw_name)
-    values = ["owned"]
+    values = [var.f5xc_aws_tgw_owner]
   }
 }
 
@@ -60,73 +31,235 @@ data "aws_vpc" "tgw_vpc" {
 
   filter {
     name   = "tag:ves-io-creator-id"
-    values = [var.custom_tags["Owner"]]
+    values = [var.f5xc_aws_tgw_owner]
   }
-
 }
 
-data "aws_subnet" "tgw_subnet_sli" {
+data "aws_instance" "master-0" {
   depends_on = [module.site_wait_for_online]
-  for_each   = var.f5xc_aws_tgw_az_nodes
-  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_inside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_inside_existing_subnet_id"]
-  vpc_id     = data.aws_vpc.tgw_vpc.id
 
   filter {
-    name   = "tag:ves.io/subnet-type"
-    values = ["site-local-inside"]
+    name   = "instance-state-name"
+    values = ["running"]
   }
-
   filter {
-    name   = format("tag:kubernetes.io/cluster/%s", var.f5xc_aws_tgw_name)
-    values = ["owned"]
+    name   = "tag:Name"
+    values = ["master-0"]
   }
-
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
 }
 
-data "aws_subnet" "tgw_subnet_slo" {
+data "aws_instance" "master-1" {
   depends_on = [module.site_wait_for_online]
-  for_each   = var.f5xc_aws_tgw_az_nodes
-  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_outside_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_outside_existing_subnet_id"]
-  vpc_id     = data.aws_vpc.tgw_vpc.id
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
 
   filter {
-    name   = "tag:ves.io/subnet-type"
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["master-1"]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_instance" "master-2" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["master-2"]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-0-slo" {
+  depends_on = [module.site_wait_for_online]
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-0.id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
     values = ["site-local-outside"]
   }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-0-sli" {
+  depends_on = [module.site_wait_for_online]
 
   filter {
-    name   = format("tag:kubernetes.io/cluster/%s", var.f5xc_aws_tgw_name)
-    values = ["owned"]
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-0.id]
   }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-inside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-1-slo" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-1[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-1-sli" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-1[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-inside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-2-slo" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-2[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-2-sli" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-2[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-inside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_route_table" "master-0-sli-rt" {
+  depends_on = [module.site_wait_for_online]
+  subnet_id  = data.aws_network_interface.master-0-sli.subnet_id
+}
+
+data "aws_route_table" "master-1-sli-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-1-sli[0].subnet_id
+}
+
+data "aws_route_table" "master-2-sli-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-2-sli[0].subnet_id
+}
+
+data "aws_subnets" "workload" {
+  depends_on = [module.site_wait_for_online]
 
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
-}
-
-data "aws_subnet" "tgw_subnet_workload" {
-  depends_on = [module.site_wait_for_online]
-  for_each   = var.f5xc_aws_tgw_az_nodes
-  cidr_block = contains(keys(var.f5xc_aws_tgw_az_nodes[each.key]), "f5xc_aws_tgw_workload_subnet") ? var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_subnet"] : var.f5xc_aws_tgw_az_nodes[each.key]["f5xc_aws_tgw_workload_existing_subnet_id"]
-  vpc_id     = data.aws_vpc.tgw_vpc.id
-
   filter {
     name   = "tag:ves.io/subnet-type"
     values = ["workload"]
   }
-
   filter {
-    name   = format("tag:kubernetes.io/cluster/%s", var.f5xc_aws_tgw_name)
-    values = ["owned"]
-  }
-
-  filter {
-    name   = "tag:ves-io-site-name"
-    values = [var.f5xc_aws_tgw_name]
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
   }
 }

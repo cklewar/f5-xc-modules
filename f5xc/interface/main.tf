@@ -81,14 +81,14 @@ resource "null_resource" "apply_interface" {
   triggers = {
     manifest_sha1  = sha1(local.tunnel_interface_content)
     api_url        = var.f5xc_api_url
-    api_token      = var.f5xc_api_token
+    api_token      = local.f5xc_api_token
     delete_uri     = local.interface_delete_uri
     namespace      = var.f5xc_namespace
     interface_name = var.f5xc_interface_name
   }
 
   provisioner "local-exec" {
-    command     = format("curl -v -X 'POST' %s/%s -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.interface_create_uri, var.f5xc_api_token, local.tunnel_interface_content)
+    command     = format("curl -v -X 'POST' %s/%s -H 'Content-Type: application/json' -H 'Authorization: APIToken %s' -d '%s'", var.f5xc_api_url, local.interface_create_uri, local.f5xc_api_token, local.tunnel_interface_content)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

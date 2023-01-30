@@ -43,8 +43,10 @@ module "config" {
 module "node" {
   count                       = var.f5xc_ce_gateway_multi_node ? 2 : 1
   source                      = "./nodes"
+  is_sensitive                = var.is_sensitive
   machine_type                = var.machine_type
   ssh_username                = var.ssh_username
+  has_public_ip               = var.has_public_ip
   instance_tags               = var.instance_tags
   machine_image               = var.machine_image
   instance_name               = var.instance_name
@@ -52,8 +54,10 @@ module "node" {
   slo_subnetwork              = var.fabric_subnet_outside != "" ? module.network[0].ce["master-${count.index}"]["slo_subnetwork"] : var.existing_fabric_subnet_outside
   ssh_public_key              = var.ssh_public_key
   machine_disk_size           = var.machine_disk_size
+  access_config_nat_ip        = var.access_config_nat_ip
   allow_stopping_for_update   = var.allow_stopping_for_update
   gcp_service_account_email   = var.gcp_service_account_email
+  gcp_service_account_scopes  = var.gcp_service_account_scopes
   f5xc_tenant                 = var.f5xc_tenant
   f5xc_api_url                = var.f5xc_api_url
   f5xc_api_token              = var.f5xc_api_token
@@ -63,5 +67,4 @@ module "node" {
   f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
-  use_public_ip               = var.use_public_ip
 }

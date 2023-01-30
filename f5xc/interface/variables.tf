@@ -22,11 +22,11 @@ variable "f5xc_api_p12_file" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_tenant" {
-  type = string
+  type      = string
 }
 
 variable "f5xc_namespace" {
@@ -290,4 +290,10 @@ variable "f5xc_interface_ethernet_interface_device" {
 variable "f5xc_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

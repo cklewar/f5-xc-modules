@@ -22,3 +22,9 @@ variable "f5xc_site_get_uri" {
 variable "f5xc_site_name" {
   type = string
 }
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
+}

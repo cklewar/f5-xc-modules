@@ -127,7 +127,7 @@ variable "ntp_servers" {
 }
 
 variable "server_roles" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "private_nic" {

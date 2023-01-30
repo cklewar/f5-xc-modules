@@ -3,13 +3,22 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-/*module "network" {
-  source = ""
-}*/
+module "network" {
+  source                = "./network"
+  deployment            = var.deployment
+  fabric_address_pool   = var.fabric_address_pool
+  # fabric_subnet_public      = var.fabric_subnet_public
+  cluster_name          = var.cluster_name
+  owner_tag             = var.owner_tag
+  aws_region            = var.f5xc_aws_region
+  fabric_subnet_inside  = ""
+  fabric_subnet_private = ""
+  f5xc_ce_gateway_type  = "ingress"
+}
 
 module "config" {
   source               = "./config"
-  for_each             = {for k,v in local.f5xc_aws_vpc_az_nodes : k=>v}
+  for_each             = {for k, v in local.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
   public_address       = "192.168.2.2" # module.ce_network.balancer_ip

@@ -1,74 +1,81 @@
-resource "aws_route53_zone" "volterra_zone" {
-  name = var.dns_zone_name == "" ? join(".", [var.deployment, var.dns_zone_suffix]) : var.dns_zone_name
-  tags = local.common_tags
-
-  vpc {
-    vpc_id = var.vpc_id
-  }
+resource "aws_vpc" "vpc" {
+  count                = var.aws_existing_vpc_id == "" ? 1 : 0
+  cidr_block           = var.fabric_address_pool
+  enable_dns_support   = var.aws_vpc_enable_dns_support
+  enable_dns_hostnames = var.aws_vp_enable_dns_hostnames
+  tags                 = local.common_tags
 }
 
-resource "aws_internet_gateway" "volterra_gw" {
-  vpc_id = var.vpc_id
+resource "aws_internet_gateway" "igw" {
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
   tags   = local.common_tags
 }
 
-data "aws_vpc" "volterra_vpc" {
-  id = var.vpc_id
-}
-
-resource "aws_route" "volterra_gw_route_ipv4" {
-  route_table_id         = data.aws_vpc.volterra_vpc.main_route_table_id
+resource "aws_route" "route_ipv4" {
+  route_table_id         = data.aws_vpc.vpc.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.volterra_gw.id
+  gateway_id             = aws_internet_gateway.igw.id
 }
 
-resource "aws_route" "volterra_gw_route_ipv6" {
-  route_table_id              = data.aws_vpc.volterra_vpc.main_route_table_id
+resource "aws_route" "route_ipv6" {
+  route_table_id              = data.aws_vpc.vpc.main_route_table_id
   destination_ipv6_cidr_block = "::/0"
-  gateway_id                  = aws_internet_gateway.volterra_gw.id
+  gateway_id                  = aws_internet_gateway.igw.id
 }
 
-resource "aws_route_table" "volterra_inside_rt" {
-  vpc_id = var.vpc_id
+resource "aws_subnet" "subnet_public" {
+  vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
+  cidr_block        = var.fabric_subnet_public
+  availability_zone = data.aws_availability_zones.available_az.names[0]
+  tags              = local.common_tags
+}
+
+resource "aws_subnet" "subnet_private" {
+  count             = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
+  cidr_block        = local.private_subnet_cidr
+  availability_zone = data.aws_availability_zones.available_az.names[0]
+  tags              = local.common_tags
+}
+
+resource "aws_eip" "nat_gw_eip" {
+  count = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  vpc   = var.aws_eip_vpc
+  tags  = local.common_tags
+}
+
+resource "aws_nat_gateway" "nat_gw" {
+  count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  allocation_id = element(aws_eip.nat_gw_eip.*.id, count.index)
+  subnet_id     = aws_subnet.subnet_public.id
+  tags          = local.common_tags
+}
+
+resource "aws_route_table" "rt_private_subnet" {
+  count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
 
   route {
-    cidr_block           = "0.0.0.0/0"
-    network_interface_id = var.ce_inside_intf_id
+    cidr_block = "0.0.0.0/0"
+    gateway_id = element(aws_nat_gateway.nat_gw.*.id, count.index)
   }
-
-  route {
-    ipv6_cidr_block      = "::/0"
-    network_interface_id = var.ce_inside_intf_id
-  }
-
   tags = local.common_tags
-  lifecycle {
-    ignore_changes = [
-      tags, route
-    ]
-  }
 }
 
-resource "aws_subnet" "volterra_subnet_private" {
-  vpc_id            = var.vpc_id
-  cidr_block        = var.fabric_subnet_private
-  availability_zone = data.aws_availability_zones.available_az.names[0]
-  tags              = local.common_tags
+resource "aws_route_table_association" "rta_private_subnet" {
+  count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  subnet_id      = element(aws_subnet.subnet_private.*.id, count.index)
+  route_table_id = element(aws_route_table.rt_private_subnet.*.id, count.index)
 }
 
-resource "aws_subnet" "volterra_subnet_inside" {
-  vpc_id            = var.vpc_id
-  cidr_block        = var.fabric_subnet_inside
-  availability_zone = data.aws_availability_zones.available_az.names[0]
-  tags              = local.common_tags
-}
-
-resource "aws_security_group" "volterra_security_group" {
-  name        = "volterra-security-group"
-  description = "Allow SSH, ICMP, VER"
-  vpc_id      = var.vpc_id
-  tags        = local.common_tags
-  depends_on  = [aws_internet_gateway.volterra_gw]
+resource "aws_security_group" "sg" {
+  name       = "${var.cluster_name}-sg"
+  vpc_id     = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
+  tags       = local.common_tags
+  depends_on = [
+    aws_internet_gateway.igw,
+    aws_nat_gateway.nat_gw,
+  ]
 
   ingress {
     from_port   = 22
@@ -87,7 +94,7 @@ resource "aws_security_group" "volterra_security_group" {
   ingress {
     from_port   = "4500"
     to_port     = "4500"
-    protocol    = "tcp"
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -142,17 +149,15 @@ resource "aws_security_group" "volterra_security_group" {
 }
 
 resource "aws_lb" "nlb" {
-  name                             = "${var.deployment}-nlb"
-  load_balancer_type               = "network"
+  tags                             = local.common_tags
+  name                             = "${var.cluster_name}-nlb"
+  subnets                          = [local.subnets]
   internal                         = true
-  subnets                          = [aws_subnet.volterra_subnet_private.id]
+  load_balancer_type               = "network"
   enable_cross_zone_load_balancing = true
-
-  tags = local.common_tags
 }
 
-# Forward TCP apiserver traffic to controllers
-resource "aws_lb_listener" "apiserver-https" {
+resource "aws_lb_listener" "api-server-https" {
   load_balancer_arn = aws_lb.nlb.arn
   protocol          = "TCP"
   port              = "6443"
@@ -164,12 +169,11 @@ resource "aws_lb_listener" "apiserver-https" {
 }
 
 resource "aws_lb_target_group" "controllers" {
-  name        = "${var.deployment}-lb-ctl"
-  vpc_id      = var.vpc_id
+  name        = "${var.cluster_name}-lb-ctl"
+  vpc_id      = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
   target_type = "instance"
-
-  protocol = "TCP"
-  port     = 6443
+  protocol    = "TCP"
+  port        = 6443
 
   health_check {
     protocol            = "TCP"
@@ -181,7 +185,7 @@ resource "aws_lb_target_group" "controllers" {
 }
 
 resource "aws_iam_role" "role" {
-  name = "role-${var.deployment}"
+  name = "${var.cluster_name}-role"
 
   assume_role_policy = <<EOF
 {
@@ -198,12 +202,10 @@ resource "aws_iam_role" "role" {
   ]
 }
 EOF
-
 }
 
 resource "aws_iam_policy" "policy" {
-  name = "policy-${var.deployment}"
-
+  name   = "${var.cluster_name}-policy"
   policy = <<POLICY
 {
     "Version": "2012-10-17",
@@ -276,7 +278,6 @@ resource "aws_iam_policy" "policy" {
     ]
 }
 POLICY
-
 }
 
 resource "aws_iam_role_policy_attachment" "attachment" {
@@ -285,6 +286,6 @@ resource "aws_iam_role_policy_attachment" "attachment" {
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name = "${var.deployment}-profile"
+  name = "${var.cluster_name}-profile"
   role = aws_iam_role.role.name
 }

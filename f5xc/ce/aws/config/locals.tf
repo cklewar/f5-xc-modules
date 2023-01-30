@@ -39,8 +39,12 @@ locals {
         "MauriceEndpoint" : var.maurice_endpoint,
         "Labels" : var.cluster_labels,
         "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
-      },
-      Workload : var.cluster_workload,
+      }
+    }
+  )
+
+  /*
+   Workload : var.cluster_workload,
       Kubernetes : {
         "CloudProvider" : "",
         # "EtcdClusterServers" : [] # Only when pool
@@ -52,8 +56,7 @@ locals {
           "Etcd" : var.container_images["Etcd"] # Only when node
         }
       }
-    }
-  )
+  */
 
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {

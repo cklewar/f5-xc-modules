@@ -20,13 +20,6 @@ variable "cluster_labels" {
   default = "{}"
 }
 
-variable "server_roles" {
-  type    = list(string)
-  default = [jsonencode(["etcd-server", "k8s-master", "k8s-minion"]),
-    jsonencode(["etcd-server", "k8s-master-primary", "k8s-minion"])
-  ]
-}
-
 variable "ssh_public_key" {
   type = string
 }

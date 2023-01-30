@@ -20,7 +20,7 @@ module "config" {
   cluster_latitude     = "1234.5464"
   cluster_longitude    = "6564.1323"
   ssh_public_key       = "abc123"
-  server_roles         = var.server_roles[count.index]
+  server_roles         = local.server_roles[count.index]
   f5xc_ce_gateway_type = "ingress"
 }
 

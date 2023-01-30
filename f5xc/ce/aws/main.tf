@@ -9,7 +9,7 @@ resource "volterra_token" "site" {
 
 module "config" {
   source               = "./config"
-  for_each             = {for k,v in local.f5xc_aws_vpc_az_nodes : k=>v}
+  # for_each             = {for k,v in local.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
   public_address       = "192.168.2.2" # module.ce_network.balancer_ip

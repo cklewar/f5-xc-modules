@@ -18,7 +18,7 @@ locals {
       vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
     }
   )
-  ce = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
+  node = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
     {
       is_pool                     = false
       public_nic                  = var.public_nic
@@ -35,7 +35,7 @@ locals {
       image_CoreDNS               = var.container_images["CoreDNS"]
       image_Hyperkube             = var.container_images["Hyperkube"]
       skip_stages                 = jsonencode(var.vp_manager_node_skip_stages)
-      server_roles                = var.master_count - 1 >= 1 ? var.server_roles["primary"] : var.server_roles["secondary"]
+      server_roles                = var.server_roles
       customer_route              = var.customer_route
       private_vn_prefix           = var.private_vn_prefix
       private_default_gw          = var.private_default_gw
@@ -44,7 +44,7 @@ locals {
       certified_hardware_endpoint = var.certified_hardware_endpoint
     }
   )
-  ce_pool = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
+  node_pool = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
     {
       is_pool                     = true
       service_ip                  = var.public_name
@@ -70,7 +70,7 @@ locals {
     }
   )
   # master-0, master-1, master-2, pool
-  cloud_config_node = templatefile(file("${path.module}/${var.templates_dir}/cloud-init"),
+  cloud_config = templatefile(file("${path.module}/${var.templates_dir}/cloud-init"),
     {
       user_pubkey        = var.ssh_public_key
       ntp_servers        = var.ntp_servers

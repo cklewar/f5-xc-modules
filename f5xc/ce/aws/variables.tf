@@ -1,3 +1,7 @@
+variable "owner_tag" {
+  type = string
+}
+
 variable "public_name" {
   type = string
 }
@@ -16,19 +20,11 @@ variable "cluster_labels" {
   default = "{}"
 }
 
-variable "private_default_gw" {
-  type    = string
-  default = ""
-}
-
-variable "customer_route" {
-  type    = string
-  default = ""
-}
-
-variable "private_vn_prefix" {
-  type    = string
-  default = ""
+variable "server_roles" {
+  type    = list(string)
+  default = [jsonencode(["etcd-server", "k8s-master", "k8s-minion"]),
+    jsonencode(["etcd-server", "k8s-master-primary", "k8s-minion"])
+  ]
 }
 
 variable "ssh_public_key" {
@@ -85,4 +81,14 @@ variable "f5xc_registration_retry" {
 
 variable "f5xc_aws_vpc_az_nodes" {
   type = map(map(string))
+}
+
+variable "f5xc_aws_region" {
+  type    = string
+  default = "us-west-2"
+}
+
+variable "f5xc_aws_availability_zone" {
+  type    = string
+  default = "a"
 }

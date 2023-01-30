@@ -47,11 +47,13 @@ variable "cluster_name" {
 }
 
 variable "private_default_gw" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "private_vn_prefix" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "cluster_token" {
@@ -63,7 +65,8 @@ variable "cluster_labels" {
 }
 
 variable "customer_route" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "vp_manager_version" {
@@ -114,12 +117,6 @@ variable "cluster_members" {
   description = "local resolvable name of the k8s cluster nodes"
 }
 
-variable "master_count" {
-  type        = number
-  default     = 1
-  description = "master_count shall correspond with cluster_members"
-}
-
 variable "ssh_public_key" {
   type = string
 }
@@ -130,11 +127,7 @@ variable "ntp_servers" {
 }
 
 variable "server_roles" {
-  type    = map(string)
-  default = {
-    secondary = jsonencode(["etcd-server", "k8s-master", "k8s-minion"])
-    primary   = jsonencode(["etcd-server", "k8s-master-primary", "k8s-minion"])
-  }
+  type = list(string)
 }
 
 variable "private_nic" {

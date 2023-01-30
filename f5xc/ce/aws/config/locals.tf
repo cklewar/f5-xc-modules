@@ -70,7 +70,7 @@ locals {
     }
   )
   # master-0, master-1, master-2, pool
-  cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init",
+  cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {
       user_pubkey        = var.ssh_public_key
       ntp_servers        = var.ntp_servers

@@ -1,4 +1,3 @@
-${yamlencode({
 Vpm:
   {% if is_pool %}
   Roles: ${server_roles} # Only when pool
@@ -40,4 +39,3 @@ Kubernetes:
     CoreDNS: ${image_CoreDNS} # Only when node
     Etcd: ${image_Etcd} # Only when node
     {% endif %}
-})}

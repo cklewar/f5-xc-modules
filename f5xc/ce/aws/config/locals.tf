@@ -45,7 +45,7 @@ locals {
         "CloudProvider" : "",
         # "EtcdClusterServers" : [] # Only when pool
         "EtcdUseTLS" : True # Only when node
-        "Server" : var.service_ip
+        "Server" : var.public_name
         "Images" : {
           "Hyperkube" : var.container_images["Hyperkube"]
           "CoreDNS" : var.container_images["CoreDNS"] # Only when node

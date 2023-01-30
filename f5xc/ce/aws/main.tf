@@ -3,9 +3,9 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-module "network" {
+/*module "network" {
   source = ""
-}
+}*/
 
 module "config" {
   source               = "./config"
@@ -24,6 +24,6 @@ module "config" {
   f5xc_ce_gateway_type = "ingress"
 }
 
-module "node" {
+/*module "node" {
   source = ""
-}
+}*/

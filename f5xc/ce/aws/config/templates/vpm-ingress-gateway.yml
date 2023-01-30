@@ -1,5 +1,5 @@
 Vpm:
-  %{ if is_pool ~}
+  %{ if is_pool == true ~}
   Roles: ${server_roles} # Only when pool
   %{ endif ~}
   SkipStages: ${skip_stages}
@@ -26,7 +26,7 @@ Vpm:
 Workload: ${cluster_workload}
 Kubernetes:
   CloudProvider: ""
-  %{ if is_pool ~}
+  %{ if is_pool == true ~}
   EtcdClusterServers: [] # Only when pool
   %{ endif ~}
   %{ if is_pool == false ~}

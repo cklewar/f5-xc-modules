@@ -18,45 +18,40 @@ locals {
       vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
     }
   )
-  node = yamldecode(
-    {
-      "Vpm" : {
-        # "Roles" : var.server_roles, # pool only
-        "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
-        "ClusterUid" : var.cluster_uid,
-        "DisableModules" : [],
-        "ClusterName" : var.cluster_name,
-        "ClusterType" : var.cluster_type,
-        "Token" : var.cluster_token,
-        "InsideNIC" : var.public_nic,
-        "PrivateNIC" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : null,
-        "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ?var.private_default_gw : null,
-        "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : null,
-        "CustomerRoute" : var.customer_route,
-        "Latitude" : var.cluster_latitude,
-        "Longitude" : var.cluster_longitude,
-        "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
-        "MauriceEndpoint" : var.maurice_endpoint,
-        "Labels" : var.cluster_labels,
-        "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
+  node = yamlencode({
+    "Vpm" : {
+      # "Roles" : var.server_roles, # pool only
+      "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
+      "ClusterUid" : var.cluster_uid,
+      "DisableModules" : [],
+      "ClusterName" : var.cluster_name,
+      "ClusterType" : var.cluster_type,
+      "Token" : var.cluster_token,
+      "InsideNIC" : var.public_nic,
+      "PrivateNIC" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : null,
+      "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ?var.private_default_gw : null,
+      "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : null,
+      "CustomerRoute" : var.customer_route,
+      "Latitude" : var.cluster_latitude,
+      "Longitude" : var.cluster_longitude,
+      "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
+      "MauriceEndpoint" : var.maurice_endpoint,
+      "Labels" : var.cluster_labels,
+      "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
+    }
+    Workload : var.cluster_workload,
+    Kubernetes : {
+      "CloudProvider" : "",
+      # "EtcdClusterServers" : [] # Only when pool
+      "EtcdUseTLS" : true # Only when node
+      "Server" : var.public_name
+      "Images" : {
+        "Hyperkube" : var.container_images["Hyperkube"]
+        "CoreDNS" : var.container_images["CoreDNS"] # Only when node
+        "Etcd" : var.container_images["Etcd"] # Only when node
       }
     }
-  )
-
-  /*
-   Workload : var.cluster_workload,
-      Kubernetes : {
-        "CloudProvider" : "",
-        # "EtcdClusterServers" : [] # Only when pool
-        "EtcdUseTLS" : true # Only when node
-        "Server" : var.public_name
-        "Images" : {
-          "Hyperkube" : var.container_images["Hyperkube"]
-          "CoreDNS" : var.container_images["CoreDNS"] # Only when node
-          "Etcd" : var.container_images["Etcd"] # Only when node
-        }
-      }
-  */
+  })
 
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {

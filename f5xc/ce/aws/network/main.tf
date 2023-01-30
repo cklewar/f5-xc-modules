@@ -44,28 +44,28 @@ resource "aws_eip" "nat_gw_eip" {
   tags  = local.common_tags
 }
 
-resource "aws_nat_gateway" "gw" {
+resource "aws_nat_gateway" "ngw" {
   count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   allocation_id = element(aws_eip.nat_gw_eip.*.id, count.index)
-  subnet_id     = aws_subnet.public.id
+  subnet_id     = aws_subnet.slo.id
   tags          = local.common_tags
 }
 
-resource "aws_route_table" "rt_private_subnet" {
+resource "aws_route_table" "sli_subnet" {
   count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = element(aws_nat_gateway.gw.*.id, count.index)
+    gateway_id = element(aws_nat_gateway.ngw.*.id, count.index)
   }
   tags = local.common_tags
 }
 
-resource "aws_route_table_association" "rta_private_subnet" {
+resource "aws_route_table_association" "rta_sli_subnet" {
   count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  subnet_id      = element(aws_subnet.private.*.id, count.index)
-  route_table_id = element(aws_route_table.rt_private_subnet.*.id, count.index)
+  subnet_id      = element(aws_subnet.sli.*.id, count.index)
+  route_table_id = element(aws_route_table.sli_subnet.*.id, count.index)
 }
 
 resource "aws_security_group" "sg" {
@@ -74,7 +74,7 @@ resource "aws_security_group" "sg" {
   tags       = local.common_tags
   depends_on = [
     aws_internet_gateway.igw,
-    aws_nat_gateway.gw,
+    aws_nat_gateway.ngw,
   ]
 
   ingress {

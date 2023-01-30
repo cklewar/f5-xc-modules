@@ -1,7 +1,8 @@
 Vpm:
-  Roles: ${server_roles}
+  # Roles: ${server_roles} Only when pool
   SkipStages: ${skip_stages}
-  ClusterUid: ${cluster_uid}
+  # ClusterUid: ${cluster_uid} Only when pool 
+  # DisableModules: [] Only when main
   ClusterName: ${cluster_name}
   ClusterType: ${cluster_type}
   Token: ${cluster_token}
@@ -19,7 +20,11 @@ Vpm:
 Workload: ${cluster_workload}
 Kubernetes:
   CloudProvider: ""
-  EtcdClusterServers: []
+  # DNSZone: ${dns_zone} Only when main
+  # EtcdClusterServers: [] Only when pool
+  # EtcdUseTLS: True Only when main
   Server: ${service_ip}
   Images:
     Hyperkube: ${image_Hyperkube}
+    # CoreDNS: ${image_CoreDNS} Only when main
+    # Etcd: ${image_Etcd} Only when main

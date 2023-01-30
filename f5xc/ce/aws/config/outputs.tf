@@ -1,10 +1,13 @@
-output "kube_config" {
-  value = ""
+output "ce" {
+  value = {
+    master-0 = {
+      user_data     = local.cloud_init_master_config.config
+      gateway_type  = var.f5xc_ce_gateway_type
+      hosts_context = local.hosts_localhost.config
+    }
+  }
 }
 
-output "kube_config_public" {
-  value = ""
-}
 
 output "cloud_config_master_primary" {
   value = data.template_file.cloud_config_master_primary.rendered

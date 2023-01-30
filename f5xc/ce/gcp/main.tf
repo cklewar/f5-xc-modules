@@ -3,10 +3,6 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-locals {
-  create_network = var.fabric_subnet_outside != "" || (var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "") ? true : false
-}
-
 module "network" {
   count                          = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
   source                         = "./network"

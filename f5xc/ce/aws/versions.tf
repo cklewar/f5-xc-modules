@@ -12,7 +12,7 @@ terraform {
       version = ">= 4.51.0"
     }
 
-    local = ">= 2.0"
-    null  = ">= 3.0"
+    local = ">= 2.2.3"
+    null  = ">= 3.1.1"
   }
 }

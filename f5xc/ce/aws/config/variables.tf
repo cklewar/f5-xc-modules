@@ -3,7 +3,7 @@ variable "certified_hardware_endpoint" {
   default = "https://vesio.blob.core.windows.net/releases/certified-hardware/aws.yml"
 }
 
-variable "reboot_strategy_master" {
+variable "reboot_strategy_node" {
   type    = string
   default = "off"
 }
@@ -13,29 +13,12 @@ variable "reboot_strategy_pool" {
   default = "off"
 }
 
-variable "bootstrap_token_id" {
-  type    = string
-  default = ""
-}
-
-variable "bootstrap_token_secret" {
-  type    = string
-  default = ""
-}
-
-variable "etcd_initial_token" {
-  type    = string
-  default = "68c11f9e8d0c61a56a7ad46667294fe3"
-}
-
 variable "public_address" {
-  type    = string
-  default = "10.0.0.1"
+  type = string
 }
 
 variable "public_name" {
-  type    = string
-  default = "lb.example.local"
+  type = string
 }
 
 variable "container_images" {
@@ -45,21 +28,6 @@ variable "container_images" {
     "CoreDNS"   = ""
     "Etcd"      = ""
   }
-}
-
-variable "service_cidr" {
-  type    = string
-  default = "10.3.0.0/16"
-}
-
-variable "dns_service_ip" {
-  type    = string
-  default = "10.3.0.10"
-}
-
-variable "cluster_cidr" {
-  type    = string
-  default = "10.8.0.0/16"
 }
 
 variable "cluster_latitude" {
@@ -110,9 +78,9 @@ variable "vp_manager_version" {
   default = "latest"
 }
 
-variable "vp_manager_type" {
+variable "cluster_type" {
   type    = string
-  default = "re"
+  default = "ce"
 }
 
 variable "vp_manager_skip_stages" {
@@ -159,7 +127,7 @@ variable "master_count" {
 }
 
 variable "ssh_public_key" {
-  type    = string
+  type = string
 }
 
 variable "ntp_servers" {

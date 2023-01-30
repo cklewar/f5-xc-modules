@@ -1,7 +1,12 @@
+${yamlencode({
 Vpm:
-  # Roles: ${server_roles} Only when pool
+  {% if pool %}
+  Roles: ${server_roles} # Only when pool
+  {% endif %}
   SkipStages: ${skip_stages}
-  # ClusterUid: ${cluster_uid} Only when pool 
+  {% if pool %}
+  ClusterUid: # ${cluster_uid} Only when pool
+  {% endif %}
   # DisableModules: [] Only when main
   ClusterName: ${cluster_name}
   ClusterType: ${cluster_type}
@@ -21,10 +26,13 @@ Workload: ${cluster_workload}
 Kubernetes:
   CloudProvider: ""
   # DNSZone: ${dns_zone} Only when main
-  # EtcdClusterServers: [] Only when pool
+  {% if pool %}
+  EtcdClusterServers: [] # Only when pool
+  {% endif %}
   # EtcdUseTLS: True Only when main
   Server: ${service_ip}
   Images:
     Hyperkube: ${image_Hyperkube}
     # CoreDNS: ${image_CoreDNS} Only when main
     # Etcd: ${image_Etcd} Only when main
+})}

@@ -36,7 +36,7 @@ locals {
         "Latitude" : var.cluster_latitude,
         "Longitude" : var.cluster_longitude,
         "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
-        "MauriceEndpoint" : maurice_endpoint,
+        "MauriceEndpoint" : var.maurice_endpoint,
         "Labels" : var.cluster_labels,
         "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
       },
@@ -44,7 +44,7 @@ locals {
       Kubernetes : {
         "CloudProvider" : "",
         # "EtcdClusterServers" : [] # Only when pool
-        "EtcdUseTLS" : True # Only when node
+        "EtcdUseTLS" : true # Only when node
         "Server" : var.public_name
         "Images" : {
           "Hyperkube" : var.container_images["Hyperkube"]

@@ -39,38 +39,31 @@ variable "cluster_longitude" {
 }
 
 variable "cluster_workload" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "cluster_name" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "private_default_gw" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "private_vn_prefix" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "cluster_token" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "cluster_labels" {
-  type    = string
-  default = "{}"
+  type = string
 }
 
 variable "customer_route" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "vp_manager_version" {
@@ -83,10 +76,16 @@ variable "cluster_type" {
   default = "ce"
 }
 
-variable "vp_manager_skip_stages" {
+variable "vp_manager_node_skip_stages" {
+  type        = list(string)
+  default     = ["register", "ver"]
+  description = "List of VP manager stages to skip on node"
+}
+
+variable "vp_manager_pool_skip_stages" {
   type        = list(string)
   default     = ["register"]
-  description = "List of VP manager stages to skip"
+  description = "List of VP manager stages to skip on pool"
 }
 
 variable "vp_manager_mask_fetch_latest" {
@@ -102,11 +101,6 @@ variable "maurice_endpoint" {
 variable "maurice_mtls_endpoint" {
   type    = string
   default = "https://register-tls.ves.volterra.io"
-}
-
-variable "sre_dns_service_ip" {
-  type    = string
-  default = ""
 }
 
 variable "cluster_uid" {
@@ -135,6 +129,14 @@ variable "ntp_servers" {
   default = "pool.ntp.org"
 }
 
+variable "server_roles" {
+  type    = map(string)
+  default = {
+    secondary = jsonencode(["etcd-server", "k8s-master", "k8s-minion"])
+    primary   = jsonencode(["etcd-server", "k8s-master-primary", "k8s-minion"])
+  }
+}
+
 variable "private_nic" {
   type    = string
   default = ""
@@ -145,12 +147,18 @@ variable "public_nic" {
   default = ""
 }
 
-variable "f5xc_ce_gateway_type_ingress" {
+variable "owner_tag" {
   type = string
 }
 
+variable "f5xc_ce_gateway_type_ingress" {
+  type    = string
+  default = "ingress_gateway"
+}
+
 variable "f5xc_ce_gateway_type_ingress_egress" {
-  type = string
+  type    = string
+  default = "ingress_egress_gateway"
 }
 
 variable "f5xc_ce_gateway_type" {

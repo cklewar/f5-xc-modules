@@ -20,7 +20,7 @@ resource "null_resource" "delay_eip_creation" {
   }
 
   triggers = {
-    "before" = aws_instance.volterra_ce[0].id
+    "before" = aws_instance.instance[0].id
   }
 }
 
@@ -32,20 +32,19 @@ resource "aws_eip" "compute_public_ip" {
   tags              = local.common_tags
 }
 
-resource "aws_instance" "volterra_ce" {
+resource "aws_instance" "instance" {
   count                = var.machine_count
   ami                  = var.machine_image
   instance_type        = var.machine_type
   user_data_base64     = base64encode(var.machine_config)
   monitoring           = "false"
-  key_name             = "${var.deployment}-key"
-  iam_instance_profile = "${var.deployment}-profile"
-
-  tags = merge(
+  key_name             = "${var.instance_name}-key"
+  iam_instance_profile = "${var.instance_name}-profile"
+  tags                 = merge(
     local.common_tags,
     {
       "Name" = element(var.machine_names, count.index)
-    },
+    }
   )
 
   root_block_device {
@@ -57,14 +56,17 @@ resource "aws_instance" "volterra_ce" {
     device_index         = "0"
   }
 
-  network_interface {
-    network_interface_id = element(aws_network_interface.compute_nic_inside.*.id, count.index)
-    device_index         = "1"
+  dynamic "network_interface" {
+    for_each = ""
+    content {
+      network_interface_id = element(aws_network_interface.compute_nic_inside.*.id, count.index)
+      device_index         = "1"
+    }
   }
 
   timeouts {
-    create = "60m"
-    delete = "60m"
+    create = var.instance_create_timeout
+    delete = var.instance_delete_timeout
   }
 }
 
@@ -75,26 +77,31 @@ resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
   port             = 6443
 }
 
-locals {
-  machine_hostnames = [for dns in aws_instance.volterra_ce.*.private_dns : element(split(".", dns), 0)]
-}
-
-resource "volterra_registration_approval" "master_nodes" {
-  count        = (var.enable_auto_registration == true) && (var.machine_count > 0) ? var.machine_count : 0
-  cluster_name = var.deployment
-  cluster_size = var.machine_count
-  hostname     = element(local.machine_hostnames, count.index)
-  wait_time    = 60
-  retry        = 20
-  depends_on   = [aws_instance.volterra_ce]
+resource "volterra_registration_approval" "nodes" {
+  depends_on   = [aws.instance]
+  cluster_name = var.instance_name
+  cluster_size = var.f5xc_cluster_size
+  hostname     = var.instance_name
+  wait_time    = var.f5xc_registration_wait_time
+  retry        = var.f5xc_registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
-  count      = (var.enable_auto_registration == true) && (var.machine_count > 0) ? 1 : 0
-  name       = var.deployment
+  depends_on = [volterra_registration_approval.nodes]
+  name       = var.instance_name
   when       = "delete"
   state      = "DECOMMISSIONING"
-  wait_time  = 60
-  retry      = 5
-  depends_on = [volterra_registration_approval.master_nodes]
+  wait_time  = var.f5xc_registration_wait_time
+  retry      = var.f5xc_registration_retry
+}
+
+module "site_wait_for_online" {
+  depends_on     = [volterra_site_state.decommission_when_delete]
+  source         = "../../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = google_compute_instance.instance.name
+  f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

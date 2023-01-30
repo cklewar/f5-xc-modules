@@ -1,19 +1,22 @@
+${yamlencode({
 Vpm:
-  {% if pool %}
+  {% if is_pool %}
   Roles: ${server_roles} # Only when pool
   {% endif %}
   SkipStages: ${skip_stages}
-  {% if pool %}
+  {% if is_pool %}
   ClusterUid: ${cluster_uid} # Only when pool
   {% endif %}
-  # DisableModules: [] Only when main
+  {% if not is_pool %}
+  DisableModules: [] # Only when node
+  {% endif %}
   ClusterName: ${cluster_name}
   ClusterType: ${cluster_type}
   Token: ${cluster_token}
   InsideNIC: ${public_nic}
-  PrivateNIC: ${private_nic}
-  PrivateDefaultGw:  ${private_default_gw}
-  PrivateVnPrefix: ${private_vn_prefix}
+  # PrivateNIC: ${private_nic}
+  # PrivateDefaultGw:  ${private_default_gw}
+  # PrivateVnPrefix: ${private_vn_prefix}
   CustomerRoute: ${customer_route}
   Latitude: ${cluster_latitude}
   Longitude: ${cluster_longitude}
@@ -24,13 +27,17 @@ Vpm:
 Workload: ${cluster_workload}
 Kubernetes:
   CloudProvider: ""
-  # DNSZone: ${dns_zone} Only when main
-  {% if pool %}
-  # EtcdClusterServers: [] Only when pool
+  {% if is_pool %}
+  EtcdClusterServers: [] # Only when pool
   {% endif %}
-  # EtcdUseTLS: True Only when main
+  {% if not is_pool %}
+  EtcdUseTLS: True # Only when node
+  {% endif %}
   Server: ${service_ip}
   Images:
     Hyperkube: ${image_Hyperkube}
-    # CoreDNS: ${image_CoreDNS} Only when main
-    # Etcd: ${image_Etcd} Only when main
+    {% if not is_pool %}
+    CoreDNS: ${image_CoreDNS} # Only when node
+    Etcd: ${image_Etcd} # Only when node
+    {% endif %}
+})}

@@ -1,7 +1,7 @@
 locals {
-  common_tags = {
-    "kubernetes.io/cluster/${var.deployment}" = "owned"
-    "deployment"                              = var.deployment
-    "iam_owner"                               = var.iam_owner
+  machine_hostnames = [for dns in aws_instance.instance.*.private_dns : element(split(".", dns), 0)]
+  common_tags       = {
+    "kubernetes.io/cluster/${var.instance_name}" = "owned"
+    "Owner"                                      = var.owner_tag
   }
 }

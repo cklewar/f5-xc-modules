@@ -1,13 +1,5 @@
 variable "region" {
-  default = "us-east-2"
-}
-
-variable "deployment" {
-  default = "ce-single-aws"
-}
-
-variable "environment" {
-  default = "staging"
+  type = string
 }
 
 variable "machine_image" {
@@ -23,6 +15,24 @@ variable "machine_count" {
 
 variable "machine_type" {
   default = "t3.medium"
+}
+
+variable "owner_tag" {
+  type = string
+}
+
+variable "instance_name" {
+  type = string
+}
+
+variable "instance_create_timeout" {
+  type    = string
+  default = "60m"
+}
+
+variable "instance_delete_timeout" {
+  type    = string
+  default = "60m"
 }
 
 variable "machine_config" {}
@@ -53,4 +63,28 @@ variable "enable_auto_registration" {
 
 variable "iam_owner" {
   default = "default"
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
+variable "f5xc_api_token" {
+  type = string
+}
+
+variable "f5xc_tenant" {
+  type = string
+}
+
+variable "f5xc_namespace" {
+  type = string
+}
+
+variable "f5xc_registration_wait_time" {
+  type = number
+}
+
+variable "f5xc_registration_retry" {
+  type = number
 }

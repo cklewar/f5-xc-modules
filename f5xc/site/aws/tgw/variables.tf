@@ -201,6 +201,11 @@ variable "f5xc_aws_tgw_direct_connect_standard_vifs" {
   default = false
 }
 
+variable "f5xc_aws_tgw_direct_connect_custom_asn" {
+  type    = number
+  default = 0
+}
+
 variable "f5xc_aws_tgw_cloud_aggregated_prefix" {
   type    = list(string)
   default = []

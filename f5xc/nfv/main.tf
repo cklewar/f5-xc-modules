@@ -30,6 +30,12 @@ resource "null_resource" "apply_nfv" {
       name       = self.triggers.name
     }
   }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "sleep 180s"
+  }
+
 }
 
 module "f5xc_nfv_wait_for_online" {

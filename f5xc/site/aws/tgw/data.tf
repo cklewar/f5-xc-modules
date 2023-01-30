@@ -56,6 +56,50 @@ data "aws_instance" "master-0" {
   }
 }
 
+data "aws_instance" "master-1" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["master-1"]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_instance" "master-2" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["master-2"]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
 data "aws_network_interface" "master-0-slo" {
   depends_on = [module.site_wait_for_online]
 
@@ -98,9 +142,109 @@ data "aws_network_interface" "master-0-sli" {
   }
 }
 
+data "aws_network_interface" "master-1-slo" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-1[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-1-sli" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-1[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-inside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-2-slo" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-2[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-outside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
+data "aws_network_interface" "master-2-sli" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+
+  filter {
+    name   = "attachment.instance-id"
+    values = [data.aws_instance.master-2[0].id]
+  }
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_tgw_name]
+  }
+  filter {
+    name   = "tag:ves.io/interface-type"
+    values = ["site-local-inside"]
+  }
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.f5xc_aws_tgw_owner]
+  }
+}
+
 data "aws_route_table" "master-0-sli-rt" {
   depends_on = [module.site_wait_for_online]
   subnet_id  = data.aws_network_interface.master-0-sli.subnet_id
+}
+
+data "aws_route_table" "master-1-sli-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-1-sli[0].subnet_id
+}
+
+data "aws_route_table" "master-2-sli-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_tgw_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-2-sli[0].subnet_id
 }
 
 data "aws_subnets" "workload" {

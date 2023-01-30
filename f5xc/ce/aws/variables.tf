@@ -20,6 +20,14 @@ variable "cluster_labels" {
   default = "{}"
 }
 
+variable "cluster_latitude" {
+  type = string
+}
+
+variable "cluster_longitude" {
+  type = string
+}
+
 variable "ssh_public_key" {
   type = string
 }

@@ -21,8 +21,8 @@ locals {
   node = yamldecode(
     {
       "Vpm" : {
-        # "Roles" : var.server_roles,
-        "SkipStages" : var.vp_manager_node_skip_stages || var.vp_manager_pool_skip_stages,
+        # "Roles" : var.server_roles, # pool only
+        "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
         "ClusterUid" : var.cluster_uid,
         "DisableModules" : [],
         "ClusterName" : var.cluster_name,

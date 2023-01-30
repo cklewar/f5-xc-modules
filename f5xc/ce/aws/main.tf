@@ -19,7 +19,7 @@ module "config" {
   for_each             = {for k, v in local.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
-  public_address       = "192.168.2.2" # module.ce_network.balancer_ip
+  public_address       = module.network.ce["nlb"]["dns_name"]
   cluster_name         = var.cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.cluster_labels

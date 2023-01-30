@@ -28,11 +28,11 @@ variable "cluster_longitude" {
   type = string
 }
 
-variable "private_subnet" {
+variable "f5xc_ce_sli_subnet" {
   type = string
 }
 
-variable "public_subnet" {
+variable "f5xc_ce_slo_subnet" {
   type = string
 }
 

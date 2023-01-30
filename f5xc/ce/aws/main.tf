@@ -5,13 +5,13 @@ resource "volterra_token" "site" {
 
 module "network" {
   source                = "./network"
-  cluster_name          = var.cluster_name
   owner_tag             = var.owner_tag
+  cluster_name          = var.cluster_name
   aws_region            = var.f5xc_aws_region
-  aws_vpc_subnet_prefix = "192.168.0.0/20"
-  f5xc_ce_sli_subnet    = "192.168.0.0/22"
-  f5xc_ce_slo_subnet    = "192.168.4.0/22"
-  f5xc_ce_gateway_type  = "ingress"
+  aws_vpc_subnet_prefix = var.aws_vpc_subnet_prefix
+  f5xc_ce_sli_subnet    = var.f5xc_ce_sli_subnet
+  f5xc_ce_slo_subnet    = var.f5xc_ce_slo_subnet
+  f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
 }
 
 module "config" {

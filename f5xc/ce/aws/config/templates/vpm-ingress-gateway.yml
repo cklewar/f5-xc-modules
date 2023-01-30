@@ -6,7 +6,7 @@ Vpm:
   %{ if is_pool ~}
   ClusterUid: ${cluster_uid} # Only when pool
   %{ endif ~}
-  %{ if not is_pool ~}
+  %{ if is_pool == false ~}
   DisableModules: [] # Only when node
   %{ endif ~}
   ClusterName: ${cluster_name}
@@ -29,14 +29,13 @@ Kubernetes:
   %{ if is_pool ~}
   EtcdClusterServers: [] # Only when pool
   %{ endif ~}
-  %{ if not is_pool ~}
+  %{ if is_pool == false ~}
   EtcdUseTLS: True # Only when node
   %{ endif ~}
   Server: ${service_ip}
   Images:
     Hyperkube: ${image_Hyperkube}
-    %{ if not is_pool ~}
-    %{ if can(location.proxy_set_header) ~}
+    %{ if is_pool == false ~}
     CoreDNS: ${image_CoreDNS} # Only when node
     Etcd: ${image_Etcd} # Only when node
     %{ endif ~}

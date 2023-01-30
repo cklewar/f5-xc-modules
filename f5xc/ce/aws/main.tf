@@ -20,7 +20,7 @@ module "config" {
   cluster_latitude     = var.cluster_latitude
   cluster_longitude    = var.cluster_longitude
   ssh_public_key       = var.ssh_public_key
-  server_roles         = local.server_roles[idx]
+  server_roles         = local.server_roles[count.index]
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
 }
 

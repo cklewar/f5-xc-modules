@@ -18,58 +18,43 @@ locals {
       vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
     }
   )
-  node = templatefile("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml",
+  node = yamldecode(
     {
-      is_pool                     = false
-      public_nic                  = var.public_nic
-      service_ip                  = var.public_name
-      private_nic                 = var.private_nic
-      cluster_name                = var.cluster_name
-      cluster_type                = var.cluster_type
-      cluster_token               = var.cluster_token
-      cluster_labels              = var.cluster_labels
-      cluster_workload            = var.cluster_workload
-      cluster_latitude            = var.cluster_latitude
-      cluster_longitude           = var.cluster_longitude
-      image_Etcd                  = var.container_images["Etcd"]
-      image_CoreDNS               = var.container_images["CoreDNS"]
-      image_Hyperkube             = var.container_images["Hyperkube"]
-      skip_stages                 = jsonencode(var.vp_manager_node_skip_stages)
-      server_roles                = var.server_roles
-      customer_route              = var.customer_route
-      private_vn_prefix           = var.private_vn_prefix
-      private_default_gw          = var.private_default_gw
-      maurice_endpoint            = var.maurice_endpoint
-      maurice_mtls_endpoint       = var.maurice_mtls_endpoint
-      certified_hardware_endpoint = var.certified_hardware_endpoint
+      "Vpm" : {
+        # "Roles" : var.server_roles,
+        "SkipStages" : var.vp_manager_node_skip_stages || var.vp_manager_pool_skip_stages,
+        "ClusterUid" : var.cluster_uid,
+        "DisableModules" : [],
+        "ClusterName" : var.cluster_name,
+        "ClusterType" : var.cluster_type,
+        "Token" : var.cluster_token,
+        "InsideNIC" : var.public_nic,
+        "PrivateNIC" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : null,
+        "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ?var.private_default_gw : null,
+        "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : null,
+        "CustomerRoute" : var.customer_route,
+        "Latitude" : var.cluster_latitude,
+        "Longitude" : var.cluster_longitude,
+        "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
+        "MauriceEndpoint" : maurice_endpoint,
+        "Labels" : var.cluster_labels,
+        "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
+      },
+      Workload : var.cluster_workload,
+      Kubernetes : {
+        "CloudProvider" : "",
+        # "EtcdClusterServers" : [] # Only when pool
+        "EtcdUseTLS" : True # Only when node
+        "Server" : var.service_ip
+        "Images" : {
+          "Hyperkube" : var.container_images["Hyperkube"]
+          "CoreDNS" : var.container_images["CoreDNS"] # Only when node
+          "Etcd" : var.container_images["Etcd"] # Only when node
+        }
+      }
     }
   )
-  node_pool = templatefile("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml",
-    {
-      is_pool                     = true
-      service_ip                  = var.public_name
-      server_roles                = jsonencode(["k8s-minion"])
-      image_Hyperkube             = var.container_images["Hyperkube"]
-      skip_stages                 = jsonencode(var.vp_manager_pool_skip_stages)
-      public_nic                  = var.public_nic
-      private_nic                 = var.private_nic
-      cluster_uid                 = var.cluster_uid
-      cluster_type                = var.cluster_type
-      cluster_name                = var.cluster_name
-      cluster_token               = var.cluster_token
-      customer_route              = var.customer_route
-      cluster_labels              = var.cluster_labels
-      cluster_latitude            = var.cluster_latitude
-      cluster_workload            = var.cluster_workload
-      cluster_longitude           = var.cluster_longitude
-      private_vn_prefix           = var.private_vn_prefix
-      private_default_gw          = var.private_default_gw
-      maurice_endpoint            = var.maurice_endpoint
-      maurice_mtls_endpoint       = var.maurice_mtls_endpoint
-      certified_hardware_endpoint = var.certified_hardware_endpoint
-    }
-  )
-  # master-0, master-1, master-2, pool
+
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {
       user_pubkey        = var.ssh_public_key

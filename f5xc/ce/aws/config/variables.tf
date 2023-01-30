@@ -130,6 +130,10 @@ variable "server_roles" {
   type = map(string)
 }
 
+variable "service_ip" {
+  type = string
+}
+
 variable "private_nic" {
   type    = string
   default = ""

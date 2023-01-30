@@ -1,14 +1,14 @@
 Vpm:
-  {% if is_pool %}
+  %{ if is_pool ~}
   Roles: ${server_roles} # Only when pool
-  {% endif %}
+  %{ endif ~}
   SkipStages: ${skip_stages}
-  {% if is_pool %}
+  %{ if is_pool ~}
   ClusterUid: ${cluster_uid} # Only when pool
-  {% endif %}
-  {% if not is_pool %}
+  %{ endif ~}
+  %{ if is_pool == false ~}
   DisableModules: [] # Only when node
-  {% endif %}
+  %{ endif ~}
   ClusterName: ${cluster_name}
   ClusterType: ${cluster_type}
   Token: ${cluster_token}
@@ -26,16 +26,16 @@ Vpm:
 Workload: ${cluster_workload}
 Kubernetes:
   CloudProvider: ""
-  {% if is_pool %}
+  %{ if is_pool ~}
   EtcdClusterServers: [] # Only when pool
-  {% endif %}
-  {% if not is_pool %}
+  %{ endif ~}
+  %{ if is_pool == false ~}
   EtcdUseTLS: True # Only when node
-  {% endif %}
+  %{ endif ~}
   Server: ${service_ip}
   Images:
     Hyperkube: ${image_Hyperkube}
-    {% if not is_pool %}
+    %{ if is_pool == false ~}
     CoreDNS: ${image_CoreDNS} # Only when node
     Etcd: ${image_Etcd} # Only when node
-    {% endif %}
+    %{ endif ~}

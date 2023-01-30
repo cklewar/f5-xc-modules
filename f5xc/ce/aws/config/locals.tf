@@ -1,24 +1,24 @@
 locals {
   gateway_type       = replace(var.f5xc_ce_gateway_type, "_", "-")
-  hosts_context_node = templatefile(file("${path.module}/${var.templates_dir}/hosts"),
+  hosts_context_node = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
       public_address = "127.0.1.1"
       public_name    = var.public_name
     }
   )
-  hosts_context_pool = templatefile(file("${path.module}/${var.templates_dir}/hosts"),
+  hosts_context_pool = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
       public_address = var.public_address
       public_name    = var.public_name
     }
   )
-  vp_manager_environment = templatefile(file("${path.module}/${var.templates_dir}/vpm-environment"),
+  vp_manager_environment = templatefile("${path.module}/${var.templates_dir}/vpm-environment",
     {
       vp_manager_version         = var.vp_manager_version
       vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
     }
   )
-  node = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
+  node = templatefile("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml",
     {
       is_pool                     = false
       public_nic                  = var.public_nic
@@ -44,7 +44,7 @@ locals {
       certified_hardware_endpoint = var.certified_hardware_endpoint
     }
   )
-  node_pool = templatefile(file("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml"),
+  node_pool = templatefile("${path.module}/${var.templates_dir}/vpm-${local.gateway_type}.yml",
     {
       is_pool                     = true
       service_ip                  = var.public_name
@@ -70,7 +70,7 @@ locals {
     }
   )
   # master-0, master-1, master-2, pool
-  cloud_config = templatefile(file("${path.module}/${var.templates_dir}/cloud-init"),
+  cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init",
     {
       user_pubkey        = var.ssh_public_key
       ntp_servers        = var.ntp_servers

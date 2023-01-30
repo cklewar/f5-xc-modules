@@ -1,4 +1,4 @@
-output "ce" {
+output "nodes" {
   value = {
     master-0 = {
       # node    = module.node["node0"].ce

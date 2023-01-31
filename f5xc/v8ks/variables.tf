@@ -14,10 +14,8 @@ variable "f5xc_vsite_refs_namespace" {
   type = string
 }
 
-variable "f5xc_vk8s_namespace" {
-  type    = string
-  # default = "shared"
-  default = "default"
+variable "f5xc_virtual_k8s_namespace" {
+  type = string
 }
 
 variable "f5xc_vk8s_name" {

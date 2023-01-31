@@ -152,7 +152,7 @@ resource "aws_security_group" "sg" {
 resource "aws_lb" "nlb" {
   tags                             = local.common_tags
   name                             = "${var.cluster_name}-nlb"
-  subnets                          = [local.subnets]
+  subnets                          = [var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? join("", aws_subnet.slo.*.id) : aws_subnet.sli.*.id]
   internal                         = true
   load_balancer_type               = "network"
   enable_cross_zone_load_balancing = true

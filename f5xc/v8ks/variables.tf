@@ -47,9 +47,8 @@ variable "f5xc_create_k8s_creds" {
   default = false
 }
 
-variable "f5xc_namespace" {
+variable "f5xc_api_credential_namespace" {
   type    = string
-  default = ""
 }
 
 variable "f5xc_k8s_credentials_name" {

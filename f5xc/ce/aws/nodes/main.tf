@@ -27,7 +27,7 @@ resource "aws_eip" "public_ip" {
   depends_on        = [null_resource.delay_eip_creation]
   vpc               = true
   tags              = local.common_tags
-  network_interface = aws_network_interface.compute_nic_slo.*.id
+  network_interface = aws_network_interface.slo.*.id
 }
 
 resource "aws_instance" "instance" {
@@ -49,14 +49,14 @@ resource "aws_instance" "instance" {
   }
 
   network_interface {
-    network_interface_id = element(aws_network_interface.compute_nic_slo.*.id, count.index)
+    network_interface_id = element(aws_network_interface.slo.*.id, count.index)
     device_index         = "0"
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = aws_network_interface.compute_nic_sli.*.id
+      network_interface_id = aws_network_interface.sli.*.id
       device_index         = "1"
     }
   }

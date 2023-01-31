@@ -45,6 +45,7 @@ module "api_credential_kubeconfig" {
   f5xc_api_token            = local.f5xc_api_token
   f5xc_namespace            = var.f5xc_namespace
   f5xc_virtual_k8s_name     = volterra_virtual_k8s.vk8s.name
+  f5xc_virtual_k8s_namespace = volterra_virtual_k8s.vk8s.namespace
   f5xc_api_credential_type  = "KUBE_CONFIG"
   f5xc_api_credentials_name = var.f5xc_k8s_credentials_name
 }

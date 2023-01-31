@@ -1,14 +1,13 @@
-resource "aws_network_interface" "compute_nic_private" {
-  count             = var.machine_count
-  subnet_id         = var.subnet_private_id
+resource "aws_network_interface" "slo" {
+  subnet_id         = var.subnet_slo_id
   security_groups   = [var.security_group_private_id]
   source_dest_check = false
   tags              = local.common_tags
 }
 
-resource "aws_network_interface" "compute_nic_inside" {
-  count             = var.machine_count
-  subnet_id         = var.subnet_inside_id
+resource "aws_network_interface" "sli" {
+  count             = var.subnet_sli_id != "" ? 1 : 0
+  subnet_id         = var.subnet_sli_id
   security_groups   = [var.security_group_private_id]
   source_dest_check = false
   tags              = local.common_tags
@@ -24,16 +23,14 @@ resource "null_resource" "delay_eip_creation" {
   }
 }
 
-resource "aws_eip" "compute_public_ip" {
-  count             = var.machine_count
-  vpc               = true
-  network_interface = element(aws_network_interface.compute_nic_private.*.id, count.index)
+resource "aws_eip" "public_ip" {
   depends_on        = [null_resource.delay_eip_creation]
+  vpc               = true
   tags              = local.common_tags
+  network_interface = aws_network_interface.compute_nic_slo.*.id
 }
 
 resource "aws_instance" "instance" {
-  count                = var.machine_count
   ami                  = var.machine_image
   instance_type        = var.machine_type
   user_data_base64     = base64encode(var.machine_config)
@@ -43,7 +40,7 @@ resource "aws_instance" "instance" {
   tags                 = merge(
     local.common_tags,
     {
-      "Name" = element(var.machine_names, count.index)
+      "Name" = var.instance_name
     }
   )
 
@@ -52,14 +49,14 @@ resource "aws_instance" "instance" {
   }
 
   network_interface {
-    network_interface_id = element(aws_network_interface.compute_nic_private.*.id, count.index)
+    network_interface_id = element(aws_network_interface.compute_nic_slo.*.id, count.index)
     device_index         = "0"
   }
 
   dynamic "network_interface" {
-    for_each = ""
+    for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = element(aws_network_interface.compute_nic_inside.*.id, count.index)
+      network_interface_id = aws_network_interface.compute_nic_sli.*.id
       device_index         = "1"
     }
   }
@@ -71,16 +68,15 @@ resource "aws_instance" "instance" {
 }
 
 resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
-  count            = var.machine_count
   target_group_arn = var.target_group_arn
-  target_id        = element(aws_instance.volterra_ce.*.id, count.index)
+  target_id        = aws_instance.instance.*.id
   port             = 6443
 }
 
 resource "volterra_registration_approval" "nodes" {
-  depends_on   = [aws.instance]
-  cluster_name = var.instance_name
-  cluster_size = var.f5xc_cluster_size
+  depends_on   = [aws_instance.instance]
+  cluster_name = var.cluster_name
+  cluster_size = var.cluster_size
   hostname     = var.instance_name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
@@ -101,7 +97,7 @@ module "site_wait_for_online" {
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url
   f5xc_namespace = var.f5xc_namespace
-  f5xc_site_name = google_compute_instance.instance.name
+  f5xc_site_name = aws_instance.instance.tags["Name"]
   f5xc_tenant    = var.f5xc_tenant
   is_sensitive   = var.is_sensitive
 }

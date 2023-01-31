@@ -1,19 +1,13 @@
-variable "region" {
-  type = string
+variable "is_sensitive" {
+  type = bool
 }
 
 variable "machine_image" {
-}
-
-variable "machine_names" {
-  default = []
-}
-
-variable "machine_count" {
-  default = "0"
+  type = string
 }
 
 variable "machine_type" {
+  type    = string
   default = "t3.medium"
 }
 
@@ -35,34 +29,42 @@ variable "instance_delete_timeout" {
   default = "60m"
 }
 
-variable "machine_config" {}
+variable "machine_config" {
+  type = string
+}
 
-variable "machine_public_key" {}
+variable "machine_public_key" {
+  type = string
+}
 
-variable "subnet_private_id" {}
+variable "subnet_slo_id" {
+  type = string
+}
 
-variable "subnet_inside_id" {}
+variable "subnet_sli_id" {
+  type = string
+}
 
-variable "security_group_private_id" {}
+variable "security_group_private_id" {
+  type = string
+}
 
 variable "machine_disk_size" {
+  type    = string
   default = "40"
 }
 
 variable "target_group_arn" {
+  type    = string
   default = ""
 }
 
-variable "disable_public_ip" {
-  default = false
+variable "cluster_name" {
+  type = string
 }
 
-variable "enable_auto_registration" {
-  default = false
-}
-
-variable "iam_owner" {
-  default = "default"
+variable "cluster_size" {
+  type = number
 }
 
 variable "f5xc_api_url" {
@@ -87,4 +89,18 @@ variable "f5xc_registration_wait_time" {
 
 variable "f5xc_registration_retry" {
   type = number
+}
+
+variable "f5xc_ce_gateway_type_ingress" {
+  type    = string
+  default = "ingress_gateway"
+}
+
+variable "f5xc_ce_gateway_type_ingress_egress" {
+  type    = string
+  default = "ingress_egress_gateway"
+}
+
+variable "f5xc_ce_gateway_type" {
+  type = string
 }

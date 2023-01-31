@@ -6,7 +6,7 @@ variable "public_name" {
   type = string
 }
 
-variable "cluster_name" {
+variable "instance_name" {
   type = string
 }
 
@@ -15,20 +15,24 @@ variable "cluster_workload" {
   default = ""
 }
 
-variable "cluster_labels" {
-  type    = string
-  default = "{}"
-}
-
-variable "cluster_latitude" {
-  type = string
-}
-
-variable "cluster_longitude" {
+variable "machine_image" {
   type = string
 }
 
 variable "ssh_public_key" {
+  type = string
+}
+
+variable "f5xc_cluster_labels" {
+  type    = string
+  default = "{}"
+}
+
+variable "f5xc_cluster_latitude" {
+  type = string
+}
+
+variable "f5xc_cluster_longitude" {
   type = string
 }
 
@@ -85,13 +89,23 @@ variable "f5xc_aws_vpc_az_nodes" {
 }
 
 variable "f5xc_aws_region" {
-  type    = string
-  default = "us-west-2"
+  type = string
 }
 
 variable "f5xc_aws_availability_zone" {
-  type    = string
-  default = "a"
+  type = string
+}
+
+variable "f5xc_cluster_name" {
+  type = string
+}
+
+variable "f5xc_cluster_size" {
+  type = number
+  validation {
+    condition     = var.f5xc_cluster_size == 1 || var.f5xc_cluster_size == 3
+    error_message = format("Valid values for f5xc_cluster_size: 1 or 3")
+  }
 }
 
 variable "aws_vpc_subnet_prefix" {

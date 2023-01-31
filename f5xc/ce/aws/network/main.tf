@@ -7,7 +7,7 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   tags   = local.common_tags
 }
 
@@ -25,7 +25,7 @@ resource "aws_route" "route_ipv6" {
 
 resource "aws_subnet" "slo" {
   for_each          = var.f5xc_aws_vpc_az_nodes
-  vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   cidr_block        = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   tags              = local.common_tags
@@ -33,7 +33,7 @@ resource "aws_subnet" "slo" {
 
 resource "aws_subnet" "sli" {
   for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress}
-  vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   cidr_block        = each.value["f5xc_aws_vpc_sli_subnet"]
   availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   tags              = local.common_tags
@@ -54,7 +54,7 @@ resource "aws_nat_gateway" "ngw" {
 
 resource "aws_route_table" "sli_subnet" {
   count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -71,7 +71,7 @@ resource "aws_route_table_association" "rta_sli_subnet" {
 
 resource "aws_security_group" "sg" {
   name       = "${var.cluster_name}-sg"
-  vpc_id     = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   tags       = local.common_tags
   depends_on = [
     aws_internet_gateway.igw,
@@ -171,7 +171,7 @@ resource "aws_lb_listener" "api-server-https" {
 
 resource "aws_lb_target_group" "controllers" {
   name        = "${var.cluster_name}-lb-ctl"
-  vpc_id      = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.*.id
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   target_type = "instance"
   protocol    = "TCP"
   port        = 6443

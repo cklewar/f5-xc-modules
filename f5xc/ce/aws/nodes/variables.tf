@@ -65,6 +65,10 @@ variable "cluster_name" {
 
 variable "cluster_size" {
   type = number
+  validation {
+    condition     = var.cluster_size == 1 || var.cluster_size == 3
+    error_message = format("Valid values for f5xc_cluster_size: 1 or 3")
+  }
 }
 
 variable "f5xc_api_url" {

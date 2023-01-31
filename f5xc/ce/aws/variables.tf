@@ -6,10 +6,6 @@ variable "public_name" {
   type = string
 }
 
-variable "instance_name" {
-  type = string
-}
-
 variable "cluster_workload" {
   type    = string
   default = ""
@@ -92,20 +88,8 @@ variable "f5xc_aws_region" {
   type = string
 }
 
-variable "f5xc_aws_availability_zone" {
-  type = string
-}
-
 variable "f5xc_cluster_name" {
   type = string
-}
-
-variable "f5xc_cluster_size" {
-  type = number
-  validation {
-    condition     = var.f5xc_cluster_size == 1 || var.f5xc_cluster_size == 3
-    error_message = format("Valid values for f5xc_cluster_size: 1 or 3")
-  }
 }
 
 variable "aws_vpc_subnet_prefix" {

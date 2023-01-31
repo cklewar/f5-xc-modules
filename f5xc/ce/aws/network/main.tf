@@ -24,17 +24,18 @@ resource "aws_route" "route_ipv6" {
 }
 
 resource "aws_subnet" "slo" {
+  for_each          = var.f5xc_aws_vpc_az_nodes
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
-  cidr_block        = var.f5xc_ce_slo_subnet
-  availability_zone = data.aws_availability_zones.available_az.names[0]
+  cidr_block        = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
+  availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   tags              = local.common_tags
 }
 
 resource "aws_subnet" "sli" {
-  count             = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress}
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc.id
-  cidr_block        = var.f5xc_ce_sli_subnet
-  availability_zone = data.aws_availability_zones.available_az.names[0]
+  cidr_block        = each.value["f5xc_aws_vpc_sli_subnet"]
+  availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   tags              = local.common_tags
 }
 
@@ -47,7 +48,7 @@ resource "aws_eip" "nat_gw_eip" {
 resource "aws_nat_gateway" "ngw" {
   count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   allocation_id = element(aws_eip.nat_gw_eip.*.id, count.index)
-  subnet_id     = aws_subnet.slo.id
+  subnet_id     = element(aws_subnet.slo.*.id)
   tags          = local.common_tags
 }
 
@@ -63,7 +64,7 @@ resource "aws_route_table" "sli_subnet" {
 }
 
 resource "aws_route_table_association" "rta_sli_subnet" {
-  count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? length(aws_route_table.sli_subnet) : 0
   subnet_id      = element(aws_subnet.sli.*.id, count.index)
   route_table_id = element(aws_route_table.sli_subnet.*.id, count.index)
 }
@@ -185,7 +186,7 @@ resource "aws_lb_target_group" "controllers" {
 }
 
 resource "aws_iam_role" "role" {
-  name = "${var.cluster_name}-role"
+  name               = "${var.cluster_name}-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

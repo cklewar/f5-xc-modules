@@ -28,14 +28,6 @@ variable "cluster_longitude" {
   type = string
 }
 
-variable "f5xc_ce_sli_subnet" {
-  type = string
-}
-
-variable "f5xc_ce_slo_subnet" {
-  type = string
-}
-
 variable "ssh_public_key" {
   type = string
 }

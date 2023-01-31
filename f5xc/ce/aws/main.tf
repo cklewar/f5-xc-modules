@@ -9,14 +9,13 @@ module "network" {
   cluster_name          = var.cluster_name
   aws_region            = var.f5xc_aws_region
   aws_vpc_subnet_prefix = var.aws_vpc_subnet_prefix
-  f5xc_ce_sli_subnet    = var.f5xc_ce_sli_subnet
-  f5xc_ce_slo_subnet    = var.f5xc_ce_slo_subnet
   f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
+  f5xc_aws_vpc_az_nodes = var.f5xc_aws_vpc_az_nodes
 }
 
 module "config" {
   source               = "./config"
-  for_each             = {for k, v in local.f5xc_aws_vpc_az_nodes : k=>v}
+  for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
   public_address       = module.network.ce["nlb"]["dns_name"]

@@ -16,7 +16,8 @@ variable "f5xc_tenant" {
 }
 
 variable "f5xc_namespace" {
-  type = string
+  type    = string
+  default = "system"
 }
 
 variable "f5xc_api_credentials_name" {

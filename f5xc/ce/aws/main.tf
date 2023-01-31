@@ -33,7 +33,6 @@ module "config" {
 module "node" {
   source                      = "./nodes"
   for_each                    = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
-  region                      = var.f5xc_aws_region
   owner_tag                   = var.owner_tag
   f5xc_tenant                 = var.f5xc_tenant
   f5xc_api_url                = var.f5xc_api_url

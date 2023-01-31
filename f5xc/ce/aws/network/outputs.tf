@@ -21,7 +21,3 @@ output "ce" {
     } : null
   }
 }
-
-output "test123" {
-  value = [var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? join("", aws_subnet.slo.*.id) : ""]
-}

@@ -17,8 +17,6 @@ F5XC_CREDENTIAL_DELETE_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/revoke/api
 F5XC_CREDENTIAL_POST_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_CREDENTIAL_GET_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/api_credentials"
 F5XC_API_CERT_EXPIRATION_DAYS = "10"
-# F5XC_VIRTUAL_K8S_NAMESPACE = "shared"
-F5XC_VIRTUAL_K8S_NAMESPACE = "default"
 F5XC_API_CERT_PASSWORD = ""
 HEADERS = {
     'Accept': 'application/data',
@@ -77,7 +75,7 @@ class State:
 class APICredential:
     def __init__(self, api_url: str = None, api_token: str = None, tenant: str = None, expiration_days: str = None, namespace: str = None, credential_type: str = None,
                  virtual_k8s_name: str = None, post_payload_template_file: str = None, delete_payload_template_file: str = None,
-                 template_directory: str = None, headers: dict = None, name: str = None):
+                 template_directory: str = None, headers: dict = None, name: str = None, virtual_k8s_namespace: str = None):
         if api_url is None:
             raise ValueError('"api_url" must not be None')
         else:
@@ -98,8 +96,8 @@ class APICredential:
         self._namespace = F5XC_SYSTEM_NAMESPACE if namespace is None else namespace
         self._credential_type = credential_type
         self._virtual_k8s_name = virtual_k8s_name
+        self._virtual_k8s_namespace = virtual_k8s_namespace
         self._certificate_password = None
-        self._virtual_k8s_namespace = F5XC_VIRTUAL_K8S_NAMESPACE
         if headers is None:
             HEADERS["Authorization"] = f"APIToken {api_token}"
             HEADERS["x-volterra-apigw-tenant"] = f"{tenant}"
@@ -197,6 +195,15 @@ class APICredential:
     @property
     def virtual_k8s_namespace(self) -> str:
         return self._virtual_k8s_namespace
+
+    @virtual_k8s_namespace.setter
+    def virtual_k8s_namespace(self, namespace: str = None):
+        if namespace is None:
+            raise ValueError('"namespace" must not be none') from None
+        try:
+            self._virtual_k8s_namespace = str(namespace)
+        except ValueError:
+            raise ValueError('"namespace" must be string') from None
 
     @property
     def post_payload_template_file(self) -> str:
@@ -330,6 +337,7 @@ if __name__ == '__main__':
     parser.add_argument("name", help="API Credential Object Name", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k8s Name", type=str)
     parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
+    parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     args = parser.parse_args()
     apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant, name=args.name)
@@ -351,6 +359,7 @@ if __name__ == '__main__':
             raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
         apic.credential_type = args.ctype
         apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
+        apic.virtual_k8s_namespace = args.namespace if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
         apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
         print(f"Initiate {Action.POST.name} request")
 

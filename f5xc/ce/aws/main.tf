@@ -30,6 +30,21 @@ module "config" {
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
 }
 
-/*module "node" {
-  source = ""
-}*/
+module "node" {
+  source                      = "./nodes"
+  f5xc_api_url                = var.f5xc_api_url
+  f5xc_api_token              = var.f5xc_api_token
+  f5xc_namespace              = var.f5xc_namespace
+  f5xc_registration_retry     = 5
+  f5xc_registration_wait_time = 60
+  f5xc_tenant                 = var.f5xc_tenant
+  instance_name               = ""
+  machine_config              = ""
+  machine_image               = ""
+  machine_public_key          = var.ssh_public_key
+  owner_tag                   = var.owner_tag
+  region                      = var.f5xc_aws_region
+  security_group_private_id   = ""
+  subnet_inside_id            = ""
+  subnet_private_id           = ""
+}

@@ -1,3 +1,7 @@
+output "ce" {
+  value = ""
+}
+
 output "addresses" {
   value = aws_network_interface.compute_nic_private.*.private_ip
 }

@@ -27,7 +27,7 @@ resource "aws_eip" "public_ip" {
   depends_on        = [null_resource.delay_eip_creation]
   vpc               = true
   tags              = local.common_tags
-  network_interface = aws_network_interface.slo.*.id
+  network_interface = aws_network_interface.slo.id
 }
 
 resource "aws_instance" "instance" {
@@ -49,14 +49,14 @@ resource "aws_instance" "instance" {
   }
 
   network_interface {
-    network_interface_id = aws_network_interface.slo.*.id
+    network_interface_id = aws_network_interface.slo.id
     device_index         = "0"
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = aws_network_interface.sli.*.id
+      network_interface_id = aws_network_interface.sli.id
       device_index         = "1"
     }
   }
@@ -69,7 +69,7 @@ resource "aws_instance" "instance" {
 
 resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
   target_group_arn = var.target_group_arn
-  target_id        = aws_instance.instance.*.id
+  target_id        = aws_instance.instance.id
   port             = 6443
 }
 

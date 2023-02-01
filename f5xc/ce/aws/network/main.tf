@@ -24,7 +24,7 @@ resource "aws_route" "route_ipv6" {
 }
 
 resource "aws_subnet" "slo" {
-  for_each          = var.f5xc_aws_vpc_az_nodes
+  for_each          = contains(keys(var.f5xc_aws_vpc_az_nodes), "f5xc_aws_vpc_slo_subnet") ? var.f5xc_aws_vpc_az_nodes : []
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   cidr_block        = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
@@ -32,7 +32,7 @@ resource "aws_subnet" "slo" {
 }
 
 resource "aws_subnet" "sli" {
-  for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress}
+  for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress && contains(keys(var.f5xc_aws_vpc_az_nodes), "f5xc_aws_vpc_sli_subnet")}
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   cidr_block        = each.value["f5xc_aws_vpc_sli_subnet"]
   availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
@@ -52,7 +52,7 @@ resource "aws_nat_gateway" "ngw" {
   tags          = local.common_tags
 }
 
-resource "aws_route_table" "sli_subnet" {
+resource "aws_route_table" "sli" {
   count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 
@@ -64,9 +64,9 @@ resource "aws_route_table" "sli_subnet" {
 }
 
 resource "aws_route_table_association" "rta_sli_subnet" {
-  count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? length(aws_route_table.sli_subnet) : 0
+  count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? length(aws_route_table.sli) : 0
   subnet_id      = element(aws_subnet.sli.*.id, count.index)
-  route_table_id = element(aws_route_table.sli_subnet.*.id, count.index)
+  route_table_id = element(aws_route_table.sli.*.id, count.index)
 }
 
 resource "aws_security_group" "sg" {
@@ -152,9 +152,9 @@ resource "aws_security_group" "sg" {
 resource "aws_lb" "nlb" {
   tags                             = local.common_tags
   name                             = "${var.cluster_name}-nlb"
-  subnets                          = [for subnet in aws_subnet.slo : subnet.id] # [var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? join("", aws_subnet.slo.*.id) : aws_subnet.sli.*.id]
+  subnets                          = [for subnet in aws_subnet.slo : subnet.id]
   internal                         = true
-  load_balancer_type               = "network"
+  load_balancer_type               = var.aws_lb_type_nlb
   enable_cross_zone_load_balancing = true
 }
 

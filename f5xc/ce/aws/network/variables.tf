@@ -17,6 +17,11 @@ variable "aws_vp_enable_dns_hostnames" {
   default = true
 }
 
+variable "aws_lb_type_nlb" {
+  type    = string
+  default = "network"
+}
+
 variable "aws_eip_vpc" {
   type    = bool
   default = true

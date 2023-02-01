@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {

@@ -23,7 +23,8 @@ variable "existing_fabric_subnet_outside" {
 }
 
 variable "network_name" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "instance_name" {

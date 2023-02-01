@@ -280,3 +280,8 @@ variable "custom_labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "f5xc_azure_vnet_labels" {
+  type    = map(string)
+  default = {}
+}

@@ -19,7 +19,7 @@ resource "null_resource" "delay_eip_creation" {
   }
 
   triggers = {
-    "before" = aws_instance.instance[0].id
+    "before" = aws_instance.instance.id
   }
 }
 

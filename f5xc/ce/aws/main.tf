@@ -44,9 +44,9 @@ module "node" {
   is_sensitive                = false
   cluster_name                = var.f5xc_cluster_name
   cluster_size                = length(var.f5xc_aws_vpc_az_nodes)
-  instance_name               = format("%s-%s", var.f5xc_cluster_name, index(var.f5xc_aws_vpc_az_nodes, each.value) + 1)
+  instance_name               = format("%s-%s", var.f5xc_cluster_name, index(var.f5xc_aws_vpc_az_nodes, each.key) + 1)
   machine_image               = var.machine_image
-  machine_config              = module.config[each.key].ce
+  machine_config              = module.config[each.key].ce["user_data"]
   machine_public_key          = var.ssh_public_key
   subnet_slo_id               = module.network.nodes[each.key]["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network.nodes[each.key]["sli_subnet"]["id"] : ""

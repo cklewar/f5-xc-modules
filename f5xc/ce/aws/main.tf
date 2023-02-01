@@ -43,8 +43,8 @@ module "node" {
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
   is_sensitive                = false
   cluster_name                = var.f5xc_cluster_name
-  cluster_size                = var.f5xc_cluster_size
-  instance_name               = format("%s-%s", var.instance_name, index(var.f5xc_aws_vpc_az_nodes, each.value) + 1)
+  cluster_size                = length(var.f5xc_aws_vpc_az_nodes)
+  instance_name               = format("%s-%s", var.f5xc_cluster_name, index(var.f5xc_aws_vpc_az_nodes, each.value) + 1)
   machine_image               = var.machine_image
   machine_config              = module.config[each.key].ce
   machine_public_key          = var.ssh_public_key

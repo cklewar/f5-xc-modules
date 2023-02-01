@@ -49,7 +49,7 @@ resource "aws_instance" "instance" {
   }
 
   network_interface {
-    network_interface_id = element(aws_network_interface.slo.*.id, count.index)
+    network_interface_id = aws_network_interface.slo.*.id
     device_index         = "0"
   }
 

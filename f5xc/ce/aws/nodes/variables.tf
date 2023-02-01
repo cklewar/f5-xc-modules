@@ -108,3 +108,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
 }
+
+variable "f5xc_aws_vpc_az_nodes" {
+  type = map(map(string))
+}

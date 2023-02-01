@@ -1,23 +1,15 @@
 output "ce" {
-  value = ""
-}
-
-output "addresses" {
-  value = aws_network_interface.compute_nic_private.*.private_ip
-}
-
-output "inside_addresses" {
-  value = aws_network_interface.compute_nic_inside.*.private_ip
-}
-
-output "public_addresses" {
-  value = aws_eip.compute_public_ip.*.public_ip
-}
-
-output "machines" {
-  value = aws_instance.volterra_ce.*.id
-}
-
-output "inside_intf_ids" {
-  value = aws_network_interface.compute_nic_inside.*.id
+  value = {
+    id          = aws_instance.instance.id
+    ami         = aws_instance.instance.ami
+    name        = aws_instance.instance.tags["Name"]
+    tags        = aws_instance.instance.tags
+    public_ip   = aws_instance.instance.public_ip
+    private_ip  = aws_instance.instance.private_ip
+    private_dns = aws_instance.instance.private_dns
+    interfaces  = {
+      slo = aws_network_interface.slo
+      sli = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? aws_network_interface.sli : null
+    }
+  }
 }

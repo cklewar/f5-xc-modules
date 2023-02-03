@@ -25,7 +25,6 @@ resource "aws_route" "route_ipv6" {
 
 resource "aws_subnet" "slo" {
   for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if contains(keys(v), "f5xc_aws_vpc_slo_subnet")}
-  # for_each          = contains(keys(var.f5xc_aws_vpc_az_nodes), "f5xc_aws_vpc_slo_subnet") ? var.f5xc_aws_vpc_az_nodes : {}
   vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   cidr_block        = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   availability_zone = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]

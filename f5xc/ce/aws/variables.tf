@@ -11,10 +11,6 @@ variable "cluster_workload" {
   default = ""
 }
 
-variable "machine_image" {
-  type = string
-}
-
 variable "ssh_public_key" {
   type = string
 }

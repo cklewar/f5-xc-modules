@@ -45,7 +45,7 @@ module "node" {
   cluster_name                = var.f5xc_cluster_name
   cluster_size                = length(var.f5xc_aws_vpc_az_nodes)
   instance_name               = format("%s-%s", var.f5xc_cluster_name, each.key)
-  machine_image               = var.machine_image
+  machine_image               = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   machine_config              = module.config[each.key].ce["user_data"]
   machine_public_key          = var.ssh_public_key
   subnet_slo_id               = module.network.nodes[each.key]["slo_subnet"]["id"]

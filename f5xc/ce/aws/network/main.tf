@@ -76,9 +76,6 @@ module "aws_security_group_slo" {
   aws_security_group_name     = format("%s-sg-slo", var.cluster_name)
   security_group_rule_egress  = var.aws_security_group_rule_slo_egress
   security_group_rule_ingress = var.aws_security_group_rule_slo_ingress
-  providers                   = {
-    aws = aws.default
-  }
 }
 
 module "aws_security_group_sli" {
@@ -88,10 +85,6 @@ module "aws_security_group_sli" {
   aws_security_group_name     = format("%s-sg-sli", var.cluster_name)
   security_group_rule_egress  = var.aws_security_group_rule_sli_egress
   security_group_rule_ingress = var.aws_security_group_rule_sli_ingress
-
-  providers = {
-    aws = aws.default
-  }
 }
 
 /*resource "aws_lb" "nlb" {

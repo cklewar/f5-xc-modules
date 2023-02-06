@@ -3,22 +3,32 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-module "network" {
-  source                              = "./network"
-  for_each                            = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
+module "network_common" {
+  source                              = "./network/common"
   owner_tag                           = var.owner_tag
   cluster_name                        = var.f5xc_cluster_name
-  f5xc_aws_region                     = var.f5xc_aws_region
-  f5xc_cluster_name                   = var.cluster_workload
   f5xc_ce_gateway_type                = var.f5xc_ce_gateway_type
-  aws_vpc_az                          = var.aws_vpc_az
-  aws_subnet_sli_cidr                 = var.aws_subnet_sli_cidr
-  aws_subnet_slo_cidr                 = var.aws_subnet_slo_cidr
   aws_vpc_subnet_prefix               = var.aws_vpc_subnet_prefix
   aws_security_group_rule_sli_egress  = var.aws_security_group_rule_sli_egress
   aws_security_group_rule_sli_ingress = var.aws_security_group_rule_sli_ingress
   aws_security_group_rule_slo_egress  = var.aws_security_group_rule_slo_egress
   aws_security_group_rule_slo_ingress = var.aws_security_group_rule_slo_ingress
+}
+
+module "network_node" {
+  source                = "network/node"
+  for_each              = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
+  owner_tag             = var.owner_tag
+  cluster_name          = var.f5xc_cluster_name
+  f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
+  aws_region            = var.f5xc_aws_region
+  aws_vpc_az            = var.aws_vpc_az
+  aws_sg_slo_id         = module.network_common.common["sg_slo"]["id"]
+  aws_sg_sli_id         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
+  aws_subnet_sli_cidr   = var.aws_subnet_sli_cidr
+  aws_subnet_slo_cidr   = var.aws_subnet_slo_cidr
+  aws_vpc_subnet_prefix = var.aws_vpc_subnet_prefix
+  aws_eip_nat_gw_eip_id = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["nat_gw_eip_id"] : ""
 }
 
 module "config" {
@@ -27,7 +37,7 @@ module "config" {
   owner_tag            = var.owner_tag
   public_name          = var.public_name
   # public_address       = module.network.common["nlb"]["dns_name"]
-  public_address       = module.network.common
+  public_address       = module.network_node["interface"]
   cluster_name         = var.f5xc_cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.f5xc_cluster_labels
@@ -57,9 +67,9 @@ module "node" {
   machine_image               = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   machine_config              = module.config[each.key].ce["user_data"]
   machine_public_key          = var.ssh_public_key
-  subnet_slo_id               = module.network.nodes[each.key]["slo_subnet"]["id"]
-  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network.nodes[each.key]["sli_subnet"]["id"] : ""
-  instance_profile            = module.network.common["instance_profile"]
-  security_group_sli_id       = module.network.common["sg_sli"]["id"]
-  security_group_slo_id       = module.network.common["sg_slo"]["id"]
+  subnet_slo_id               = module.network_node.node[each.key]["slo_subnet"]["id"]
+  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.node[each.key]["sli_subnet"]["id"] : ""
+  instance_profile            = module.network_common.common["instance_profile"]
+  security_group_sli_id       = module.network_common.common["sg_sli"]["id"]
+  security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
 }

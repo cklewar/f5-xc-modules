@@ -35,7 +35,7 @@ module "config" {
   for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
-  public_address       = module.network_node[each.key].ce["slo"]["public_ip"]
+  public_address       = "" # module.network_node[each.key].ce["slo"]["public_ip"]
   cluster_name         = var.f5xc_cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.f5xc_cluster_labels
@@ -69,7 +69,7 @@ module "node" {
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
   instance_profile            = module.network_common.common["instance_profile"]
   interface_slo_id            = module.network_node[each.key].ce["slo"]["id"]
-  interface_sli_id            = module.network_node[each.key].ce["sli"]["id"]
+  interface_sli_id            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
 }

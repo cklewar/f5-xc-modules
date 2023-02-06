@@ -70,105 +70,25 @@ resource "aws_route_table_association" "rta_sli_subnet" {
 }
 
 module "aws_security_group_slo" {
-  source                     = "../../../../aws/security_group"
-  aws_security_group_name    = format("%s-sg-slo", var.cluster_name)
-  aws_vpc_id                 = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
-  tags                       = local.common_tags
-  security_group_rule_egress = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = -1
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-  security_group_rule_ingress = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-
-    {
-      from_port   = "-1"
-      to_port     = "-1"
-      protocol    = "icmp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-
-    {
-      from_port   = "4500"
-      to_port     = "4500"
-      protocol    = "udp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }, {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["10.0.0.0/8"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["192.168.0.0/16"]
-    }
-
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["172.16.0.0/12"]
-    },
-
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["10.0.0.0/8"]
-    },
-
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["192.168.0.0/16"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["172.16.0.0/12"]
-    }
-  ]
-  providers = {
+  source                      = "../../../../aws/security_group"
+  aws_security_group_name     = format("%s-sg-slo", var.cluster_name)
+  aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
+  tags                        = local.common_tags
+  security_group_rule_egress  = var.aws_security_group_rule_slo_egress
+  security_group_rule_ingress = var.aws_security_group_rule_slo_ingress
+  providers                   = {
     aws = aws.default
   }
 }
 
 module "aws_security_group_sli" {
-  source                     = "../../../../aws/security_group"
-  aws_security_group_name    = format("%s-sg-sli", var.cluster_name)
-  aws_vpc_id                 = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
-  tags                       = local.common_tags
-  security_group_rule_egress = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = -1
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-  security_group_rule_ingress = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-  providers = {
+  source                      = "../../../../aws/security_group"
+  aws_security_group_name     = format("%s-sg-sli", var.cluster_name)
+  aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
+  tags                        = local.common_tags
+  security_group_rule_egress  = var.aws_security_group_rule_sli_egress
+  security_group_rule_ingress = var.aws_security_group_rule_sli_ingress
+  providers                   = {
     aws = aws.default
   }
 }

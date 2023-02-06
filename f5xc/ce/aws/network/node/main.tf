@@ -24,7 +24,7 @@ module "network_interface_slo" {
 module "network_interface_sli" {
   source                          = "../../../../../aws/network_interface"
   count                           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  aws_interface_subnet_id         = aws_subnet.sli.id
+  aws_interface_subnet_id         = aws_subnet.sli[0].id
   aws_interface_create_eip        = false
   aws_interface_security_groups   = [var.aws_sg_sli_id]
   aws_interface_source_dest_check = false

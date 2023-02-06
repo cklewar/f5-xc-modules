@@ -22,13 +22,11 @@ module "network_node" {
   node_name             = format("%s-%s", var.f5xc_cluster_name, each.key)
   cluster_name          = var.f5xc_cluster_name
   f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
-  aws_region            = var.f5xc_aws_region
   aws_vpc_az            = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_sg_slo_id         = module.network_common.common["sg_slo"]["id"]
   aws_sg_sli_id         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   aws_subnet_sli_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"]
-  aws_vpc_subnet_prefix = var.aws_vpc_subnet_prefix
   aws_eip_nat_gw_eip_id = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["nat_gw_eip_id"] : ""
 }
 
@@ -64,7 +62,6 @@ module "node" {
   is_sensitive                = false
   cluster_size                = length(var.f5xc_aws_vpc_az_nodes)
   cluster_name                = var.f5xc_cluster_name
-  instance_name               = format("%s-%s", var.f5xc_cluster_name, each.key)
   machine_image               = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   machine_config              = module.config[each.key].ce["user_data"]
   machine_public_key          = var.ssh_public_key

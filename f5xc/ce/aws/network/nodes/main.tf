@@ -9,6 +9,7 @@ module "aws_security_group_slo" {
 
 module "aws_security_group_sli" {
   source                      = "../../../../../aws/security_group"
+  count                       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   aws_vpc_id                  = var.aws_vpc_id
   custom_tags                 = local.common_tags
   aws_security_group_name     = format("%s-sg-sli", var.cluster_name)
@@ -19,15 +20,16 @@ module "aws_security_group_sli" {
 resource "aws_subnet" "slo" {
   # for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if contains(keys(v), "f5xc_aws_vpc_slo_subnet")}
   vpc_id            = var.aws_vpc_id
-  cidr_block        = var.aws_vpc_slo_subnet
+  cidr_block        = var.aws_subnet_slo_cidr
   availability_zone = var.aws_vpc_az
   tags              = local.common_tags
 }
 
 resource "aws_subnet" "sli" {
   # for_each          = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress && contains(keys(var.f5xc_aws_vpc_az_nodes), "f5xc_aws_vpc_sli_subnet")}
+  count             = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc_id            = var.aws_vpc_id
-  cidr_block        = var.aws_vpc_sli_subnet
+  cidr_block        = var.aws_subnet_sli_cidr
   availability_zone = var.aws_vpc_az
   tags              = local.common_tags
 }
@@ -35,7 +37,7 @@ resource "aws_subnet" "sli" {
 module "network_interface_slo" {
   source                          = "../../../../../aws/network_interface"
   # for_each                        = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v if contains(keys(v), "f5xc_aws_vpc_slo_subnet")}
-  aws_interface_subnet_id         = var.aws_subnet_slo_id
+  aws_interface_subnet_id         = aws_subnet.slo.id
   aws_interface_create_eip        = var.has_public_ip
   aws_interface_security_groups   = [module.aws_security_group_slo.aws_security_group["id"]]
   aws_interface_source_dest_check = false
@@ -44,7 +46,7 @@ module "network_interface_slo" {
 module "network_interface_sli" {
   source                          = "../../../../../aws/network_interface"
   count                           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  aws_interface_subnet_id         = var.aws_subnet_sli_id
+  aws_interface_subnet_id         = aws_subnet.sli.id
   aws_interface_create_eip        = false
   aws_interface_security_groups   = [module.aws_security_group_sli.aws_security_group["id"]]
   aws_interface_source_dest_check = false

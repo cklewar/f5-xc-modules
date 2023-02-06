@@ -15,7 +15,7 @@ variable "ssh_public_key" {
   type = string
 }
 
-variable "security_group_rule_slo_egress" {
+variable "aws_security_group_rule_slo_egress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -32,7 +32,7 @@ variable "security_group_rule_slo_egress" {
   ]
 }
 
-variable "security_group_rule_slo_ingress" {
+variable "aws_security_group_rule_slo_ingress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -96,7 +96,7 @@ variable "security_group_rule_slo_ingress" {
   ]
 }
 
-variable "security_group_rule_sli_egress" {
+variable "aws_security_group_rule_sli_egress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -113,7 +113,7 @@ variable "security_group_rule_sli_egress" {
   ]
 }
 
-variable "security_group_rule_sli_ingress" {
+variable "aws_security_group_rule_sli_ingress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -306,7 +306,19 @@ variable "f5xc_ce_machine_image" {
   }
 }
 
-
 variable "aws_vpc_subnet_prefix" {
   type = string
 }
+
+variable "aws_vpc_az" {
+  type = string
+}
+
+variable "aws_subnet_sli_cidr" {
+  type = string
+}
+
+variable "aws_subnet_slo_cidr" {
+  type = string
+}
+

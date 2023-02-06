@@ -75,11 +75,6 @@ variable "cluster_size" {
   }
 }
 
-variable "has_public_ip" {
-  type    = bool
-  default = true
-}
-
 variable "instance_profile" {
   type = string
 }

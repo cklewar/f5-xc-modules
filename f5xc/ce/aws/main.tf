@@ -5,10 +5,10 @@ resource "volterra_token" "site" {
 
 module "network" {
   source                              = "./network"
+  for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag                           = var.owner_tag
   cluster_name                        = var.f5xc_cluster_name
   f5xc_ce_gateway_type                = var.f5xc_ce_gateway_type
-  f5xc_aws_vpc_az_nodes               = var.f5xc_aws_vpc_az_nodes
   aws_region                          = var.f5xc_aws_region
   aws_vpc_subnet_prefix               = var.aws_vpc_subnet_prefix
   aws_security_group_rule_sli_egress  = var.security_group_rule_sli_egress
@@ -22,7 +22,8 @@ module "config" {
   for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
-  public_address       = module.network.common["nlb"]["dns_name"]
+  # public_address       = module.network.common["nlb"]["dns_name"]
+  public_address       = module.network.common
   cluster_name         = var.f5xc_cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.f5xc_cluster_labels

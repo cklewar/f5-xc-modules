@@ -1,30 +1,3 @@
-module "network_interface_slo" {
-  source                          = "../../../../aws/network_interface"
-  aws_interface_subnet_id         = var.subnet_slo_id
-  aws_interface_create_eip        = var.has_public_ip
-  aws_interface_security_groups   = [var.security_group_slo_id]
-  aws_interface_source_dest_check = false
-}
-
-module "network_interface_sli" {
-  source                          = "../../../../aws/network_interface"
-  count                           = var.subnet_sli_id != "" ? 1 : 0
-  aws_interface_subnet_id         = var.subnet_sli_id
-  aws_interface_create_eip        = false
-  aws_interface_security_groups   = [var.security_group_sli_id]
-  aws_interface_source_dest_check = false
-}
-
-resource "null_resource" "delay_eip_creation" {
-  provisioner "local-exec" {
-    command = "sleep 1"
-  }
-
-  triggers = {
-    "before" = aws_instance.instance.id
-  }
-}
-
 resource "aws_instance" "instance" {
   ami                  = var.machine_image
   instance_type        = var.machine_type

@@ -5,7 +5,7 @@ output "nodes" {
       config  = module.config["node0"].ce
       network = {
         common = module.network_common.common
-        node   = module.network_node.ce["node0"]
+        node   = module.network_node["node0"].ce
       }
     }
     master-1 = length(var.f5xc_aws_vpc_az_nodes) > 1 ? {
@@ -13,7 +13,7 @@ output "nodes" {
       config  = module.config["node1"].ce
       network = {
         common = module.network_common.common
-        node   = module.network_node.ce["node1"]
+        node   = module.network_node["node1"].ce
       }
     } : null
     master-2 = length(var.f5xc_aws_vpc_az_nodes) > 1 ? {
@@ -21,7 +21,7 @@ output "nodes" {
       config  = module.config["node2"].ce
       network = {
         common = module.network_common.common
-        node   = module.network_node.ce["node2"]
+        node   = module.network_node["node2"].ce
       }
     } : null
   }

@@ -149,7 +149,7 @@ resource "aws_security_group" "sg" {
   }
 }
 
-resource "aws_lb" "nlb" {
+/*resource "aws_lb" "nlb" {
   tags                             = local.common_tags
   name                             = "${var.cluster_name}-nlb"
   subnets                          = [for subnet in aws_subnet.slo : subnet.id]
@@ -183,7 +183,7 @@ resource "aws_lb_target_group" "controllers" {
     unhealthy_threshold = 3
     interval            = 10
   }
-}
+}*/
 
 resource "aws_iam_role" "role" {
   name               = "${var.cluster_name}-role"

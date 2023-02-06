@@ -16,7 +16,7 @@ module "network_common" {
 }
 
 module "network_node" {
-  source                = "network/node"
+  source                = "./network/node"
   for_each              = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag             = var.owner_tag
   node_name             = format("%s-%s", var.f5xc_cluster_name, each.key)

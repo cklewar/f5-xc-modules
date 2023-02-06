@@ -51,5 +51,6 @@ module "node" {
   subnet_slo_id               = module.network.nodes[each.key]["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network.nodes[each.key]["sli_subnet"]["id"] : ""
   instance_profile            = module.network.common["instance_profile"]
-  security_group_private_id   = module.network.common["sg"]["id"]
+  security_group_sli_id       = module.network.common["sg_sli"]["id"]
+  security_group_slo_id       = module.network.common["sg_slo"]["id"]
 }

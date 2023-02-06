@@ -1,8 +1,9 @@
 resource "aws_network_interface" "interface" {
-  subnet_id       = var.aws_interface_subnet_id
-  private_ips     = var.aws_interface_private_ips
-  security_groups = var.aws_interface_security_groups
-  tags            = var.custom_tags
+  subnet_id         = var.aws_interface_subnet_id
+  private_ips       = var.aws_interface_private_ips
+  security_groups   = var.aws_interface_security_groups
+  source_dest_check = var.aws_interface_source_dest_check
+  tags              = var.custom_tags
 }
 
 resource "aws_eip" "eip" {

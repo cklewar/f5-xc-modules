@@ -45,7 +45,11 @@ variable "subnet_sli_id" {
   type = string
 }
 
-variable "security_group_private_id" {
+variable "security_group_slo_id" {
+  type = string
+}
+
+variable "security_group_sli_id" {
   type = string
 }
 
@@ -69,6 +73,11 @@ variable "cluster_size" {
     condition     = var.cluster_size == 1 || var.cluster_size == 3
     error_message = format("Valid values for f5xc_cluster_size: 1 or 3")
   }
+}
+
+variable "has_public_ip" {
+  type    = bool
+  default = true
 }
 
 variable "instance_profile" {

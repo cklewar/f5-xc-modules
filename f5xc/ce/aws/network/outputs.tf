@@ -1,6 +1,7 @@
 output "common" {
   value = {
-    sg               = aws_security_group.sg
+    sg_slo           = module.aws_security_group_slo.aws_security_group
+    sg_sli           = module.aws_security_group_sli.aws_security_group
     vpc              = var.aws_existing_vpc_id == "" ? aws_vpc.vpc[0] : null
     # nlb              = aws_lb.nlb
     igw              = aws_internet_gateway.igw

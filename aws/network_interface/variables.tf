@@ -7,11 +7,17 @@ variable "aws_interface_subnet_id" {
 }
 
 variable "aws_interface_private_ips" {
-  type = list(string)
+  type    = list(string)
+  default = []
 }
 
 variable "aws_interface_create_eip" {
   type = bool
+}
+
+variable "aws_interface_source_dest_check" {
+  type    = bool
+  default = true
 }
 
 variable "custom_tags" {

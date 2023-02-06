@@ -1,16 +1,18 @@
-resource "aws_network_interface" "slo" {
-  subnet_id         = var.subnet_slo_id
-  security_groups   = [var.security_group_private_id]
-  source_dest_check = false
-  tags              = local.common_tags
+module "network_interface_slo" {
+  source                          = "../../../../aws/network_interface"
+  aws_interface_subnet_id         = var.subnet_slo_id
+  aws_interface_create_eip        = var.has_public_ip
+  aws_interface_security_groups   = [var.security_group_slo_id]
+  aws_interface_source_dest_check = false
 }
 
-resource "aws_network_interface" "sli" {
-  count             = var.subnet_sli_id != "" ? 1 : 0
-  subnet_id         = var.subnet_sli_id
-  security_groups   = [var.security_group_private_id]
-  source_dest_check = false
-  tags              = local.common_tags
+module "network_interface_sli" {
+  source                          = "../../../../aws/network_interface"
+  count                           = var.subnet_sli_id != "" ? 1 : 0
+  aws_interface_subnet_id         = var.subnet_sli_id
+  aws_interface_create_eip        = false
+  aws_interface_security_groups   = [var.security_group_sli_id]
+  aws_interface_source_dest_check = false
 }
 
 resource "null_resource" "delay_eip_creation" {
@@ -21,13 +23,6 @@ resource "null_resource" "delay_eip_creation" {
   triggers = {
     "before" = aws_instance.instance.id
   }
-}
-
-resource "aws_eip" "public_ip" {
-  depends_on        = [null_resource.delay_eip_creation]
-  vpc               = true
-  tags              = local.common_tags
-  network_interface = aws_network_interface.slo.id
 }
 
 resource "aws_instance" "instance" {
@@ -49,14 +44,14 @@ resource "aws_instance" "instance" {
   }
 
   network_interface {
-    network_interface_id = aws_network_interface.slo.id
+    network_interface_id = module.network_interface_slo.aws_network_interface["id"]
     device_index         = "0"
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = aws_network_interface.sli.id
+      network_interface_id = module.network_interface_sli.aws_network_interface["id"]
       device_index         = "1"
     }
   }

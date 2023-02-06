@@ -1,12 +1,13 @@
 output "common" {
   value = {
-    sg           = aws_security_group.sg
-    vpc          = var.aws_existing_vpc_id == "" ? aws_vpc.vpc[0] : null
-    existing_vpc = var.aws_existing_vpc_id != "" ? data.aws_vpc.vpc : null
-    nlb          = aws_lb.nlb
-    igw          = aws_internet_gateway.igw
-    ngw          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? aws_nat_gateway.ngw : null
-    rt_sli       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? aws_route_table.sli : null
+    sg               = aws_security_group.sg
+    vpc              = var.aws_existing_vpc_id == "" ? aws_vpc.vpc[0] : null
+    nlb              = aws_lb.nlb
+    igw              = aws_internet_gateway.igw
+    ngw              = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? aws_nat_gateway.ngw : null
+    rt_sli           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? aws_route_table.sli : null
+    existing_vpc     = var.aws_existing_vpc_id != "" ? data.aws_vpc.vpc : null
+    instance_profile = aws_iam_instance_profile.instance_profile.name
   }
 }
 

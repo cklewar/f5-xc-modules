@@ -71,6 +71,10 @@ variable "cluster_size" {
   }
 }
 
+variable "instance_profile" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }

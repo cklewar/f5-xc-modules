@@ -50,5 +50,6 @@ module "node" {
   machine_public_key          = var.ssh_public_key
   subnet_slo_id               = module.network.nodes[each.key]["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network.nodes[each.key]["sli_subnet"]["id"] : ""
+  instance_profile            = module.network.common["instance_profile"]
   security_group_private_id   = module.network.common["sg"]["id"]
 }

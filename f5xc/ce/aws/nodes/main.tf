@@ -2,29 +2,24 @@ resource "aws_instance" "instance" {
   ami                  = var.machine_image
   instance_type        = var.machine_type
   user_data_base64     = base64encode(var.machine_config)
-  monitoring           = "false"
-  key_name             = "${var.instance_name}-key"
-  iam_instance_profile = "${var.instance_name}-profile"
-  tags                 = merge(
-    local.common_tags,
-    {
-      "Name" = var.instance_name
-    }
-  )
+  monitoring           = var.instance_monitoring
+  key_name             = "${var.node_name}-key"
+  iam_instance_profile = "${var.node_name}-profile"
+  tags                 = local.common_tags
 
   root_block_device {
     volume_size = var.machine_disk_size
   }
 
   network_interface {
-    network_interface_id = module.network_interface_slo.aws_network_interface["id"]
+    network_interface_id = var.interface_slo_id
     device_index         = "0"
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = module.network_interface_sli.aws_network_interface["id"]
+      network_interface_id = var.interface_sli_id
       device_index         = "1"
     }
   }
@@ -45,14 +40,14 @@ resource "volterra_registration_approval" "nodes" {
   depends_on   = [aws_instance.instance]
   cluster_name = var.cluster_name
   cluster_size = var.cluster_size
-  hostname     = var.instance_name
+  hostname     = var.node_name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
   depends_on = [volterra_registration_approval.nodes]
-  name       = var.instance_name
+  name       = var.node_name
   when       = "delete"
   state      = "DECOMMISSIONING"
   wait_time  = var.f5xc_registration_wait_time

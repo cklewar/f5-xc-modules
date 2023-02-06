@@ -2,6 +2,6 @@ locals {
   common_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
     "Owner"                                     = var.owner_tag
-    "Name"                                      = var.cluster_name
+    "Name"                                      = var.node_name
   }
 }

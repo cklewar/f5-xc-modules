@@ -15,13 +15,13 @@ variable "owner_tag" {
   type = string
 }
 
-variable "instance_name" {
-  type = string
-}
-
 variable "instance_create_timeout" {
   type    = string
   default = "60m"
+}
+
+variable "node_name" {
+  type = string
 }
 
 variable "instance_delete_timeout" {
@@ -67,12 +67,25 @@ variable "cluster_name" {
   type = string
 }
 
+variable "instance_monitoring" {
+  type    = bool
+  default = false
+}
+
 variable "cluster_size" {
   type = number
   validation {
     condition     = var.cluster_size == 1 || var.cluster_size == 3
     error_message = format("Valid values for f5xc_cluster_size: 1 or 3")
   }
+}
+
+variable "interface_slo_id" {
+  type = string
+}
+
+variable "interface_sli_id" {
+  type = string
 }
 
 variable "instance_profile" {

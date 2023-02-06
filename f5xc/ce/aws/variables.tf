@@ -310,15 +310,3 @@ variable "aws_vpc_subnet_prefix" {
   type = string
 }
 
-variable "aws_vpc_az" {
-  type = string
-}
-
-variable "aws_subnet_sli_cidr" {
-  type = string
-}
-
-variable "aws_subnet_slo_cidr" {
-  type = string
-}
-

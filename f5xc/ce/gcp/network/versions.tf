@@ -13,6 +13,6 @@ terraform {
     }
 
     local = ">= 2.2.3"
-    null  = ">= 3.0"
+    null = ">= 3.1.1"
   }
 }

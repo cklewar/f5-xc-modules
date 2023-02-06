@@ -36,10 +36,9 @@ module "config" {
   source               = "./config"
   for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
-  public_name          = var.public_name
-  # public_address       = module.network.common["nlb"]["dns_name"]
-  public_address       = module.network_node.node["slo"]["public_ip"]
   node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
+  public_name          = var.public_name
+  public_address       = module.network_node.node["slo"]["public_ip"]
   cluster_name         = var.f5xc_cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.f5xc_cluster_labels

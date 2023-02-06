@@ -71,9 +71,9 @@ resource "aws_route_table_association" "rta_sli_subnet" {
 
 module "aws_security_group_slo" {
   source                      = "../../../../aws/security_group"
-  aws_security_group_name     = format("%s-sg-slo", var.cluster_name)
   aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
-  tags                        = local.common_tags
+  custom_tags                 = local.common_tags
+  aws_security_group_name     = format("%s-sg-slo", var.cluster_name)
   security_group_rule_egress  = var.aws_security_group_rule_slo_egress
   security_group_rule_ingress = var.aws_security_group_rule_slo_ingress
   providers                   = {
@@ -83,12 +83,13 @@ module "aws_security_group_slo" {
 
 module "aws_security_group_sli" {
   source                      = "../../../../aws/security_group"
-  aws_security_group_name     = format("%s-sg-sli", var.cluster_name)
   aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
-  tags                        = local.common_tags
+  custom_tags                 = local.common_tags
+  aws_security_group_name     = format("%s-sg-sli", var.cluster_name)
   security_group_rule_egress  = var.aws_security_group_rule_sli_egress
   security_group_rule_ingress = var.aws_security_group_rule_sli_ingress
-  providers                   = {
+
+  providers = {
     aws = aws.default
   }
 }

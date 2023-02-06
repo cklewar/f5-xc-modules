@@ -1,7 +1,7 @@
 resource "aws_security_group" "sg" {
+  tags   = var.custom_tags
   name   = var.aws_security_group_name
   vpc_id = var.aws_vpc_id
-  tags   = var.custom_tags
 
   dynamic "egress" {
     for_each = var.security_group_rule_egress

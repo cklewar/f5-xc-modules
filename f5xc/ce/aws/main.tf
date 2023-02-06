@@ -26,7 +26,7 @@ module "network_node" {
   aws_sg_slo_id         = module.network_common.common["sg_slo"]["id"]
   aws_sg_sli_id         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
-  aws_subnet_sli_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"]
+  aws_subnet_sli_cidr   = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
   aws_eip_nat_gw_eip_id = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["nat_gw_eip_id"] : ""
 }
 
@@ -35,7 +35,7 @@ module "config" {
   for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
   public_name          = var.public_name
-  public_address       = module.network_node.node["slo"]["public_ip"]
+  public_address       = module.network_node.ce["slo"]["public_ip"]
   cluster_name         = var.f5xc_cluster_name
   cluster_token        = volterra_token.site.id
   cluster_labels       = var.f5xc_cluster_labels
@@ -65,11 +65,11 @@ module "node" {
   machine_image               = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   machine_config              = module.config[each.key].ce["user_data"]
   machine_public_key          = var.ssh_public_key
-  subnet_slo_id               = module.network_node.node[each.key]["slo_subnet"]["id"]
-  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.node[each.key]["sli_subnet"]["id"] : ""
+  subnet_slo_id               = module.network_node.ce[each.key]["slo_subnet"]["id"]
+  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
   instance_profile            = module.network_common.common["instance_profile"]
-  interface_sli_id            = module.network_node.node["sli"]["id"]
-  interface_slo_id            = module.network_node.node["slo"]["id"]
+  interface_sli_id            = module.network_node.ce["sli"]["id"]
+  interface_slo_id            = module.network_node.ce["slo"]["id"]
   security_group_sli_id       = module.network_common.common["sg_sli"]["id"]
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
 }

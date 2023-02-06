@@ -68,8 +68,8 @@ module "node" {
   subnet_slo_id               = module.network_node.ce[each.key]["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
   instance_profile            = module.network_common.common["instance_profile"]
-  interface_sli_id            = module.network_node.ce["sli"]["id"]
-  interface_slo_id            = module.network_node.ce["slo"]["id"]
-  security_group_sli_id       = module.network_common.common["sg_sli"]["id"]
+  interface_slo_id            = module.network_node.ce[each.key]["slo"]["id"]
+  interface_sli_id            = module.network_node.ce[each.key]["sli"]["id"]
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
+  security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
 }

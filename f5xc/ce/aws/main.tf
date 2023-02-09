@@ -23,6 +23,7 @@ module "network_node" {
   cluster_name          = var.f5xc_cluster_name
   f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
   aws_vpc_az            = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
+  aws_vpc_id = module.network_common.common["vpc"]["id"]
   aws_sg_slo_id         = module.network_common.common["sg_slo"]["id"]
   aws_sg_sli_id         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]

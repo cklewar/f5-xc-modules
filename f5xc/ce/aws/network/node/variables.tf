@@ -5,7 +5,6 @@ variable "has_public_ip" {
 
 variable "aws_vpc_id" {
   type    = string
-  default = ""
 }
 
 variable "aws_subnet_slo_cidr" {

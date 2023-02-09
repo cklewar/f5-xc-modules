@@ -56,7 +56,7 @@ variable "private_vn_prefix" {
   default = ""
 }
 
-variable "cluster_token" {
+variable "site_token" {
   type = string
 }
 

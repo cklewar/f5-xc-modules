@@ -18,7 +18,7 @@ locals {
       vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
     }
   )
-  node = yamlencode({
+  vpm_config = yamlencode({
     "Vpm" : {
       # "Roles" : var.server_roles, # pool only
       "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
@@ -26,10 +26,10 @@ locals {
       "DisableModules" : [],
       "ClusterName" : var.cluster_name,
       "ClusterType" : var.cluster_type,
-      "Token" : var.cluster_token,
+      "Token" : var.site_token,
       "InsideNIC" : var.public_nic,
       "PrivateNIC" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : null,
-      "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ?var.private_default_gw : null,
+      "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_default_gw : null,
       "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : null,
       "CustomerRoute" : var.customer_route,
       "Latitude" : var.cluster_latitude,
@@ -55,11 +55,10 @@ locals {
 
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {
-      user_pubkey        = var.ssh_public_key
-      ntp_servers        = var.ntp_servers
-      hosts_context      = base64encode(local.hosts_context_node)
-      reboot_strategy    = var.reboot_strategy_node
-      vp_manager_context = base64encode(local.vp_manager_environment)
-    }
-  )
+      ssh_public_key    = var.ssh_public_key
+      ntp_servers       = var.ntp_servers
+      hosts_context     = base64encode(local.hosts_context_node)
+      reboot_strategy   = var.reboot_strategy_node
+      vp_manager_config = local.vpm_config
+    })
 }

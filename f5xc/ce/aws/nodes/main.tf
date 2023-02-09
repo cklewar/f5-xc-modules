@@ -1,10 +1,10 @@
 resource "aws_instance" "instance" {
-  ami                  = var.machine_image
-  instance_type        = var.machine_type
-  user_data_base64     = base64encode(var.machine_config)
+  ami                  = var.instance_image
+  instance_type        = var.instance_type
+  user_data_base64     = base64encode(var.instance_config)
   monitoring           = var.instance_monitoring
   key_name             = var.public_ssh_key_name
-  iam_instance_profile = var.iam_instance_profile_name
+  iam_instance_profile = var.iam_instance_profile_id
   tags                 = local.common_tags
 
   root_block_device {

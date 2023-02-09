@@ -6,11 +6,11 @@ variable "is_sensitive" {
   type = bool
 }
 
-variable "machine_image" {
+variable "instance_image" {
   type = string
 }
 
-variable "machine_type" {
+variable "instance_type" {
   type    = string
   default = "t3.medium"
 }
@@ -33,7 +33,7 @@ variable "instance_delete_timeout" {
   default = "60m"
 }
 
-variable "machine_config" {
+variable "instance_config" {
   type = string
 }
 
@@ -91,7 +91,7 @@ variable "interface_sli_id" {
   type = string
 }
 
-variable "iam_instance_profile_name" {
+variable "iam_instance_profile_id" {
   type = string
 }
 

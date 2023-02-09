@@ -1,6 +1,6 @@
 #cloud-config
 ssh_authorized_keys:
-  - "${user_pubkey}"
+  - "${ssh_public_key}"
 coreos:
   locksmith:
   update:
@@ -27,7 +27,7 @@ coreos:
         Type=oneshot
         ExecStart=/usr/bin/bash -c 'systemctl restart systemd-networkd'
 write_files:
-  - path: "/etc/hosts"
+  - path: /etc/hosts
     content: ${hosts_context}
     permissions: 0644
     owner: root
@@ -36,8 +36,8 @@ write_files:
     permissions: 0644
     owner: root
     encoding: b64
-    content: ${vp_manager_context}
-  - path: "/etc/systemd/chronyd.conf"
+    content: ${vp_manager_config}
+  - path: /etc/systemd/chronyd.conf
     permissions: 0420
     owner: root
     content: |

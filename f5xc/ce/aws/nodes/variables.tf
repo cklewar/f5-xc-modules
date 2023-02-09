@@ -88,7 +88,7 @@ variable "interface_sli_id" {
   type = string
 }
 
-variable "instance_profile" {
+variable "iam_instance_profile_name" {
   type = string
 }
 

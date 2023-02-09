@@ -23,7 +23,7 @@ module "network_node" {
   cluster_name          = var.f5xc_cluster_name
   f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
   aws_vpc_az            = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_vpc_id = module.network_common.common["vpc"]["id"]
+  aws_vpc_id            = module.network_common.common["vpc"]["id"]
   aws_sg_slo_id         = module.network_common.common["sg_slo"]["id"]
   aws_sg_sli_id         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr   = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
@@ -68,9 +68,9 @@ module "node" {
   machine_public_key          = var.ssh_public_key
   subnet_slo_id               = module.network_node[each.key].ce["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
-  instance_profile            = module.network_common.common["instance_profile"]
   interface_slo_id            = module.network_node[each.key].ce["slo"]["id"]
   interface_sli_id            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
+  iam_instance_profile_name   = module.network_common.common["instance_profile"]["name"]
 }

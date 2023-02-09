@@ -4,7 +4,7 @@ resource "aws_instance" "instance" {
   user_data_base64     = base64encode(var.machine_config)
   monitoring           = var.instance_monitoring
   key_name             = "${var.node_name}-key"
-  iam_instance_profile = "${var.node_name}-profile"
+  iam_instance_profile = var.iam_instance_profile_name
   tags                 = local.common_tags
 
   root_block_device {

@@ -27,6 +27,22 @@ resource "volterra_aws_tgw_site" "site" {
     }
   }
 
+  vn_config {
+    dynamic "global_network_list" {
+      for_each = var.f5xc_aws_tgw_global_network_name
+      content {
+        global_network_connections {
+          sli_to_global_dr {
+            global_vn {
+              name = global_network_list.value
+            }
+          }
+        }
+      }
+    }
+    no_global_network = var.f5xc_aws_tgw_no_global_network
+  }
+
   lifecycle {
     ignore_changes = [labels, description]
   }

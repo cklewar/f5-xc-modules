@@ -33,10 +33,6 @@ variable "machine_config" {
   type = string
 }
 
-variable "machine_public_key" {
-  type = string
-}
-
 variable "subnet_slo_id" {
   type = string
 }
@@ -46,6 +42,10 @@ variable "subnet_sli_id" {
 }
 
 variable "security_group_slo_id" {
+  type = string
+}
+
+variable "public_ssh_key_name" {
   type = string
 }
 

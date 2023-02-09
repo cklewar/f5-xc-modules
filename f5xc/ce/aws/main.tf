@@ -3,6 +3,11 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
+resource "aws_key_pair" "aws-key" {
+  key_name   = var.f5xc_cluster_name
+  public_key = var.ssh_public_key
+}
+
 module "network_common" {
   source                              = "./network/common"
   owner_tag                           = var.owner_tag
@@ -65,11 +70,11 @@ module "node" {
   cluster_name                = var.f5xc_cluster_name
   machine_image               = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   machine_config              = module.config[each.key].ce["user_data"]
-  machine_public_key          = var.ssh_public_key
   subnet_slo_id               = module.network_node[each.key].ce["slo_subnet"]["id"]
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
   interface_slo_id            = module.network_node[each.key].ce["slo"]["id"]
   interface_sli_id            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
+  public_ssh_key_name         = aws_key_pair.aws-key.key_name
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   iam_instance_profile_name   = module.network_common.common["instance_profile"]["name"]

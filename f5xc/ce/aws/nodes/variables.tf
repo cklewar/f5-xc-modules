@@ -1,3 +1,7 @@
+variable "common_tags" {
+  type = map(string)
+}
+
 variable "is_sensitive" {
   type = bool
 }
@@ -59,7 +63,7 @@ variable "machine_disk_size" {
 }
 
 variable "target_group_arn" {
-  type    = string
+  type = string
 }
 
 variable "cluster_name" {

@@ -1,10 +1,14 @@
+variable "common_tags" {
+  type = map(string)
+}
+
 variable "has_public_ip" {
   type    = bool
   default = true
 }
 
 variable "aws_vpc_id" {
-  type    = string
+  type = string
 }
 
 variable "aws_subnet_slo_cidr" {

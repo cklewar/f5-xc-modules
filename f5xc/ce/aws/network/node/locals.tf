@@ -1,7 +1,5 @@
 locals {
-  common_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
-    "Owner"                                     = var.owner_tag
-    "Name"                                      = var.node_name
-  }
+  common_tags = merge({
+    "Name" = var.node_name
+  }, var.common_tags)
 }

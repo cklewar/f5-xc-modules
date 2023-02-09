@@ -12,6 +12,7 @@ module "network_common" {
   source                              = "./network/common"
   owner_tag                           = var.owner_tag
   cluster_name                        = var.f5xc_cluster_name
+  common_tags                         = local.common_tags
   f5xc_ce_gateway_type                = var.f5xc_ce_gateway_type
   aws_vpc_subnet_prefix               = var.aws_vpc_subnet_prefix
   aws_security_group_rule_sli_egress  = var.aws_security_group_rule_sli_egress
@@ -25,6 +26,7 @@ module "network_node" {
   for_each              = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag             = var.owner_tag
   node_name             = format("%s-%s", var.f5xc_cluster_name, each.key)
+  common_tags           = local.common_tags
   cluster_name          = var.f5xc_cluster_name
   f5xc_ce_gateway_type  = var.f5xc_ce_gateway_type
   aws_vpc_az            = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
@@ -58,6 +60,7 @@ module "node" {
   for_each                    = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag                   = var.owner_tag
   node_name                   = format("%s-%s", var.f5xc_cluster_name, each.key)
+  common_tags                 = local.common_tags
   f5xc_tenant                 = var.f5xc_tenant
   f5xc_api_url                = var.f5xc_api_url
   f5xc_api_token              = var.f5xc_api_token

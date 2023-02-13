@@ -33,7 +33,7 @@ module "network_interface_sli" {
 resource "aws_nat_gateway" "ngw" {
   count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   allocation_id = var.aws_eip_nat_gw_eip_id
-  subnet_id     = aws_subnet.slo.*.id
+  subnet_id     = aws_subnet.slo.id
   tags          = local.common_tags
 }
 
@@ -50,6 +50,6 @@ resource "aws_route_table" "sli" {
 
 resource "aws_route_table_association" "rta_sli_subnet" {
   count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? length(aws_route_table.sli) : 0
-  subnet_id      = aws_subnet.sli.*.id
-  route_table_id = aws_route_table.sli.*.id
+  subnet_id      = aws_subnet.sli[0].id
+  route_table_id = aws_route_table.sli[0].id
 }

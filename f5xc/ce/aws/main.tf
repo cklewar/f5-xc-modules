@@ -75,7 +75,7 @@ module "node" {
   instance_image              = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   instance_config             = module.config[each.key].ce["user_data"]
   subnet_slo_id               = module.network_node[each.key].ce["slo_subnet"]["id"]
-  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node.ce[each.key]["sli_subnet"]["id"] : ""
+  subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli_subnet"]["id"] : null
   interface_slo_id            = module.network_node[each.key].ce["slo"]["id"]
   interface_sli_id            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
   public_ssh_key_name         = aws_key_pair.aws-key.key_name

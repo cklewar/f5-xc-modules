@@ -127,12 +127,12 @@ variable "server_roles" {
 
 variable "private_nic" {
   type    = string
-  default = ""
+  default = "eth1"
 }
 
 variable "public_nic" {
   type    = string
-  default = ""
+  default = "eth0"
 }
 
 variable "owner_tag" {

@@ -1,3 +1,8 @@
+variable "instance_type" {
+  type    = string
+  default = "t3.xlarge"
+}
+
 variable "owner_tag" {
   type = string
 }

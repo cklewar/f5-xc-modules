@@ -11,8 +11,7 @@ variable "instance_image" {
 }
 
 variable "instance_type" {
-  type    = string
-  default = "t3.medium"
+  type = string
 }
 
 variable "owner_tag" {

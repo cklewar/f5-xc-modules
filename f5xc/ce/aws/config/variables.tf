@@ -31,11 +31,11 @@ variable "container_images" {
 }
 
 variable "cluster_latitude" {
-  type = string
+  type = number
 }
 
 variable "cluster_longitude" {
-  type = string
+  type = number
 }
 
 variable "cluster_workload" {

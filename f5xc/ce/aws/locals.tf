@@ -7,7 +7,5 @@ locals {
   common_tags = {
     "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
     "Owner"                                          = var.owner_tag
-    "ves-io-site-name"                               = var.f5xc_cluster_name
-    "ves-io-creator-id"                              = var.owner_tag
   }
 }

@@ -136,8 +136,7 @@ variable "aws_security_group_rule_sli_ingress" {
 }
 
 variable "f5xc_cluster_labels" {
-  type    = string
-  default = "{}"
+  type    = map(string)
 }
 
 variable "f5xc_cluster_latitude" {

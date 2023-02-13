@@ -61,7 +61,7 @@ variable "site_token" {
 }
 
 variable "cluster_labels" {
-  type = string
+  type = map(string)
 }
 
 variable "customer_route" {

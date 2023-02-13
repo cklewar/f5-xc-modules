@@ -71,6 +71,7 @@ module "node" {
   is_sensitive                = false
   cluster_size                = length(var.f5xc_aws_vpc_az_nodes)
   cluster_name                = var.f5xc_cluster_name
+  instance_type               = var.instance_type
   instance_image              = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]
   instance_config             = module.config[each.key].ce["user_data"]
   subnet_slo_id               = module.network_node[each.key].ce["slo_subnet"]["id"]

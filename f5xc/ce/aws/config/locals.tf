@@ -22,8 +22,8 @@ locals {
     "Vpm" : {
       # "Roles" : var.server_roles, # pool only
       "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
-      "ClusterUid" : var.cluster_uid,
       "DisableModules" : [],
+      "ClusterUid" : var.cluster_uid,
       "ClusterName" : var.cluster_name,
       "ClusterType" : var.cluster_type,
       "Token" : var.site_token,
@@ -42,13 +42,13 @@ locals {
     Workload : var.cluster_workload,
     Kubernetes : {
       "CloudProvider" : "",
-      # "EtcdClusterServers" : [] # Only when pool
-      "EtcdUseTLS" : true # Only when node
+      # "EtcdClusterServers" : [] # pool only
+      "EtcdUseTLS" : true # node only
       "Server" : var.public_name
       "Images" : {
         "Hyperkube" : var.container_images["Hyperkube"]
-        "CoreDNS" : var.container_images["CoreDNS"] # Only when node
-        "Etcd" : var.container_images["Etcd"] # Only when node
+        "CoreDNS" : var.container_images["CoreDNS"] # node only
+        "Etcd" : var.container_images["Etcd"] # node only
       }
     }
   })
@@ -59,6 +59,6 @@ locals {
       ntp_servers       = var.ntp_servers
       hosts_context     = base64encode(local.hosts_context_node)
       reboot_strategy   = var.reboot_strategy_node
-      vp_manager_config = local.vpm_config
+      vp_manager_config = base64encode(local.vpm_config)
     })
 }

@@ -40,7 +40,7 @@ resource "volterra_registration_approval" "nodes" {
   depends_on   = [aws_instance.instance]
   cluster_name = var.cluster_name
   cluster_size = var.cluster_size
-  hostname     = var.node_name
+  hostname     = regex("[0-9A-Za-z_-]+", aws_instance.instance.private_dns) #var.node_name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
 }

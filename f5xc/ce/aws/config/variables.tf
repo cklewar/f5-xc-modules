@@ -111,11 +111,6 @@ variable "cluster_uid" {
   default = ""
 }
 
-variable "cluster_members" {
-  type        = list(string)
-  default     = ["master-0", "master-1", "master-2"]
-  description = "local resolvable name of the k8s cluster nodes"
-}
 
 variable "ssh_public_key" {
   type = string

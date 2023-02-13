@@ -136,15 +136,15 @@ variable "aws_security_group_rule_sli_ingress" {
 }
 
 variable "f5xc_cluster_labels" {
-  type    = map(string)
+  type = map(string)
 }
 
 variable "f5xc_cluster_latitude" {
-  type = string
+  type = number
 }
 
 variable "f5xc_cluster_longitude" {
-  type = string
+  type = number
 }
 
 variable "f5xc_api_url" {

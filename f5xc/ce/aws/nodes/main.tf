@@ -30,12 +30,6 @@ resource "aws_instance" "instance" {
   }
 }
 
-/*resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
-  target_group_arn = var.target_group_arn
-  target_id        = aws_instance.instance.id
-  port             = 6443
-}*/
-
 resource "volterra_registration_approval" "nodes" {
   depends_on   = [aws_instance.instance]
   cluster_name = var.cluster_name

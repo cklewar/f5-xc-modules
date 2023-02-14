@@ -61,10 +61,6 @@ variable "machine_disk_size" {
   default = "40"
 }
 
-variable "target_group_arn" {
-  type = string
-}
-
 variable "cluster_name" {
   type = string
 }

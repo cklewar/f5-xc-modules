@@ -4,7 +4,6 @@ variable "common_tags" {
 
 variable "has_public_ip" {
   type    = bool
-  default = true
 }
 
 variable "aws_vpc_id" {

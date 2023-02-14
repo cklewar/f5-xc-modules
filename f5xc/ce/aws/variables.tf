@@ -1,3 +1,7 @@
+variable "has_public_ip" {
+  type = bool
+}
+
 variable "instance_type" {
   type    = string
   default = "t3.xlarge"

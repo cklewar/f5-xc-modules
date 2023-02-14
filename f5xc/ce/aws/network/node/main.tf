@@ -18,7 +18,7 @@ module "network_interface_slo" {
   aws_interface_subnet_id         = aws_subnet.slo.id
   aws_interface_create_eip        = var.has_public_ip
   aws_interface_security_groups   = [var.aws_sg_slo_id]
-  aws_interface_source_dest_check = false
+  aws_interface_source_dest_check = true
 }
 
 module "network_interface_sli" {

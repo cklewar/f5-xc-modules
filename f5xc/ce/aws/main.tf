@@ -28,6 +28,7 @@ module "network_node" {
   node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
   common_tags          = local.common_tags
   cluster_name         = var.f5xc_cluster_name
+  has_public_ip        = var.has_public_ip
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_vpc_id           = module.network_common.common["vpc"]["id"]
@@ -35,7 +36,6 @@ module "network_node" {
   aws_sg_sli_id        = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   aws_subnet_sli_cidr  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
-  # aws_eip_nat_gw_eip_id = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["nat_gw_eip_id"] : ""
 }
 
 module "config" {

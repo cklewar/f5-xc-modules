@@ -37,7 +37,7 @@ module "network_interface_sli" {
   tags          = local.common_tags
 }*/
 
-resource "aws_route_table" "sli" {
+/*resource "aws_route_table" "sli" {
   count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc_id = var.aws_vpc_id
 
@@ -46,10 +46,10 @@ resource "aws_route_table" "sli" {
     gateway_id = element(aws_nat_gateway.ngw.*.id, count.index)
   }
   tags = local.common_tags
-}
+}*/
 
-resource "aws_route_table_association" "rta_sli_subnet" {
+/*resource "aws_route_table_association" "rta_sli_subnet" {
   count          = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? length(aws_route_table.sli) : 0
   subnet_id      = aws_subnet.sli[0].id
   route_table_id = aws_route_table.sli[0].id
-}
+}*/

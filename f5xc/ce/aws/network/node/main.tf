@@ -30,12 +30,12 @@ module "network_interface_sli" {
   aws_interface_source_dest_check = false
 }
 
-resource "aws_nat_gateway" "ngw" {
+/*resource "aws_nat_gateway" "ngw" {
   count         = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   allocation_id = var.aws_eip_nat_gw_eip_id
   subnet_id     = aws_subnet.slo.id
   tags          = local.common_tags
-}
+}*/
 
 resource "aws_route_table" "sli" {
   count  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0

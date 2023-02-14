@@ -42,11 +42,11 @@ resource "aws_route" "route_ipv6" {
   gateway_id                  = aws_internet_gateway.igw.id
 }
 
-resource "aws_eip" "nat_gw_eip" {
+/*resource "aws_eip" "nat_gw_eip" {
   count = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
   vpc   = var.aws_eip_vpc
   tags  = var.common_tags
-}
+}*/
 
 resource "aws_iam_role" "role" {
   name               = "${var.cluster_name}-role"

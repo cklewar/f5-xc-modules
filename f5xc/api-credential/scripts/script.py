@@ -339,6 +339,7 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
+    parser.add_argument("-e", "--expiry", help="F5XC API Credential Expiry Days", type=str)
     args = parser.parse_args()
     apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant, name=args.name)
 
@@ -359,6 +360,7 @@ if __name__ == '__main__':
             raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
         apic.credential_type = args.ctype
         apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
+        apic.expiration_days = args.expiry if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
         apic.virtual_k8s_namespace = args.namespace if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
         apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
         print(f"Initiate {Action.POST.name} request")

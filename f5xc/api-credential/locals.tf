@@ -5,6 +5,6 @@ locals {
   state_file         = "${path.module}/_out/${var.f5xc_api_credentials_name}/state.json"
   script_file        = abspath("${path.module}/scripts/script.py")
   venv_path          = abspath(path.module)
+  random_id          = uuid()
 }
-
 

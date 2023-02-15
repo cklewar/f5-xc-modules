@@ -62,3 +62,8 @@ variable "is_sensitive" {
   default     = false
   description = "Whether to mask sensitive data in output or not"
 }
+
+variable "f5xc_api_credential_expiry_days" {
+  type    = number
+  default = 10
+}

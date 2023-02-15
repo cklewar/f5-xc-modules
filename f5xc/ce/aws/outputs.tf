@@ -7,7 +7,7 @@ output "nodes" {
       instance_profile = aws_iam_instance_profile.instance_profile
     }
     nlb = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
-      nlb = module.network_nlb.nlb
+      nlb = module.network_nlb[0].nlb
     } : null
     master-0 = {
       node    = module.node["node0"].ce

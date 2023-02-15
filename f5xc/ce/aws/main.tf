@@ -87,7 +87,7 @@ module "node" {
   subnet_sli_id               = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli_subnet"]["id"] : null
   interface_slo_id            = module.network_node[each.key].ce["slo"]["id"]
   interface_sli_id            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
-  lb_target_group_arn         = module.network_nlb[0].nlb["nlb"]["target_group"]["id"]
+  lb_target_group_arn         = module.network_nlb[0].nlb["target_group"]["id"]
   public_ssh_key_name         = aws_key_pair.aws-key.key_name
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null

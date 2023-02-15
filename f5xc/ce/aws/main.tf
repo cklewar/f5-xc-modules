@@ -92,5 +92,4 @@ module "node" {
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   iam_instance_profile_id     = module.network_common.common["instance_profile"]["id"]
-
 }

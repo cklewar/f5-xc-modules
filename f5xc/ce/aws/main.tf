@@ -91,5 +91,5 @@ module "node" {
   public_ssh_key_name         = aws_key_pair.aws-key.key_name
   security_group_slo_id       = module.network_common.common["sg_slo"]["id"]
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
-  iam_instance_profile_id     = module.network_common.common["instance_profile"]["id"]
+  iam_instance_profile_id     = aws_iam_instance_profile.instance_profile.id
 }

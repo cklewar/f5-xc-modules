@@ -44,10 +44,6 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "cluster_name" {
-  type = string
-}
-
 variable "node_name" {
   type = string
 }

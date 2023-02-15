@@ -1,4 +1,4 @@
-variable "certified_hardware_endpoint" {
+variable "f5xc_certified_hardware_endpoint" {
   type    = string
   default = "https://vesio.blob.core.windows.net/releases/certified-hardware/aws.yml"
 }
@@ -13,11 +13,11 @@ variable "reboot_strategy_pool" {
   default = "off"
 }
 
-variable "public_address" {
+variable "f5xc_ce_hosts_public_address" {
   type = string
 }
 
-variable "public_name" {
+variable "f5xc_ce_hosts_public_name" {
   type = string
 }
 
@@ -30,19 +30,19 @@ variable "container_images" {
   }
 }
 
-variable "cluster_latitude" {
+variable "f5xc_cluster_latitude" {
   type = number
 }
 
-variable "cluster_longitude" {
+variable "f5xc_cluster_longitude" {
   type = number
 }
 
-variable "cluster_workload" {
+variable "f5xc_cluster_workload" {
   type = string
 }
 
-variable "cluster_name" {
+variable "f5xc_cluster_name" {
   type = string
 }
 
@@ -56,11 +56,11 @@ variable "private_vn_prefix" {
   default = ""
 }
 
-variable "site_token" {
+variable "f5xc_site_token" {
   type = string
 }
 
-variable "cluster_labels" {
+variable "f5xc_cluster_labels" {
   type = map(string)
 }
 
@@ -74,7 +74,7 @@ variable "vp_manager_version" {
   default = "latest"
 }
 
-variable "cluster_type" {
+variable "f5xc_cluster_type" {
   type    = string
   default = "ce"
 }
@@ -106,36 +106,12 @@ variable "maurice_mtls_endpoint" {
   default = "https://register-tls.ves.volterra.io"
 }
 
-variable "cluster_uid" {
+variable "f5xc_cluster_uid" {
   type    = string
   default = ""
 }
 
-
-variable "ssh_public_key" {
-  type = string
-}
-
-variable "ntp_servers" {
-  type    = string
-  default = "pool.ntp.org"
-}
-
-variable "server_roles" {
-  type = string
-}
-
-variable "private_nic" {
-  type    = string
-  default = "eth1"
-}
-
-variable "public_nic" {
-  type    = string
-  default = "eth0"
-}
-
-variable "owner_tag" {
+variable "f5xc_server_roles" {
   type = string
 }
 
@@ -150,6 +126,29 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 }
 
 variable "f5xc_ce_gateway_type" {
+  type = string
+}
+
+variable "ssh_public_key" {
+  type = string
+}
+
+variable "ntp_servers" {
+  type    = string
+  default = "pool.ntp.org"
+}
+
+variable "private_nic" {
+  type    = string
+  default = "eth1"
+}
+
+variable "public_nic" {
+  type    = string
+  default = "eth0"
+}
+
+variable "owner_tag" {
   type = string
 }
 

@@ -1,4 +1,4 @@
-variable "cluster_name" {
+variable "f5xc_cluster_name" {
   type = string
 }
 
@@ -30,7 +30,7 @@ variable "aws_vpc_enable_dns_support" {
   default = true
 }
 
-variable "aws_vpc_subnet_prefix" {
+variable "aws_vpc_cidr_block" {
   type = string
 }
 

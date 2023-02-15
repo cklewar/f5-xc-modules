@@ -3,13 +3,13 @@ locals {
   hosts_context_node = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
       public_address = "127.0.1.1"
-      public_name    = var.public_name
+      public_name    = var.f5xc_ce_hosts_public_name
     }
   )
   hosts_context_pool = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
-      public_address = var.public_address
-      public_name    = var.public_name
+      public_address = var.f5xc_ce_hosts_public_address
+      public_name    = var.f5xc_ce_hosts_public_name
     }
   )
   vp_manager_environment = templatefile("${path.module}/${var.templates_dir}/vpm-environment",
@@ -24,27 +24,27 @@ locals {
       # "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
       # "DisableModules" : [],
       # "ClusterUid" : var.cluster_uid,
-      "ClusterName" : var.cluster_name,
-      "ClusterType" : var.cluster_type,
-      "Token" : var.site_token,
+      "ClusterName" : f5xc_cluster_name,
+      "ClusterType" : var.f5xc_cluster_type,
+      "Token" : var.f5xc_site_token,
       "InsideNIC" : "" # var.public_nic,
       "PrivateNIC" : "" # var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : "",
       # "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_default_gw : "",
       # "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : "",
       # "CustomerRoute" : var.customer_route,
-      "Latitude" : var.cluster_latitude,
-      "Longitude" : var.cluster_longitude,
+      "Latitude" : var.f5xc_cluster_latitude,
+      "Longitude" : var.f5xc_cluster_longitude,
       "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
       "MauriceEndpoint" : var.maurice_endpoint,
-      "Labels" : var.cluster_labels,
-      "CertifiedHardwareEndpoint" : var.certified_hardware_endpoint,
+      "Labels" : var.f5xc_cluster_labels,
+      "CertifiedHardwareEndpoint" : var.f5xc_certified_hardware_endpoint,
     }
     # Workload : var.cluster_workload,
     Kubernetes : {
-      "CloudProvider" : "",
+      # "CloudProvider" : "",
       # "EtcdClusterServers" : [] # pool only
       "EtcdUseTLS" : true # node only
-      "Server" : var.public_name
+      "Server" : var.f5xc_ce_hosts_public_name
       #"Images" : {
       #  "Hyperkube" : var.container_images["Hyperkube"]
       #  "CoreDNS" : var.container_images["CoreDNS"] # node only

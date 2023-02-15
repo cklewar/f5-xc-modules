@@ -39,7 +39,7 @@ resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
 
 resource "volterra_registration_approval" "nodes" {
   depends_on   = [aws_instance.instance]
-  cluster_name = var.cluster_name
+  cluster_name = f5xc_cluster_name
   cluster_size = var.cluster_size
   hostname     = regex("[0-9A-Za-z_-]+", aws_instance.instance.private_dns)
   wait_time    = var.f5xc_registration_wait_time

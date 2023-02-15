@@ -11,10 +11,10 @@ resource "aws_key_pair" "aws-key" {
 module "network_common" {
   source                              = "./network/common"
   owner_tag                           = var.owner_tag
-  cluster_name                        = var.f5xc_cluster_name
   common_tags                         = local.common_tags
+  f5xc_cluster_name                   = var.f5xc_cluster_name
   f5xc_ce_gateway_type                = var.f5xc_ce_gateway_type
-  aws_vpc_subnet_prefix               = var.aws_vpc_subnet_prefix
+  aws_vpc_cidr_block                  = var.aws_vpc_cidr_block
   aws_security_group_rule_sli_egress  = var.aws_security_group_rule_sli_egress
   aws_security_group_rule_sli_ingress = var.aws_security_group_rule_sli_ingress
   aws_security_group_rule_slo_egress  = var.aws_security_group_rule_slo_egress
@@ -27,8 +27,8 @@ module "network_node" {
   owner_tag            = var.owner_tag
   node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
   common_tags          = local.common_tags
-  cluster_name         = var.f5xc_cluster_name
   has_public_ip        = var.has_public_ip
+  f5xc_cluster_name    = var.f5xc_cluster_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_vpc_id           = module.network_common.common["vpc"]["id"]
@@ -38,30 +38,35 @@ module "network_node" {
   aws_subnet_sli_cidr  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
 }
 
+locals {
+  _slo_azs            = [for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]
+  is_slo_snet_same_az = length(local.is_slo_snet_same_az) != length(distinct(local._slo_azs)) ? true : false
+}
+
 module "network_nlb" {
-  source          = "./network/nlb"
-  count           = length(var.f5xc_aws_vpc_az_nodes) == 3 ? 1 : 0
-  common_tags     = local.common_tags
-  cluster_name    = var.f5xc_cluster_name
-  aws_vpc_id      = module.network_common.common["vpc"]["id"]
-  aws_nlb_subnets = [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
+  source            = "./network/nlb"
+  count             = length(var.f5xc_aws_vpc_az_nodes) == 3 ? 1 : 0
+  common_tags       = local.common_tags
+  f5xc_cluster_name = var.f5xc_cluster_name
+  aws_vpc_id        = module.network_common.common["vpc"]["id"]
+  aws_nlb_subnets   = is_slo_snet_same_az ? var.f5xc_slo_cidr_block : [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
 }
 
 module "config" {
-  source               = "./config"
-  for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
-  owner_tag            = var.owner_tag
-  site_token           = volterra_token.site.id
-  public_name          = var.public_name
-  public_address       = module.network_node[each.key].ce["slo"]["public_dns"][0]
-  cluster_name         = var.f5xc_cluster_name
-  cluster_labels       = var.f5xc_cluster_labels
-  cluster_workload     = var.cluster_workload
-  cluster_latitude     = var.f5xc_cluster_latitude
-  cluster_longitude    = var.f5xc_cluster_longitude
-  f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
-  server_roles         = local.server_roles[each.key]
-  ssh_public_key       = var.ssh_public_key
+  source                       = "./config"
+  for_each                     = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
+  owner_tag                    = var.owner_tag
+  ssh_public_key               = var.ssh_public_key
+  f5xc_site_token              = volterra_token.site.id
+  f5xc_cluster_name            = var.f5xc_cluster_name
+  f5xc_server_roles            = local.server_roles[each.key]
+  f5xc_cluster_labels          = var.f5xc_cluster_labels
+  f5xc_cluster_workload        = var.cluster_workload
+  f5xc_cluster_latitude        = var.f5xc_cluster_latitude
+  f5xc_cluster_longitude       = var.f5xc_cluster_longitude
+  f5xc_ce_gateway_type         = var.f5xc_ce_gateway_type
+  f5xc_ce_hosts_public_name    = var.f5xc_ce_hosts_public_name
+  f5xc_ce_hosts_public_address = module.network_node[each.key].ce["slo"]["public_dns"][0]
 }
 
 module "node" {

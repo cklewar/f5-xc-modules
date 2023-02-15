@@ -15,8 +15,9 @@ variable "owner_tag" {
   type = string
 }
 
-variable "public_name" {
-  type = string
+variable "f5xc_ce_hosts_public_name" {
+  type    = string
+  default = "vip"
 }
 
 variable "cluster_workload" {
@@ -318,7 +319,11 @@ variable "f5xc_ce_machine_image" {
   }
 }
 
-variable "aws_vpc_subnet_prefix" {
+variable "aws_vpc_cidr_block" {
+  type = string
+}
+
+variable "f5xc_slo_cidr_block" {
   type = string
 }
 

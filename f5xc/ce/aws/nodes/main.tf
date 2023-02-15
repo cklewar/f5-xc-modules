@@ -54,14 +54,3 @@ resource "volterra_site_state" "decommission_when_delete" {
   wait_time  = var.f5xc_registration_wait_time
   retry      = var.f5xc_registration_retry
 }
-
-module "site_wait_for_online" {
-  depends_on     = [volterra_site_state.decommission_when_delete]
-  source         = "../../../status/site"
-  f5xc_api_token = var.f5xc_api_token
-  f5xc_api_url   = var.f5xc_api_url
-  f5xc_namespace = var.f5xc_namespace
-  f5xc_site_name = var.cluster_name
-  f5xc_tenant    = var.f5xc_tenant
-  is_sensitive   = var.is_sensitive
-}

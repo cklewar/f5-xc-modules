@@ -93,3 +93,14 @@ module "node" {
   security_group_sli_id       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   iam_instance_profile_id     = aws_iam_instance_profile.instance_profile.id
 }
+
+module "site_wait_for_online" {
+  depends_on     = [module.node]
+  source         = "../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = var.f5xc_cluster_name
+  f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
+}

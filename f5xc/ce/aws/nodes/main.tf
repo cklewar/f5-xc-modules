@@ -1,46 +1,46 @@
 resource "aws_instance" "instance" {
-  ami                  = var.instance_image
-  instance_type        = var.instance_type
-  user_data_base64     = base64encode(var.instance_config)
-  monitoring           = var.instance_monitoring
+  ami                  = var.aws_instance_image
+  instance_type        = var.aws_instance_type
+  user_data_base64     = base64encode(var.f5xc_instance_config)
+  monitoring           = var.aws_instance_monitoring
   key_name             = var.public_ssh_key_name
-  iam_instance_profile = var.iam_instance_profile_id
+  iam_instance_profile = var.aws_iam_instance_profile_id
   tags                 = local.common_tags
 
   root_block_device {
-    volume_size = var.machine_disk_size
+    volume_size = var.aws_instance_disk_size
   }
 
   network_interface {
-    network_interface_id = var.interface_slo_id
+    network_interface_id = var.aws_interface_slo_id
     device_index         = "0"
   }
 
   dynamic "network_interface" {
     for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
     content {
-      network_interface_id = var.interface_sli_id
+      network_interface_id = var.aws_interface_sli_id
       device_index         = "1"
     }
   }
 
   timeouts {
-    create = var.instance_create_timeout
-    delete = var.instance_delete_timeout
+    create = var.aws_instance_create_timeout
+    delete = var.aws_instance_delete_timeout
   }
 }
 
 resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
-  count            = var.cluster_size == 3 ? 1 : 0
-  target_group_arn = var.lb_target_group_arn
+  count            = var.f5xc_cluster_size == 3 ? 1 : 0
+  target_group_arn = var.aws_lb_target_group_arn
   target_id        = aws_instance.instance.id
   port             = 6443
 }
 
 resource "volterra_registration_approval" "nodes" {
   depends_on   = [aws_instance.instance]
-  cluster_name = f5xc_cluster_name
-  cluster_size = var.cluster_size
+  cluster_name = var.f5xc_cluster_name
+  cluster_size = var.f5xc_cluster_size
   hostname     = regex("[0-9A-Za-z_-]+", aws_instance.instance.private_dns)
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
@@ -48,7 +48,7 @@ resource "volterra_registration_approval" "nodes" {
 
 resource "volterra_site_state" "decommission_when_delete" {
   depends_on = [volterra_registration_approval.nodes]
-  name       = var.node_name
+  name       = var.f5xc_node_name
   when       = "delete"
   state      = "DECOMMISSIONING"
   wait_time  = var.f5xc_registration_wait_time

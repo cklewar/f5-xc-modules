@@ -24,7 +24,7 @@ locals {
       # "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
       # "DisableModules" : [],
       # "ClusterUid" : var.cluster_uid,
-      "ClusterName" : f5xc_cluster_name,
+      "ClusterName" : var.f5xc_cluster_name,
       "ClusterType" : var.f5xc_cluster_type,
       "Token" : var.f5xc_site_token,
       "InsideNIC" : "" # var.public_nic,

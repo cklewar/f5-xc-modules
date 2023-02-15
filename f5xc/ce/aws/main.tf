@@ -28,7 +28,6 @@ module "network_node" {
   node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
   common_tags          = local.common_tags
   has_public_ip        = var.has_public_ip
-  f5xc_cluster_name    = var.f5xc_cluster_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_vpc_id           = module.network_common.common["vpc"]["id"]

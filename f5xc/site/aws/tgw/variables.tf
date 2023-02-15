@@ -250,3 +250,14 @@ variable "is_sensitive" {
   type    = bool
   default = false
 }
+
+variable "f5xc_aws_tgw_global_network_name" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_aws_tgw_no_global_network" {
+  type    = bool
+  default = true
+}
+

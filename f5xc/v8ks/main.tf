@@ -38,4 +38,5 @@ module "api_credential_kubeconfig" {
   f5xc_virtual_k8s_namespace = volterra_virtual_k8s.vk8s.namespace
   f5xc_api_credential_type   = "KUBE_CONFIG"
   f5xc_api_credentials_name  = var.f5xc_k8s_credentials_name
+  f5xc_api_credential_expiry_days = var.f5xc_api_credential_expiry_days
 }

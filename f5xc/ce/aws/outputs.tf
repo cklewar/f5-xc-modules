@@ -1,5 +1,14 @@
 output "nodes" {
   value = {
+    iam = {
+      role             = aws_iam_role.role
+      policy           = aws_iam_policy.policy
+      attachment       = aws_iam_role_policy_attachment.attachment
+      instance_profile = aws_iam_instance_profile.instance_profile
+    }
+    nlb = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
+      nlb = module.network_nlb.nlb
+    } : null
     master-0 = {
       node    = module.node["node0"].ce
       config  = module.config["node0"].ce
@@ -8,7 +17,7 @@ output "nodes" {
         node   = module.network_node["node0"].ce
       }
     }
-    master-1 = length(var.f5xc_aws_vpc_az_nodes) > 1 ? {
+    master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node1"].ce
       config  = module.config["node1"].ce
       network = {
@@ -16,7 +25,7 @@ output "nodes" {
         node   = module.network_node["node1"].ce
       }
     } : null
-    master-2 = length(var.f5xc_aws_vpc_az_nodes) > 1 ? {
+    master-2 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node2"].ce
       config  = module.config["node2"].ce
       network = {

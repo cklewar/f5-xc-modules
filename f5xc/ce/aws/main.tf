@@ -44,7 +44,7 @@ module "network_nlb" {
   common_tags     = local.common_tags
   cluster_name    = var.f5xc_cluster_name
   aws_vpc_id      = module.network_common.common["vpc"]["id"]
-  aws_nlb_subnets = [for subnet in module.network_node.ce["slo_subnet"] : subnet["id"]]
+  aws_nlb_subnets = [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
 }
 
 module "config" {

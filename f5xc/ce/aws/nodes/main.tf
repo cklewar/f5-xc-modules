@@ -31,7 +31,7 @@ resource "aws_instance" "instance" {
 }
 
 resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
-  count            = cluster_size == 3 ? 1 : 0
+  count            = var.cluster_size == 3 ? 1 : 0
   target_group_arn = var.lb_target_group_arn
   target_id        = aws_instance.instance.id
   port             = 6443

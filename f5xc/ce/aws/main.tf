@@ -38,7 +38,6 @@ module "network_node" {
 }
 
 locals {
-  # _slo_azs            =
   is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]])) ? true : false
 }
 

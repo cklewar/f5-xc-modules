@@ -78,6 +78,10 @@ variable "cluster_size" {
   }
 }
 
+variable "lb_target_group_arn" {
+  type = string
+}
+
 variable "interface_slo_id" {
   type = string
 }

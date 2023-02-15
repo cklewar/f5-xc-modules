@@ -1,3 +1,7 @@
+variable "is_sensitive" {
+  type = bool
+}
+
 variable "has_public_ip" {
   type = bool
 }

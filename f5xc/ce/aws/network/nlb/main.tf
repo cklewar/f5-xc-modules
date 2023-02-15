@@ -5,6 +5,11 @@ resource "aws_lb" "nlb" {
   internal                         = true
   load_balancer_type               = "network"
   enable_cross_zone_load_balancing = true
+
+  timeouts {
+    create = "15m"
+    delete = "15m"
+  }
 }
 
 resource "aws_lb_target_group" "controllers" {

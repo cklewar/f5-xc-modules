@@ -1,10 +1,9 @@
 resource "null_resource" "apply_credential" {
   triggers = {
-    # tenant               = var.f5xc_tenant
-    # api_url              = var.f5xc_api_url
-    # api_token            = local.f5xc_api_token
-    # api_credentials_name = var.f5xc_api_credentials_name
-    always               = local.random_id
+    tenant               = var.f5xc_tenant
+    api_url              = var.f5xc_api_url
+    api_token            = local.f5xc_api_token
+    api_credentials_name = var.f5xc_api_credentials_name
   }
 
   provisioner "local-exec" {

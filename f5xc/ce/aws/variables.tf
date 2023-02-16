@@ -323,7 +323,7 @@ variable "aws_vpc_cidr_block" {
   type = string
 }
 
-variable "f5xc_slo_cidr_block" {
+/*variable "f5xc_slo_cidr_block" {
   type = string
-}
+}*/
 

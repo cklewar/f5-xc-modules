@@ -38,7 +38,7 @@ module "network_node" {
 }
 
 locals {
-  is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]])) ? true : false
+  # is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]])) ? true : false
 }
 
 module "network_nlb" {
@@ -47,7 +47,8 @@ module "network_nlb" {
   common_tags       = local.common_tags
   f5xc_cluster_name = var.f5xc_cluster_name
   aws_vpc_id        = module.network_common.common["vpc"]["id"]
-  aws_nlb_subnets   = local.is_slo_snet_same_az ? [var.f5xc_slo_cidr_block] : [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
+  aws_nlb_subnets   = [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
+  # local.is_slo_snet_same_az ? [module.network_common.common["vpc"][""]] : [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
 }
 
 module "config" {
@@ -90,7 +91,7 @@ module "node" {
   aws_subnet_sli_id           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli_subnet"]["id"] : null
   aws_interface_slo_id        = module.network_node[each.key].ce["slo"]["id"]
   aws_interface_sli_id        = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_node[each.key].ce["sli"]["id"] : null
-  aws_lb_target_group_arn     = module.network_nlb[0].nlb["target_group"]["id"]
+  aws_lb_target_group_arn     = length(var.f5xc_aws_vpc_az_nodes) == 3 ? module.network_nlb[0].nlb["target_group"]["arn"] : null
   aws_security_group_slo_id   = module.network_common.common["sg_slo"]["id"]
   aws_security_group_sli_id   = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_iam_instance_profile_id = aws_iam_instance_profile.instance_profile.id

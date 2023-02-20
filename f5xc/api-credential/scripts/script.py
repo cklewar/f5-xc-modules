@@ -360,7 +360,7 @@ if __name__ == '__main__':
             raise ValueError(f'"vk8s" must not be None if "ctype" is of type {F5XCApiCredentialTypes.KUBE_CONFIG.name}')
         apic.credential_type = args.ctype
         apic.virtual_k8s_name = args.vk8s if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
-        apic.expiration_days = args.expiry if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
+        apic.expiration_days = args.expiry if args.expiry is not None else F5XC_API_CERT_EXPIRATION_DAYS
         apic.virtual_k8s_namespace = args.namespace if apic.credential_type == F5XCApiCredentialTypes.KUBE_CONFIG.name else ""
         apic.certificate_password = args.certpw if apic.credential_type == F5XCApiCredentialTypes.API_CERTIFICATE.name else ""
         print(f"Initiate {Action.POST.name} request")

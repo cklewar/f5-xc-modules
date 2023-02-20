@@ -132,7 +132,7 @@ class APICredential:
     @name.setter
     def name(self, name: str = None):
         if name is None:
-            raise ValueError('"name" must not beNone') from None
+            raise ValueError('"name" must not be none') from None
         try:
             self._name = str(name)
         except ValueError:
@@ -145,11 +145,11 @@ class APICredential:
     @expiration_days.setter
     def expiration_days(self, days: str = None):
         if days is None:
-            raise ValueError('"days must not be None') from None
+            raise ValueError('"expiry days must not be none') from None
         try:
             self._expiration_days = str(days)
         except ValueError:
-            raise ValueError('"days" must be string') from None
+            raise ValueError('"expiry days" must be string') from None
 
     @property
     def namespace(self) -> str:

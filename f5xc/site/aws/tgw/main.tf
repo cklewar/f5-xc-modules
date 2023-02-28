@@ -58,6 +58,7 @@ resource "volterra_aws_tgw_site" "site" {
   aws_parameters {
     aws_certified_hw = var.f5xc_aws_certified_hw
     aws_region       = var.f5xc_aws_region
+    enable_internet_vip = var.f5xc_aws_tgw_enable_internet_vip
 
     dynamic "az_nodes" {
       for_each = var.f5xc_aws_tgw_id == "" && var.f5xc_aws_tgw_primary_ipv4 != "" ? var.f5xc_aws_tgw_az_nodes : {}

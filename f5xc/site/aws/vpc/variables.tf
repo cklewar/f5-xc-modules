@@ -247,6 +247,11 @@ variable "f5xc_aws_vpc_direct_connect_custom_asn" {
   default = 0
 }
 
+variable "f5xc_aws_vpc_enable_internet_vip" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_aws_vpc_cloud_aggregated_prefix" {
   type    = list(string)
   default = []

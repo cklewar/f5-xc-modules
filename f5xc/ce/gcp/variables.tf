@@ -44,7 +44,8 @@ variable "machine_disk_size" {
 }
 
 variable "host_localhost_public_name" {
-  type = string
+  type    = string
+  default = "vip"
 }
 
 variable "allow_stopping_for_update" {
@@ -106,7 +107,7 @@ variable "f5xc_ce_slo_firewall" {
       description = string
       direction   = string
       target_tags = optional(list(string))
-      ranges      = optional(list(string))
+      ranges      = list(string)
       allow       = list(object({
         protocol = string
         ports    = optional(list(string))

@@ -24,51 +24,58 @@ resource "google_compute_subnetwork" "sli_subnet" {
   network       = google_compute_network.sli_vpc_network[0].id
 }
 
-resource "google_compute_firewall" "slo_ingress" {
-  name    = "${var.network_name}-slo-ingress"
-  network = google_compute_network.slo_vpc_network.name
+resource "google_compute_firewall" "slo" {
+  for_each           = var.f5xc_ce_slo_firewall.rules
+  name               = each.value.name
+  network            = google_compute_network.slo_vpc_network.name
+  direction          = each.value.direction
+  target_tags        = each.value.target_tags
+  source_ranges      = each.value.direction == "INGRESS" ? each.value.ranges : null
+  destination_ranges = each.value.direction == "EGRESS" ? each.value.ranges : null
 
   dynamic "allow" {
-    for_each = var.f5xc_slo_ingress_allow
+    for_each = each.value.allow
     content {
       protocol = allow.value.protocol
       ports    = allow.value.ports
     }
   }
-  target_tags   = var.f5xc_slo_ingress_target_tags
-  source_ranges = var.f5xc_slo_ingress_source_ranges
+  dynamic "deny" {
+    for_each = each.value.deny
+    content {
+      protocol = deny.value.protocol
+      ports    = deny.value.ports
+    }
+  }
+  log_config {
+    metadata = each.value.log_config
+  }
 }
 
-resource "google_compute_firewall" "sli_ingress" {
-  count   = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  name    = "${var.network_name}-sli-ingress"
-  network = google_compute_network.sli_vpc_network[0].name
-  allow {
-    protocol = "all"
-  }
-  target_tags   = var.f5xc_sli_ingress_target_tags
-  source_ranges = var.f5xc_sli_ingress_source_ranges
-}
+resource "google_compute_firewall" "sli" {
+  for_each           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_ce_sli_firewall.rules : []
+  name               = each.value.name
+  network            = google_compute_network.slo_vpc_network.name
+  direction          = each.value.direction
+  target_tags        = each.value.target_tags
+  source_ranges      = each.value.direction == "INGRESS" ? each.value.ranges : null
+  destination_ranges = each.value.direction == "EGRESS" ? each.value.ranges : null
 
-resource "google_compute_firewall" "slo_egress" {
-  name    = "${var.network_name}-slo-egress"
-  network = google_compute_network.slo_vpc_network.name
-  allow {
-    protocol = "all"
+  dynamic "allow" {
+    for_each = each.value.allow
+    content {
+      protocol = allow.value.protocol
+      ports    = allow.value.ports
+    }
   }
-  direction          = "EGRESS"
-  target_tags        = var.f5xc_slo_egress_target_tags
-  destination_ranges = var.f5xc_slo_egress_source_ranges
-}
-
-resource "google_compute_firewall" "sli_egress" {
-  count   = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  name    = "${var.network_name}-sli-egress"
-  network = google_compute_network.sli_vpc_network[0].name
-  allow {
-    protocol = "all"
+  dynamic "deny" {
+    for_each = each.value.deny
+    content {
+      protocol = deny.value.protocol
+      ports    = deny.value.ports
+    }
   }
-  direction          = "EGRESS"
-  target_tags        = var.f5xc_sli_egress_target_tags
-  destination_ranges = var.f5xc_sli_egress_source_ranges
+  log_config {
+    metadata = each.value.log_config
+  }
 }

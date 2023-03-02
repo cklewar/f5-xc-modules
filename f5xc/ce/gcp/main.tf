@@ -12,15 +12,8 @@ module "network" {
   fabric_subnet_inside           = var.fabric_subnet_inside
   auto_create_subnetworks        = var.auto_create_subnetworks
   f5xc_ce_gateway_type           = var.f5xc_ce_gateway_type
-  f5xc_slo_ingress_allow         = var.f5xc_slo_ingress_allow
-  f5xc_sli_egress_source_ranges  = var.f5xc_sli_egress_source_ranges
-  f5xc_sli_egress_target_tags    = var.f5xc_sli_egress_target_tags
-  f5xc_sli_ingress_source_ranges = var.f5xc_sli_ingress_source_ranges
-  f5xc_sli_ingress_target_tags   = var.f5xc_sli_ingress_target_tags
-  f5xc_slo_egress_source_ranges  = var.f5xc_slo_egress_source_ranges
-  f5xc_slo_egress_target_tags    = var.f5xc_slo_egress_target_tags
-  f5xc_slo_ingress_source_ranges = var.f5xc_slo_ingress_source_ranges
-  f5xc_slo_ingress_target_tags   = var.f5xc_slo_ingress_target_tags
+  f5xc_sli_firewall              = var.f5xc_ce_sli_firewall
+  f5xc_slo_firewall              = var.f5xc_ce_slo_firewall
 }
 
 module "config" {

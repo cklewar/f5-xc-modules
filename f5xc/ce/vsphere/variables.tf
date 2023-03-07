@@ -28,7 +28,14 @@ variable "publicdefaultgateway" {}
 variable "dnsservers" {}
 variable "cpus" {}
 variable "memory" {}
-variable "f5xc_ova_image" {}
+variable "f5xc_ova_image" {
+  type = string
+  default = ""
+}
+variable "f5xc_vm_template" {
+  type = string
+  default = ""
+}
 variable "f5xc_reg_url" {
   type    = string
   default = "ves.volterra.io"

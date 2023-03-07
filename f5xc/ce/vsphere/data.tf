@@ -29,3 +29,8 @@ data "vsphere_network" "inside" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
+data "vsphere_virtual_machine" "template" {
+  count = var.f5xc_vm_template == "" ? 0 : 1
+  name = var.f5xc_vm_template
+  datacenter_id = data.vsphere_datacenter.dc.id
+}

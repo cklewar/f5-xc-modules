@@ -128,7 +128,7 @@ variable "f5xc_ce_slo_firewall" {
   default = {
     rules = [
       {
-        name        = format("%s-%s-%s-slo-ingress-allow-all", var.network_name, var.instance_name, var.gcp_region)
+        name        = "default-slo-ingress-allow-all"
         priority    = 1000
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
@@ -177,7 +177,7 @@ variable "f5xc_ce_sli_firewall" {
   default = {
     rules = [
       {
-        name        = format("%s-%s-%s-sli-ingress-allow-all", var.network_name, var.instance_name, var.gcp_region)
+        name        = "default-sli-ingress-allow-all"
         priority    = 1000
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"

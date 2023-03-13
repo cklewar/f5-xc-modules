@@ -171,7 +171,7 @@ variable "f5xc_ce_sli_firewall" {
     }))
   })
   validation {
-    condition     = alltrue([for elem in var.f5xc_ce_slo_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
+    condition     = alltrue([for elem in var.f5xc_ce_sli_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
     error_message = "Invalid firewall rule direction"
   }
   default = {

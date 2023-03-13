@@ -267,6 +267,11 @@ variable "f5xc_namespace" {
   type = string
 }
 
+variable "f5xc_secure_cloud_ce" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_ip_ranges_americas" {
   type        = list(string)
   description = "List of IP ranges to allow ingress/egress for F5 XC CE IPSEC and SSL VPN"

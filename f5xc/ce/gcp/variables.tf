@@ -267,7 +267,7 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_secure_cloud_ce" {
+variable "f5xc_is_secure_cloud_ce" {
   type    = bool
   default = false
 }

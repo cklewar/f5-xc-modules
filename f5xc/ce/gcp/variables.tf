@@ -133,7 +133,7 @@ variable "f5xc_ce_slo_firewall" {
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []
-        ranges      = [0.0.0.0/0]
+        ranges      = ["0.0.0.0/0"]
         allow       = [
           {
             protocol = "all"
@@ -182,7 +182,7 @@ variable "f5xc_ce_sli_firewall" {
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []
-        ranges      = [0.0.0.0/0]
+        ranges      = ["0.0.0.0/0"]
         allow       = [
           {
             protocol = "all"

@@ -4,23 +4,16 @@ resource "volterra_token" "site" {
 }
 
 module "network" {
-  count                          = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
-  source                         = "./network"
-  gcp_region                     = var.gcp_region
-  network_name                   = var.network_name
-  fabric_subnet_outside          = var.fabric_subnet_outside
-  fabric_subnet_inside           = var.fabric_subnet_inside
-  auto_create_subnetworks        = var.auto_create_subnetworks
-  f5xc_ce_gateway_type           = var.f5xc_ce_gateway_type
-  f5xc_slo_ingress_allow         = var.f5xc_slo_ingress_allow
-  f5xc_sli_egress_source_ranges  = var.f5xc_sli_egress_source_ranges
-  f5xc_sli_egress_target_tags    = var.f5xc_sli_egress_target_tags
-  f5xc_sli_ingress_source_ranges = var.f5xc_sli_ingress_source_ranges
-  f5xc_sli_ingress_target_tags   = var.f5xc_sli_ingress_target_tags
-  f5xc_slo_egress_source_ranges  = var.f5xc_slo_egress_source_ranges
-  f5xc_slo_egress_target_tags    = var.f5xc_slo_egress_target_tags
-  f5xc_slo_ingress_source_ranges = var.f5xc_slo_ingress_source_ranges
-  f5xc_slo_ingress_target_tags   = var.f5xc_slo_ingress_target_tags
+  count                   = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
+  source                  = "./network"
+  gcp_region              = var.gcp_region
+  network_name            = var.network_name
+  fabric_subnet_outside   = var.fabric_subnet_outside
+  fabric_subnet_inside    = var.fabric_subnet_inside
+  auto_create_subnetworks = var.auto_create_subnetworks
+  f5xc_ce_gateway_type    = var.f5xc_ce_gateway_type
+  f5xc_ce_sli_firewall    = var.f5xc_is_secure_cloud_ce ? merge(local.f5xc_ce_sli_firewall, var.f5xc_ce_sli_firewall) : var.f5xc_ce_sli_firewall
+  f5xc_ce_slo_firewall    = var.f5xc_is_secure_cloud_ce ? merge(local.f5xc_ce_slo_firewall, var.f5xc_ce_slo_firewall) : var.f5xc_ce_slo_firewall
 }
 
 module "config" {

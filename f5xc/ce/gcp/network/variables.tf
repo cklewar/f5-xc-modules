@@ -11,7 +11,7 @@ variable "fabric_subnet_inside" {
 }
 
 variable "network_name" {
-  type    = string
+  type = string
 }
 
 variable "auto_create_subnetworks" {
@@ -33,41 +33,46 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "f5xc_sli_ingress_target_tags" {
-  type = list(string)
+variable "f5xc_ce_slo_firewall" {
+  type = object({
+    rules = list(object({
+      name               = string
+      priority           = string
+      description        = string
+      direction          = string
+      target_tags        = optional(list(string))
+      source_ranges      = optional(list(string))
+      destination_ranges = optional(list(string))
+      allow              = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      deny = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+    }))
+  })
 }
 
-variable "f5xc_sli_egress_target_tags" {
-  type = list(string)
-}
-
-variable "f5xc_slo_ingress_target_tags" {
-  type = list(string)
-}
-
-variable "f5xc_slo_egress_target_tags" {
-  type = list(string)
-}
-
-variable "f5xc_sli_ingress_source_ranges" {
-  type = list(string)
-}
-
-variable "f5xc_sli_egress_source_ranges" {
-  type = list(string)
-}
-
-variable "f5xc_slo_ingress_source_ranges" {
-  type = list(string)
-}
-
-variable "f5xc_slo_egress_source_ranges" {
-  type = list(string)
-}
-
-variable "f5xc_slo_ingress_allow" {
-  type = list(object({
-    protocol = string
-    ports    = optional(list(string))
-  }))
+variable "f5xc_ce_sli_firewall" {
+  type = object({
+    rules = list(object({
+      name               = string
+      priority           = string
+      description        = string
+      direction          = string
+      target_tags        = optional(list(string))
+      source_ranges      = optional(list(string))
+      destination_ranges = optional(list(string))
+      allow              = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      deny = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+    }))
+  })
 }

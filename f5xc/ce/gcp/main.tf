@@ -12,8 +12,8 @@ module "network" {
   fabric_subnet_inside           = var.fabric_subnet_inside
   auto_create_subnetworks        = var.auto_create_subnetworks
   f5xc_ce_gateway_type           = var.f5xc_ce_gateway_type
-  f5xc_sli_firewall              = var.f5xc_ce_sli_firewall
-  f5xc_slo_firewall              = var.f5xc_ce_slo_firewall
+  f5xc_ce_sli_firewall           = var.f5xc_ce_sli_firewall
+  f5xc_ce_slo_firewall           = var.f5xc_ce_slo_firewall
 }
 
 module "config" {

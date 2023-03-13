@@ -281,15 +281,15 @@ variable "f5xc_ip_ranges_americas" {
   ]
 }
 
-variable "f5xc_additional_ips" {
+variable "f5xc_ce_egress_ip_ranges" {
   type        = list(string)
-  description = "List of additional outbound IP ranges for F5 CE"
+  description = "Egress IP ranges for F5 XC CE"
   default     = [
-    "72.19.3.0/24", # volterra-03
-    "20.150.36.4/32", # vesio.blob.core.windows.net
-    "20.60.62.4/32", # waferdatasetsprod.blob.core.windows.net
-    "18.117.40.234/32", # register.ves.volterra.io
-    "13.107.237.0/24", # downloads.volterra.io
-    "13.107.238.0/24", # downloads.volterra.io
+    "72.19.3.0/24",
+    "20.150.36.4/32",
+    "20.60.62.4/32",
+    "18.117.40.234/32",
+    "13.107.237.0/24",
+    "13.107.238.0/24",
   ]
 }

@@ -42,6 +42,24 @@ locals {
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
+      },
+       {
+        name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
+        priority    = 65535
+        description = "deny all SLO"
+        direction   = "EGRESS"
+        ranges      = ["0.0.0.0/0"]
+        target_tags = []
+        allow       = []
+        deny        = [
+          {
+            protocol = "all"
+            ports = []
+          }
+        ]
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
       }
     ]
   }

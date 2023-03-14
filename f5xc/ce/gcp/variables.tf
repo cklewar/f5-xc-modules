@@ -337,6 +337,34 @@ variable "f5xc_ip_ranges_americas" {
   ]
 }
 
+variable "f5xc_ip_ranges_europe" {
+  type        = list(string)
+  description = "List of IP ranges to allow ingress/egress for F5 XC CE IPSEC and SSL VPN"
+  default     = [
+    "5.182.215.0/25",
+    "84.54.61.0/25",
+    "23.158.32.0/25",
+    "84.54.62.0/25",
+    "185.94.142.0/25",
+    "185.94.143.0/25",
+    "159.60.190.0/24",
+  ]
+}
+
+variable "f5xc_ip_ranges_asia" {
+  type        = list(string)
+  description = "List of IP ranges to allow ingress/egress for F5 XC CE IPSEC and SSL VPN"
+  default     = [
+    "5.182.215.0/25",
+    "84.54.61.0/25",
+    "23.158.32.0/25",
+    "84.54.62.0/25",
+    "185.94.142.0/25",
+    "185.94.143.0/25",
+    "159.60.190.0/24",
+  ]
+}
+
 variable "f5xc_ce_egress_ip_ranges" {
   type        = list(string)
   description = "Egress IP ranges for F5 XC CE"

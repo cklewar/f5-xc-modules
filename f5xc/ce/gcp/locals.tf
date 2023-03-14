@@ -6,8 +6,30 @@ locals {
       {
         name        = "${var.project_name}-slo-allow-http-nat-t-ingress-${var.gcp_region}"
         priority    = 1000
-        description = "Allow SLO HTTPS and NAT-T"
+        description = "Allow SLO INGRESS HTTPS and NAT-T"
         direction   = "INGRESS"
+        target_tags = []
+        ranges      = toset(concat(concat(var.f5xc_ip_ranges_americas, var.f5xc_ip_ranges_europe), var.f5xc_ip_ranges_asia))
+        allow       = [
+          {
+            protocol = "tcp"
+            ports    = ["443"]
+          },
+          {
+            protocol = "udp"
+            ports    = ["4500"]
+          }
+        ]
+        deny       = []
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
+      },
+      {
+        name        = "${var.project_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
+        priority    = 1000
+        description = "Allow SLO EGRESS HTTPS and NAT-T"
+        direction   = "EGRESS"
         target_tags = []
         ranges      = var.f5xc_ip_ranges_americas
         allow       = [
@@ -26,9 +48,31 @@ locals {
         }
       },
       {
+        name        = "${var.project_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
+        priority    = 1000
+        description = "Allow SLO EGRESS HTTP/HTTPS"
+        direction   = "EGRESS"
+        target_tags = []
+        ranges      = var.f5xc_ce_egress_ip_ranges
+        allow       = [
+          {
+            protocol = "tcp"
+            ports    = ["80"]
+          },
+          {
+            protocol = "udp"
+            ports    = ["443"]
+          }
+        ]
+        deny       = []
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
+      },
+      {
         name        = "${var.project_name}-slo-allow-ssh-iap-ingress-${var.gcp_region}"
         priority    = 65534
-        description = "Allow SLO SSH and IAP"
+        description = "Allow SLO INGRESS SSH and IAP"
         direction   = "INGRESS"
         ranges      = var.f5xc_ip_ranges_americas
         target_tags = []
@@ -43,10 +87,10 @@ locals {
           metadata = "INCLUDE_ALL_METADATA"
         }
       },
-       {
-        name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
+      {
+        name        = "${var.project_name}-slo-deny-all-egress-${var.gcp_region}"
         priority    = 65535
-        description = "deny all SLO"
+        description = "Deny SLO EGRESS ALL"
         direction   = "EGRESS"
         ranges      = ["0.0.0.0/0"]
         target_tags = []
@@ -54,7 +98,7 @@ locals {
         deny        = [
           {
             protocol = "all"
-            ports = []
+            ports    = []
           }
         ]
         log_config = {
@@ -69,27 +113,8 @@ locals {
       {
         name        = "${var.project_name}-sli-allow-ssh-egress-${var.gcp_region}"
         priority    = 65534
-        description = "Allow SLI SSH"
+        description = "Allow SLI EGRESS SSH"
         direction   = "EGRESS"
-        ranges      = concat(var.f5xc_ce_egress_ip_ranges, var.f5xc_ip_ranges_americas)
-        target_tags = []
-        allow       = [
-          {
-            protocol = "tcp"
-            ports    = ["22"]
-          }
-        ]
-        deny       = []
-        log_config = {
-          metadata = "INCLUDE_ALL_METADATA"
-        }
-      },
-      {
-        name        = "${var.project_name}-sli-allow-ssh-ingress-${var.gcp_region}"
-        priority    = 65534
-        description = "Allow SLI SSH"
-        direction   = "INGRESS"
-        ranges      = var.f5xc_ip_ranges_americas
         target_tags = []
         allow       = [
           {
@@ -105,7 +130,7 @@ locals {
       {
         name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
         priority    = 65535
-        description = "deny all SLI"
+        description = "Deny SLI ALL"
         direction   = "EGRESS"
         ranges      = ["0.0.0.0/0"]
         target_tags = []
@@ -113,7 +138,7 @@ locals {
         deny        = [
           {
             protocol = "all"
-            ports = []
+            ports    = []
           }
         ]
         log_config = {

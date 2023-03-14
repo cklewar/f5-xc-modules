@@ -2,29 +2,26 @@ variable "gcp_region" {
   type = string
 }
 
-variable "fabric_subnet_outside" {
+variable "subnet_outside_name" {
   type    = string
   default = ""
 }
 
-variable "fabric_subnet_inside" {
+variable "subnet_inside_name" {
   type    = string
   default = ""
 }
 
-variable "existing_fabric_subnet_inside" {
-  type    = string
-  default = ""
+variable "existing_network_inside" {
+  default = null
 }
 
-variable "existing_fabric_subnet_outside" {
-  type    = string
-  default = ""
+variable "existing_network_outside" {
+  default = null
 }
 
-variable "network_name" {
-  type    = string
-  default = ""
+variable "project_name" {
+  type = string
 }
 
 variable "instance_name" {
@@ -99,7 +96,7 @@ variable "is_sensitive" {
   description = "Whether to mask sensitive data in output or not"
 }
 
-variable "f5xc_ce_slo_firewall" {
+variable "f5xc_ce_slo_default_firewall" {
   type = object({
     rules = list(object({
       name        = string
@@ -122,7 +119,7 @@ variable "f5xc_ce_slo_firewall" {
     }))
   })
   validation {
-    condition     = alltrue([for elem in var.f5xc_ce_slo_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
+    condition     = alltrue([for elem in var.f5xc_ce_slo_default_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
     error_message = "Invalid firewall rule direction"
   }
   default = {
@@ -148,7 +145,7 @@ variable "f5xc_ce_slo_firewall" {
   }
 }
 
-variable "f5xc_ce_sli_firewall" {
+variable "f5xc_ce_sli_default_firewall" {
   type = object({
     rules = list(object({
       name        = string
@@ -171,7 +168,7 @@ variable "f5xc_ce_sli_firewall" {
     }))
   })
   validation {
-    condition     = alltrue([for elem in var.f5xc_ce_sli_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
+    condition     = alltrue([for elem in var.f5xc_ce_sli_default_firewall.rules : contains(["INGRESS", "EGRESS"], elem.direction)])
     error_message = "Invalid firewall rule direction"
   }
   default = {
@@ -194,6 +191,60 @@ variable "f5xc_ce_sli_firewall" {
         }
       }
     ]
+  }
+}
+
+variable "f5xc_ce_slo_firewall" {
+  type = object({
+    rules = list(object({
+      name        = string
+      priority    = string
+      description = string
+      direction   = string
+      target_tags = optional(list(string))
+      ranges      = optional(list(string))
+      allow       = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      deny = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      log_config = optional(object({
+        metadata = string
+      }))
+    }))
+  })
+  default = {
+    rules = []
+  }
+}
+
+variable "f5xc_ce_sli_firewall" {
+  type = object({
+    rules = list(object({
+      name        = string
+      priority    = string
+      description = string
+      direction   = string
+      target_tags = optional(list(string))
+      ranges      = optional(list(string))
+      allow       = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      deny = list(object({
+        protocol = string
+        ports    = optional(list(string))
+      }))
+      log_config = optional(object({
+        metadata = string
+      }))
+    }))
+  })
+  default = {
+    rules = []
   }
 }
 

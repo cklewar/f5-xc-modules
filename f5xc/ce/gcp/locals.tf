@@ -1,15 +1,15 @@
 locals {
-  cluster_labels       = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
-  create_network       = var.fabric_subnet_outside != "" || (var.fabric_subnet_inside != "" && var.fabric_subnet_outside != "") ? true : false
-  f5xc_ce_slo_firewall = {
+  cluster_labels              = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
+  create_network              = var.subnet_outside_name != "" || (var.subnet_inside_name != "" && var.subnet_outside_name != "") ? true : false
+  f5xc_secure_ce_slo_firewall = {
     rules = [
       {
-        name        = "${var.instance_name}-slo-allow-ingress-${var.gcp_region}"
+        name        = "${var.project_name}-slo-allow-http-nat-t-ingress-${var.gcp_region}"
         priority    = 1000
         description = "Allow SLO HTTPS and NAT-T"
         direction   = "INGRESS"
         target_tags = []
-        ranges      = [var.f5xc_ip_ranges_americas]
+        ranges      = var.f5xc_ip_ranges_americas
         allow       = [
           {
             protocol = "tcp"
@@ -26,11 +26,11 @@ locals {
         }
       },
       {
-        name        = "${var.network_name}-slo-allow-ingress-${var.gcp_region}"
+        name        = "${var.project_name}-slo-allow-ssh-iap-ingress-${var.gcp_region}"
         priority    = 65534
         description = "Allow SLO SSH and IAP"
         direction   = "INGRESS"
-        ranges      = [var.f5xc_ip_ranges_americas]
+        ranges      = var.f5xc_ip_ranges_americas
         target_tags = []
         allow       = [
           {
@@ -45,14 +45,15 @@ locals {
       }
     ]
   }
-  f5xc_ce_sli_firewall = {
+
+  f5xc_secure_ce_sli_firewall = {
     rules = [
       {
-        name        = "${var.network_name}-sli-allow-egress-${var.gcp_region}"
+        name        = "${var.project_name}-sli-allow-ssh-egress-${var.gcp_region}"
         priority    = 65534
         description = "Allow SLI SSH"
         direction   = "EGRESS"
-        ranges      = [var.f5xc_ce_egress_ip_ranges, var.f5xc_ip_ranges_americas]
+        ranges      = concat(var.f5xc_ce_egress_ip_ranges, var.f5xc_ip_ranges_americas)
         target_tags = []
         allow       = [
           {
@@ -66,11 +67,11 @@ locals {
         }
       },
       {
-        name        = "${var.network_name}-sli-allow-ingress-${var.gcp_region}"
+        name        = "${var.project_name}-sli-allow-ssh-ingress-${var.gcp_region}"
         priority    = 65534
         description = "Allow SLI SSH"
         direction   = "INGRESS"
-        ranges      = [var.f5xc_ip_ranges_americas]
+        ranges      = var.f5xc_ip_ranges_americas
         target_tags = []
         allow       = [
           {
@@ -84,7 +85,7 @@ locals {
         }
       },
       {
-        name        = "${var.network_name}-sli-deny-egress-${var.gcp_region}"
+        name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
         priority    = 65535
         description = "deny all SLI"
         direction   = "EGRESS"
@@ -94,6 +95,7 @@ locals {
         deny        = [
           {
             protocol = "all"
+            ports = []
           }
         ]
         log_config = {

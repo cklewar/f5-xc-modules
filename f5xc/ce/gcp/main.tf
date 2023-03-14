@@ -7,13 +7,21 @@ module "network" {
   count                   = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
   source                  = "./network"
   gcp_region              = var.gcp_region
-  network_name            = var.network_name
-  fabric_subnet_outside   = var.fabric_subnet_outside
-  fabric_subnet_inside    = var.fabric_subnet_inside
+  project_name            = var.project_name
+  subnet_outside          = var.subnet_outside_name
+  subnet_inside           = var.subnet_inside_name
   auto_create_subnetworks = var.auto_create_subnetworks
   f5xc_ce_gateway_type    = var.f5xc_ce_gateway_type
-  f5xc_ce_sli_firewall    = var.f5xc_is_secure_cloud_ce ? merge(local.f5xc_ce_sli_firewall, var.f5xc_ce_sli_firewall) : var.f5xc_ce_sli_firewall
-  f5xc_ce_slo_firewall    = var.f5xc_is_secure_cloud_ce ? merge(local.f5xc_ce_slo_firewall, var.f5xc_ce_slo_firewall) : var.f5xc_ce_slo_firewall
+  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
+}
+
+module "firewall" {
+  source               = "./firewall"
+  sli_network          = var.subnet_inside_name != "" ? module.network[0].ce["sli_subnetwork"]["id"] : var.existing_network_inside.network_name
+  slo_network          = var.subnet_outside_name != "" ? module.network[0].ce["slo_subnetwork"]["id"] : var.existing_network_outside.network_name
+  f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
+  f5xc_ce_sli_firewall = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall) > 0 ? var.f5xc_ce_sli_firewall : var.f5xc_ce_sli_default_firewall) : null
+  f5xc_ce_slo_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_slo_firewall : (length(var.f5xc_ce_slo_firewall) > 0 ? var.f5xc_ce_slo_firewall : var.f5xc_ce_slo_default_firewall)
 }
 
 module "config" {
@@ -39,8 +47,8 @@ module "node" {
   instance_tags               = var.instance_tags
   machine_image               = var.machine_image
   instance_name               = var.instance_name
-  sli_subnetwork              = var.fabric_subnet_inside != "" ? module.network[0].ce["master-${count.index}"]["sli_subnetwork"] : var.existing_fabric_subnet_inside
-  slo_subnetwork              = var.fabric_subnet_outside != "" ? module.network[0].ce["master-${count.index}"]["slo_subnetwork"] : var.existing_fabric_subnet_outside
+  sli_subnetwork              = var.subnet_inside_name != "" ? module.network[0].ce["master-${count.index}"]["sli_subnetwork"] : var.existing_network_inside.subnets_ids[0]
+  slo_subnetwork              = var.subnet_outside_name != "" ? module.network[0].ce["master-${count.index}"]["slo_subnetwork"] : var.existing_network_outside.subnets_ids[0]
   ssh_public_key              = var.ssh_public_key
   machine_disk_size           = var.machine_disk_size
   access_config_nat_ip        = var.access_config_nat_ip

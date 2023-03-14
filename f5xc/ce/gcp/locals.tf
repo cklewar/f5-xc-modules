@@ -27,7 +27,7 @@ locals {
       },
       {
         name        = "${var.project_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
-        priority    = 1000
+        priority    = 1001
         description = "Allow SLO EGRESS HTTPS and NAT-T"
         direction   = "EGRESS"
         target_tags = []
@@ -49,19 +49,37 @@ locals {
       },
       {
         name        = "${var.project_name}-slo-allow-http-https-egress-${var.gcp_region}"
-        priority    = 1000
+        priority    = 1002
         description = "Allow SLO EGRESS HTTP/HTTPS"
         direction   = "EGRESS"
         target_tags = []
         ranges      = var.f5xc_ce_egress_ip_ranges
         allow       = [
-          {
+          /*{
             protocol = "tcp"
             ports    = ["80"]
-          },
+          },*/
+          {
+            protocol = "tcp"
+            ports    = ["443"]
+          }
+        ]
+        deny       = []
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
+      },
+      {
+        name        = "${var.project_name}-slo-allow-ntp-egress-${var.gcp_region}"
+        priority    = 1003
+        description = "Allow SLO EGRESS NTP"
+        direction   = "EGRESS"
+        target_tags = []
+        ranges      = ["0.0.0.0/0"]
+        allow       = [
           {
             protocol = "udp"
-            ports    = ["443"]
+            ports    = ["123"]
           }
         ]
         deny       = []
@@ -138,7 +156,6 @@ locals {
         deny        = [
           {
             protocol = "all"
-            ports    = []
           }
         ]
         log_config = {

@@ -48,7 +48,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
+        name        = "${var.project_name}-slo-allow-http-https-egress-${var.gcp_region}"
         priority    = 1000
         description = "Allow SLO EGRESS HTTP/HTTPS"
         direction   = "EGRESS"

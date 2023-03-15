@@ -2,7 +2,7 @@ locals {
   cluster_labels              = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
   create_network              = var.subnet_outside_name != "" || (var.subnet_inside_name != "" && var.subnet_outside_name != "") ? true : false
   f5xc_secure_ce_slo_firewall = {
-    rules = [
+    rules = concat([
       {
         name        = "${var.project_name}-slo-allow-http-nat-t-ingress-${var.gcp_region}"
         priority    = 1000
@@ -119,17 +119,18 @@ locals {
           metadata = "INCLUDE_ALL_METADATA"
         }
       }
-    ]
+    ], var.f5xc_ce_slo_firewall.rules)
   }
 
   f5xc_secure_ce_sli_firewall = {
-    rules = [
+    rules = concat([
       {
         name        = "${var.project_name}-sli-allow-ssh-egress-${var.gcp_region}"
         priority    = 65534
-        description = "Allow SLI EGRESS SSH"
+        description = "Allow SLO EGRESS NTP"
         direction   = "EGRESS"
         target_tags = []
+        ranges      = ["0.0.0.0/0"]
         allow       = [
           {
             protocol = "tcp"
@@ -144,7 +145,7 @@ locals {
       {
         name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
         priority    = 65535
-        description = "Deny SLI ALL"
+        description = "Deny SLI EGRESS ALL"
         direction   = "EGRESS"
         ranges      = ["0.0.0.0/0"]
         target_tags = []
@@ -152,12 +153,13 @@ locals {
         deny        = [
           {
             protocol = "all"
+            ports    = []
           }
         ]
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
       }
-    ]
+    ], var.f5xc_ce_sli_firewall.rules)
   }
 }

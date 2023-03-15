@@ -126,7 +126,7 @@ variable "f5xc_ce_slo_default_firewall" {
     rules = [
       {
         name        = "default-slo-ingress-allow-all"
-        priority    = 1000
+        priority    = 65535
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []
@@ -175,7 +175,7 @@ variable "f5xc_ce_sli_default_firewall" {
     rules = [
       {
         name        = "default-sli-ingress-allow-all"
-        priority    = 1000
+        priority    = 65535
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []
@@ -216,6 +216,10 @@ variable "f5xc_ce_slo_firewall" {
       }))
     }))
   })
+  validation {
+    condition     = alltrue([for elem in var.f5xc_ce_slo_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
+    error_message = "Invalid firewall rule direction"
+  }
   default = {
     rules = []
   }
@@ -243,6 +247,10 @@ variable "f5xc_ce_sli_firewall" {
       }))
     }))
   })
+  validation {
+    condition     = alltrue([for elem in var.f5xc_ce_sli_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
+    error_message = "Invalid firewall rule direction"
+  }
   default = {
     rules = []
   }
@@ -368,7 +376,7 @@ variable "f5xc_ip_ranges_asia" {
 variable "f5xc_ce_egress_ip_ranges" {
   type        = list(string)
   description = "Egress IP ranges for F5 XC CE"
-  default     =[
+  default     = [
     "20.33.0.0/16",
     "74.125.0.0/16",
     "18.64.0.0/10",
@@ -416,5 +424,5 @@ variable "f5xc_ce_egress_ip_ranges" {
     "54.220.0.0/15",
     "54.192.0.0/12",
     "54.160.0.0/11"
-]
+  ]
 }

@@ -5,6 +5,8 @@ resource "volterra_aws_vpc_site" "site" {
   tags                    = var.custom_tags
   labels                  = var.f5xc_labels
   direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
+  enable_internet_vip     = var.f5xc_aws_vpc_enable_internet_vip
+  disable_internet_vip    = var.f5xc_aws_vpc_enable_internet_vip ? false : true
 
   aws_cred {
     name      = var.f5xc_aws_cred

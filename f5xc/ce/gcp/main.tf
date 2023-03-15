@@ -20,8 +20,8 @@ module "firewall" {
   sli_network          = var.subnet_inside_name != "" ? module.network[0].ce["sli_subnetwork"]["id"] : var.existing_network_inside.network_name
   slo_network          = var.subnet_outside_name != "" ? module.network[0].ce["slo_subnetwork"]["id"] : var.existing_network_outside.network_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
-  # f5xc_ce_sli_firewall = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_is_secure_cloud_ce  (local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall) > 0 ? var.f5xc_ce_sli_firewall : var.f5xc_ce_sli_default_firewall) : null
-  f5xc_ce_sli_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : null
+  # f5xc_ce_sli_firewall = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_is_secure_cloud_ce (local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall) > 0 ? var.f5xc_ce_sli_firewall : var.f5xc_ce_sli_default_firewall) : null
+  f5xc_ce_sli_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall) > 0 ? var.f5xc_ce_sli_firewall : var.f5xc_ce_sli_default_firewall)
   f5xc_ce_slo_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_slo_firewall : (length(var.f5xc_ce_slo_firewall) > 0 ? var.f5xc_ce_slo_firewall : var.f5xc_ce_slo_default_firewall)
 }
 

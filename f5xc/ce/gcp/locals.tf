@@ -1,6 +1,11 @@
 locals {
-  cluster_labels              = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
-  create_network              = var.subnet_outside_name != "" || (var.subnet_inside_name != "" && var.subnet_outside_name != "") ? true : false
+  cluster_labels          = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
+  create_network          = var.subnet_outside_name != "" || (var.subnet_inside_name != "" && var.subnet_outside_name != "") ? true : false
+  f5xc_ip_ranges_americas = concat(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
+  f5xc_ip_ranges_europe   = concat(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)
+  f5xc_ip_ranges_asia     = concat(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
+  f5xc_ip_ranges_all      = concat(local.f5xc_ip_ranges_americas, concat(local.f5xc_ip_ranges_europe, local.f5xc_ip_ranges_asia))
+
   f5xc_secure_ce_slo_firewall = {
     rules = concat([
       {
@@ -9,7 +14,7 @@ locals {
         description = "Allow SLO INGRESS HTTPS and NAT-T"
         direction   = "INGRESS"
         target_tags = []
-        ranges      = toset(concat(concat(var.f5xc_ip_ranges_americas, var.f5xc_ip_ranges_europe), var.f5xc_ip_ranges_asia))
+        ranges      = toset(local.f5xc_ip_ranges_all)
         allow       = [
           {
             protocol = "tcp"
@@ -31,7 +36,7 @@ locals {
         description = "Allow SLO EGRESS HTTPS and NAT-T"
         direction   = "EGRESS"
         target_tags = []
-        ranges      = var.f5xc_ip_ranges_americas
+        ranges      = local.f5xc_ip_ranges_all
         allow       = [
           {
             protocol = "tcp"
@@ -88,7 +93,7 @@ locals {
         priority    = 65534
         description = "Allow SLO INGRESS SSH and IAP"
         direction   = "INGRESS"
-        ranges      = var.f5xc_ip_ranges_americas
+        ranges      = local.f5xc_ip_ranges_all
         target_tags = []
         allow       = [
           {

@@ -55,10 +55,6 @@ locals {
         target_tags = []
         ranges      = var.f5xc_ce_egress_ip_ranges
         allow       = [
-          /*{
-            protocol = "tcp"
-            ports    = ["80"]
-          },*/
           {
             protocol = "tcp"
             ports    = ["443"]

@@ -4,7 +4,7 @@ resource "aws_eip" "secure_ce" {
 }
 
 resource "aws_subnet" "secure_ce" {
-  tags                    = merge({ "Name" : format("%s-secure-ce-nat-gw", var.f5xc_node_name) }, var.common_tags)
+  tags                    = merge({ "Name" : format("%s-secure-ce", var.f5xc_node_name) }, var.common_tags)
   vpc_id                  = var.aws_vpc_id
   cidr_block              = var.aws_vpc_nat_gw_subnet
   availability_zone       = var.aws_vpc_az

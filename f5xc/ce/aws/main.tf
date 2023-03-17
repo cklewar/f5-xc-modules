@@ -48,18 +48,20 @@ module "network_node" {
   aws_subnet_slo_cidr     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   aws_subnet_sli_cidr     = local.is_multi_nic ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
   f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
-  slo_subnet_rt_id        = module.network_common.common["slo_subnet_rt"]["id"]
+  aws_slo_subnet_rt_id    = module.network_common.common["slo_subnet_rt"]["id"]
+  aws_sli_subnet_rt_id    = local.is_multi_nic ? module.network_common.common["sli_subnet_rt"]["id"] : null
 }
 
 module "secure_ce" {
-  source         = "./network/secure"
-  common_tags    = local.common_tags
-  for_each       = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v} : {}
-  aws_vpc_id     = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_vpc_az     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_subnet     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_nat_gw_subnet"]
-  f5xc_node_name = [each.key]
-  slo_subnet_id  = module.network_node[each.key]["ce"]["slo_subnet"]["id"]
+  source                = "./network/secure"
+  common_tags           = local.common_tags
+  for_each              = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v} : {}
+  aws_vpc_id            = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
+  aws_vpc_az            = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
+  aws_vpc_nat_gw_subnet = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_nat_gw_subnet"]
+  slo_subnet_id         = module.network_node[each.key].ce["slo_subnet"]["id"]
+  slo_subnet_rt_id      = module.network_common.common["slo_subnet_rt"]["id"]
+  f5xc_node_name        = each.key
 }
 
 module "network_nlb" {

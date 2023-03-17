@@ -66,6 +66,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_route_table" "slo_subnet_rt" {
+  tags   = merge({ Name : format("%s-slo-rt", var.f5xc_cluster_name) }, var.common_tags)
   vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 
   route {
@@ -77,8 +78,10 @@ resource "aws_route_table" "slo_subnet_rt" {
     ipv6_cidr_block = "::/0"
     gateway_id      = aws_internet_gateway.igw.id
   }
+}
 
-  tags = {
-    Name = format("%s-slo-rt", var.f5xc_cluster_name)
-  }
+resource "aws_route_table" "sli_subnet_rt" {
+  count  = var.is_multi_nic ? 1 : 0
+  tags   = merge({ Name : format("%s-sli-rt", var.f5xc_cluster_name) }, var.common_tags)
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 }

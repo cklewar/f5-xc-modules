@@ -34,7 +34,11 @@ variable "is_multi_nic" {
   type = bool
 }
 
-variable "slo_subnet_rt_id" {
+variable "aws_slo_subnet_rt_id" {
+  type = string
+}
+
+variable "aws_sli_subnet_rt_id" {
   type = string
 }
 

@@ -30,7 +30,14 @@ module "network_interface_sli" {
   aws_interface_source_dest_check = false
 }
 
-resource "aws_route_table_association" "subnet_slo_2_igw" {
-  subnet_id      = aws_subnet.slo.id
-  route_table_id = var.slo_subnet_rt_id
+resource "aws_route_table_association" "subnet_slo" {
+  count          = var.f5xc_is_secure_cloud_ce ? 0 : 1
+  subnet_id      = aws_subnet.sli[0].id
+  route_table_id = var.aws_sli_subnet_rt_id
+}
+
+resource "aws_route_table_association" "subnet_sli" {
+  count          = var.is_multi_nic ? 1 : 0
+  subnet_id      = aws_subnet.sli[0].id
+  route_table_id = var.aws_sli_subnet_rt_id
 }

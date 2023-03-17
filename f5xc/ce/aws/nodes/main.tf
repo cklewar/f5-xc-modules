@@ -42,8 +42,8 @@ resource "volterra_registration_approval" "nodes" {
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size
   hostname     = regex("[0-9A-Za-z_-]+", aws_instance.instance.private_dns)
-  wait_time    = var.f5xc_registration_wait_time
-  retry        = var.f5xc_registration_retry
+  wait_time    = 60 #var.f5xc_registration_wait_time
+  retry        = 10 #var.f5xc_registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {

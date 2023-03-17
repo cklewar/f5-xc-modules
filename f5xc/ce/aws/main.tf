@@ -15,6 +15,7 @@ module "network_common" {
   f5xc_cluster_name                    = var.f5xc_cluster_name
   f5xc_ce_gateway_type                 = var.f5xc_ce_gateway_type
   aws_vpc_cidr_block                   = var.aws_vpc_cidr_block
+  aws_existing_vpc_id                  = var.aws_existing_vpc_id
   aws_security_group_rules_sli_egress  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? (var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_egress_secure_ce : length(var.aws_security_group_rules_sli_egress) > 0 ? var.aws_security_group_rules_sli_egress : var.aws_security_group_rules_sli_egress_default) : null
   aws_security_group_rules_sli_ingress = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? (var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : length(var.aws_security_group_rules_sli_ingress) > 0 ? var.aws_security_group_rules_sli_ingress : var.aws_security_group_rules_sli_ingress_default) : null
   aws_security_group_rules_slo_egress  = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : (length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : var.aws_security_group_rules_slo_egress_default)
@@ -30,7 +31,7 @@ module "network_node" {
   has_public_ip        = var.has_public_ip
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_vpc_id           = module.network_common.common["vpc"]["id"]
+  aws_vpc_id           = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
   aws_sg_slo_id        = module.network_common.common["sg_slo"]["id"]
   aws_sg_sli_id        = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_subnet_slo_cidr  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
@@ -46,7 +47,7 @@ module "network_nlb" {
   count             = length(var.f5xc_aws_vpc_az_nodes) == 3 ? 1 : 0
   common_tags       = local.common_tags
   f5xc_cluster_name = var.f5xc_cluster_name
-  aws_vpc_id        = module.network_common.common["vpc"]["id"]
+  aws_vpc_id        = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
   aws_nlb_subnets   = [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
   # local.is_slo_snet_same_az ? [module.network_common.common["vpc"][""]] : [for node in module.network_node : node["ce"]["slo_subnet"]["id"]]
 }

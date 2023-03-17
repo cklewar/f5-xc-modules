@@ -29,6 +29,11 @@ variable "ssh_public_key" {
   type = string
 }
 
+variable "aws_existing_vpc_id" {
+  type    = string
+  default = ""
+}
+
 variable "aws_security_group_rules_slo_egress_default" {
   type = list(object({
     from_port   = number

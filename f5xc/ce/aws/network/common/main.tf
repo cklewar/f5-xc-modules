@@ -8,7 +8,7 @@ resource "aws_vpc" "vpc" {
 
 module "aws_security_group_slo" {
   source                      = "../../../../../aws/security_group"
-  aws_vpc_id                  = aws_vpc.vpc[0].id
+  aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   aws_security_group_name     = format("%s-sg-slo", var.f5xc_cluster_name)
   security_group_rule_egress  = var.aws_security_group_rules_slo_egress
@@ -18,7 +18,7 @@ module "aws_security_group_slo" {
 module "aws_security_group_sli" {
   source                      = "../../../../../aws/security_group"
   count                       = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  aws_vpc_id                  = aws_vpc.vpc[0].id
+  aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   aws_security_group_name     = format("%s-sg-sli", var.f5xc_cluster_name)
   security_group_rule_egress  = var.aws_security_group_rules_sli_egress

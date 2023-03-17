@@ -16,6 +16,7 @@ output "nodes" {
         common = module.network_common.common
         node   = module.network_node["node0"].ce
       }
+      secure_ce = module.secure_ce["node0"].ce
     }
     master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node1"].ce
@@ -24,6 +25,7 @@ output "nodes" {
         common = module.network_common.common
         node   = module.network_node["node1"].ce
       }
+      secure_ce = module.secure_ce["node0"].ce
     } : null
     master-2 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node2"].ce
@@ -32,6 +34,7 @@ output "nodes" {
         common = module.network_common.common
         node   = module.network_node["node2"].ce
       }
+      secure_ce = module.secure_ce["node0"].ce
     } : null
   }
 }

@@ -119,6 +119,7 @@ variable "aws_security_group_rules_slo_ingress" {
     protocol    = string
     cidr_blocks = list(string)
   }))
+  default = []
 }
 
 variable "aws_security_group_rules_sli_egress" {

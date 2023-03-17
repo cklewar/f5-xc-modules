@@ -33,7 +33,7 @@ module "network_interface_sli" {
 resource "aws_route_table_association" "subnet_slo" {
   count          = var.f5xc_is_secure_cloud_ce ? 0 : 1
   subnet_id      = aws_subnet.sli[0].id
-  route_table_id = var.aws_sli_subnet_rt_id
+  route_table_id = var.aws_slo_subnet_rt_id
 }
 
 resource "aws_route_table_association" "subnet_sli" {

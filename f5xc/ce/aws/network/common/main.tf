@@ -65,14 +65,20 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 }
 
-resource "aws_route" "route_ipv4" {
-  gateway_id             = aws_internet_gateway.igw.id
-  route_table_id         = data.aws_vpc.vpc.main_route_table_id
-  destination_cidr_block = "0.0.0.0/0"
-}
+resource "aws_route_table" "slo_subnet_rt" {
+  vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 
-resource "aws_route" "route_ipv6" {
-  gateway_id                  = aws_internet_gateway.igw.id
-  route_table_id              = data.aws_vpc.vpc.main_route_table_id
-  destination_ipv6_cidr_block = "::/0"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  route {
+    ipv6_cidr_block = "::/0"
+    gateway_id      = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = format("%s-slo-rt", var.f5xc_cluster_name)
+  }
 }

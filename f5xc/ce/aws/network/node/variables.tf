@@ -34,10 +34,18 @@ variable "is_multi_nic" {
   type = bool
 }
 
+variable "slo_subnet_rt_id" {
+  type = string
+}
+
 variable "node_name" {
   type = string
 }
 
 variable "owner_tag" {
   type = string
+}
+
+variable "f5xc_is_secure_cloud_ce" {
+  type = bool
 }

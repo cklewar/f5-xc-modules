@@ -18,40 +18,48 @@ module "network_common" {
   f5xc_is_secure_cloud_ce                                = var.f5xc_is_secure_cloud_ce
   aws_vpc_cidr_block                                     = var.aws_vpc_cidr_block
   aws_existing_vpc_id                                    = var.aws_existing_vpc_id
-  aws_security_group_rules_sli_egress                    = local.is_multi_nic ? (length(var.aws_security_group_rules_sli_egress) > 0 ? var.aws_security_group_rules_sli_egress : var.aws_security_group_rules_sli_egress_default) : []
-  aws_security_group_rules_sli_ingress                   = local.is_multi_nic ? (length(var.aws_security_group_rules_sli_ingress) > 0 ? var.aws_security_group_rules_sli_ingress : var.aws_security_group_rules_sli_ingress_default) : []
-  aws_security_group_rules_slo_egress                    = length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : (var.f5xc_is_secure_cloud_ce == false ? var.aws_security_group_rules_slo_egress_default : [])
-  aws_security_group_rules_slo_ingress                   = length(var.aws_security_group_rules_slo_ingress) > 0 ? var.aws_security_group_rules_slo_ingress : (var.f5xc_is_secure_cloud_ce == false ?var.aws_security_group_rules_slo_ingress_default : [])
-  aws_security_group_rules_sli_egress_secure_ce          = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_egress_secure_ce : []
-  aws_security_group_rules_sli_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : []
-  aws_security_group_rules_slo_egress_secure_ce          = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : []
-  aws_security_group_rules_slo_egress_secure_ce_extended = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce_extended : []
-  aws_security_group_rules_slo_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_ingress_secure_ce : []
+  aws_security_group_rules_sli_egress                    = var.aws_security_group_rules_sli_egress_default
+  # local.is_multi_nic ? (length(var.aws_security_group_rules_sli_egress) > 0 ? var.aws_security_group_rules_sli_egress : var.aws_security_group_rules_sli_egress_default) : []
+  aws_security_group_rules_sli_ingress                   = var.aws_security_group_rules_sli_ingress_default
+  # local.is_multi_nic ? (length(var.aws_security_group_rules_sli_ingress) > 0 ? var.aws_security_group_rules_sli_ingress : var.aws_security_group_rules_sli_ingress_default) : []
+  aws_security_group_rules_slo_egress                    = var.aws_security_group_rules_slo_egress_default
+  # length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : (var.f5xc_is_secure_cloud_ce == false ? var.aws_security_group_rules_slo_egress_default : [])
+  aws_security_group_rules_slo_ingress                   = var.aws_security_group_rules_slo_ingress_default
+  # length(var.aws_security_group_rules_slo_ingress) > 0 ? var.aws_security_group_rules_slo_ingress : (var.f5xc_is_secure_cloud_ce == false ?var.aws_security_group_rules_slo_ingress_default : [])
+  aws_security_group_rules_sli_egress_secure_ce          = [] # var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_egress_secure_ce : []
+  aws_security_group_rules_sli_ingress_secure_ce         = [] # var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : []
+  aws_security_group_rules_slo_egress_secure_ce          = [] # var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : []
+  aws_security_group_rules_slo_egress_secure_ce_extended = [] # var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce_extended : []
+  aws_security_group_rules_slo_ingress_secure_ce         = [] # var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_ingress_secure_ce : []
 }
 
 module "network_node" {
-  source               = "./network/node"
-  for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
-  owner_tag            = var.owner_tag
-  node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
-  common_tags          = local.common_tags
-  is_multi_nic         = local.is_multi_nic
-  has_public_ip        = var.has_public_ip
-  aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_vpc_id           = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_sg_slo_id        = module.network_common.common["sg_slo"]["id"]
-  aws_sg_sli_id        = local.is_multi_nic ? module.network_common.common["sg_sli"]["id"] : null
-  aws_subnet_slo_cidr  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
-  aws_subnet_sli_cidr  = local.is_multi_nic ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
+  source                  = "./network/node"
+  for_each                = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
+  owner_tag               = var.owner_tag
+  node_name               = format("%s-%s", var.f5xc_cluster_name, each.key)
+  common_tags             = local.common_tags
+  is_multi_nic            = local.is_multi_nic
+  has_public_ip           = var.has_public_ip
+  aws_vpc_az              = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
+  aws_vpc_id              = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
+  aws_sg_slo_id           = module.network_common.common["sg_slo"]["id"]
+  aws_sg_sli_id           = local.is_multi_nic ? module.network_common.common["sg_sli"]["id"] : null
+  aws_subnet_slo_cidr     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
+  aws_subnet_sli_cidr     = local.is_multi_nic ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
+  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
+  slo_subnet_rt_id        = module.network_common.common["slo_subnet_rt"]["id"]
 }
 
 module "secure_ce" {
-  source      = "./network/secure"
-  common_tags = local.common_tags
-  for_each    = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v} : {}
-  aws_vpc_id  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_vpc_az  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_subnet  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_nat_gw_subnet"]
+  source         = "./network/secure"
+  common_tags    = local.common_tags
+  for_each       = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v} : {}
+  aws_vpc_id     = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
+  aws_vpc_az     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
+  aws_subnet     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_nat_gw_subnet"]
+  f5xc_node_name = [each.key]
+  slo_subnet_id  = module.network_node[each.key]["ce"]["slo_subnet"]["id"]
 }
 
 module "network_nlb" {

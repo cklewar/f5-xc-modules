@@ -15,8 +15,12 @@ variable "aws_vp_enable_dns_hostnames" {
   default = true
 }
 
+variable "create_new_aws_vpc" {
+  type    = bool
+}
+
 variable "aws_existing_vpc_id" {
-  type    = string
+  type = string
 }
 
 variable "aws_vpc_enable_dns_support" {

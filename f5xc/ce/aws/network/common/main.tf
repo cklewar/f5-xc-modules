@@ -1,5 +1,5 @@
 resource "aws_vpc" "vpc" {
-  count                = var.aws_existing_vpc_id == "" ? 1 : 0
+  count                = var.create_new_aws_vpc  ? 1 : 0
   tags                 = var.common_tags
   cidr_block           = var.aws_vpc_cidr_block
   enable_dns_support   = var.aws_vpc_enable_dns_support

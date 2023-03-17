@@ -1,5 +1,6 @@
 output "nodes" {
   value = {
+    vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : null
     iam = {
       role             = aws_iam_role.role
       policy           = aws_iam_policy.policy

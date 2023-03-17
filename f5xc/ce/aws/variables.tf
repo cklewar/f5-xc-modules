@@ -15,6 +15,11 @@ variable "owner_tag" {
   type = string
 }
 
+variable "create_new_aws_vpc" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_ce_hosts_public_name" {
   type    = string
   default = "vip"

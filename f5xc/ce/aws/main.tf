@@ -12,6 +12,7 @@ module "network_common" {
   source                               = "./network/common"
   owner_tag                            = var.owner_tag
   common_tags                          = local.common_tags
+  create_new_aws_vpc                   = var.create_new_aws_vpc
   f5xc_cluster_name                    = var.f5xc_cluster_name
   f5xc_ce_gateway_type                 = var.f5xc_ce_gateway_type
   aws_vpc_cidr_block                   = var.aws_vpc_cidr_block
@@ -70,7 +71,7 @@ module "config" {
   f5xc_cluster_longitude       = var.f5xc_cluster_longitude
   f5xc_ce_gateway_type         = var.f5xc_ce_gateway_type
   f5xc_ce_hosts_public_name    = var.f5xc_ce_hosts_public_name
-  f5xc_ce_hosts_public_address = module.network_node[each.key].ce["slo"]["public_dns"][0]
+  f5xc_ce_hosts_public_address = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? module.secure_ce[each.key].ce["eip"]["public_dns"] : module.network_node[each.key].ce["slo"]["public_dns"][0]
 }
 
 module "node" {

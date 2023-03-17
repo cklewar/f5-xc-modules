@@ -1,16 +1,16 @@
 resource "aws_subnet" "slo" {
+  tags              = local.common_tags
   vpc_id            = var.aws_vpc_id
   cidr_block        = var.aws_subnet_slo_cidr
   availability_zone = var.aws_vpc_az
-  tags              = local.common_tags
 }
 
 resource "aws_subnet" "sli" {
   count             = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  tags              = local.common_tags
   vpc_id            = var.aws_vpc_id
   cidr_block        = var.aws_subnet_sli_cidr
   availability_zone = var.aws_vpc_az
-  tags              = local.common_tags
 }
 
 module "network_interface_slo" {

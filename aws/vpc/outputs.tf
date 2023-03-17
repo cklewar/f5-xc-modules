@@ -1,7 +1,11 @@
 output "aws_vpc" {
   value = {
-    "id"        = aws_vpc.vpc.id
-    "owner"     = aws_vpc.vpc.owner_id
-    "ipv4_cidr" = aws_vpc.vpc.cidr_block
+    id                  = aws_vpc.vpc.id
+    arn                 = aws_vpc.vpc.arn
+    tags                = aws_vpc.vpc.tags
+    owner               = aws_vpc.vpc.owner_id
+    cidr_block          = aws_vpc.vpc.cidr_block
+    dhcp_options_id     = aws_vpc.vpc.dhcp_options_id
+    main_route_table_id = aws_vpc.vpc.main_route_table_id
   }
 }

@@ -13,7 +13,7 @@ resource "aws_subnet" "secure_ce" {
 resource "aws_nat_gateway" "secure_ce" {
   tags          = merge({ "Name" : format("%s-secure-ce-nat-gw", var.f5xc_node_name) }, var.common_tags)
   subnet_id     = aws_subnet.secure_ce.id
-  allocation_id = aws_eip.secure_ce.id
+  allocation_id = aws_eip.secure_ce[0].id
 }
 
 resource "aws_route_table" "secure_ce" {

@@ -61,7 +61,7 @@ module "aws_security_group_sli_secure_ce" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  tags   = var.common_tags
+  tags   = merge({ Name : format("%s-igw", var.f5xc_cluster_name) }, var.common_tags)
   vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
 }
 

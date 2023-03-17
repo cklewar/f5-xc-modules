@@ -29,7 +29,7 @@ module "network_common" {
   aws_security_group_rules_slo_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_ingress_secure_ce : []
 }
 
-/*module "network_node" {
+module "network_node" {
   source               = "./network/node"
   for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag            = var.owner_tag
@@ -52,9 +52,9 @@ module "secure_ce" {
   aws_vpc_id  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
   aws_vpc_az  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_subnet  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_nat_gw_subnet"]
-}*/
+}
 
-/*module "network_nlb" {
+module "network_nlb" {
   source            = "./network/nlb"
   count             = length(var.f5xc_aws_vpc_az_nodes) == 3 ? 1 : 0
   common_tags       = local.common_tags
@@ -119,4 +119,4 @@ module "site_wait_for_online" {
   f5xc_site_name = var.f5xc_cluster_name
   f5xc_tenant    = var.f5xc_tenant
   is_sensitive   = var.is_sensitive
-}*/
+}

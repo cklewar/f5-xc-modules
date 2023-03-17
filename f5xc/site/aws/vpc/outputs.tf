@@ -6,10 +6,10 @@ output "f5xc_aws_vpc" {
     params = volterra_tf_params_action.aws_vpc_action
     vpc_id = data.aws_vpc.vpc.id
     igw_id = data.aws_internet_gateway.igw.id
-    nodes  = {
+    nodes = {
       master-0 = {
-        id         = data.aws_instance.master-0.id
-        name       = data.aws_instance.master-0.tags["Name"]
+        id   = data.aws_instance.master-0.id
+        name = data.aws_instance.master-0.tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-0-slo.*.id[0]
@@ -29,8 +29,8 @@ output "f5xc_aws_vpc" {
         }
       },
       master-1 = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? {
-        id         = data.aws_instance.master-1[0].id
-        name       = data.aws_instance.master-1[0].tags["Name"]
+        id   = data.aws_instance.master-1[0].id
+        name = data.aws_instance.master-1[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-1-slo.*.id[0]
@@ -50,8 +50,8 @@ output "f5xc_aws_vpc" {
         }
       } : null,
       master-2 = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? {
-        id         = data.aws_instance.master-2[0].id
-        name       = data.aws_instance.master-2[0].tags["Name"]
+        id   = data.aws_instance.master-2[0].id
+        name = data.aws_instance.master-2[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-2-slo.*.id[0]
@@ -73,5 +73,7 @@ output "f5xc_aws_vpc" {
     }
     instance_type       = volterra_aws_vpc_site.site.instance_type
     workload_subnet_ids = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic && length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload[0].ids : null
+    security_group_ids  = data.aws_security_groups.sg.ids
+    main_route_table_id = data.aws_vpc.vpc.main_route_table_id
   }
 }

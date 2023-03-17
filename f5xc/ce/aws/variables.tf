@@ -41,6 +41,7 @@ variable "aws_existing_vpc_id" {
 
 variable "aws_security_group_rules_slo_egress_default" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -48,6 +49,7 @@ variable "aws_security_group_rules_slo_egress_default" {
   }))
   default = [
     {
+      description = "DEFAULT SLO EGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
       protocol    = -1
@@ -58,6 +60,7 @@ variable "aws_security_group_rules_slo_egress_default" {
 
 variable "aws_security_group_rules_slo_ingress_default" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -65,6 +68,7 @@ variable "aws_security_group_rules_slo_ingress_default" {
   }))
   default = [
     {
+      description = "DEFAULT SLO INGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
       protocol    = -1
@@ -75,6 +79,7 @@ variable "aws_security_group_rules_slo_ingress_default" {
 
 variable "aws_security_group_rules_sli_egress_default" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -82,6 +87,7 @@ variable "aws_security_group_rules_sli_egress_default" {
   }))
   default = [
     {
+      description = "DEFAULT SLI EGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
       protocol    = -1
@@ -92,6 +98,7 @@ variable "aws_security_group_rules_sli_egress_default" {
 
 variable "aws_security_group_rules_sli_ingress_default" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -99,6 +106,7 @@ variable "aws_security_group_rules_sli_ingress_default" {
   }))
   default = [
     {
+      description = "DEFAULT SLI INGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
       protocol    = -1
@@ -109,6 +117,7 @@ variable "aws_security_group_rules_sli_ingress_default" {
 
 variable "aws_security_group_rules_slo_egress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -119,6 +128,7 @@ variable "aws_security_group_rules_slo_egress" {
 
 variable "aws_security_group_rules_slo_ingress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -129,6 +139,7 @@ variable "aws_security_group_rules_slo_ingress" {
 
 variable "aws_security_group_rules_sli_egress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -139,6 +150,7 @@ variable "aws_security_group_rules_sli_egress" {
 
 variable "aws_security_group_rules_sli_ingress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -390,24 +402,6 @@ variable "f5xc_ce_egress_ip_ranges" {
     "20.128.0.0/16",
     "172.217.0.0/16",
     "173.194.0.0/16",
-    "20.150.0.0/15",
-    "20.48.0.0/12",
-    "72.19.3.0/24",
-    "18.128.0.0/9",
-    "23.20.0.0/14",
-    "13.104.0.0/14",
-    "13.96.0.0/13",
-    "13.64.0.0/11",
-    "13.249.0.0/16",
-    "34.192.0.0/10",
-    "3.224.0.0/12",
-    "54.208.0.0/13",
-    "54.216.0.0/14",
-    "108.156.0.0/14",
-    "54.144.0.0/12",
-    "54.220.0.0/15",
-    "54.192.0.0/12",
-    "54.160.0.0/11"
+    "20.150.0.0/15"
   ]
 }
-

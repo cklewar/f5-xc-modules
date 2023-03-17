@@ -2,6 +2,11 @@ variable "aws_security_group_name" {
   type = string
 }
 
+variable "description" {
+  type    = string
+  default = ""
+}
+
 variable "aws_vpc_id" {
   type = string
 }
@@ -14,6 +19,7 @@ variable "custom_tags" {
 
 variable "security_group_rule_egress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -23,6 +29,7 @@ variable "security_group_rule_egress" {
 
 variable "security_group_rule_ingress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string

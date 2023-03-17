@@ -16,7 +16,7 @@ variable "aws_vp_enable_dns_hostnames" {
 }
 
 variable "create_new_aws_vpc" {
-  type    = bool
+  type = bool
 }
 
 variable "aws_existing_vpc_id" {
@@ -32,8 +32,59 @@ variable "aws_vpc_cidr_block" {
   type = string
 }
 
+variable "aws_security_group_rules_slo_ingress_secure_ce" {
+  type = list(object({
+    description = optional(string)
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "aws_security_group_rules_slo_egress_secure_ce" {
+  type = list(object({
+    description = optional(string)
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "aws_security_group_rules_slo_egress_secure_ce_extended" {
+  type = list(object({
+    description = optional(string)
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "aws_security_group_rules_sli_egress_secure_ce" {
+  type = list(object({
+    description = optional(string)
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "aws_security_group_rules_sli_ingress_secure_ce" {
+  type = list(object({
+    description = optional(string)
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
 variable "aws_security_group_rules_slo_egress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -43,6 +94,7 @@ variable "aws_security_group_rules_slo_egress" {
 
 variable "aws_security_group_rules_slo_ingress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -52,6 +104,7 @@ variable "aws_security_group_rules_slo_ingress" {
 
 variable "aws_security_group_rules_sli_egress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -61,6 +114,7 @@ variable "aws_security_group_rules_sli_egress" {
 
 variable "aws_security_group_rules_sli_ingress" {
   type = list(object({
+    description = optional(string)
     from_port   = number
     to_port     = number
     protocol    = string
@@ -80,4 +134,8 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 
 variable "f5xc_ce_gateway_type" {
   type = string
+}
+
+variable "f5xc_is_secure_cloud_ce" {
+  type = bool
 }

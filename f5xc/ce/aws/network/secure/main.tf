@@ -1,6 +1,6 @@
 resource "aws_subnet" "secure_ce" {
   vpc_id            = var.aws_vpc_id
-  cidr_block        = var.f5xc_aws_subnet_secure_ce
+  cidr_block        = var.aws_subnet
   availability_zone = var.aws_vpc_az
   tags              = var.common_tags
 }

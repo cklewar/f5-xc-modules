@@ -278,3 +278,15 @@ data "aws_internet_gateway" "igw" {
     values = [data.aws_vpc.vpc.id]
   }
 }
+
+data "aws_security_groups" "sg" {
+  depends_on = [module.site_wait_for_online]
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_aws_vpc_site_name]
+  }
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+}

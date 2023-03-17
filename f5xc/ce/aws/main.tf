@@ -3,7 +3,7 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-resource "aws_key_pair" "aws-key" {
+resource "aws_key_pair" "aws_key" {
   key_name   = var.f5xc_cluster_name
   public_key = var.ssh_public_key
 }
@@ -23,23 +23,28 @@ module "network_common" {
 }
 
 module "network_node" {
-  source               = "./network/node"
-  for_each             = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
-  owner_tag            = var.owner_tag
-  node_name            = format("%s-%s", var.f5xc_cluster_name, each.key)
-  common_tags          = local.common_tags
-  has_public_ip        = var.has_public_ip
-  f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
-  aws_vpc_az           = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
-  aws_vpc_id           = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_sg_slo_id        = module.network_common.common["sg_slo"]["id"]
-  aws_sg_sli_id        = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
-  aws_subnet_slo_cidr  = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
-  aws_subnet_sli_cidr  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
+  source                  = "./network/node"
+  for_each                = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
+  owner_tag               = var.owner_tag
+  node_name               = format("%s-%s", var.f5xc_cluster_name, each.key)
+  common_tags             = local.common_tags
+  has_public_ip           = var.has_public_ip
+  f5xc_ce_gateway_type    = var.f5xc_ce_gateway_type
+  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
+  aws_vpc_az              = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
+  aws_vpc_id              = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
+  aws_sg_slo_id           = module.network_common.common["sg_slo"]["id"]
+  aws_sg_sli_id           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
+  aws_subnet_slo_cidr     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
+  aws_subnet_sli_cidr     = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
 }
 
-locals {
-  # is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]])) ? true : false
+module "secure_ce" {
+  source        = "./network/secure"
+  count         = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce
+  aws_subnet_id = var.aws_vpc_cidr_block
+  aws_vpc_id    = ""
+  common_tags   = {}
 }
 
 module "network_nlb" {
@@ -96,7 +101,7 @@ module "node" {
   aws_security_group_slo_id   = module.network_common.common["sg_slo"]["id"]
   aws_security_group_sli_id   = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? module.network_common.common["sg_sli"]["id"] : null
   aws_iam_instance_profile_id = aws_iam_instance_profile.instance_profile.id
-  public_ssh_key_name         = aws_key_pair.aws-key.key_name
+  public_ssh_key_name         = aws_key_pair.aws_key.key_name
 }
 
 module "site_wait_for_online" {

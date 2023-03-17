@@ -323,7 +323,8 @@ variable "f5xc_ce_machine_image" {
 }
 
 variable "aws_vpc_cidr_block" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {

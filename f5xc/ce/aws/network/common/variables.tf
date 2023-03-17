@@ -10,11 +10,6 @@ variable "owner_tag" {
   type = string
 }
 
-variable "aws_eip_vpc" {
-  type    = bool
-  default = false
-}
-
 variable "aws_vp_enable_dns_hostnames" {
   type    = bool
   default = true

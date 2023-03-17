@@ -3,7 +3,7 @@ variable "common_tags" {
 }
 
 variable "has_public_ip" {
-  type    = bool
+  type = bool
 }
 
 variable "aws_vpc_id" {

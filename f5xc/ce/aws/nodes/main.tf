@@ -17,7 +17,7 @@ resource "aws_instance" "instance" {
   }
 
   dynamic "network_interface" {
-    for_each = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? [1] : []
+    for_each = var.is_multi_nic ? [1] : []
     content {
       network_interface_id = var.aws_interface_sli_id
       device_index         = "1"

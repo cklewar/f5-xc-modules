@@ -2,6 +2,10 @@ variable "owner_tag" {
   type = string
 }
 
+variable "is_multi_nic" {
+  type = bool
+}
+
 variable "common_tags" {
   type = map(string)
 }
@@ -96,20 +100,6 @@ variable "f5xc_registration_wait_time" {
 
 variable "f5xc_registration_retry" {
   type = number
-}
-
-variable "f5xc_ce_gateway_type_ingress" {
-  type    = string
-  default = "ingress_gateway"
-}
-
-variable "f5xc_ce_gateway_type_ingress_egress" {
-  type    = string
-  default = "ingress_egress_gateway"
-}
-
-variable "f5xc_ce_gateway_type" {
-  type = string
 }
 
 variable "f5xc_cluster_name" {

@@ -123,7 +123,7 @@ variable "aws_security_group_rules_slo_egress" {
     protocol    = string
     cidr_blocks = list(string)
   }))
-  default = []
+  # default = []
 }
 
 variable "aws_security_group_rules_slo_ingress" {
@@ -134,7 +134,7 @@ variable "aws_security_group_rules_slo_ingress" {
     protocol    = string
     cidr_blocks = list(string)
   }))
-  default = []
+  # default = []
 }
 
 variable "aws_security_group_rules_sli_egress" {

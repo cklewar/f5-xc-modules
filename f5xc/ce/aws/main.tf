@@ -9,16 +9,16 @@ resource "aws_key_pair" "aws-key" {
 }
 
 module "network_common" {
-  source                              = "./network/common"
-  owner_tag                           = var.owner_tag
-  common_tags                         = local.common_tags
-  f5xc_cluster_name                   = var.f5xc_cluster_name
-  f5xc_ce_gateway_type                = var.f5xc_ce_gateway_type
-  aws_vpc_cidr_block                  = var.aws_vpc_cidr_block
-  aws_security_group_rule_sli_egress  = var.aws_security_group_rule_sli_egress
-  aws_security_group_rule_sli_ingress = var.aws_security_group_rule_sli_ingress
-  aws_security_group_rule_slo_egress  = var.aws_security_group_rule_slo_egress
-  aws_security_group_rule_slo_ingress = var.aws_security_group_rule_slo_ingress
+  source                               = "./network/common"
+  owner_tag                            = var.owner_tag
+  common_tags                          = local.common_tags
+  f5xc_cluster_name                    = var.f5xc_cluster_name
+  f5xc_ce_gateway_type                 = var.f5xc_ce_gateway_type
+  aws_vpc_cidr_block                   = var.aws_vpc_cidr_block
+  aws_security_group_rules_sli_egress  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? (var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_egress_secure_ce : length(var.aws_security_group_rules_sli_egress) > 0 ? var.aws_security_group_rules_sli_egress : var.aws_security_group_rules_sli_egress_default) : null
+  aws_security_group_rules_sli_ingress = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? (var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : length(var.aws_security_group_rules_sli_ingress) > 0 ? var.aws_security_group_rules_sli_ingress : var.aws_security_group_rules_sli_ingress_default) : null
+  aws_security_group_rules_slo_egress  = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : (length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : var.aws_security_group_rules_slo_egress_default)
+  aws_security_group_rules_slo_ingress = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_ingress_secure_ce : (length(var.aws_security_group_rules_slo_ingress) > 0 ? var.aws_security_group_rules_slo_ingress : var.aws_security_group_rules_slo_ingress_default)
 }
 
 module "network_node" {

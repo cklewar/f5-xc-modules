@@ -11,8 +11,8 @@ module "aws_security_group_slo" {
   aws_vpc_id                  = aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   aws_security_group_name     = format("%s-sg-slo", var.f5xc_cluster_name)
-  security_group_rule_egress  = var.aws_security_group_rule_slo_egress
-  security_group_rule_ingress = var.aws_security_group_rule_slo_ingress
+  security_group_rule_egress  = var.aws_security_group_rules_slo_egress
+  security_group_rule_ingress = var.aws_security_group_rules_slo_ingress
 }
 
 module "aws_security_group_sli" {
@@ -21,8 +21,8 @@ module "aws_security_group_sli" {
   aws_vpc_id                  = aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   aws_security_group_name     = format("%s-sg-sli", var.f5xc_cluster_name)
-  security_group_rule_egress  = var.aws_security_group_rule_sli_egress
-  security_group_rule_ingress = var.aws_security_group_rule_sli_ingress
+  security_group_rule_egress  = var.aws_security_group_rules_sli_egress
+  security_group_rule_ingress = var.aws_security_group_rules_sli_ingress
 }
 
 resource "aws_internet_gateway" "igw" {

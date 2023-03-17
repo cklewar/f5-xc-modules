@@ -34,7 +34,7 @@ variable "aws_vpc_cidr_block" {
   type = string
 }
 
-variable "aws_security_group_rule_slo_egress" {
+variable "aws_security_group_rules_slo_egress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -43,7 +43,7 @@ variable "aws_security_group_rule_slo_egress" {
   }))
 }
 
-variable "aws_security_group_rule_slo_ingress" {
+variable "aws_security_group_rules_slo_ingress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -52,7 +52,7 @@ variable "aws_security_group_rule_slo_ingress" {
   }))
 }
 
-variable "aws_security_group_rule_sli_egress" {
+variable "aws_security_group_rules_sli_egress" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -61,7 +61,7 @@ variable "aws_security_group_rule_sli_egress" {
   }))
 }
 
-variable "aws_security_group_rule_sli_ingress" {
+variable "aws_security_group_rules_sli_ingress" {
   type = list(object({
     from_port   = number
     to_port     = number

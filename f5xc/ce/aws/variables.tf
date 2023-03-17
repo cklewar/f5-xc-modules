@@ -29,7 +29,7 @@ variable "ssh_public_key" {
   type = string
 }
 
-variable "aws_security_group_rule_slo_egress" {
+variable "aws_security_group_rules_slo_egress_default" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -46,71 +46,7 @@ variable "aws_security_group_rule_slo_egress" {
   ]
 }
 
-variable "aws_security_group_rule_slo_ingress" {
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-  default = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = "-1"
-      to_port     = "-1"
-      protocol    = "icmp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = "4500"
-      to_port     = "4500"
-      protocol    = "udp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }, {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["10.0.0.0/8"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["192.168.0.0/16"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      cidr_blocks = ["172.16.0.0/12"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["10.0.0.0/8"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["192.168.0.0/16"]
-    },
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "udp"
-      cidr_blocks = ["172.16.0.0/12"]
-    }
-  ]
-}
-
-variable "aws_security_group_rule_sli_egress" {
+variable "aws_security_group_rules_slo_ingress_default" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -127,7 +63,7 @@ variable "aws_security_group_rule_sli_egress" {
   ]
 }
 
-variable "aws_security_group_rule_sli_ingress" {
+variable "aws_security_group_rules_sli_egress_default" {
   type = list(object({
     from_port   = number
     to_port     = number
@@ -136,12 +72,68 @@ variable "aws_security_group_rule_sli_ingress" {
   }))
   default = [
     {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 0
+      protocol    = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
+}
+
+variable "aws_security_group_rules_sli_ingress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "aws_security_group_rules_slo_egress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "aws_security_group_rules_slo_ingress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "aws_security_group_rules_sli_egress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "aws_security_group_rules_sli_ingress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
 }
 
 variable "f5xc_cluster_labels" {
@@ -214,6 +206,11 @@ variable "f5xc_aws_region" {
 
 variable "f5xc_cluster_name" {
   type = string
+}
+
+variable "f5xc_is_secure_cloud_ce" {
+  type    = bool
+  default = false
 }
 
 variable "f5xc_ce_machine_image" {
@@ -323,7 +320,82 @@ variable "aws_vpc_cidr_block" {
   type = string
 }
 
-/*variable "f5xc_slo_cidr_block" {
-  type = string
-}*/
+variable "f5xc_ip_ranges_Americas_TCP" {
+  type    = list(string)
+  default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]
+}
+variable "f5xc_ip_ranges_Americas_UDP" {
+  type    = list(string)
+  default = ["23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",]
+}
+variable "f5xc_ip_ranges_Europe_TCP" {
+  type    = list(string)
+  default = ["84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",]
+}
+variable "f5xc_ip_ranges_Europe_UDP" {
+  type    = list(string)
+  default = ["5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25", "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",]
+}
+variable "f5xc_ip_ranges_Asia_TCP" {
+  type    = list(string)
+  default = ["103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24", "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",]
+}
+variable "f5xc_ip_ranges_Asia_UDP" {
+  type    = list(string)
+  default = ["103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24", "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",]
+}
+
+variable "f5xc_ce_egress_ip_ranges" {
+  type        = list(string)
+  description = "Egress IP ranges for F5 XC CE"
+  default     = [
+    "20.33.0.0/16",
+    "74.125.0.0/16",
+    "18.64.0.0/10",
+    "52.223.128.0/18",
+    "20.152.0.0/15",
+    "13.107.238.0/24",
+    "142.250.0.0/15",
+    "20.34.0.0/15",
+    "52.192.0.0/12",
+    "52.208.0.0/13",
+    "52.223.0.0/17",
+    "18.32.0.0/11",
+    "3.208.0.0/12",
+    "13.107.237.0/24",
+    "20.36.0.0/14",
+    "52.222.0.0/16",
+    "52.220.0.0/15",
+    "3.0.0.0/9",
+    "100.64.0.0/10",
+    "54.88.0.0/16",
+    "52.216.0.0/14",
+    "108.177.0.0/17",
+    "20.40.0.0/13",
+    "54.64.0.0/11",
+    "172.253.0.0/16",
+    "20.64.0.0/10",
+    "20.128.0.0/16",
+    "172.217.0.0/16",
+    "173.194.0.0/16",
+    "20.150.0.0/15",
+    "20.48.0.0/12",
+    "72.19.3.0/24",
+    "18.128.0.0/9",
+    "23.20.0.0/14",
+    "13.104.0.0/14",
+    "13.96.0.0/13",
+    "13.64.0.0/11",
+    "13.249.0.0/16",
+    "34.192.0.0/10",
+    "3.224.0.0/12",
+    "54.208.0.0/13",
+    "54.216.0.0/14",
+    "108.156.0.0/14",
+    "54.144.0.0/12",
+    "54.220.0.0/15",
+    "54.192.0.0/12",
+    "54.160.0.0/11"
+  ]
+}
 

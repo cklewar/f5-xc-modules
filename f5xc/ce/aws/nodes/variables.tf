@@ -44,14 +44,6 @@ variable "public_ssh_key_name" {
   type = string
 }
 
-variable "aws_security_group_slo_id" {
-  type = string
-}
-
-variable "aws_security_group_sli_id" {
-  type = string
-}
-
 variable "aws_instance_disk_size" {
   type    = string
   default = "40"

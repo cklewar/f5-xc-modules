@@ -22,12 +22,12 @@ variable "aws_vpc_az" {
   type = string
 }
 
-variable "aws_sg_slo_id" {
-  type = string
+variable "aws_sg_slo_ids" {
+  type = list(string)
 }
 
-variable "aws_sg_sli_id" {
-  type = string
+variable "aws_sg_sli_ids" {
+  type = list(string)
 }
 
 variable "is_multi_nic" {

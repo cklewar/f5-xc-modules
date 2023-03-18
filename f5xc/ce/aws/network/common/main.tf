@@ -51,7 +51,7 @@ module "aws_security_group_slo_secure_ce_extended" {
 
 module "aws_security_group_sli_secure_ce" {
   source                      = "../../../../../aws/security_group"
-  count                       = var.is_multi_nic && var.f5xc_is_secure_cloud_ce? 1 : 0
+  count                       = var.is_multi_nic && var.f5xc_is_secure_cloud_ce ? 1 : 0
   aws_vpc_id                  = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   description                 = "F5 XC SECURE CLOUD CE SLI SG"

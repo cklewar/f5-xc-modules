@@ -39,13 +39,13 @@ module "network_node" {
   has_public_ip           = var.has_public_ip
   aws_vpc_az              = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_vpc_id              = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_sg_slo_id           = module.network_common.common["sg_slo"]["id"]
-  aws_sg_sli_id           = local.is_multi_nic ? module.network_common.common["sg_sli"]["id"] : null
+  aws_sg_sli_ids          = local.is_multi_nic ? module.network_common.common["sg_sli_ids"] : null
+  aws_sg_slo_ids          = module.network_common.common["sg_slo_ids"]
   aws_subnet_slo_cidr     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   aws_subnet_sli_cidr     = local.is_multi_nic ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null
-  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
   aws_slo_subnet_rt_id    = module.network_common.common["slo_subnet_rt"]["id"]
   aws_sli_subnet_rt_id    = local.is_multi_nic ? module.network_common.common["sli_subnet_rt"]["id"] : null
+  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
 }
 
 module "secure_ce" {
@@ -110,8 +110,6 @@ module "node" {
   aws_interface_slo_id        = module.network_node[each.key].ce["slo"]["id"]
   aws_interface_sli_id        = local.is_multi_nic ? module.network_node[each.key].ce["sli"]["id"] : null
   aws_lb_target_group_arn     = length(var.f5xc_aws_vpc_az_nodes) == 3 ? module.network_nlb[0].nlb["target_group"]["arn"] : null
-  aws_security_group_slo_id   = module.network_common.common["sg_slo"]["id"]
-  aws_security_group_sli_id   = local.is_multi_nic ? module.network_common.common["sg_sli"]["id"] : null
   aws_iam_instance_profile_id = aws_iam_instance_profile.instance_profile.id
   public_ssh_key_name         = aws_key_pair.aws_key.key_name
 }

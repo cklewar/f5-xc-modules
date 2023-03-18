@@ -38,90 +38,81 @@ variable "aws_vpc_cidr_block" {
 
 variable "aws_security_group_rules_slo_ingress_secure_ce" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_slo_egress_secure_ce" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_slo_egress_secure_ce_extended" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_sli_egress_secure_ce" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_sli_ingress_secure_ce" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_slo_egress" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_slo_ingress" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_sli_egress" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }
 
 variable "aws_security_group_rules_sli_ingress" {
   type = list(object({
-    description = optional(string)
-    from_port   = number
-    to_port     = number
-    protocol    = string
+    from_port   = string
+    to_port     = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
 }

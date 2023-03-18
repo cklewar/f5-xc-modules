@@ -41,18 +41,16 @@ variable "aws_existing_vpc_id" {
 
 variable "aws_security_group_rules_slo_egress_default" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = [
     {
-      description = "DEFAULT SLO EGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
-      protocol    = -1
+      ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
@@ -60,18 +58,16 @@ variable "aws_security_group_rules_slo_egress_default" {
 
 variable "aws_security_group_rules_slo_ingress_default" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = [
     {
-      description = "DEFAULT SLO INGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
-      protocol    = -1
+      ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
@@ -79,18 +75,16 @@ variable "aws_security_group_rules_slo_ingress_default" {
 
 variable "aws_security_group_rules_sli_egress_default" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = [
     {
-      description = "DEFAULT SLI EGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
-      protocol    = -1
+      ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
@@ -98,18 +92,16 @@ variable "aws_security_group_rules_sli_egress_default" {
 
 variable "aws_security_group_rules_sli_ingress_default" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = [
     {
-      description = "DEFAULT SLI INGRESS ALLOW ALL"
       from_port   = 0
       to_port     = 0
-      protocol    = -1
+      ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
@@ -117,32 +109,27 @@ variable "aws_security_group_rules_sli_ingress_default" {
 
 variable "aws_security_group_rules_slo_egress" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
-  # default = []
 }
 
 variable "aws_security_group_rules_slo_ingress" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
-  # default = []
 }
 
 variable "aws_security_group_rules_sli_egress" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = []
@@ -150,10 +137,9 @@ variable "aws_security_group_rules_sli_egress" {
 
 variable "aws_security_group_rules_sli_ingress" {
   type = list(object({
-    description = optional(string)
     from_port   = number
     to_port     = number
-    protocol    = string
+    ip_protocol = string
     cidr_blocks = list(string)
   }))
   default = []

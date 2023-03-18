@@ -18,25 +18,25 @@ locals {
     {
       from_port   = "-1"
       to_port     = "-1"
-      protocol    = "icmp"
+      ip_protocol = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
       from_port   = "4500"
       to_port     = "4500"
-      protocol    = "udp"
+      ip_protocol = "udp"
       cidr_blocks = local.f5xc_ip_ranges_all
     },
     {
       from_port   = "123"
       to_port     = "123"
-      protocol    = "udp"
+      ip_protocol = "udp"
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
       from_port   = "443"
       to_port     = "443"
-      protocol    = "tcp"
+      ip_protocol = "tcp"
       cidr_blocks = local.f5xc_ip_ranges_all
     }
   ]
@@ -45,7 +45,7 @@ locals {
     {
       from_port   = "443"
       to_port     = "443"
-      protocol    = "tcp"
+      ip_protocol = "tcp"
       cidr_blocks = var.f5xc_ce_egress_ip_ranges
     }
   ]
@@ -54,13 +54,13 @@ locals {
     {
       from_port   = "4500"
       to_port     = "4500"
-      protocol    = "udp"
+      ip_protocol = "udp"
       cidr_blocks = local.f5xc_ip_ranges_all
     },
     {
       from_port   = "22"
       to_port     = "22"
-      protocol    = "tcp"
+      ip_protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
@@ -69,13 +69,13 @@ locals {
     {
       from_port   = "-1"
       to_port     = "-1"
-      protocol    = "icmp"
+      ip_protocol = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
       from_port   = "22"
       to_port     = "22"
-      protocol    = "tcp"
+      ip_protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
   ]
@@ -84,7 +84,7 @@ locals {
     {
       from_port   = "22"
       to_port     = "22"
-      protocol    = "tcp"
+      ip_protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]

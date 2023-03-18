@@ -3,26 +3,22 @@ resource "aws_security_group" "sg" {
   name        = var.aws_security_group_name
   vpc_id      = var.aws_vpc_id
   description = var.description
+}
 
-  dynamic "egress" {
-    for_each = var.security_group_rule_egress
-    content {
-      description = egress.value.description
-      from_port   = egress.value.from_port
-      to_port     = egress.value.to_port
-      protocol    = egress.value.protocol
-      cidr_blocks = egress.value.cidr_blocks
-    }
-  }
+resource "aws_vpc_security_group_egress_rule" "egress" {
+  for_each          = {for idx, rule in local.egress : idx => rule}
+  security_group_id = aws_security_group.sg.id
+  cidr_ipv4         = each.value.cidr_ipv4
+  from_port         = each.value.from_port
+  ip_protocol       = each.value.ip_protocol
+  to_port           = each.value.to_port
+}
 
-  dynamic "ingress" {
-    for_each = var.security_group_rule_ingress
-    content {
-      description = ingress.value.description
-      from_port   = ingress.value.from_port
-      to_port     = ingress.value.to_port
-      protocol    = ingress.value.protocol
-      cidr_blocks = ingress.value.cidr_blocks
-    }
-  }
+resource "aws_vpc_security_group_ingress_rule" "ingress" {
+  for_each          = {for idx, rule in local.ingress : idx => rule}
+  security_group_id = aws_security_group.sg.id
+  cidr_ipv4         = each.value.cidr_ipv4
+  from_port         = each.value.from_port
+  ip_protocol       = each.value.ip_protocol
+  to_port           = each.value.to_port
 }

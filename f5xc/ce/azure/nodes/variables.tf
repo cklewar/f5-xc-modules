@@ -2,6 +2,10 @@ variable "owner_tag" {
   type = string
 }
 
+variable "common_tags" {
+  type = map(string)
+}
+
 variable "public_ssh_key" {
   type = string
 }
@@ -47,5 +51,13 @@ variable "f5xc_node_name" {
 }
 
 variable "f5xc_instance_config" {
+  type = string
+}
+
+variable "f5xc_azure_region" {
+  type = string
+}
+
+variable "azurerm_resource_group_name" {
   type = string
 }

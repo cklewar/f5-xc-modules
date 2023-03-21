@@ -1,36 +1,40 @@
 resource "azurerm_virtual_machine" "instance" {
+  depends_on                       = [azurerm_marketplace_agreement.volterra]
+  count                            = local.enable_sli == true && var.use_availability_set ? local.nodes_count : 0
+  tags                             = var.common_tags
   name                             = element(var.machine_names, count.index)
-  location                         = var.region
-  resource_group_name              = var.resource_group
-  vm_size                          = var.machine_type
+  vm_size                          = lookup(element(var.nodes, count.index), "machine_type", "Standard_F2")
+  location                         = var.f5xc_azure_region
+  availability_set_id              = var.availability_set_id
+  resource_group_name              = azurerm_resource_group_name
+  network_interface_ids            = [element(local.slo_nic_ids, count.index), element(local.sli_nic_ids, count.index)]
+  primary_network_interface_id     = element(local.slo_nic_ids, count.index)
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
-  availability_set_id              = var.availability_set_id
-  primary_network_interface_id     = element(local.private_nic_ids, count.index)
-
-  network_interface_ids = [
-    element(local.private_nic_ids, count.index),
-    element(
-      azurerm_network_interface.compute_nic_inside.*.id,
-      count.index,
-    ),
-  ]
 
   storage_image_reference {
-    id = var.machine_image
+    publisher = element(var.nodes, count.index).marketplace.publisher
+    offer     = element(var.nodes, count.index).marketplace.offer
+    sku       = element(var.nodes, count.index).marketplace.sku
+    version   = element(var.nodes, count.index).marketplace.version
+  }
+
+  plan {
+    name      = element(var.nodes, count.index).marketplace.name
+    publisher = element(var.nodes, count.index).marketplace.publisher
+    product   = element(var.nodes, count.index).marketplace.offer
   }
 
   storage_os_disk {
     name          = "${element(var.machine_names, count.index)}-system"
     create_option = "FromImage"
     os_type       = "Linux"
-    disk_size_gb  = var.machine_disk_size
+    disk_size_gb  = try(tonumber(element(local.disk_sizes, count.index)), 50)
   }
 
   os_profile {
+    admin_username = var.admin_username
     computer_name  = element(var.machine_names, count.index)
-    admin_username = var.machine_admin
-    admin_password = ""
     custom_data    = var.machine_config
   }
 
@@ -39,11 +43,8 @@ resource "azurerm_virtual_machine" "instance" {
 
     ssh_keys {
       path     = "/home/${var.machine_admin}/.ssh/authorized_keys"
-      key_data = var.ssh_public_key
+      key_data = var.public_ssh_key
     }
-  }
-  tags = {
-    iam_owner = var.owner_tag
   }
 }
 

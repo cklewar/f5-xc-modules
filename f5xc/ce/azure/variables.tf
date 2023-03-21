@@ -6,6 +6,10 @@ variable "has_public_ip" {
   type = bool
 }
 
+variable "owner_tag" {
+  type = string
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }

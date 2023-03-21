@@ -40,7 +40,7 @@ variable "aws_subnet_sli_id" {
   type = string
 }
 
-variable "public_ssh_key_name" {
+variable "ssh_public_key_name" {
   type = string
 }
 

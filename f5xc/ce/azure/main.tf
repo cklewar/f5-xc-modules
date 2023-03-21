@@ -1,4 +1,9 @@
-
+resource "azurerm_marketplace_agreement" "volterra" {
+  count     = length(local.marketplace) > 0 ? 1 : 0
+  publisher = lookup(local.marketplace, "publisher", "volterraedgeservices")
+  offer     = lookup(local.marketplace, "offer", "volterra-node")
+  plan      = lookup(local.marketplace, "sku", "volterra-node")
+}
 
 module "site_wait_for_online" {
   depends_on     = [module.node]

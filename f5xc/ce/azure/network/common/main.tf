@@ -7,7 +7,6 @@ resource "azurerm_virtual_network" "vnet" {
   tags                = var.common_tags
 }
 
-
 module "sg_slo" {
   source                       = "../../../../../azure/security_group"
   azure_linux_security_rules   = []
@@ -26,7 +25,7 @@ module "sg_sli" {
   azurerm_network_interface_id = var.azurerm_network_interface_sli_id
 }
 
-resource "azurerm_network_security_rule" "slo_ingress" {
+/*resource "azurerm_network_security_rule" "slo_ingress" {
   name                        = "all"
   priority                    = 140
   direction                   = "Inbound"
@@ -36,8 +35,8 @@ resource "azurerm_network_security_rule" "slo_ingress" {
   destination_port_range      = local.any
   source_address_prefix       = local.any
   destination_address_prefix  = local.any
-  resource_group_name         = var.resource_grp
-  network_security_group_name = azurerm_network_security_group.volterra_security_group.name
+  resource_group_name         = var.azurerm_resource_group_name
+  network_security_group_name = module.sg_slo.security_group["name"]
 }
 
 resource "azurerm_network_security_rule" "slo_egress" {
@@ -50,8 +49,8 @@ resource "azurerm_network_security_rule" "slo_egress" {
   destination_port_range      = local.any
   source_address_prefix       = local.any
   destination_address_prefix  = local.any
-  resource_group_name         = var.resource_grp
-  network_security_group_name = azurerm_network_security_group.volterra_security_group.name
+  resource_group_name         = var.azurerm_resource_group_name
+  network_security_group_name = module.sg_slo.security_group["name"]
 }
 
 resource "azurerm_network_security_rule" "sli_ingress" {
@@ -65,8 +64,8 @@ resource "azurerm_network_security_rule" "sli_ingress" {
   destination_port_range      = local.any
   source_address_prefix       = local.any
   destination_address_prefix  = local.any
-  resource_group_name         = var.resource_grp
-  network_security_group_name = azurerm_network_security_group.volterra_security_group.name
+  resource_group_name         = var.azurerm_resource_group_name
+  network_security_group_name = module.sg_sli.security_group["name"]
 }
 
 resource "azurerm_network_security_rule" "sli_egress" {
@@ -80,6 +79,6 @@ resource "azurerm_network_security_rule" "sli_egress" {
   destination_port_range      = local.any
   source_address_prefix       = local.any
   destination_address_prefix  = local.any
-  resource_group_name         = var.resource_grp
-  network_security_group_name = azurerm_network_security_group.volterra_security_group.name
-}
+  resource_group_name         = var.azurerm_resource_group_name
+  network_security_group_name = module.sg_sli.security_group["name"]
+}*/

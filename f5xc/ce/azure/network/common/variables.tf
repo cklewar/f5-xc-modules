@@ -6,6 +6,14 @@ variable "common_tags" {
   type = map(string)
 }
 
+variable "azurerm_vnet_address_space" {
+  type = list(string)
+}
+
+variable "azurerm_existing_virtual_network_name" {
+  type = string
+}
+
 variable "f5xc_azure_region" {
   type = string
 }

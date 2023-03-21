@@ -1,8 +1,8 @@
 resource "azurerm_virtual_network" "vnet" {
-  count               = local.create_vnet
-  name                = var.vnet.new_vnet.name
+  count               = var.azurerm_existing_virtual_network_name != "" ? 0 : 1
+  name                = format("%s-vnet", "")
   location            = var.f5xc_azure_region
-  address_space       = [var.vnet.new_vnet.primary_ipv4]
+  address_space       = var.azurerm_vnet_address_space
   resource_group_name = var.azurerm_resource_group_name
   tags                = var.common_tags
 }
@@ -22,7 +22,7 @@ module "sg_sli" {
   azure_linux_security_rules   = []
   azure_region                 = var.f5xc_azure_region
   azure_resource_group_name    = var.azurerm_resource_group_name
-  azure_security_group_name    = ""
+  azure_security_group_name    = format("%s-%s", "", "")
   azurerm_network_interface_id = var.azurerm_network_interface_sli_id
 }
 
@@ -55,6 +55,7 @@ resource "azurerm_network_security_rule" "slo_egress" {
 }
 
 resource "azurerm_network_security_rule" "sli_ingress" {
+  count                       = var.is_multi_nic ? 1 : 0
   name                        = "default"
   priority                    = 140
   direction                   = "Inbound"
@@ -69,6 +70,7 @@ resource "azurerm_network_security_rule" "sli_ingress" {
 }
 
 resource "azurerm_network_security_rule" "sli_egress" {
+  count                       = var.is_multi_nic ? 1 : 0
   name                        = "default"
   priority                    = 140
   direction                   = "Outbound"

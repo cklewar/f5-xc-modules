@@ -10,6 +10,60 @@ variable "public_ssh_key" {
   type = string
 }
 
+variable "azurerm_instance_network_interface_ids" {
+  type = list(string)
+}
+
+variable "azurerm_primary_network_interface_id" {
+  type = string
+}
+
+variable "azurerm_instance_delete_os_disk_on_termination" {
+  type    = bool
+  default = true
+}
+
+variable "azurerm_instance_delete_data_disks_on_termination" {
+  type    = bool
+  default = true
+}
+
+variable "azurerm_availability_set_id" {
+  type = string
+}
+
+variable "azurerm_instance_vm_size" {
+  type = string
+}
+
+variable "azurerm_marketplace_publisher" {
+  type = string
+}
+
+variable "azurerm_marketplace_offer" {
+  type = string
+}
+
+variable "azurerm_marketplace_sku" {
+  type = string
+}
+
+variable "azurerm_marketplace_version" {
+  type = string
+}
+
+variable "azurerm_marketplace_name" {
+  type = string
+}
+
+variable "azurerm_instance_disk_size" {
+  type = number
+}
+
+variable "azurerm_instance_admin_username" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }

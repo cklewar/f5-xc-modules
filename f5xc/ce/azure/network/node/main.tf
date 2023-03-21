@@ -15,12 +15,19 @@ resource "azurerm_network_interface" "slo" {
   enable_accelerated_networking = var.enable_accelerated_networking
 
   ip_configuration {
-    name                                    = "slo"
-    subnet_id                               = var.subnet_slo_id
-    private_ip_address_allocation           = var.azurerm_private_ip_address_allocation
-    public_ip_address_id                    = var.has_public_ip ? azurerm_public_ip.compute_public_ip.*.id : null
-    load_balancer_backend_address_pools_ids = [var.lb_backend_id]
+    name                          = "slo"
+    subnet_id                     = var.subnet_slo_id
+    private_ip_address_allocation = var.azurerm_private_ip_address_allocation
+    public_ip_address_id          = var.has_public_ip ? var.f5xc_ce_public_ip_id : null
   }
+}
+
+
+
+resource "azurerm_network_interface_backend_address_pool_association" "slo" {
+  network_interface_id    = azurerm_network_interface.slo.id
+  ip_configuration_name   = "testconfiguration1"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.slo.id
 }
 
 resource "azurerm_network_interface" "sli" {

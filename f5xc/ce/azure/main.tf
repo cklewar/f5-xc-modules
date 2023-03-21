@@ -1,9 +1,16 @@
-resource "azurerm_marketplace_agreement" "volterra" {
-  count     = length(local.marketplace) > 0 ? 1 : 0
-  publisher = lookup(local.marketplace, "publisher", "volterraedgeservices")
-  offer     = lookup(local.marketplace, "offer", "volterra-node")
-  plan      = lookup(local.marketplace, "sku", "volterra-node")
+resource "azurerm_marketplace_agreement" "single_node" {
+  publisher = "volterraedgeservices"
+  offer     = "volterra-node"
+  plan      = "volterra-node"
 }
+
+# common
+# format("loadbalancer-frontend-%s-ip", frontend_ip_configuration.value.name)
+
+# modules "node" {
+# depends_on                       = [azurerm_marketplace_agreement.volterra]
+# azurerm_public_ip.compute_public_ip.*.id
+# }
 
 module "site_wait_for_online" {
   depends_on     = [module.node]

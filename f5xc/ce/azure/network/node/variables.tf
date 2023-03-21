@@ -10,6 +10,10 @@ variable "f5xc_node_name" {
   type = string
 }
 
+variable "f5xc_ce_public_ip_id" {
+  type = string
+}
+
 variable "f5xc_azure_region" {
   type = string
 }
@@ -47,7 +51,6 @@ variable "azurerm_security_group_slo_id" {
 variable "azurerm_security_group_sli_id" {
   type = string
 }
-
 
 variable "enable_ip_forwarding" {
   type    = bool

@@ -2,6 +2,10 @@ variable "is_sensitive" {
   type = bool
 }
 
+variable "has_public_ip" {
+  type = bool
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -64,4 +68,13 @@ variable "f5xc_registration_retry" {
 
 variable "f5xc_cluster_name" {
   type = string
+}
+
+variable "f5xc_azure_region" {
+  type = string
+}
+
+variable "f5xc_existing_azure_resource_group" {
+  type    = string
+  default = ""
 }

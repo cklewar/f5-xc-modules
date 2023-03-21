@@ -19,7 +19,7 @@ output "nodes" {
       }
       secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node0"].ce : null
     }
-    /*master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
+    master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node1"].ce
       config  = module.config["node1"].ce
       network = {
@@ -36,6 +36,6 @@ output "nodes" {
         node   = module.network_node["node2"].ce
       }
       secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node2"].ce : null
-    } : null*/
+    } : null
   }
 }

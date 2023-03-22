@@ -19,8 +19,8 @@ module "firewall" {
   source               = "./firewall"
   count                = var.f5xc_ce_gateway_multi_node ? 2 : 1
   is_multi_nic         = local.is_multi_nic
-  sli_network          = local.is_multi_nic && local.create_network ? module.network[0].ce["master-${count.index}"]["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
-  slo_network          = var.subnet_slo_ip_cidr_range != "" ? module.network[0].ce["master-${count.index}"]["slo_subnetwork"]["name"] : var.existing_network_outside.network_name
+  sli_network          = local.is_multi_nic && local.create_network ? module.network[0].ce["master-${count.index}"]["sli_network"]["id"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
+  slo_network          = var.subnet_slo_ip_cidr_range != "" ? module.network[0].ce["master-${count.index}"]["slo_network"]["id"] : var.existing_network_outside.network_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall.rules) > 0 ? var.f5xc_ce_sli_firewall : local.f5xc_secure_ce_sli_firewall_default)) : {
     rules = []

@@ -1,24 +1,25 @@
-resource "aws_key_pair" "aws-key" {
+resource "aws_key_pair" "aws_key" {
   key_name   = format("%s-key", var.aws_ec2_instance_name)
-  public_key = var.ssh_public_key_file
+  public_key = var.ssh_public_key
 }
 
 module "network_interfaces" {
   source                        = "../network_interface"
   count                         = length(var.aws_ec2_network_interfaces)
+  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
   aws_interface_create_eip      = var.aws_ec2_network_interfaces[count.index].create_eip
   aws_interface_private_ips     = var.aws_ec2_network_interfaces[count.index].private_ips
   aws_interface_security_groups = var.aws_ec2_network_interfaces[count.index].security_groups
-  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
 }
 
 resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
-  instance_type               = var.aws_ec2_instance_type
-  key_name                    = aws_key_pair.aws-key.id
-  user_data                   = local.cloud_init_content
-  user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
   tags                        = merge({ "Name" : var.aws_ec2_instance_name, "Owner" : var.owner }, var.custom_tags)
+  key_name                    = aws_key_pair.aws_key.key_name
+  user_data                   = local.cloud_init_content
+  instance_type               = var.aws_ec2_instance_type
+  user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
+
 
   dynamic "network_interface" {
     for_each = var.aws_ec2_network_interfaces_ref
@@ -51,7 +52,7 @@ resource "null_resource" "ec2_instance_provision_custom_data" {
     type        = var.provisioner_connection_type
     host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
-    private_key = var.ssh_private_key_file
+    private_key = var.ssh_private_key
   }
 
   provisioner "file" {
@@ -66,7 +67,7 @@ resource "null_resource" "ec2_execute_script_file" {
     type        = var.provisioner_connection_type
     host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
-    private_key = var.ssh_private_key_file
+    private_key = var.ssh_private_key
   }
 
   provisioner "remote-exec" {

@@ -11,7 +11,7 @@ resource "null_resource" "fix" {
     host        = var.aws_ec2_ssh_address
     user        = var.provisioner_connection_user
     type        = var.provisioner_connection_type
-    private_key = var.private_ssh_key
+    private_key = var.ssh_private_key
     timeout     = var.provisioner_connection_timeout
   }
 

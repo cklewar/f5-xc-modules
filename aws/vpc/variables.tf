@@ -38,3 +38,8 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_igw" {
+  type    = bool
+  default = false
+}

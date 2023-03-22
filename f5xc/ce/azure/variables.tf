@@ -29,6 +29,11 @@ variable "azurerm_instance_admin_username" {
   type = string
 }
 
+variable "azurerm_route_table_next_hop_type" {
+  type    = string
+  default = "VirtualAppliance"
+}
+
 variable "f5xc_site_set_vip_info_namespace" {
   type    = string
   default = "system"

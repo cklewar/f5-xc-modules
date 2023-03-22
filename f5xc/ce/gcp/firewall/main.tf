@@ -28,7 +28,7 @@ resource "google_compute_firewall" "slo" {
 }
 
 resource "google_compute_firewall" "sli" {
-  for_each           = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? {for rule in var.f5xc_ce_sli_firewall.rules :  rule.name => rule} : {}
+  for_each           = var.is_multi_nic ? {for rule in var.f5xc_ce_sli_firewall.rules :  rule.name => rule} : {}
   name               = each.value.name
   network            = var.sli_network
   priority           = each.value.priority

@@ -1,3 +1,7 @@
+variable "is_multi_nic" {
+  type = bool
+}
+
 variable "slo_network" {
   type = string
 }

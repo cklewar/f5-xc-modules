@@ -6,19 +6,19 @@ resource "aws_key_pair" "aws-key" {
 module "network_interfaces" {
   source                        = "../network_interface"
   count                         = length(var.aws_ec2_network_interfaces)
+  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
   aws_interface_create_eip      = var.aws_ec2_network_interfaces[count.index].create_eip
   aws_interface_private_ips     = var.aws_ec2_network_interfaces[count.index].private_ips
   aws_interface_security_groups = var.aws_ec2_network_interfaces[count.index].security_groups
-  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
 }
 
 resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
-  instance_type               = var.aws_ec2_instance_type
+  tags                        = merge({ "Name" : var.aws_ec2_instance_name, "Owner" : var.owner }, var.custom_tags)
   key_name                    = aws_key_pair.aws-key.id
   user_data                   = local.cloud_init_content
+  instance_type               = var.aws_ec2_instance_type
   user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
-  tags                        = merge({ "Name" : var.aws_ec2_instance_name, "Owner" : var.owner }, var.custom_tags)
 
   dynamic "network_interface" {
     for_each = var.aws_ec2_network_interfaces_ref

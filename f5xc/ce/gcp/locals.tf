@@ -11,7 +11,7 @@ locals {
     rules = [
       {
         name        = format("%s-default-slo-ingress-allow-all", var.project_name)
-        priority    = 65535
+        priority    = 65534
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []
@@ -34,7 +34,7 @@ locals {
     rules = [
       {
         name        = format("%s-default-sli-ingress-allow-all", var.project_name)
-        priority    = 65535
+        priority    = 65534
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
         target_tags = []

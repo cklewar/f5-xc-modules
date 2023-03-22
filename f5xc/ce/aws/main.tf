@@ -39,7 +39,7 @@ module "network_node" {
   has_public_ip           = var.has_public_ip
   aws_vpc_az              = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_az_name"]
   aws_vpc_id              = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
-  aws_sg_sli_ids          = local.is_multi_nic ? module.network_common.common["sg_sli_ids"] : null
+  aws_sg_sli_ids          = local.is_multi_nic ? module.network_common.common["sg_sli_ids"] : []
   aws_sg_slo_ids          = module.network_common.common["sg_slo_ids"]
   aws_subnet_slo_cidr     = var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_slo_subnet"]
   aws_subnet_sli_cidr     = local.is_multi_nic ? var.f5xc_aws_vpc_az_nodes[each.key]["f5xc_aws_vpc_sli_subnet"] : null

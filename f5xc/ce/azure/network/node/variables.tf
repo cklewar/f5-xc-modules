@@ -34,6 +34,14 @@ variable "subnet_sli_id" {
   type = string
 }
 
+variable "azurerm_backend_address_pool_id" {
+  type = string
+}
+
+variable "azurerm_route_table_next_hop_type" {
+  type = string
+}
+
 variable "azurerm_public_ip_allocation_method" {
   type    = string
   default = "Static"

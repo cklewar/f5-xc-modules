@@ -3,7 +3,7 @@ resource "aws_instance" "instance" {
   instance_type        = var.aws_instance_type
   user_data_base64     = base64encode(var.f5xc_instance_config)
   monitoring           = var.aws_instance_monitoring
-  key_name             = var.public_ssh_key_name
+  key_name             = var.ssh_public_key_name
   iam_instance_profile = var.aws_iam_instance_profile_id
   tags                 = local.common_tags
 

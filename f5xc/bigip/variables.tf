@@ -106,6 +106,6 @@ variable "owner_tag" {
   type = string
 }
 
-variable "private_ssh_key" {
+variable "ssh_private_key" {
   type = string
 }

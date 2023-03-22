@@ -4,7 +4,7 @@ output "gcp_vpc" {
     name          = volterra_gcp_vpc_site.site.name
     region        = volterra_gcp_vpc_site.site.gcp_region
     slo_ip        = data.google_compute_instance.instance.network_interface.0.network_ip
-    sli_ip        = data.google_compute_instance.instance.network_interface.1.network_ip
+    sli_ip        = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.google_compute_instance.instance.network_interface.1.network_ip : ""
     params        = volterra_tf_params_action.gcp_vpc_action
     public_ip     = data.google_compute_instance.instance.network_interface.0.access_config.0.nat_ip
     instance_name = regex(local.f5xc_gcp_instance_name_pattern, volterra_tf_params_action.gcp_vpc_action.tf_output)[0]

@@ -6,16 +6,6 @@ variable "f5xc_api_token" {
   type = string
 }
 
-variable "f5xc_credential_delete_uri" {
-  type    = string
-  default = "web/namespaces/%s/revoke/api_credentials"
-}
-
-variable "f5xc_credential_create_uri" {
-  type    = string
-  default = "web/namespaces/%s/api_credentials"
-}
-
 variable "f5xc_credential_get_uri" {
   type    = string
   default = "web/namespaces/%s/api_credentials"
@@ -70,14 +60,4 @@ variable "f5xc_virtual_k8s_namespace" {
 variable "f5xc_virtual_k8s_name" {
   type    = string
   default = ""
-}
-
-variable "f5xc_api_credential_template_file" {
-  type    = string
-  default = "credential.tftpl"
-}
-
-variable "f5xc_api_credentials_payload_file" {
-  type    = string
-  default = "credentials.json"
 }

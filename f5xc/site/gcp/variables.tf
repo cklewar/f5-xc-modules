@@ -107,6 +107,10 @@ variable "f5xc_gcp_existing_inside_network_name" {
 
 variable "f5xc_gcp_node_number" {
   type = number
+  validation {
+    condition     = var.f5xc_gcp_node_number == 1 || var.f5xc_gcp_node_number == 3
+    error_message = "Node Number must be 1 or 3"
+  }
 }
 
 variable "f5xc_gcp_default_ce_os_version" {
@@ -239,18 +243,13 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
   default = true
 }
 
-variable "custom_labels" {
+variable "f5xc_labels" {
   description = "Custom labels to set on resources"
   type        = map(string)
   default     = {}
 }
 
-variable "hcl2json_version" {
-  type    = string
-  default = "0.3.5"
-}
-
-variable "hcl2json_bin_url" {
-  type    = string
-  default = "https://github.com/tmccombs/hcl2json/releases/download"
+variable "f5xc_gcp_labels" {
+  type        = map(string)
+  default     = {}
 }

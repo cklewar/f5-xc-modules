@@ -1,0 +1,8 @@
+certifi==2022.12.7
+charset-normalizer==2.1.1
+dacite==1.6.0
+idna==3.4
+Jinja2==3.1.2
+MarkupSafe==2.1.1
+requests==2.28.1
+urllib3==1.26.13

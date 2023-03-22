@@ -1,12 +1,13 @@
 resource "volterra_aws_tgw_site" "site" {
-  name                     = var.f5xc_aws_tgw_name
+  name                     = var.f5xc_aws_tgw_site_name
+  labels                   = var.f5xc_aws_tgw_labels
+  tags                     = merge({ "Owner" = var.f5xc_aws_tgw_owner }, var.custom_tags)
   namespace                = var.f5xc_namespace
-  logs_streaming_disabled  = var.f5xc_aws_tgw_logs_streaming_disabled
   description              = var.f5xc_aws_tgw_description
   annotations              = var.f5xc_aws_tgw_annotations
-  labels                   = var.f5xc_aws_tgw_labels
-  default_blocked_services = var.f5xc_aws_tgw_default_blocked_services
   direct_connect_disabled  = var.f5xc_aws_tgw_direct_connect_disabled
+  logs_streaming_disabled  = var.f5xc_aws_tgw_logs_streaming_disabled
+  default_blocked_services = var.f5xc_aws_tgw_default_blocked_services
 
   dynamic "direct_connect_enabled" {
     for_each = var.f5xc_aws_tgw_direct_connect_disabled == false ? [1] : []
@@ -16,9 +17,7 @@ resource "volterra_aws_tgw_site" "site" {
       manual_gw                    = var.f5xc_aws_tgw_direct_connect_manual_gw == true && var.f5xc_aws_tgw_direct_connect_hosted_vifs == false && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs == false && var.f5xc_aws_tgw_direct_connect_standard_vifs == true ? true : null
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs != "" && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? [
-          1
-        ] : []
+        for_each = var.f5xc_aws_tgw_direct_connect_manual_gw == false && var.f5xc_aws_tgw_direct_connect_hosted_vifs != "" && var.f5xc_aws_tgw_direct_connect_standard_vifs == false ? [1] : []
         content {
           vifs = var.f5xc_aws_tgw_direct_connect_hosted_vifs
         }

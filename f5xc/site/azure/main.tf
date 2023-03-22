@@ -173,7 +173,8 @@ resource "volterra_azure_vnet_site" "site" {
           }
         }
       }
-
+      sm_connection_public_ip  = var.f5xc_sm_connection_public_ip
+      sm_connection_pvt_ip     = var.f5xc_sm_connection_pvt_ip
       azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       no_global_network        = var.f5xc_azure_no_global_network
       no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
@@ -236,7 +237,7 @@ module "site_wait_for_online" {
 }
 
 resource "azurerm_route" "route" {
-  depends_on = [module.site_wait_for_online]
+  depends_on          = [module.site_wait_for_online]
   for_each            = {for route in var.f5xc_azure_vnet_static_routes : route.name => route}
   name                = each.value.name
   resource_group_name = volterra_azure_vnet_site.site.resource_group

@@ -57,6 +57,12 @@ data "aws_vpc" "tgw_vpc" {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_aws_tgw_name]
   }
+
+  filter {
+    name   = "tag:ves-io-creator-id"
+    values = [var.custom_tags["Owner"]]
+  }
+
 }
 
 data "aws_subnet" "tgw_subnet_sli" {

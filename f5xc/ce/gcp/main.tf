@@ -12,7 +12,6 @@ module "network" {
   auto_create_subnetworks  = var.auto_create_subnetworks
   subnet_slo_ip_cidr_range = var.subnet_slo_ip_cidr_range
   subnet_sli_ip_cidr_range = var.subnet_sli_ip_cidr_range
-  f5xc_ce_gateway_type     = var.f5xc_ce_gateway_type
   f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
 }
 

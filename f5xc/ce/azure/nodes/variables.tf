@@ -2,71 +2,65 @@ variable "owner_tag" {
   type = string
 }
 
-variable "is_multi_nic" {
-  type = bool
-}
-
 variable "common_tags" {
   type = map(string)
 }
 
-variable "is_sensitive" {
-  type = bool
-}
-
-variable "aws_instance_image" {
+variable "public_ssh_key" {
   type = string
 }
 
-variable "aws_instance_type" {
+variable "azurerm_instance_network_interface_ids" {
+  type = list(string)
+}
+
+variable "azurerm_primary_network_interface_id" {
   type = string
 }
 
-variable "aws_instance_create_timeout" {
-  type    = string
-  default = "60m"
-}
-
-variable "aws_instance_delete_timeout" {
-  type    = string
-  default = "60m"
-}
-
-variable "aws_subnet_slo_id" {
-  type = string
-}
-
-variable "aws_subnet_sli_id" {
-  type = string
-}
-
-variable "ssh_public_key_name" {
-  type = string
-}
-
-variable "aws_instance_disk_size" {
-  type    = string
-  default = "40"
-}
-
-variable "aws_instance_monitoring" {
+variable "azurerm_instance_delete_os_disk_on_termination" {
   type    = bool
-  default = false
+  default = true
 }
 
-variable "aws_lb_target_group_arn" {
+variable "azurerm_instance_delete_data_disks_on_termination" {
+  type    = bool
+  default = true
+}
+
+variable "azurerm_availability_set_id" {
   type = string
 }
 
-variable "aws_interface_slo_id" {
+variable "azurerm_instance_vm_size" {
   type = string
 }
 
-variable "aws_interface_sli_id" {
+variable "azurerm_marketplace_publisher" {
   type = string
 }
 
-variable "aws_iam_instance_profile_id" {
+variable "azurerm_marketplace_offer" {
+  type = string
+}
+
+variable "azurerm_marketplace_sku" {
+  type = string
+}
+
+variable "azurerm_marketplace_version" {
+  type = string
+}
+
+variable "azurerm_marketplace_name" {
+  type = string
+}
+
+variable "azurerm_instance_disk_size" {
+  type = number
+}
+
+variable "azurerm_instance_admin_username" {
   type = string
 }
 
@@ -111,5 +105,13 @@ variable "f5xc_node_name" {
 }
 
 variable "f5xc_instance_config" {
+  type = string
+}
+
+variable "f5xc_azure_region" {
+  type = string
+}
+
+variable "azurerm_resource_group_name" {
   type = string
 }

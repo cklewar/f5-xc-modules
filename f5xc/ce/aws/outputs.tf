@@ -1,13 +1,14 @@
 output "nodes" {
   value = {
     vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : null
-    iam = {
+    iam    = {
       role             = aws_iam_role.role
       policy           = aws_iam_policy.policy
       attachment       = aws_iam_role_policy_attachment.attachment
       instance_profile = aws_iam_instance_profile.instance_profile
     }
-    nlb = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
+    ssh_key = aws_key_pair.aws_key
+    nlb     = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       nlb = module.network_nlb[0].nlb
     } : null
     master-0 = {
@@ -19,7 +20,7 @@ output "nodes" {
       }
       secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node0"].ce : null
     }
-    /*master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
+    master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       node    = module.node["node1"].ce
       config  = module.config["node1"].ce
       network = {
@@ -36,6 +37,6 @@ output "nodes" {
         node   = module.network_node["node2"].ce
       }
       secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node2"].ce : null
-    } : null*/
+    } : null
   }
 }

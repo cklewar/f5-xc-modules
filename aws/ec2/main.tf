@@ -6,10 +6,10 @@ resource "aws_key_pair" "aws_key" {
 module "network_interfaces" {
   source                        = "../network_interface"
   count                         = length(var.aws_ec2_network_interfaces)
+  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
   aws_interface_create_eip      = var.aws_ec2_network_interfaces[count.index].create_eip
   aws_interface_private_ips     = var.aws_ec2_network_interfaces[count.index].private_ips
   aws_interface_security_groups = var.aws_ec2_network_interfaces[count.index].security_groups
-  aws_interface_subnet_id       = var.aws_ec2_network_interfaces[count.index].subnet_id
 }
 
 resource "aws_instance" "instance" {

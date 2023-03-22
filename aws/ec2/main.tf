@@ -1,6 +1,6 @@
 resource "aws_key_pair" "aws-key" {
   key_name   = format("%s-key", var.aws_ec2_instance_name)
-  public_key = var.ssh_public_key_file
+  public_key = var.ssh_public_key
 }
 
 module "network_interfaces" {
@@ -51,7 +51,7 @@ resource "null_resource" "ec2_instance_provision_custom_data" {
     type        = var.provisioner_connection_type
     host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
-    private_key = var.ssh_private_key_file
+    private_key = var.ssh_private_key
   }
 
   provisioner "file" {
@@ -66,7 +66,7 @@ resource "null_resource" "ec2_execute_script_file" {
     type        = var.provisioner_connection_type
     host        = aws_instance.instance.public_ip
     user        = var.provisioner_connection_user
-    private_key = var.ssh_private_key_file
+    private_key = var.ssh_private_key
   }
 
   provisioner "remote-exec" {

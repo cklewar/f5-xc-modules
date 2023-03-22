@@ -1,8 +1,8 @@
-variable "ssh_private_key_file" {
+variable "ssh_private_key" {
   type = string
 }
 
-variable "ssh_public_key_file" {
+variable "ssh_public_key" {
   type = string
 }
 

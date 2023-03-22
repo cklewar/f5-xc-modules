@@ -7,6 +7,50 @@ locals {
   f5xc_ip_ranges_asia     = concat(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
   f5xc_ip_ranges_all      = concat(local.f5xc_ip_ranges_americas, concat(local.f5xc_ip_ranges_europe, local.f5xc_ip_ranges_asia))
 
+  f5xc_secure_ce_slo_firewall_default = {
+    rules = [
+      {
+        name        = format("%s-default-slo-ingress-allow-all", var.project_name)
+        priority    = 65535
+        description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
+        direction   = "INGRESS"
+        target_tags = []
+        ranges      = ["0.0.0.0/0"]
+        allow       = [
+          {
+            protocol = "all"
+          }
+        ]
+        deny       = []
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
+      }
+    ]
+  }
+
+  f5xc_secure_ce_sli_firewall_default = {
+    rules = [
+      {
+        name        = format("%s-default-sli-ingress-allow-all", var.project_name)
+        priority    = 65535
+        description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
+        direction   = "INGRESS"
+        target_tags = []
+        ranges      = ["0.0.0.0/0"]
+        allow       = [
+          {
+            protocol = "all"
+          }
+        ]
+        deny       = []
+        log_config = {
+          metadata = "INCLUDE_ALL_METADATA"
+        }
+      }
+    ]
+  }
+
   f5xc_secure_ce_slo_firewall = {
     rules = concat([
       {

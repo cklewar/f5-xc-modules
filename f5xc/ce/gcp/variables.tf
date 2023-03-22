@@ -96,7 +96,7 @@ variable "is_sensitive" {
   description = "Whether to mask sensitive data in output or not"
 }
 
-variable "f5xc_ce_slo_default_firewall" {
+/*variable "f5xc_ce_slo_default_firewall" {
   type = object({
     rules = list(object({
       name        = string
@@ -193,6 +193,7 @@ variable "f5xc_ce_sli_default_firewall" {
     ]
   }
 }
+*/
 
 variable "f5xc_ce_slo_firewall" {
   type = object({

@@ -4,7 +4,7 @@ timeout=3600
 counter=0
 sleep_first_step=1
 sleep_second_step=30
-is_verbose=true
+is_verbose=false
 
 if [[ "$is_verbose" == true ]] ; then
   echo "Status check URL: $1" \

@@ -269,7 +269,7 @@ variable "f5xc_registration_wait_time" {
 
 variable "f5xc_registration_retry" {
   type    = number
-  default = 10
+  default = 20
 }
 
 variable "f5xc_ce_gateway_type_ingress" {

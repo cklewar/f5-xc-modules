@@ -1,12 +1,16 @@
+variable "is_multi_nic" {
+  type = bool
+}
+
 variable "gcp_region" {
   type = string
 }
 
-variable "subnet_outside" {
+variable "subnet_slo" {
   type = string
 }
 
-variable "subnet_inside" {
+variable "subnet_sli" {
   type = string
 }
 
@@ -17,20 +21,6 @@ variable "project_name" {
 variable "auto_create_subnetworks" {
   type    = bool
   default = false
-}
-
-variable "f5xc_ce_gateway_type_ingress" {
-  type    = string
-  default = "ingress_gateway"
-}
-
-variable "f5xc_ce_gateway_type_ingress_egress" {
-  type    = string
-  default = "ingress_egress_gateway"
-}
-
-variable "f5xc_ce_gateway_type" {
-  type = string
 }
 
 variable "f5xc_is_secure_cloud_ce" {

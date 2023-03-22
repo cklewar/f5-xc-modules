@@ -19,6 +19,7 @@ locals {
         allow       = [
           {
             protocol = "all"
+            ports    = []
           }
         ]
         deny       = []
@@ -41,6 +42,7 @@ locals {
         allow       = [
           {
             protocol = "all"
+            ports    = []
           }
         ]
         deny       = []

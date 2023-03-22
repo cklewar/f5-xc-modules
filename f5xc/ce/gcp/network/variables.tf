@@ -6,11 +6,11 @@ variable "gcp_region" {
   type = string
 }
 
-variable "subnet_slo" {
+variable "subnet_slo_ip_cidr_range" {
   type = string
 }
 
-variable "subnet_sli" {
+variable "subnet_sli_ip_cidr_range" {
   type = string
 }
 

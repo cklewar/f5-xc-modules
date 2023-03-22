@@ -4,21 +4,21 @@ resource "volterra_token" "site" {
 }
 
 module "network" {
-  count                   = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
-  source                  = "./network"
-  is_multi_nic            = local.is_multi_nic
-  gcp_region              = var.gcp_region
-  project_name            = var.project_name
-  subnet_slo              = var.subnet_outside_name
-  subnet_sli              = var.subnet_inside_name
-  auto_create_subnetworks = var.auto_create_subnetworks
-  f5xc_ce_gateway_type    = var.f5xc_ce_gateway_type
-  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
+  count                    = local.create_network ? (var.f5xc_ce_gateway_multi_node ? 2 : 1) : 0
+  source                   = "./network"
+  gcp_region               = var.gcp_region
+  is_multi_nic             = local.is_multi_nic
+  project_name             = var.project_name
+  auto_create_subnetworks  = var.auto_create_subnetworks
+  subnet_slo_ip_cidr_range = var.subnet_slo_ip_cidr_range
+  subnet_sli_ip_cidr_range = var.subnet_sli_ip_cidr_range
+  f5xc_ce_gateway_type     = var.f5xc_ce_gateway_type
+  f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
 }
 
 module "firewall" {
   source               = "./firewall"
-  sli_network          = var.subnet_inside_name != "" ? module.network[0].ce["sli_subnetwork"]["id"] : var.existing_network_inside.network_name
+  sli_network          = local.is_multi_nic && var.subnet_inside_name != "" ? module.network[0].ce["sli_subnetwork"]["id"] : var.existing_network_inside.network_name
   slo_network          = var.subnet_outside_name != "" ? module.network[0].ce["slo_subnetwork"]["id"] : var.existing_network_outside.network_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall) > 0 ? var.f5xc_ce_sli_firewall : var.f5xc_ce_sli_default_firewall)) : null

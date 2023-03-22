@@ -12,7 +12,7 @@ resource "google_compute_network" "sli_vpc_network" {
 
 resource "google_compute_subnetwork" "slo_subnet" {
   name          = "${var.project_name}-slo-subnetwork"
-  ip_cidr_range = var.subnet_slo
+  ip_cidr_range = var.subnet_slo_ip_cidr_range
   region        = var.gcp_region
   network       = google_compute_network.slo_vpc_network.id
 }
@@ -20,7 +20,7 @@ resource "google_compute_subnetwork" "slo_subnet" {
 resource "google_compute_subnetwork" "sli_subnet" {
   count         = var.is_multi_nic ? 1 : 0
   name          = "${var.project_name}-sli-subnetwork"
-  ip_cidr_range = var.subnet_sli
+  ip_cidr_range = var.subnet_sli_ip_cidr_range
   region        = var.gcp_region
   network       = google_compute_network.sli_vpc_network[0].id
 }

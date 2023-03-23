@@ -11,7 +11,7 @@ locals {
     namespace          = var.f5xc_namespace
     ssh_key            = var.ssh_public_key
     aws_az_name        = var.f5xc_aws_az_name
-    tgw_name           = var.f5xc_tgw_name
+    tgw_name           = var.f5xc_tgw_cluster_name
     nfv_name           = var.f5xc_nfv_name
     nfv_domain_suffix  = var.f5xc_nfv_domain_suffix
     nfv_node_name      = var.f5xc_nfv_node_name

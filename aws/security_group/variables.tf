@@ -22,7 +22,7 @@ variable "security_group_rules_egress" {
     from_port   = string
     to_port     = string
     ip_protocol = string
-    cidr_blocks = list(string)
+    cidr_ipv4   = list(string)
   }))
 }
 
@@ -31,6 +31,6 @@ variable "security_group_rules_ingress" {
     from_port   = string
     to_port     = string
     ip_protocol = string
-    cidr_blocks = list(string)
+    cidr_ipv4   = list(string)
   }))
 }

@@ -26,7 +26,7 @@ variable "f5xc_aws_az_name" {
   type = string
 }
 
-variable "f5xc_tgw_name" {
+variable "f5xc_tgw_cluster_name" {
   type = string
 }
 

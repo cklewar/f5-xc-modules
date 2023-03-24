@@ -19,8 +19,8 @@ variable "custom_tags" {
 
 variable "security_group_rules_egress" {
   type = list(object({
-    from_port   = string
-    to_port     = string
+    from_port   = optional(string)
+    to_port     = optional(string)
     ip_protocol = string
     cidr_blocks = list(string)
   }))
@@ -28,8 +28,8 @@ variable "security_group_rules_egress" {
 
 variable "security_group_rules_ingress" {
   type = list(object({
-    from_port   = string
-    to_port     = string
+    from_port   = optional(string)
+    to_port     = optional(string)
     ip_protocol = string
     cidr_blocks = list(string)
   }))

@@ -4,7 +4,7 @@ resource "null_resource" "fix" {
   }*/
 
   /*provisioner "local-exec" {
-    command = format("curl -k -v -X POST 'https://%s/mgmt/tm/util/bash' -H 'Content-Type: application/json' -H 'Authorization: Basic %s' --data-binary '@./data/fix.json'", "f5xc-bigip-02.adn.helloclouds.app", local.bearer)
+    command = format("curl -k -v -X POST 'https://%s/mgmt/tm/util/bash' -H 'Content-Type: application/json' -H 'Authorization: Basic %s' --data-binary '@./data/fix.json'", "f5xc-f5_big_ip_aws_service-02.adn.helloclouds.app", local.bearer)
   }*/
 
   connection {

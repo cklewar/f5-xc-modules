@@ -75,6 +75,10 @@ variable "f5xc_nfv_type_palo_alto_fw_service" {
   default = "palo_alto_fw_service"
 }
 
+variable "f5xc_nfv_type" {
+  type    = string
+}
+
 variable "f5xc_https_mgmt_do_not_advertise" {
   type    = bool
   default = false
@@ -138,10 +142,6 @@ variable "f5xc_https_management_tls_config_medium_security" {
 variable "f5xc_https_management_tls_config_low_security" {
   type    = bool
   default = false
-}
-
-variable "f5xc_nfv_type" {
-  type = string
 }
 
 variable "f5xc_nfv_disable_https_management" {

@@ -75,6 +75,21 @@ variable "f5xc_nfv_type_palo_alto_fw_service" {
   default = "palo_alto_fw_service"
 }
 
+variable "f5xc_https_mgmt_do_not_advertise" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_https_mgmt_advertise_on_public_default_vip" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_https_mgmt_default_https_port" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_https_management_tls_config_custom_security" {
   type = object({
     cipher_suites = string

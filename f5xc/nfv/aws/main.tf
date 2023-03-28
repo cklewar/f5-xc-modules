@@ -10,9 +10,9 @@ resource "volterra_nfv_service" "nfv" {
 
     content {
       domain_suffix                   = var.f5xc_nfv_domain_suffix
-      do_not_advertise                = false
-      advertise_on_public_default_vip = true
-      default_https_port              = true
+      do_not_advertise                = var.f5xc_https_mgmt_do_not_advertise
+      advertise_on_public_default_vip = var.f5xc_https_mgmt_advertise_on_public_default_vip
+      default_https_port              = var.f5xc_https_mgmt_default_https_port
 
       disable_local = var.f5xc_https_mgmt_disable_local
 
@@ -63,7 +63,6 @@ resource "volterra_nfv_service" "nfv" {
         }
       }
 
-      # do_not_advertise_on_internet      = var.f5xc_https_mgmt_advertise_on_internet && var.f5xc_https_mgmt_advertise_on_internet_public_ip != "" ? false : true
       advertise_on_slo_internet_vip {}
       advertise_on_internet_default_vip = var.f5xc_https_mgmt_advertise_on_internet_default_vip
     }
@@ -79,7 +78,7 @@ resource "volterra_nfv_service" "nfv" {
 
       admin_password {
         clear_secret_info = {
-          url = var.f5xc_nfv_admin_password
+          url = base64encode(var.f5xc_nfv_admin_password)
         }
       }
 
@@ -104,7 +103,7 @@ resource "volterra_nfv_service" "nfv" {
               for_each = byol_image.value.license.clear_secret_info ? [1] : []
               content {
                 clear_secret_info {
-                  url = byol_image.value.license.clear_secret_info.url
+                  url = base64encode(byol_image.value.license.clear_secret_info.url)
                 }
               }
             }

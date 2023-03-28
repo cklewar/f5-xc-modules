@@ -4,6 +4,7 @@ output "f5xc_aws_tgw" {
     tgw_vpc             = data.aws_vpc.tgw_vpc
     params              = volterra_tf_params_action.aws_tgw_action
     site_name           = volterra_aws_tgw_site.site.name
+    namespace           = volterra_aws_tgw_site.site.namespace
     workload_subnet_ids = length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload.ids : null
     nodes               = {
       master-0 = {

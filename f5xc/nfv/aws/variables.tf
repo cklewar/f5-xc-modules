@@ -1,7 +1,3 @@
-variable "f5xc_aws_region" {
-  type = string
-}
-
 variable "f5xc_api_url" {
   type = string
 }
@@ -26,10 +22,6 @@ variable "f5xc_aws_az_name" {
   type = string
 }
 
-variable "f5xc_tgw_cluster_name" {
-  type = string
-}
-
 variable "f5xc_nfv_domain_suffix" {
   type = string
 }
@@ -50,19 +42,10 @@ variable "f5xc_nfv_name" {
   type = string
 }
 
-variable "f5xc_nfv_description" {
-  type = string
-}
-
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
-}
-
-variable "f5xc_nfv_labels" {
-  type    = map(string)
-  default = {}
 }
 
 variable "f5xc_nfv_type_f5_big_ip_aws_service" {
@@ -76,7 +59,7 @@ variable "f5xc_nfv_type_palo_alto_fw_service" {
 }
 
 variable "f5xc_nfv_type" {
-  type    = string
+  type = string
 }
 
 variable "f5xc_https_mgmt_do_not_advertise" {
@@ -129,21 +112,6 @@ variable "f5xc_aws_service_byol_image" {
   default = null
 }
 
-variable "f5xc_https_management_tls_config_default_security" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_https_management_tls_config_medium_security" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_https_management_tls_config_low_security" {
-  type    = bool
-  default = false
-}
-
 variable "f5xc_nfv_disable_https_management" {
   type    = bool
   default = false
@@ -183,7 +151,7 @@ variable "f5xc_nfv_service_node_tunnel_prefix" {
 
 variable "f5xc_https_mgmt_disable_local" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "f5xc_https_mgmt_advertise_on_internet" {
@@ -194,11 +162,6 @@ variable "f5xc_https_mgmt_advertise_on_internet" {
 variable "f5xc_https_mgmt_advertise_on_internet_public_ip" {
   type    = string
   default = ""
-}
-
-variable "f5xc_https_mgmt_do_not_advertise_on_internet" {
-  type    = bool
-  default = false
 }
 
 variable "f5xc_https_mgmt_advertise_on_internet_default_vip" {
@@ -238,11 +201,6 @@ variable "f5xc_nodes_reserved_mgmt_subnet" {
     })
   })
   default = null
-}
-
-variable "f5xc_https_mgmt_advertise_on_slo_sli_clear_secret_info" {
-  type    = string
-  default = ""
 }
 
 variable "is_sensitive" {

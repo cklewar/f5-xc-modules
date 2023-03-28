@@ -77,19 +77,6 @@ variable "f5xc_https_mgmt_default_https_port" {
   default = true
 }
 
-variable "f5xc_https_management_tls_config_custom_security" {
-  type = object({
-    cipher_suites = string
-    max_version   = string
-    min_version   = string
-  })
-  default = {
-    cipher_suites = "TLS"
-    max_version   = "1.3"
-    min_version   = "1.2"
-  }
-}
-
 variable "f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps" {
   type    = bool
   default = false
@@ -172,6 +159,30 @@ variable "f5xc_https_mgmt_advertise_on_internet_default_vip" {
 variable "f5xc_https_mgmt_advertise_on_slo_sli" {
   type    = bool
   default = false
+}
+
+variable "f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates" {
+  type = object({
+    description            = string
+    certificate_url        = string
+    use_system_defaults    = bool
+    custom_hash_algorithms = list(string)
+  })
+  default = null
+}
+
+variable "f5xc_https_mgmt_advertise_on_slo_sli_tls_config" {
+  type = object({
+    low_security     = bool
+    medium_security  = bool
+    default_security = bool
+    custom_security  = optional(object({
+      cipher_suites = string
+      max_version   = string
+      min_version   = string
+    }))
+  })
+  default = null
 }
 
 variable "f5xc_nfv_aws_vpc_site_params" {

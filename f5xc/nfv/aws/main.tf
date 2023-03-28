@@ -15,39 +15,50 @@ resource "volterra_nfv_service" "nfv" {
 
       disable_local = var.f5xc_https_mgmt_disable_local
 
-      /*dynamic "advertise_on_slo_sli" {
+      dynamic "advertise_on_slo_sli" {
         for_each = var.f5xc_https_mgmt_advertise_on_slo_sli ? [1] : []
         content {
-          use_mtls = false
-          no_mtls  = true
+          use_mtls {}
+          no_mtls = true
 
           dynamic "tls_certificates" {
-            for_each = ""
+            for_each = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates != null ? [1] : []
             content {
-              certificate_url        = ""
-              description            = ""
-              disable_ocsp_stapling  = true
-              custom_hash_algorithms = null
-              use_system_defaults    = null
+              description     = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.description
+              certificate_url = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.certificate_url
+              dynamic "use_system_defaults" {
+                for_each = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.use_system_defaults ? [1] : []
+                content {}
+              }
+              dynamic "custom_hash_algorithms" {
+                for_each = length(var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.custom_hash_algorithms) > 0 ? [1] : []
+                content {
+                  hash_algorithms = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.custom_hash_algorithms
+                }
+              }
+              disable_ocsp_stapling {}
             }
           }
 
-          tls_config {
-            default_security = true
-            medium_security  = false
-            low_security     = false
+          dynamic "tls_config" {
+            for_each = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config != null ? [1] : []
+            content {
+              low_security     = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.low_security
+              medium_security  = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.medium_security
+              default_security = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.default_security
 
-            dynamic "custom_security" {
-              for_each = var.f5xc_https_management_tls_config_custom_security
-              content {
-                cipher_suites = custom_security.value.cipher_suites
-                max_version   = custom_security.value.max_version
-                min_version   = custom_security.value.min_version
+              dynamic "custom_security" {
+                for_each = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.custom_security ? [1] : []
+                content {
+                  max_version   = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.custom_security.max_version
+                  min_version   = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.custom_security.min_version
+                  cipher_suites = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_config.custom_security.cipher_suites
+                }
               }
             }
           }
         }
-      }*/
+      }
 
       advertise_on_sli_vip {}
 

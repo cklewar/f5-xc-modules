@@ -122,9 +122,9 @@ variable "f5xc_nfv_disable_ssh_access" {
   default = true
 }
 
-variable "f5xc_nfv_enabled_ssh_access" {
-  type    = bool
-  default = false
+variable "f5xc_nfv_svc_get_uri" {
+  type    = string
+  default = "config/namespaces/%s/nfv_services/%s"
 }
 
 variable "f5xc_nfv_endpoint_service" {

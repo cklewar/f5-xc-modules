@@ -12,7 +12,7 @@ data "aws_instance" "nfv" {
   depends_on = [module.f5xc_nfv_wait_for_online]
   filter {
     name   = "tag:ves-io-site-name"
-    values = [var.f5xc_tgw_cluster_name]
+    values = [var.f5xc_nfv_aws_tgw_site_params.name]
   }
 
   filter {
@@ -40,7 +40,7 @@ data "aws_network_interface" "nfv_external_interface" {
 
   filter {
     name   = "tag:ves-io-site-name"
-    values = [var.f5xc_tgw_cluster_name]
+    values = [var.f5xc_nfv_aws_tgw_site_params.name]
   }
 
   filter {
@@ -69,7 +69,7 @@ data "aws_network_interface" "nfv_internal_interface" {
 
   filter {
     name   = "tag:ves-io-site-name"
-    values = [var.f5xc_tgw_cluster_name]
+    values = [var.f5xc_nfv_aws_tgw_site_params.name]
   }
 
   filter {

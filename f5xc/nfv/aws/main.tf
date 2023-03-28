@@ -166,7 +166,7 @@ resource "volterra_nfv_service" "nfv" {
     }
   }
 
-  /*dynamic "palo_alto_fw_service" {
+   dynamic "palo_alto_fw_service" {
     for_each = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? [1] : []
 
     content {
@@ -175,34 +175,28 @@ resource "volterra_nfv_service" "nfv" {
       admin_username = var.f5xc_nfv_admin_username
 
       admin_password {
-        clear_secret_info = {
-          url = base64encode(var.f5xc_nfv_admin_password)
+        clear_secret_info {
+          url = format("%s%s", "string:///", base64encode(var.f5xc_nfv_admin_password))
         }
       }
 
-      dynamic "endpoint_service" {
-        for_each = var.f5xc_nfv_endpoint_service
-
-        content {
-          advertise_on_slo_ip          = endpoint_service.value.advertise_on_slo_ip
-          disable_advertise_on_slo_ip  = endpoint_service.value.disable_advertise_on_slo_ip
-          advertise_on_slo_ip_external = endpoint_service.value.advertise_on_slo_ip_external
-          default_tcp_ports            = endpoint_service.value.default_tcp_ports
-          no_udp_ports                 = endpoint_service.value.no_udp_ports
-        }
+      endpoint_service {
+        advertise_on_slo_ip          = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip
+        disable_advertise_on_slo_ip  = var.f5xc_nfv_endpoint_service.disable_advertise_on_slo_ip
+        advertise_on_slo_ip_external = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip_external
+        default_tcp_ports            = var.f5xc_nfv_endpoint_service.default_tcp_ports
+        no_udp_ports                 = var.f5xc_nfv_endpoint_service.no_udp_ports
       }
 
       dynamic "byol_image" {
-        for_each = var.f5xc_aws_service_byol_image
+        for_each = var.f5xc_aws_service_byol_image != null ? [1] : []
         content {
-          image = byol_image.value.image
+          image = var.f5xc_aws_service_byol_image.image
           license {
             dynamic "clear_secret_info" {
-              for_each = byol_image.value.license.clear_secret_info ? [1] : []
+              for_each = var.f5xc_aws_service_byol_image.license.clear_secret_info.url != "" ? [1] : []
               content {
-                clear_secret_info {
-                  url = base64encode(byol_image.value.license.clear_secret_info.url)
-                }
+                url = format("%s%s", "string:///", base64encode(var.f5xc_aws_service_byol_image.license.clear_secret_info.url))
               }
             }
           }
@@ -212,8 +206,8 @@ resource "volterra_nfv_service" "nfv" {
       dynamic "market_place_image" {
         for_each = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps || var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps ? [1] : []
         content {
-          AWAFPayG3Gbps   = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps
-          AWAFPayG200Mbps = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps
+          awaf_pay_g3_gbps   = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps
+          awaf_pay_g200_mbps = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps
         }
       }
 
@@ -222,43 +216,45 @@ resource "volterra_nfv_service" "nfv" {
         aws_az_name          = var.f5xc_aws_az_name
         tunnel_prefix        = var.f5xc_nfv_service_node_tunnel_prefix
         automatic_prefix     = var.f5xc_nfv_service_node_tunnel_prefix == "" ? true : false
-        reserved_mgmt_subnet = var.f5xc_nodes_reserved_mgmt_subnet
+        reserved_mgmt_subnet = var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
 
         dynamic "mgmt_subnet" {
-          for_each = var.f5xc_nodes_reserved_mgmt_subnet
+          for_each = var.f5xc_nodes_reserved_mgmt_subnet != null ? [1] : []
           content {
-            existing_subnet_id = mgmt_subnet.value.existing_subnet_id
+            existing_subnet_id = var.f5xc_nodes_reserved_mgmt_subnet.existing_subnet_id
             subnet_param {
-              ipv4 = mgmt_subnet.value.subnet_param.ipv4
-              ipv6 = mgmt_subnet.value.subnet_param.ipv6
+              ipv4 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv4
+              ipv6 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv6
             }
           }
         }
       }
 
       dynamic "aws_vpc_site_params" {
-        for_each = var.f5xc_nfv_aws_vpc_site_params
+        for_each = var.f5xc_nfv_aws_vpc_site_params != null ? [1] : []
         content {
           aws_vpc_site {
-            name      = aws_vpc_site_params.value.name
-            tenant    = aws_vpc_site_params.value.tenant
-            namespace = aws_vpc_site_params.value.namespace
+            name      = var.f5xc_nfv_aws_vpc_site_params.name
+            tenant    = var.f5xc_nfv_aws_vpc_site_params.tenant
+            namespace = var.f5xc_nfv_aws_vpc_site_params.namespace
           }
         }
       }
 
       dynamic "aws_tgw_site_params" {
-        for_each = var.f5xc_nfv_aws_tgw_site_params
+        for_each = var.f5xc_nfv_aws_tgw_site_params != null ? [1] : []
         content {
           aws_tgw_site {
-            name      = aws_tgw_site_params.value.name
-            tenant    = aws_tgw_site_params.value.tenant
-            namespace = aws_tgw_site_params.value.namespace
+            name      = var.f5xc_nfv_aws_tgw_site_params.name
+            tenant    = var.f5xc_nfv_aws_tgw_site_params.tenant
+            namespace = var.f5xc_nfv_aws_tgw_site_params.namespace
           }
         }
       }
     }
-  }*/
+  }
+
+
 }
 
 module "f5xc_nfv_wait_for_online" {

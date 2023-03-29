@@ -278,6 +278,6 @@ module "f5xc_nfv_wait_for_online" {
   f5xc_namespace         = var.f5xc_namespace
   f5xc_tenant            = local.f5xc_tenant
   f5xc_nfv_name          = var.f5xc_nfv_name
-  f5xc_nfv_node_name     = each.key # var.f5xc_nfv_node_name
+  f5xc_nfv_node_name     = each.key
   f5xc_nfv_domain_suffix = var.f5xc_nfv_domain_suffix
 }

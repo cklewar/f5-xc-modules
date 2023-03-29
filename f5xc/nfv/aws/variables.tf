@@ -224,8 +224,8 @@ variable "f5xc_aws_nfv_nodes" {
     }))
   }))
   validation {
-    condition = length(var.f5xc_aws_nfv_nodes) == 1 || length(var.f5xc_aws_nfv_nodes) == 2
-    error_message = "f5xc_aws_nfv_nodes can be 1 or 2"
+    condition     = length(var.f5xc_aws_nfv_nodes) == 1 || length(var.f5xc_aws_nfv_nodes) == 2
+    error_message = "f5xc_aws_nfv_nodes supports one or two nodes only"
   }
 }
 

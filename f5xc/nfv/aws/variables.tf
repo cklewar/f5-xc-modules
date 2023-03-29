@@ -117,11 +117,16 @@ variable "f5xc_nfv_svc_get_uri" {
 
 variable "f5xc_nfv_endpoint_service" {
   type = object({
-    no_udp_ports                 = bool
-    default_tcp_ports            = bool
-    advertise_on_slo_ip          = bool
-    disable_advertise_on_slo_ip  = bool
-    advertise_on_slo_ip_external = bool
+    http_port                    = optional(bool)
+    https_port                   = optional(bool)
+    no_udp_ports                 = optional(bool)
+    no_tcp_ports                 = optional(bool)
+    automatic_vip                = optional(bool)
+    configured_vip               = optional(bool)
+    default_tcp_ports            = optional(bool)
+    advertise_on_slo_ip          = optional(bool)
+    disable_advertise_on_slo_ip  = optional(bool)
+    advertise_on_slo_ip_external = optional(bool)
   })
   default = {
     no_udp_ports                 = true

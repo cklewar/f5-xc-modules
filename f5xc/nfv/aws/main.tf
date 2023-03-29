@@ -28,11 +28,10 @@ resource "volterra_nfv_service" "nfv" {
 
     content {
       domain_suffix                   = var.f5xc_nfv_domain_suffix
+      disable_local                   = var.f5xc_https_mgmt_disable_local ? var.f5xc_https_mgmt_disable_local : null
       do_not_advertise                = var.f5xc_https_mgmt_do_not_advertise
-      advertise_on_public_default_vip = var.f5xc_https_mgmt_advertise_on_public_default_vip
       default_https_port              = var.f5xc_https_mgmt_default_https_port
-
-      disable_local = var.f5xc_https_mgmt_disable_local ? var.f5xc_https_mgmt_disable_local : null
+      advertise_on_public_default_vip = var.f5xc_https_mgmt_advertise_on_public_default_vip ? var.f5xc_https_mgmt_advertise_on_public_default_vip : null
 
       dynamic "advertise_on_slo_sli" {
         for_each = var.f5xc_https_mgmt_advertise_on_slo_sli ? [1] : []
@@ -120,11 +119,14 @@ resource "volterra_nfv_service" "nfv" {
       }
 
       endpoint_service {
-        advertise_on_slo_ip          = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip
-        disable_advertise_on_slo_ip  = var.f5xc_nfv_endpoint_service.disable_advertise_on_slo_ip
-        advertise_on_slo_ip_external = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip_external
-        default_tcp_ports            = var.f5xc_nfv_endpoint_service.default_tcp_ports
         no_udp_ports                 = var.f5xc_nfv_endpoint_service.no_udp_ports
+        no_tcp_ports                 = var.f5xc_nfv_endpoint_service.no_tcp_ports
+        automatic_vip                = var.f5xc_nfv_endpoint_service.automatic_vip
+        configured_vip               = var.f5xc_nfv_endpoint_service.configured_vip
+        default_tcp_ports            = var.f5xc_nfv_endpoint_service.default_tcp_ports ? var.f5xc_nfv_endpoint_service.default_tcp_ports : null
+        advertise_on_slo_ip          = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip ? var.f5xc_nfv_endpoint_service.advertise_on_slo_ip : null
+        disable_advertise_on_slo_ip  = var.f5xc_nfv_endpoint_service.disable_advertise_on_slo_ip ? var.f5xc_nfv_endpoint_service.disable_advertise_on_slo_ip : null
+        advertise_on_slo_ip_external = var.f5xc_nfv_endpoint_service.advertise_on_slo_ip_external ? var.f5xc_nfv_endpoint_service.advertise_on_slo_ip_external : null
       }
 
       dynamic "byol_image" {

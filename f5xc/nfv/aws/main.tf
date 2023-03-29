@@ -123,6 +123,7 @@ resource "volterra_nfv_service" "nfv" {
         content {
           image = var.f5xc_aws_service_byol_image.image
           license {
+
             dynamic "clear_secret_info" {
               for_each = var.f5xc_aws_service_byol_image.license.clear_secret_info.url != "" ? [1] : []
               content {

@@ -70,7 +70,7 @@ variable "f5xc_https_mgmt_do_not_advertise" {
 
 variable "f5xc_https_mgmt_advertise_on_public_default_vip" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "f5xc_https_mgmt_default_https_port" {
@@ -187,6 +187,25 @@ variable "f5xc_https_mgmt_advertise_on_slo_sli_tls_config" {
       max_version   = string
       min_version   = string
     }))
+  })
+  default = null
+}
+
+variable "f5xc_enabled_ssh_access_advertise_on_public_default_vip" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_enabled_ssh_access_ssh_ports" {
+  type    = list(number)
+  default = []
+}
+
+variable "f5xc_enabled_ssh_access_advertise_on_public" {
+  type = object({
+    name      = string
+    tenant    = string
+    namespace = string
   })
   default = null
 }

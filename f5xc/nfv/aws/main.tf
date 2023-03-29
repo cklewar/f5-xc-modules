@@ -7,16 +7,19 @@ resource "volterra_nfv_service" "nfv" {
   dynamic "enabled_ssh_access" {
     for_each = var.f5xc_nfv_disable_ssh_access ? [] : [1]
     content {
-      ssh_ports = [22]
+      ssh_ports = var.f5xc_enabled_ssh_access_ssh_ports
 
-      advertise_on_public {
-        public_ip {
-          name      = ""
-          tenant    = var.f5xc_tenant
-          namespace = var.f5xc_namespace
+      dynamic "advertise_on_public" {
+        for_each = var.f5xc_enabled_ssh_access_advertise_on_public
+        content {
+          public_ip {
+            name      = advertise_on_public.value.name
+            tenant    = advertise_on_public.value.tenant
+            namespace = advertise_on_public.value.namespace
+          }
         }
       }
-      advertise_on_public_default_vip = false
+      advertise_on_public_default_vip = var.f5xc_enabled_ssh_access_advertise_on_public_default_vip ? var.f5xc_enabled_ssh_access_advertise_on_public_default_vip : null
     }
   }
 
@@ -29,7 +32,7 @@ resource "volterra_nfv_service" "nfv" {
       advertise_on_public_default_vip = var.f5xc_https_mgmt_advertise_on_public_default_vip
       default_https_port              = var.f5xc_https_mgmt_default_https_port
 
-      disable_local = var.f5xc_https_mgmt_disable_local
+      disable_local = var.f5xc_https_mgmt_disable_local ? var.f5xc_https_mgmt_disable_local : null
 
       dynamic "advertise_on_slo_sli" {
         for_each = var.f5xc_https_mgmt_advertise_on_slo_sli ? [1] : []
@@ -98,7 +101,7 @@ resource "volterra_nfv_service" "nfv" {
         for_each = var.f5xc_https_mgmt_advertise_on_slo_internet_vip ? [1] : []
         content {}
       }
-      advertise_on_internet_default_vip = var.f5xc_https_mgmt_advertise_on_internet_default_vip
+      advertise_on_internet_default_vip = var.f5xc_https_mgmt_advertise_on_internet_default_vip ?  var.f5xc_https_mgmt_advertise_on_internet_default_vip : null
     }
   }
 
@@ -158,7 +161,7 @@ resource "volterra_nfv_service" "nfv" {
           reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet
 
           dynamic "mgmt_subnet" {
-            for_each = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet ? [] : [1]
+            for_each = lookup(var.f5xc_aws_nfv_nodes[nodes.key], "mgmt_subnet", null) != null ? [1] : []
             content {
               existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id
               subnet_param {

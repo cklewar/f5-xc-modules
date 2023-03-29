@@ -42,10 +42,12 @@ resource "volterra_nfv_service" "nfv" {
             content {
               description     = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.description
               certificate_url = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.certificate_url
+
               dynamic "use_system_defaults" {
                 for_each = var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.use_system_defaults ? [1] : []
                 content {}
               }
+
               dynamic "custom_hash_algorithms" {
                 for_each = length(var.f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates.custom_hash_algorithms) > 0 ? [1] : []
                 content {

@@ -31,10 +31,6 @@ variable "f5xc_nfv_domain_suffix" {
   type = string
 }
 
-variable "f5xc_nfv_node_name" {
-  type = string
-}
-
 variable "f5xc_nfv_admin_username" {
   type = string
 }
@@ -166,6 +162,16 @@ variable "f5xc_https_mgmt_advertise_on_slo_sli" {
   default = false
 }
 
+variable "f5xc_https_mgmt_advertise_on_sli_vip" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_https_mgmt_advertise_on_slo_internet_vip" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_https_mgmt_advertise_on_slo_sli_tls_certificates" {
   type = object({
     description            = string
@@ -217,6 +223,22 @@ variable "f5xc_nodes_reserved_mgmt_subnet" {
     })
   })
   default = null
+}
+
+variable "f5xc_aws_nfv_nodes" {
+  type = map(object({
+    aws_az_name          = string
+    tunnel_prefix        = optional(string)
+    automatic_prefix     = bool
+    reserved_mgmt_subnet = bool
+    mgmt_subnet          = optional(object({
+      existing_subnet_id = string
+      subnet_param       = object({
+        ipv4 = string
+        ipv6 = optional(string)
+      })
+    }))
+  }))
 }
 
 variable "f5xc_pan_ami_bundle1" {

@@ -78,7 +78,10 @@ resource "volterra_nfv_service" "nfv" {
         }
       }
 
-      advertise_on_sli_vip {}
+      dynamic "advertise_on_sli_vip" {
+        for_each = var.f5xc_https_mgmt_advertise_on_sli_vip ? [1] : []
+        content {}
+      }
 
       dynamic "advertise_on_internet" {
         for_each = var.f5xc_https_mgmt_advertise_on_internet && var.f5xc_https_mgmt_advertise_on_internet_public_ip != "" ? [1] : []
@@ -91,7 +94,10 @@ resource "volterra_nfv_service" "nfv" {
         }
       }
 
-      advertise_on_slo_internet_vip {}
+      dynamic "advertise_on_slo_internet_vip" {
+        for_each = var.f5xc_https_mgmt_advertise_on_slo_internet_vip ? [1] : []
+        content {}
+      }
       advertise_on_internet_default_vip = var.f5xc_https_mgmt_advertise_on_internet_default_vip
     }
   }
@@ -142,20 +148,23 @@ resource "volterra_nfv_service" "nfv" {
         }
       }
 
-      nodes {
-        node_name            = var.f5xc_nfv_node_name
-        aws_az_name          = var.f5xc_aws_az_name
-        tunnel_prefix        = var.f5xc_nfv_service_node_tunnel_prefix
-        automatic_prefix     = var.f5xc_nfv_service_node_tunnel_prefix == "" ? true : false
-        reserved_mgmt_subnet = var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
+      dynamic "nodes" {
+        for_each = var.f5xc_aws_nfv_nodes
+        content {
+          node_name            = nodes.key
+          aws_az_name          = var.f5xc_aws_nfv_nodes[nodes.key].aws_az_name
+          tunnel_prefix        = var.f5xc_aws_nfv_nodes[nodes.key].tunnel_prefix
+          automatic_prefix     = var.f5xc_aws_nfv_nodes[nodes.key].automatic_prefix # var.f5xc_nfv_service_node_tunnel_prefix == "" ? true : false
+          reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet # var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
 
-        dynamic "mgmt_subnet" {
-          for_each = var.f5xc_nodes_reserved_mgmt_subnet != null ? [1] : []
-          content {
-            existing_subnet_id = var.f5xc_nodes_reserved_mgmt_subnet.existing_subnet_id
-            subnet_param {
-              ipv4 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv4
-              ipv6 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv6
+          dynamic "mgmt_subnet" {
+            for_each = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet ? [] : [1]  # var.f5xc_nodes_reserved_mgmt_subnet != null ? [1] : []
+            content {
+              existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id # var.f5xc_nodes_reserved_mgmt_subnet.existing_subnet_id
+              subnet_param {
+                ipv4 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv4 # var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv4
+                ipv6 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv6 # var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv6
+              }
             }
           }
         }
@@ -210,7 +219,7 @@ resource "volterra_nfv_service" "nfv" {
 
       service_nodes {
         nodes {
-          node_name            = var.f5xc_nfv_node_name
+          node_name            = "" # var.f5xc_nfv_node_name
           aws_az_name          = var.f5xc_aws_az_name
           reserved_mgmt_subnet = var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
 
@@ -260,11 +269,12 @@ resource "volterra_nfv_service" "nfv" {
 module "f5xc_nfv_wait_for_online" {
   depends_on             = [volterra_nfv_service.nfv]
   source                 = "../../status/nfv"
+  for_each               = var.f5xc_aws_nfv_nodes
   f5xc_api_token         = local.f5xc_api_token
   f5xc_api_url           = var.f5xc_api_url
   f5xc_namespace         = var.f5xc_namespace
   f5xc_tenant            = local.f5xc_tenant
   f5xc_nfv_name          = var.f5xc_nfv_name
-  f5xc_nfv_node_name     = var.f5xc_nfv_node_name
+  f5xc_nfv_node_name     = each.key # var.f5xc_nfv_node_name
   f5xc_nfv_domain_suffix = var.f5xc_nfv_domain_suffix
 }

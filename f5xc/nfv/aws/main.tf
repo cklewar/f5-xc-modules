@@ -3,10 +3,12 @@ resource "volterra_nfv_service" "nfv" {
   namespace                = var.f5xc_namespace
   disable_ssh_access       = var.f5xc_nfv_disable_ssh_access
   disable_https_management = var.f5xc_nfv_disable_https_management
+
   dynamic "enabled_ssh_access" {
     for_each = var.f5xc_nfv_disable_ssh_access ? [] : [1]
     content {
       ssh_ports = [22]
+
       advertise_on_public {
         public_ip {
           name      = ""

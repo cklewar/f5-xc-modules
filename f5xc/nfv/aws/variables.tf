@@ -18,6 +18,11 @@ variable "ssh_public_key" {
   type = string
 }
 
+variable "ssh_private_key" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_aws_az_name" {
   type = string
 }

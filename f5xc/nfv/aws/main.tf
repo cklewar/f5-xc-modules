@@ -223,8 +223,6 @@ resource "volterra_nfv_service" "nfv" {
           content {
             node_name            = nodes.key
             aws_az_name          = var.f5xc_aws_nfv_nodes[nodes.key].aws_az_name
-            tunnel_prefix        = var.f5xc_aws_nfv_nodes[nodes.key].tunnel_prefix
-            automatic_prefix     = var.f5xc_aws_nfv_nodes[nodes.key].automatic_prefix
             reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet
 
             dynamic "mgmt_subnet" {

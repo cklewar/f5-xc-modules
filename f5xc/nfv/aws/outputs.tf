@@ -8,8 +8,8 @@ output "nfv" {
     disable_https_management = volterra_nfv_service.nfv.disable_https_management
     nodes                    = {
       instances             = {for node in data.aws_instance.nfv : node.tags["Name"] => node}
-      external_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_external_interface : interface.tags["tag:ves.io/nfv-service-node-name"] => interface}
-      internal_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_internal_interface : interface.tags["tag:ves.io/nfv-service-node-name"] => interface}
+      external_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_external_interface : interface.tags["ves.io/nfv-service-node-name"] => interface}
+      internal_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_internal_interface : interface.tags["ves.io/nfv-service-node-name"] => interface}
     }
   }
 }

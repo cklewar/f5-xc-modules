@@ -223,6 +223,10 @@ variable "f5xc_aws_nfv_nodes" {
       })
     }))
   }))
+  validation {
+    condition = length(var.f5xc_aws_nfv_nodes) == 1 || length(var.f5xc_aws_nfv_nodes) == 2
+    error_message = "f5xc_aws_nfv_nodes can be 1 or 2"
+  }
 }
 
 variable "f5xc_pan_ami_bundle1" {

@@ -154,16 +154,16 @@ resource "volterra_nfv_service" "nfv" {
           node_name            = nodes.key
           aws_az_name          = var.f5xc_aws_nfv_nodes[nodes.key].aws_az_name
           tunnel_prefix        = var.f5xc_aws_nfv_nodes[nodes.key].tunnel_prefix
-          automatic_prefix     = var.f5xc_aws_nfv_nodes[nodes.key].automatic_prefix # var.f5xc_nfv_service_node_tunnel_prefix == "" ? true : false
-          reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet # var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
+          automatic_prefix     = var.f5xc_aws_nfv_nodes[nodes.key].automatic_prefix
+          reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet
 
           dynamic "mgmt_subnet" {
-            for_each = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet ? [] : [1]  # var.f5xc_nodes_reserved_mgmt_subnet != null ? [1] : []
+            for_each = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet ? [] : [1]
             content {
-              existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id # var.f5xc_nodes_reserved_mgmt_subnet.existing_subnet_id
+              existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id
               subnet_param {
-                ipv4 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv4 # var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv4
-                ipv6 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv6 # var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv6
+                ipv4 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv4
+                ipv6 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv6
               }
             }
           }
@@ -218,18 +218,23 @@ resource "volterra_nfv_service" "nfv" {
       }
 
       service_nodes {
-        nodes {
-          node_name            = "" # var.f5xc_nfv_node_name
-          aws_az_name          = var.f5xc_aws_az_name
-          reserved_mgmt_subnet = var.f5xc_nodes_reserved_mgmt_subnet != null ? true : false
+        dynamic "nodes" {
+          for_each = var.f5xc_aws_nfv_nodes
+          content {
+            node_name            = nodes.key
+            aws_az_name          = var.f5xc_aws_nfv_nodes[nodes.key].aws_az_name
+            tunnel_prefix        = var.f5xc_aws_nfv_nodes[nodes.key].tunnel_prefix
+            automatic_prefix     = var.f5xc_aws_nfv_nodes[nodes.key].automatic_prefix
+            reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet
 
-          dynamic "mgmt_subnet" {
-            for_each = var.f5xc_nodes_reserved_mgmt_subnet != null ? [1] : []
-            content {
-              existing_subnet_id = var.f5xc_nodes_reserved_mgmt_subnet.existing_subnet_id
-              subnet_param {
-                ipv4 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv4
-                ipv6 = var.f5xc_nodes_reserved_mgmt_subnet.subnet_param.ipv6
+            dynamic "mgmt_subnet" {
+              for_each = lookup(var.f5xc_aws_nfv_nodes[nodes.key], "mgmt_subnet", null) != null ? [1] : [0]
+              content {
+                existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id
+                subnet_param {
+                  ipv4 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv4
+                  ipv6 = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.subnet_param.ipv6
+                }
               }
             }
           }

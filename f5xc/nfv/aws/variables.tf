@@ -65,7 +65,7 @@ variable "f5xc_nfv_type" {
 
 variable "f5xc_https_mgmt_do_not_advertise" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "f5xc_https_mgmt_advertise_on_public_default_vip" {
@@ -130,11 +130,6 @@ variable "f5xc_nfv_endpoint_service" {
     disable_advertise_on_slo_ip  = true
     advertise_on_slo_ip_external = false
   }
-}
-
-variable "f5xc_nfv_service_node_tunnel_prefix" {
-  type    = string
-  default = ""
 }
 
 variable "f5xc_https_mgmt_disable_local" {
@@ -214,22 +209,11 @@ variable "f5xc_nfv_aws_tgw_site_params" {
   default = null
 }
 
-variable "f5xc_nodes_reserved_mgmt_subnet" {
-  type = object({
-    existing_subnet_id = string
-    subnet_param       = object({
-      ipv4 = string
-      ipv6 = optional(string)
-    })
-  })
-  default = null
-}
-
 variable "f5xc_aws_nfv_nodes" {
   type = map(object({
     aws_az_name          = string
     tunnel_prefix        = optional(string)
-    automatic_prefix     = bool
+    automatic_prefix     = optional(bool)
     reserved_mgmt_subnet = bool
     mgmt_subnet          = optional(object({
       existing_subnet_id = string

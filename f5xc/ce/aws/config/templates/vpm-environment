@@ -1,1 +1,0 @@
-VP_MANAGER_IMAGE=gcr.io/volterraio/vpm${vp_manager_image_separator}${vp_manager_version}

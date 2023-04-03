@@ -6,18 +6,14 @@ locals {
       public_name    = var.f5xc_ce_hosts_public_name
     }
   )
+
   hosts_context_pool = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
       public_address = var.f5xc_ce_hosts_public_address
       public_name    = var.f5xc_ce_hosts_public_name
     }
   )
-  vp_manager_environment = templatefile("${path.module}/${var.templates_dir}/vpm-environment",
-    {
-      vp_manager_version         = var.vp_manager_version
-      vp_manager_image_separator = replace(var.vp_manager_version, "sha256:", "") == var.vp_manager_version ? ":" : "@"
-    }
-  )
+
   vpm_config = yamlencode({
     "Vpm" : {
       # "Roles" : var.server_roles, # pool only

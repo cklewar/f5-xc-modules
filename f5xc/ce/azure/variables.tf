@@ -2,7 +2,7 @@ variable "is_sensitive" {
   type = bool
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

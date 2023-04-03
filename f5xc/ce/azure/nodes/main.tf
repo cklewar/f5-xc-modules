@@ -41,7 +41,7 @@ resource "azurerm_virtual_machine" "instance" {
 
     ssh_keys {
       path     = "/home/${var.azurerm_instance_admin_username}/.ssh/authorized_keys"
-      key_data = var.public_ssh_key
+      key_data = var.ssh_public_key
     }
   }
 }

@@ -23,10 +23,6 @@ variable "ssh_private_key" {
   default = ""
 }
 
-variable "f5xc_aws_az_name" {
-  type = string
-}
-
 variable "f5xc_nfv_domain_suffix" {
   type = string
 }

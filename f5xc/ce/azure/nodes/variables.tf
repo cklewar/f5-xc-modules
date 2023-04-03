@@ -6,7 +6,7 @@ variable "common_tags" {
   type = map(string)
 }
 
-variable "public_ssh_key" {
+variable "ssh_public_key" {
   type = string
 }
 

@@ -50,7 +50,7 @@ resource "volterra_registration_approval" "nodes" {
   depends_on   = [azurerm_virtual_machine.instance]
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size
-  hostname     = azurerm_virtual_machine.instance.name # regex("[0-9A-Za-z_-]+", azurerm_virtual_machine.instance.name)
+  hostname     = azurerm_virtual_machine.instance.name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
 }

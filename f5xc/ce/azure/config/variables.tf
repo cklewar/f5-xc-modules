@@ -43,16 +43,42 @@ variable "f5xc_cluster_longitude" {
   type = number
 }
 
-variable "f5xc_cluster_workload" {
-  type = string
-}
-
 variable "f5xc_cluster_name" {
   type = string
 }
 
 variable "f5xc_ce_hosts_public_name" {
   type = string
+}
+
+variable "f5xc_ce_hosts_public_address" {
+  type    = string
+  default = "127.0.1.1"
+}
+
+variable "f5xc_azure_region" {
+  type = string
+}
+
+variable "azurerm_tenant_id" {
+  type = string
+}
+
+variable "azurerm_subscription_id" {
+  type = string
+}
+
+variable "azurerm_client_id" {
+  type = string
+}
+
+variable "azurerm_client_secret" {
+  type = string
+}
+
+variable "azurerm_cloud_name" {
+  type    = string
+  default = "AzurePublicCloud"
 }
 
 variable "ssh_public_key" {

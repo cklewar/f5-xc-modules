@@ -38,6 +38,22 @@ variable "azurerm_route_table_next_hop_type" {
   default = "VirtualAppliance"
 }
 
+variable "azurerm_tenant_id" {
+  type = string
+}
+
+variable "azurerm_subscription_id" {
+  type = string
+}
+
+variable "azurerm_client_id" {
+  type = string
+}
+
+variable "azurerm_client_secret" {
+  type = string
+}
+
 variable "f5xc_site_set_vip_info_namespace" {
   type    = string
   default = "system"

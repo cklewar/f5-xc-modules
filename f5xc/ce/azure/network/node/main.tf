@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "slo" {
     name                          = "slo"
     subnet_id                     = var.subnet_slo_id
     private_ip_address_allocation = var.azurerm_private_ip_address_allocation
-    public_ip_address_id          = var.has_public_ip ? var.f5xc_ce_public_ip_id : null
+    public_ip_address_id          = var.has_public_ip ? azurerm_public_ip.ip.id : null
   }
 }
 

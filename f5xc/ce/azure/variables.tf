@@ -2,6 +2,10 @@ variable "is_sensitive" {
   type = bool
 }
 
+variable "public_ssh_key" {
+  type = string
+}
+
 variable "has_public_ip" {
   type = bool
 }

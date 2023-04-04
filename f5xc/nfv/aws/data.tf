@@ -114,3 +114,14 @@ data "aws_network_interface" "nfv_big_ip_internal_interface" {
     values = ["bigip"]
   }
 }
+
+data "http" "pan_commands" {
+  for_each        = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? var.f5xc_aws_nfv_nodes : {}
+  url             = format("%s/%s?response_format=GET_RSP_FORMAT_DEFAULT", var.f5xc_api_url, local.nfv_svc_get_uri)
+  request_headers = {
+    Accept                      = "application/json"
+    Authorization               = format("APIToken %s", var.f5xc_api_token)
+    x-volterra-apigw-tenant     = var.f5xc_tenant
+    Access-Control-Allow-Origin = "*"
+  }
+}

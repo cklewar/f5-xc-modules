@@ -8,9 +8,9 @@ data "http" "nfv_virtual_server_ip" {
   }
 }
 
-data "aws_instance" "nfv" {
+data "aws_instance" "nfv_bigip" {
   depends_on = [module.f5xc_nfv_wait_for_online]
-  for_each   = var.f5xc_aws_nfv_nodes
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? var.f5xc_aws_nfv_nodes : {}
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_nfv_aws_tgw_site_params.name]
@@ -29,6 +29,31 @@ data "aws_instance" "nfv" {
   filter {
     name   = "tag:ves-io/nfv-service-type"
     values = ["bigip"]
+  }
+}
+
+data "aws_instance" "nfv_pan" {
+  depends_on = [module.f5xc_nfv_wait_for_online]
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? var.f5xc_aws_nfv_nodes : {}
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_nfv_aws_tgw_site_params.name]
+  }
+
+  filter {
+    name   = "tag:ves-io/nfv-service"
+    values = [var.f5xc_nfv_name]
+  }
+
+  filter {
+    name   = "tag:ves-io/nfv-service-type"
+    values = ["pan-vmseries-fw"]
+  }
+
+  filter {
+    name   = "tag:Name"
+    # f5xc-pan-12-f5xc-pan-n1-12
+    values = [format("%s-%s", var.f5xc_nfv_name, each.key)]
   }
 }
 

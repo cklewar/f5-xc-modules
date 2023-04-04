@@ -7,7 +7,8 @@ output "nfv" {
     disable_ssh_access       = volterra_nfv_service.nfv.disable_ssh_access
     disable_https_management = volterra_nfv_service.nfv.disable_https_management
     nodes                    = {
-      instances             = {for node in data.aws_instance.nfv : node.tags["Name"] => node}
+      instances             = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? {for node in data.aws_instance.nfv_bigip : node.tags["Name"] => node} : null
+      instances             = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? {for node in data.aws_instance.nfv_pan : node.tags["Name"] => node} : null
       external_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_external_interface : interface.tags["ves.io/nfv-service-node-name"] => interface}
       internal_interface_ip = {for interface in data.aws_network_interface.nfv_big_ip_internal_interface : interface.tags["ves.io/nfv-service-node-name"] => interface}
     }

@@ -15,7 +15,7 @@ output "nfv" {
       internal_interface_ip = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? {
         for interface in data.aws_network_interface.nfv_big_ip_internal_interface : interface.tags["ves.io/nfv-service-node-name"] =>interface
       } : null
-      commands              = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? data.http.pan_commands.response_body : null
+      commands              = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? data.http.pan_commands.response_body["spec"]["commands"] : null
     }
   }
 }

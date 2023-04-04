@@ -231,7 +231,7 @@ resource "volterra_nfv_service" "nfv" {
             reserved_mgmt_subnet = var.f5xc_aws_nfv_nodes[nodes.key].reserved_mgmt_subnet
 
             dynamic "mgmt_subnet" {
-              for_each = lookup(var.f5xc_aws_nfv_nodes[nodes.key], "mgmt_subnet", null) != null ? [1] : [0]
+              for_each = lookup(var.f5xc_aws_nfv_nodes[nodes.key], "mgmt_subnet", null) != null ? [1] : []
               content {
                 existing_subnet_id = var.f5xc_aws_nfv_nodes[nodes.key].mgmt_subnet.existing_subnet_id
                 subnet_param {

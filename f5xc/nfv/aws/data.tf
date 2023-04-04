@@ -52,7 +52,6 @@ data "aws_instance" "nfv_pan" {
 
   filter {
     name   = "tag:Name"
-    # f5xc-pan-12-f5xc-pan-n1-12
     values = [format("%s-%s", var.f5xc_nfv_name, each.key)]
   }
 }

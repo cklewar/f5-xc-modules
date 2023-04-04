@@ -299,6 +299,11 @@ variable "f5xc_pan_auto_setup" {
   default = false
 }
 
+variable "enable_f5xc_nfv_wait_for_online" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_pan_instance_type" {
   type    = string
   default = "PALO_ALTO_FW_AWS_INSTANCE_TYPE_M5_2XLARGE"

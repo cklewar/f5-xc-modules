@@ -286,7 +286,7 @@ resource "volterra_nfv_service" "nfv" {
 module "f5xc_nfv_wait_for_online" {
   depends_on             = [volterra_nfv_service.nfv]
   source                 = "../../status/nfv"
-  for_each               = var.f5xc_aws_nfv_nodes
+  for_each               = var.enable_f5xc_nfv_wait_for_online ? var.f5xc_aws_nfv_nodes : 0
   f5xc_api_token         = local.f5xc_api_token
   f5xc_api_url           = var.f5xc_api_url
   f5xc_namespace         = var.f5xc_namespace

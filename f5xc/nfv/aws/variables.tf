@@ -127,6 +127,7 @@ variable "f5xc_nfv_endpoint_service" {
   default = {
     no_udp_ports                 = true
     default_tcp_ports            = true
+    automatic_vip                = true
     advertise_on_slo_ip          = false
     disable_advertise_on_slo_ip  = true
     advertise_on_slo_ip_external = false

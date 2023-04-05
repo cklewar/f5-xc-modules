@@ -148,8 +148,8 @@ resource "volterra_nfv_service" "nfv" {
       dynamic "market_place_image" {
         for_each = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps || var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps ? [1] : []
         content {
-          awaf_pay_g3_gbps   = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps
-          awaf_pay_g200_mbps = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps
+          awaf_pay_g3_gbps   = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps ? var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG3Gbps : null
+          awaf_pay_g200_mbps = var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps ? var.f5xc_big_ip_aws_service_market_place_image_AWAFPayG200Mbps : null
         }
       }
 

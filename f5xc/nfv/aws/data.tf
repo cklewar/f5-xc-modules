@@ -17,7 +17,7 @@ data "aws_instance" "nfv_bigip" {
   }
 
   filter {
-    name   = "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves-io-nfv-service-node-name" # "tag:ves.io/nfv-service-node-name"
     values = [each.key]
   }
 
@@ -70,7 +70,7 @@ data "aws_network_interface" "nfv_big_ip_external_interface" {
   }
 
   filter {
-    name   = "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves-io-nfv-service-node-name" #"tag:ves.io/nfv-service-node-name"
     values = [each.key]
   }
 
@@ -100,7 +100,7 @@ data "aws_network_interface" "nfv_big_ip_internal_interface" {
   }
 
   filter {
-    name   = "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves-io-nfv-service-node-name" # "tag:ves.io/nfv-service-node-name"
     values = [each.key]
   }
 

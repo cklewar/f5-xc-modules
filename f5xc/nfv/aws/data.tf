@@ -8,17 +8,22 @@ data "http" "nfv_virtual_server_ip" {
   }
 }
 
-data "aws_instance" "nfv_bigip" {
+data "aws_instance" "nfv_bigip_node1" {
   depends_on = [module.f5xc_nfv_wait_for_online]
-  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? var.f5xc_aws_nfv_nodes : {}
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? { keys(var.f5xc_aws_nfv_nodes)[0] = lookup(var.f5xc_aws_nfv_nodes, keys(var.f5xc_aws_nfv_nodes)[0]) } : {}
   filter {
     name   = "tag:ves-io-site-name"
     values = [var.f5xc_nfv_aws_tgw_site_params.name]
   }
 
   filter {
-    name   = "tag:ves-io-nfv-service-node-name" # "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves.io/nfv-service-node-name"
     values = [each.key]
+  }
+
+  filter {
+    name   = "tag:f5xc-tenant"
+    values = [var.f5xc_tenant]
   }
 
   filter {
@@ -31,6 +36,38 @@ data "aws_instance" "nfv_bigip" {
     values = ["bigip"]
   }
 }
+
+data "aws_instance" "nfv_bigip_node2" {
+  depends_on = [module.f5xc_nfv_wait_for_online]
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service && length(var.f5xc_aws_nfv_nodes) > 1 ? {
+    keys(var.f5xc_aws_nfv_nodes)[1] = lookup(var.f5xc_aws_nfv_nodes, keys(var.f5xc_aws_nfv_nodes)[1])
+  } : {}
+  filter {
+    name   = "tag:ves-io-site-name"
+    values = [var.f5xc_nfv_aws_tgw_site_params.name]
+  }
+
+  filter {
+    name   = "tag:ves-io-nfv-service-node-name"
+    values = [each.key]
+  }
+
+  filter {
+    name   = "tag:f5xc-tenant"
+    values = [var.f5xc_tenant]
+  }
+
+  filter {
+    name   = "tag:ves-io/nfv-service"
+    values = [var.f5xc_nfv_name]
+  }
+
+  filter {
+    name   = "tag:ves-io/nfv-service-type"
+    values = ["bigip"]
+  }
+}
+
 
 data "aws_instance" "nfv_pan" {
   depends_on = [module.f5xc_nfv_wait_for_online]
@@ -56,9 +93,9 @@ data "aws_instance" "nfv_pan" {
   }
 }
 
-data "aws_network_interface" "nfv_big_ip_external_interface" {
+data "aws_network_interface" "nfv_big_ip_external_interface_node1" {
   depends_on = [module.f5xc_nfv_wait_for_online]
-  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? var.f5xc_aws_nfv_nodes : {}
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? { keys(var.f5xc_aws_nfv_nodes)[0] = lookup(var.f5xc_aws_nfv_nodes, keys(var.f5xc_aws_nfv_nodes)[0]) } : {}
   filter {
     name   = "tag:Name"
     values = ["BIGIP-External-Private-Interface-0"]
@@ -70,7 +107,7 @@ data "aws_network_interface" "nfv_big_ip_external_interface" {
   }
 
   filter {
-    name   = "tag:ves-io-nfv-service-node-name" # "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves.io/nfv-service-node-name"
     values = [each.key]
   }
 
@@ -85,9 +122,9 @@ data "aws_network_interface" "nfv_big_ip_external_interface" {
   }
 }
 
-data "aws_network_interface" "nfv_big_ip_internal_interface" {
+data "aws_network_interface" "nfv_big_ip_internal_interface_node1" {
   depends_on = [module.f5xc_nfv_wait_for_online]
-  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? var.f5xc_aws_nfv_nodes : {}
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? { keys(var.f5xc_aws_nfv_nodes)[0] = lookup(var.f5xc_aws_nfv_nodes, keys(var.f5xc_aws_nfv_nodes)[0]) } : {}
 
   filter {
     name   = "tag:Name"
@@ -100,7 +137,7 @@ data "aws_network_interface" "nfv_big_ip_internal_interface" {
   }
 
   filter {
-    name   = "tag:ves-io-nfv-service-node-name" # "tag:ves.io/nfv-service-node-name"
+    name   = "tag:ves.io/nfv-service-node-name"
     values = [each.key]
   }
 

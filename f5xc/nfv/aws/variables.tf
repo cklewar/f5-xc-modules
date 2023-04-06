@@ -130,7 +130,7 @@ variable "f5xc_nfv_endpoint_service" {
     automatic_vip                = true
     advertise_on_slo_ip          = false
     disable_advertise_on_slo_ip  = true
-    advertise_on_slo_ip_external = false
+    advertise_on_slo_ip_external = true
   }
 }
 

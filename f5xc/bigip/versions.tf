@@ -4,7 +4,7 @@ terraform {
   required_providers {
     bigip = {
       source  = "F5Networks/bigip"
-      version = ">= 1.15.2"
+      version = "= 1.15.2"
     }
 
     local = ">= 2.2.3"

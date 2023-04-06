@@ -1,31 +1,29 @@
-resource "null_resource" "fix" {
-  /*triggers = {
-    uuid = local.random_id
-  }*/
+data "http" "auth_token" {
+  url             = format("https://%s/%s", var.bigip_address, var.bigip_token_based_auth_uri)
+  method          = "POST"
+  request_headers = {
+    Accept = "application/json"
+  }
+  request_body = local.token_based_auth
+}
 
-  /*provisioner "local-exec" {
-    command = format("curl -k -v -X POST 'https://%s/mgmt/tm/util/bash' -H 'Content-Type: application/json' -H 'Authorization: Basic %s' --data-binary '@./data/fix.json'", "f5xc-f5_big_ip_aws_service-02.adn.helloclouds.app", local.bearer)
-  }*/
+resource "null_resource" "fix" {
 
   connection {
-    host        = var.aws_ec2_ssh_address
-    user        = var.provisioner_connection_user
-    type        = var.provisioner_connection_type
-    private_key = var.ssh_private_key
-    timeout     = var.provisioner_connection_timeout
+    bastion_host        = var.aws_ec2_vcs_instance_public_ip
+    bastion_user        = var.provisioner_connection_user
+    bastion_private_key = var.ssh_private_key
+    host                = var.bigip_interface_internal_ip
+    user                = var.bigip_admin_username
+    password            = var.bigip_admin_password
+    type                = var.provisioner_connection_type
+    timeout             = var.provisioner_connection_timeout
   }
 
   provisioner "remote-exec" {
-    inline = [
-      format("curl -k -v -X POST 'https://%s/mgmt/tm/util/bash' -H 'Content-Type: application/json' -H 'Authorization: Basic %s' --data-binary '@/tmp/custom_data/vcs/fix.json'", var.bigip_interface_internal_ip, local.bearer)
-    ]
+    inline = local.commands
   }
 }
-
-/*resource "bigip_command" "fix" {
-  #commands   = ["tmsh modify sys db httpd.matchclient value false", "bigstart restart httpd"]
-  commands = ["modify sys db httpd.matchclient value false", "bigstart restart httpd"]
-}*/
 
 resource "bigip_sys_provision" "asm" {
   depends_on   = [null_resource.fix]
@@ -43,38 +41,12 @@ resource "local_file" "waf_policy" {
   filename   = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
 }
 
-/*resource "bigip_as3" "waf_policy" {
-  depends_on = [null_resource.fix, bigip_sys_provision.asm, local_file.waf_policy]
-  as3_json   = local_file.waf_policy.content
-}*/
-
-resource "null_resource" "apply_waf_policy" {
-  depends_on = [null_resource.fix, bigip_sys_provision.asm, local_file.waf_policy]
-
-  /*triggers = {
-    uuid = local.random_id
-  }*/
-
-  provisioner "local-exec" {
-    command = format("curl -k -v -X \"POST\" \"https://%s/mgmt/shared/appsvcs/declare\" -H \"Content-Type: application/json\" -H \"Authorization: Basic %s\" --data-binary \"@%s/_out/%s\"", "f5xc-bigip-02.adn.helloclouds.app", base64encode(format("%s:%s", var.bigip_admin_username, var.bigip_admin_password)), path.module, var.bigip_as3_awaf_policy)
+data "http" "bigip_waf_policy" {
+  url             = format("https://%s/%s", var.bigip_address, "mgmt/shared/appsvcs/declare")
+  method          = "POST"
+  request_headers = {
+    Accept          = "application/json"
+    X-F5-Auth-Token = local.auth_token
   }
-
-  /*connection {
-    host        = var.aws_ec2_ssh_address
-    user        = var.provisioner_connection_user
-    type        = var.provisioner_connection_type
-    private_key = var.private_ssh_key
-    timeout     = var.provisioner_connection_timeout
-  }
-
-  provisioner "file" {
-    source      = format("%s/_out/%s", path.module, var.bigip_as3_awaf_policy)
-    destination = format("/tmp/%s", var.bigip_as3_awaf_policy)
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      format("curl -k -v -X \"POST\" \"https://%s/mgmt/shared/appsvcs/declare\" -H \"Content-Type: application/json\" -H \"Authorization: Basic %s\" --data-binary \"@/tmp/%s\"", var.bigip_interface_internal_ip, base64encode(format("%s:%s", var.bigip_admin_username, var.bigip_admin_password)), var.bigip_as3_awaf_policy)
-    ]
-  }*/
+  request_body = local_file.waf_policy.content
 }

@@ -108,7 +108,7 @@ resource "volterra_nfv_service" "nfv" {
     for_each = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? [1] : []
 
     content {
-      tags           = merge({ f5xc_tenant = var.f5xc_tenant }, var.custom_tags)
+      tags           = merge({ f5xc-tenant = var.f5xc_tenant }, var.custom_tags)
       ssh_key        = var.ssh_public_key
       admin_username = var.f5xc_nfv_admin_username
 

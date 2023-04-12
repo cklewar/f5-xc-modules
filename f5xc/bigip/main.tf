@@ -22,6 +22,10 @@ resource "null_resource" "fix" {
 
   provisioner "remote-exec" {
     inline = local.commands
+
+    connection {
+      timeout = "2m"
+    }
   }
 }
 

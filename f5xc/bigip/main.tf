@@ -1,14 +1,4 @@
-data "http" "auth_token" {
-  url             = format("https://%s/%s", var.bigip_address, var.bigip_token_based_auth_uri)
-  method          = "POST"
-  request_headers = {
-    Accept = "application/json"
-  }
-  request_body = local.token_based_auth
-}
-
 resource "null_resource" "fix" {
-
   connection {
     bastion_host        = var.aws_ec2_vcs_instance_public_ip
     bastion_user        = var.provisioner_connection_user
@@ -39,6 +29,16 @@ resource "bigip_sys_provision" "asm" {
   memory_ratio = 0
 }
 
+data "http" "auth_token" {
+  depends_on      = [null_resource.fix]
+  url             = format("https://%s/%s", var.bigip_address, var.bigip_token_based_auth_uri)
+  method          = "POST"
+  request_headers = {
+    Accept = "application/json"
+  }
+  request_body = local.token_based_auth
+}
+
 resource "local_file" "waf_policy" {
   depends_on = [null_resource.fix]
   content    = local.waf_policy_content
@@ -46,6 +46,7 @@ resource "local_file" "waf_policy" {
 }
 
 data "http" "bigip_waf_policy" {
+  depends_on      = [null_resource.fix]
   url             = format("https://%s/%s", var.bigip_address, "mgmt/shared/appsvcs/declare")
   method          = "POST"
   request_headers = {

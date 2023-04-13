@@ -214,6 +214,7 @@ data "aws_network_interface" "nfv_big_ip_internal_interface_node2" {
 }
 
 data "http" "pan_commands" {
+  depends_on      = [module.f5xc_nfv_wait_for_online]
   count           = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? 1 : 0
   url             = format("%s/%s?response_format=GET_RSP_FORMAT_DEFAULT", var.f5xc_api_url, local.nfv_svc_get_uri)
   request_headers = {

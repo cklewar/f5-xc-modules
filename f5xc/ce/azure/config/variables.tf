@@ -22,10 +22,6 @@ variable "customer_route" {
   default = ""
 }
 
-variable "f5xc_site_token" {
-  type = string
-}
-
 variable "f5xc_cluster_type" {
   type    = string
   default = "ce"
@@ -51,11 +47,6 @@ variable "f5xc_ce_hosts_public_name" {
   type = string
 }
 
-variable "f5xc_ce_hosts_public_address" {
-  type    = string
-  default = "127.0.1.1"
-}
-
 variable "f5xc_azure_region" {
   type = string
 }
@@ -74,6 +65,38 @@ variable "azurerm_client_id" {
 
 variable "azurerm_client_secret" {
   type = string
+}
+
+variable "azurerm_resource_group" {
+  type = string
+}
+
+variable "azurerm_vm_type" {
+  type    = string
+  default = "vmss"
+}
+
+variable "azurerm_vnet_resource_group" {
+  type = string
+}
+
+variable "azurerm_vnet_name" {
+  type    = string
+  default = "network"
+}
+
+variable "azurerm_vnet_subnet" {
+  type = string
+}
+
+variable "azurerm_vnet_security_group" {
+  type    = string
+  default = "security-group"
+}
+
+variable "azurerm_primary_availability_set" {
+  type    = string
+  default = "primaryAvailabilitySetName"
 }
 
 variable "azurerm_cloud_name" {

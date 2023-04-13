@@ -11,29 +11,29 @@ resource "azurerm_virtual_machine" "instance" {
   delete_data_disks_on_termination = var.azurerm_instance_delete_data_disks_on_termination
 
   storage_image_reference {
-    publisher = var.azurerm_marketplace_publisher
+    sku       = var.azurerm_marketplace_plan
     offer     = var.azurerm_marketplace_offer
-    sku       = var.azurerm_marketplace_sku
     version   = var.azurerm_marketplace_version
+    publisher = var.azurerm_marketplace_publisher
   }
 
   plan {
-    name      = var.azurerm_marketplace_name
-    publisher = var.azurerm_marketplace_publisher
+    name      = var.azurerm_marketplace_image_name
     product   = var.azurerm_marketplace_offer
+    publisher = var.azurerm_marketplace_publisher
   }
 
   storage_os_disk {
     name          = "${var.f5xc_node_name}-system"
-    create_option = "FromImage"
     os_type       = "Linux"
+    create_option = "FromImage"
     disk_size_gb  = var.azurerm_instance_disk_size
   }
 
   os_profile {
-    admin_username = var.azurerm_instance_admin_username
-    computer_name  = var.f5xc_node_name
     custom_data    = var.f5xc_instance_config
+    computer_name  = var.f5xc_node_name
+    admin_username = var.azurerm_instance_admin_username
   }
 
   os_profile_linux_config {

@@ -2,7 +2,7 @@ locals {
   hosts_context_node = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
       public_name    = var.f5xc_ce_hosts_public_name
-      public_address = var.f5xc_ce_hosts_public_address
+      public_address = "127.0.0.1"
     }
   )
 
@@ -12,19 +12,18 @@ locals {
     "subscriptionId" : var.azurerm_subscription_id,
     "aadClientId" : var.azurerm_client_id,
     "aadClientSecret" : var.azurerm_client_secret,
-    "resourceGroup" : "${resource_group}",
+    "resourceGroup" : var.azurerm_resource_group,
     "location" : var.f5xc_azure_region,
-    "vmType" : "vmss",
-    "subnetName" : "${subnet_name}",
-    "securityGroupName" : "security-group",
-    "vnetName" : "network",
-    "vnetResourceGroup" : "${network_resource_group}",
-    "primaryAvailabilitySetName" : "availability-set-master"
+    "vmType" : var.azurerm_vm_type,
+    "subnetName" : var.azurerm_vnet_subnet,
+    "securityGroupName" : var.azurerm_vnet_security_group,
+    "vnetName" : var.azurerm_vnet_name,
+    "vnetResourceGroup" : var.azurerm_vnet_resource_group,
+    "primaryAvailabilitySetName" : var.azurerm_primary_availability_set
   })
 
   vpm_config = yamlencode({
     "Vpm" : {
-      "Token" : var.f5xc_site_token,
       "Labels" : var.f5xc_cluster_labels,
       "Latitude" : var.f5xc_cluster_latitude,
       "Longitude" : var.f5xc_cluster_longitude,

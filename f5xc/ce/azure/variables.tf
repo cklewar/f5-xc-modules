@@ -54,6 +54,34 @@ variable "azurerm_client_secret" {
   type = string
 }
 
+variable "f5xc_azure_marketplace_agreement_offers" {
+  type    = map(string)
+  default = {
+    multi_nic  = "entcloud_voltmesh_voltstack_node"
+    single_nic = "volterra-node"
+    app_stack  = "entcloud_voltmesh_voltstack_node"
+  }
+}
+
+variable "f5xc_azure_marketplace_agreement_plans" {
+  type    = map(string)
+  default = {
+    multi_nic  = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
+    single_nic = "volterra-node"
+    app_stack  = "freeplan_entcloud_voltmesh_voltstack_node"
+  }
+}
+
+variable "f5xc_azure_marketplace_agreement_publisher" {
+  type    = string
+  default = "volterraedgeservices"
+}
+
+variable "f5xc_ce_hosts_public_name" {
+  type    = string
+  default = "vip"
+}
+
 variable "f5xc_site_set_vip_info_namespace" {
   type    = string
   default = "system"

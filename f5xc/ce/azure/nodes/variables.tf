@@ -44,15 +44,16 @@ variable "azurerm_marketplace_offer" {
   type = string
 }
 
-variable "azurerm_marketplace_sku" {
+variable "azurerm_marketplace_plan" {
   type = string
 }
 
 variable "azurerm_marketplace_version" {
-  type = string
+  type    = string
+  default = "latest"
 }
 
-variable "azurerm_marketplace_name" {
+variable "azurerm_marketplace_image_name" {
   type = string
 }
 

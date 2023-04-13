@@ -1,5 +1,6 @@
 data "http" "nfv_virtual_server_ip" {
   depends_on = [module.f5xc_nfv_wait_for_online]
+  for_each   = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? [1] : []
   url        = format("%s/%s", var.f5xc_api_url, local.nfv_svc_get_uri)
 
   request_headers = {

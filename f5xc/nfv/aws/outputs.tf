@@ -6,7 +6,7 @@ output "nfv" {
     instances                = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? {for node in data.aws_instance.nfv_pan : node.tags["Name"] => node} : null
     is_cluster               = length(var.f5xc_aws_nfv_nodes) > 1 ? true : false
     pan_commands             = var.f5xc_nfv_type == var.f5xc_nfv_type_palo_alto_fw_service ? jsondecode(data.http.pan_commands.*.response_body[0])["spec"]["commands"] : null
-    virtual_server_ip        = local.nfv_virtual_server_ip
+    virtual_server_ip        = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? local.nfv_virtual_server_ip : null
     disable_ssh_access       = volterra_nfv_service.nfv.disable_ssh_access
     disable_https_management = volterra_nfv_service.nfv.disable_https_management
     nodes                    = {

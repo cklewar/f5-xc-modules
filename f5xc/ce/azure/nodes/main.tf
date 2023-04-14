@@ -18,7 +18,7 @@ resource "azurerm_virtual_machine" "instance" {
   }
 
   plan {
-    name      = var.azurerm_marketplace_image_name
+    name      = var.azurerm_marketplace_plan
     product   = var.azurerm_marketplace_offer
     publisher = var.azurerm_marketplace_publisher
   }

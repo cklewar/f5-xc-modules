@@ -85,7 +85,7 @@ variable "azurerm_vnet_name" {
   default = "network"
 }
 
-variable "azurerm_vnet_subnet" {
+variable "azurerm_vnet_subnet_name" {
   type = string
 }
 

@@ -1,11 +1,12 @@
 locals {
-  is_multi_nic            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
-  is_multi_node           = length(var.f5xc_azure_az_nodes) == 3 ? true : false
-  f5xc_ip_ranges_americas = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
-  f5xc_ip_ranges_europe   = setunion(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)
-  f5xc_ip_ranges_asia     = setunion(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
-  f5xc_ip_ranges_all      = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP, var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP, var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
-  common_tags             = {
+  is_multi_nic              = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
+  is_multi_node             = length(var.f5xc_azure_az_nodes) == 3 ? true : false
+  f5xc_ip_ranges_americas   = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
+  f5xc_ip_ranges_europe     = setunion(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)
+  f5xc_ip_ranges_asia       = setunion(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
+  f5xc_ip_ranges_all        = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP, var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP, var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
+  f5xc_azure_resource_group = var.f5xc_existing_azure_resource_group != "" ? var.f5xc_existing_azure_resource_group : azurerm_resource_group.rg[0].id
+  common_tags               = {
     "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
     "Owner"                                          = var.owner_tag
   }

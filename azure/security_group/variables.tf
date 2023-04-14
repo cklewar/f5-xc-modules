@@ -11,7 +11,8 @@ variable "azure_resource_group_name" {
 }
 
 variable "azurerm_network_interface_id" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "azure_linux_security_rules" {
@@ -32,4 +33,9 @@ variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
   default     = {}
+}
+
+variable "create_interface_security_group_association" {
+  type    = bool
+  default = true
 }

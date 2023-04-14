@@ -15,7 +15,7 @@ locals {
     "resourceGroup" : var.azurerm_resource_group,
     "location" : var.f5xc_azure_region,
     "vmType" : var.azurerm_vm_type,
-    "subnetName" : var.azurerm_vnet_subnet,
+    "subnetName" : var.azurerm_vnet_subnet_name,
     "securityGroupName" : var.azurerm_vnet_security_group,
     "vnetName" : var.azurerm_vnet_name,
     "vnetResourceGroup" : var.azurerm_vnet_resource_group,
@@ -42,9 +42,9 @@ locals {
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {
       ntp_servers       = var.ntp_servers
+      user_pubkey       = var.ssh_public_key
       azure_config      = base64encode(local.azure_config)
       hosts_context     = base64encode(local.hosts_context_node)
-      ssh_public_key    = var.ssh_public_key
       reboot_strategy   = var.reboot_strategy_node
       vp_manager_config = base64encode(local.vpm_config)
     })

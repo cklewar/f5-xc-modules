@@ -2,10 +2,6 @@ variable "is_multi_nic" {
   type = bool
 }
 
-variable "is_multi_node" {
-  type = bool
-}
-
 variable "common_tags" {
   type = map(string)
 }
@@ -15,7 +11,7 @@ variable "azurerm_vnet_address_space" {
 }
 
 variable "azurerm_existing_virtual_network_name" {
-  type = string
+  type    = string
 }
 
 variable "f5xc_cluster_name" {
@@ -27,14 +23,6 @@ variable "f5xc_azure_region" {
 }
 
 variable "azurerm_resource_group_name" {
-  type = string
-}
-
-variable "azurerm_network_interface_slo_id" {
-  type = string
-}
-
-variable "azurerm_network_interface_sli_id" {
   type = string
 }
 

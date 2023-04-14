@@ -31,26 +31,24 @@ resource "azurerm_network_interface" "sli" {
 
   ip_configuration {
     name                          = "sli"
-    subnet_id                     = azurerm_subnet.sli.id
+    subnet_id                     = azurerm_subnet.sli.*.id
     private_ip_address_allocation = var.azurerm_private_ip_address_allocation
   }
 }
 
 resource "azurerm_subnet" "slo" {
-  name                      = format("%s-subnet-slo", var.f5xc_node_name)
-  address_prefixes          = var.azurerm_subnet_slo_address_prefix
-  resource_group_name       = var.azurerm_resource_group_name
-  virtual_network_name      = var.azurerm_vnet_name
-  network_security_group_id = var.azurerm_security_group_slo_id
+  name                 = format("%s-subnet-slo", var.f5xc_node_name)
+  address_prefixes     = var.azurerm_subnet_slo_address_prefix
+  resource_group_name  = var.azurerm_resource_group_name
+  virtual_network_name = var.azurerm_vnet_name
 }
 
 resource "azurerm_subnet" "sli" {
-  count                     = var.is_multi_nic ? 1 : 0
-  name                      = format("%s-subnet-sli", var.f5xc_node_name)
-  address_prefixes          = var.azurerm_subnet_sli_address_prefix
-  resource_group_name       = var.azurerm_resource_group_name
-  virtual_network_name      = var.azurerm_vnet_name
-  network_security_group_id = var.azurerm_security_group_sli_id
+  count                = var.is_multi_nic ? 1 : 0
+  name                 = format("%s-subnet-sli", var.f5xc_node_name)
+  address_prefixes     = var.azurerm_subnet_sli_address_prefix
+  resource_group_name  = var.azurerm_resource_group_name
+  virtual_network_name = var.azurerm_vnet_name
 
   /*lifecycle {
     ignore_changes = [
@@ -70,18 +68,23 @@ resource "azurerm_route_table" "sli" {
     name                   = format("%s-sli-default-route", var.f5xc_node_name)
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = var.azurerm_route_table_next_hop_type
-    next_hop_in_ip_address = cidrhost(azurerm_subnet.sli.address_prefixes, 1)
+    next_hop_in_ip_address = cidrhost(azurerm_subnet.sli.*.address_prefixes, 1)
   }
 }
 
 resource "azurerm_subnet_route_table_association" "sli" {
   count          = var.is_multi_nic ? 1 : 0
-  subnet_id      = azurerm_subnet.sli.id
+  subnet_id      = azurerm_subnet.sli.*.id
   route_table_id = azurerm_route_table.sli.*.id
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "slo" {
-  network_interface_id    = azurerm_network_interface.slo.id
-  ip_configuration_name   = format("%s-ip-cfg", var.f5xc_node_name)
-  backend_address_pool_id = var.azurerm_backend_address_pool_id
+resource "azurerm_network_interface_security_group_association" "sga_slo" {
+  network_interface_id      = azurerm_network_interface.slo.id
+  network_security_group_id = var.azurerm_security_group_slo_id
+}
+
+resource "azurerm_network_interface_security_group_association" "sga_sli" {
+  count                     = var.is_multi_nic ? 1 : 0
+  network_interface_id      = azurerm_network_interface.sli.*.id
+  network_security_group_id = var.azurerm_security_group_sli_id
 }

@@ -53,10 +53,6 @@ variable "azurerm_marketplace_version" {
   default = "latest"
 }
 
-variable "azurerm_marketplace_image_name" {
-  type = string
-}
-
 variable "azurerm_instance_disk_size" {
   type = number
 }

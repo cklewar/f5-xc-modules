@@ -22,10 +22,6 @@ variable "azurerm_vnet_name" {
   type = string
 }
 
-variable "azurerm_backend_address_pool_id" {
-  type = string
-}
-
 variable "azurerm_route_table_next_hop_type" {
   type = string
 }
@@ -49,11 +45,11 @@ variable "azurerm_security_group_sli_id" {
 }
 
 variable "azurerm_subnet_slo_address_prefix" {
-  type = string
+  type = list(string)
 }
 
 variable "azurerm_subnet_sli_address_prefix" {
-  type    = string
+  type = list(string)
 }
 
 variable "enable_ip_forwarding" {

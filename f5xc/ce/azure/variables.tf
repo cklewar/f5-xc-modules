@@ -19,6 +19,10 @@ variable "azurerm_availability_set_id" {
   default = ""
 }
 
+variable "azurerm_vnet_address_space" {
+  type = list(string)
+}
+
 variable "azurerm_instance_vm_size" {
   type    = string
   default = "Standard_F2"
@@ -54,22 +58,37 @@ variable "azurerm_client_secret" {
   type = string
 }
 
+variable "azurerm_marketplace_version" {
+  type    = string
+  default = "latest"
+}
+
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {
-    multi_nic  = "entcloud_voltmesh_voltstack_node"
-    single_nic = "volterra-node"
-    app_stack  = "entcloud_voltmesh_voltstack_node"
+    ingress_egress_gateway = "entcloud_voltmesh_voltstack_node"
+    ingress_gateway        = "volterra-node"
+    app_stack              = "entcloud_voltmesh_voltstack_node"
   }
 }
 
 variable "f5xc_azure_marketplace_agreement_plans" {
   type    = map(string)
   default = {
-    multi_nic  = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
-    single_nic = "volterra-node"
-    app_stack  = "freeplan_entcloud_voltmesh_voltstack_node"
+    ingress_egress_gateway = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
+    ingress_gateway        = "volterra-node"
+    app_stack              = "freeplan_entcloud_voltmesh_voltstack_node"
   }
+}
+
+variable "azurerm_marketplace_image_name" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_existing_virtual_network_name" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_azure_marketplace_agreement_publisher" {

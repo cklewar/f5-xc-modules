@@ -44,6 +44,14 @@ variable "azurerm_security_group_sli_id" {
   type = string
 }
 
+variable "azurerm_security_group_secure_ce_slo_id" {
+  type = string
+}
+
+variable "azurerm_security_group_secure_ce_sli_id" {
+  type = string
+}
+
 variable "azurerm_subnet_slo_address_prefix" {
   type = list(string)
 }

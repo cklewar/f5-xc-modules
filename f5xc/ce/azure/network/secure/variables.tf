@@ -10,6 +10,6 @@ variable "f5xc_azure_region" {
   type = string
 }
 
-variable "subnet_id" {
+variable "azurerm_nat_gateway_subnet_id" {
   type = string
 }

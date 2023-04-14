@@ -88,3 +88,15 @@ resource "azurerm_network_interface_security_group_association" "sga_sli" {
   network_interface_id      = azurerm_network_interface.sli.*.id
   network_security_group_id = var.azurerm_security_group_sli_id
 }
+
+resource "azurerm_network_interface_security_group_association" "sga_slo_secure_ce" {
+  count                     = var.azurerm_security_group_secure_ce_slo_id != null ? 1 : 0
+  network_interface_id      = azurerm_network_interface.slo.id
+  network_security_group_id = var.azurerm_security_group_secure_ce_slo_id
+}
+
+resource "azurerm_network_interface_security_group_association" "sga_sli_secure_ce" {
+  count                     = var.is_multi_nic && var.azurerm_security_group_secure_ce_sli_id != null ? 1 : 0
+  network_interface_id      = azurerm_network_interface.sli.*.id
+  network_security_group_id = var.azurerm_security_group_secure_ce_sli_id
+}

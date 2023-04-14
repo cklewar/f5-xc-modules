@@ -26,6 +26,34 @@ variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
 
+variable "azure_linux_security_sli_rules_secure_ce" {
+  type = list(object({
+    name                       = string
+    access                     = string
+    priority                   = number
+    protocol                   = string
+    direction                  = string
+    source_port_range          = string
+    source_address_prefix      = optional(string)
+    destination_port_range     = string
+    destination_address_prefix = optional(string)
+  }))
+}
+
+variable "azure_linux_security_slo_rules_secure_ce" {
+  type = list(object({
+    name                       = string
+    access                     = string
+    priority                   = number
+    protocol                   = string
+    direction                  = string
+    source_port_range          = string
+    source_address_prefix      = optional(string)
+    destination_port_range     = string
+    destination_address_prefix = optional(string)
+  }))
+}
+
 variable "azurerm_resource_group_name" {
   type = string
 }

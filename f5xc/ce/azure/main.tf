@@ -18,25 +18,21 @@ module "network_common" {
   azurerm_resource_group_name              = local.f5xc_azure_resource_group
   azure_linux_security_sli_rules           = local.is_multi_nic ? (length(var.azure_security_group_rules_sli) > 0 ? var.azure_security_group_rules_sli : var.azure_security_group_rules_sli_default) : []
   azure_linux_security_slo_rules           = length(var.azure_security_group_rules_slo) > 0 ? var.azure_security_group_rules_slo : (var.f5xc_is_secure_cloud_ce == false ? var.azure_security_group_rules_slo_default : [])
-  azure_linux_security_sli_rules_secure_ce = var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_sli_secure_ce : []
-  azure_linux_security_slo_rules_secure_ce = var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_slo_secure_ce : []
+  azure_linux_security_sli_rules_secure_ce = local.is_multi_nic && var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_sli_secure_ce : null
+  azure_linux_security_slo_rules_secure_ce = var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_slo_secure_ce : null
   azurerm_existing_virtual_network_name    = var.azurerm_existing_virtual_network_name
   f5xc_azure_region                        = var.f5xc_azure_region
   f5xc_cluster_name                        = var.f5xc_cluster_name
   f5xc_is_secure_cloud_ce                  = var.f5xc_is_secure_cloud_ce
 }
 
-module "nlb_common" {
-  source                            = "./network/nlb/common"
-  count                             = local.is_multi_node ? 1 : 0
-  is_multi_nic                      = local.is_multi_nic
-  vip_params_per_az                 = []
-  azurerm_resource_group_name       = local.f5xc_azure_resource_group
-  azurerm_frontend_ip_configuration = []
-  f5xc_azure_region                 = var.f5xc_azure_region
-  f5xc_cluster_name                 = var.f5xc_cluster_name
-  f5xc_site_set_vip_info_namespace  = ""
-
+module "secure_ce" {
+  source                        = "./network/secure"
+  for_each                      = var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_azure_az_nodes : k=>v} : {}
+  f5xc_azure_region             = var.f5xc_azure_region
+  f5xc_cluster_name             = var.f5xc_cluster_name
+  azurerm_resource_group_name   = local.f5xc_azure_resource_group
+  azurerm_nat_gateway_subnet_id = module.network_node[each.key].ce["slo_subnet"]["id"]
 }
 
 module "network_node" {
@@ -55,6 +51,23 @@ module "network_node" {
   azurerm_subnet_sli_address_prefix       = local.is_multi_nic ? each.value["f5xc_azure_vnet_sli_subnet"] : null
   f5xc_node_name                          = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_azure_region                       = var.f5xc_azure_region
+}
+
+module "nlb_common" {
+  source                               = "./network/nlb/common"
+  count                                = local.is_multi_node ? 1 : 0
+  is_multi_nic                         = local.is_multi_nic
+  azurerm_resource_group_name          = local.f5xc_azure_resource_group
+  azurerm_lb_frontend_ip_configuration = [
+    {
+      "name"      = "slo"
+      "subnet_id" = [for slo_subnet in module.network_node.ce["slo_subnet"] : slo_subnet["id"]]
+    }
+  ]
+  f5xc_azure_region                = var.f5xc_azure_region
+  f5xc_cluster_name                = var.f5xc_cluster_name
+  f5xc_azure_az_nodes              = var.f5xc_azure_az_nodes
+  f5xc_site_set_vip_info_namespace = var.f5xc_namespace
 }
 
 module "nlb_node" {

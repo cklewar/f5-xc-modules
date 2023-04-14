@@ -23,6 +23,6 @@ resource "azurerm_nat_gateway_public_ip_prefix_association" "nat_gw_pip_a" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "sn_nat_gw_a" {
-  subnet_id      = var.subnet_id
+  subnet_id      = var.azurerm_nat_gateway_subnet_id
   nat_gateway_id = azurerm_nat_gateway.gw.id
 }

@@ -7,13 +7,13 @@ locals {
   f5xc_ip_ranges_all        = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP, var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP, var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
   f5xc_azure_resource_group = var.f5xc_existing_azure_resource_group != "" ? var.f5xc_existing_azure_resource_group : azurerm_resource_group.rg[0].name
   common_tags               = {
-    "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
-    "Owner"                                          = var.owner_tag
+    # "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
+    "Owner" = var.owner_tag
   }
 
   azure_security_group_rules_slo_secure_ce = [
     {
-      name                       = "SECURE CE SLO EGRESS ICMP"
+      name                       = format("%s-secure-ce-slo-egress-icmp", var.f5xc_cluster_name)
       priority                   = 150
       direction                  = "Outbound"
       access                     = "Allow"
@@ -24,7 +24,7 @@ locals {
       destination_address_prefix = "*"
     },
     {
-      name                       = "SECURE CE SLO EGRESS NTP"
+      name                       = format("%s-secure-ce-slo-egress-ntp", var.f5xc_cluster_name)
       priority                   = 151
       direction                  = "Outbound"
       access                     = "Allow"
@@ -35,7 +35,7 @@ locals {
       destination_address_prefix = "*"
     },
     {
-      name                         = "SECURE CE SLO EGRESS NAT-T"
+      name                         = format("%s-secure-ces-slo-egress-nat-t", var.f5xc_cluster_name)
       priority                     = 152
       direction                    = "Outbound"
       access                       = "Allow"
@@ -46,7 +46,7 @@ locals {
       destination_address_prefixes = local.f5xc_ip_ranges_all
     },
     {
-      name                         = "SECURE CE SLO EGRESS HTTPS"
+      name                         = format("%s-secure-ce-slo-egress-https", var.f5xc_cluster_name)
       priority                     = 153
       direction                    = "Outbound"
       access                       = "Allow"
@@ -57,7 +57,7 @@ locals {
       destination_address_prefixes = local.f5xc_ip_ranges_all
     },
     {
-      name                       = "SECURE CE SLO INGRESS NAT-T"
+      name                       = format("%s-secure-ce-slo-ingress-nat-t", var.f5xc_cluster_name)
       priority                   = 154
       direction                  = "Inbound"
       access                     = "Allow"
@@ -68,7 +68,7 @@ locals {
       destination_address_prefix = "*"
     },
     {
-      name                       = "SECURE CE SLO INGRESS SSH"
+      name                       = format("%s-secure-ce-slo-ingress-ssh", var.f5xc_cluster_name)
       priority                   = 155
       direction                  = "Inbound"
       access                     = "Allow"
@@ -82,7 +82,7 @@ locals {
 
   azure_security_group_rules_sli_secure_ce = [
     {
-      name                       = "SECURE CE SLI EGRESS ICMP"
+      name                       = format("%s-secure-ce-sli-egress-icmp", var.f5xc_cluster_name)
       priority                   = 150
       direction                  = "Outbound"
       access                     = "Allow"
@@ -93,7 +93,7 @@ locals {
       destination_address_prefix = "*"
     },
     {
-      name                       = "SECURE CE SLI EGRESS SSH"
+      name                       = format("%s-secure-ce-sli-egress-ssh", var.f5xc_cluster_name)
       priority                   = 151
       direction                  = "Outbound"
       access                     = "Allow"
@@ -104,7 +104,7 @@ locals {
       destination_address_prefix = "*"
     },
     {
-      name                       = "SECURE CE SLI INGRESS SSH"
+      name                       = format("%s-secure-ce-sli-ingress-ssh", var.f5xc_cluster_name)
       priority                   = 152
       direction                  = "Inbound"
       access                     = "Allow"
@@ -115,4 +115,54 @@ locals {
       destination_address_prefix = "*"
     }
   ]
+  azure_security_group_rules_slo_default = [
+    {
+      name                       = format("%s-default-slo-egress", var.f5xc_cluster_name)
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = format("%s-default-slo-ingress", var.f5xc_cluster_name)
+      priority                   = 151
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+
+  azure_security_group_rules_sli_default = [
+    {
+      name                       = format("%s-default-sli-egress", var.f5xc_cluster_name)
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = format("%s-default-sli-ingress", var.f5xc_cluster_name)
+      priority                   = 151
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+
 }

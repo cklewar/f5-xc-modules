@@ -33,7 +33,7 @@ variable "azurerm_public_ip_allocation_method" {
 
 variable "azurerm_private_ip_address_allocation" {
   type    = string
-  default = "dynamic"
+  default = "Dynamic"
 }
 
 variable "azurerm_security_group_slo_id" {

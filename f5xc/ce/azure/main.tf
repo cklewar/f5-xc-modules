@@ -11,16 +11,18 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "network_common" {
-  source                                = "./network/common"
-  common_tags                           = local.common_tags
-  is_multi_nic                          = local.is_multi_nic
-  azurerm_vnet_address_space            = var.azurerm_vnet_address_space
-  azurerm_resource_group_name           = local.f5xc_azure_resource_group
-  azure_linux_security_sli_rules        = []
-  azure_linux_security_slo_rules        = []
-  azurerm_existing_virtual_network_name = var.azurerm_existing_virtual_network_name
-  f5xc_azure_region                     = var.f5xc_azure_region
-  f5xc_cluster_name                     = var.f5xc_cluster_name
+  source                                   = "./network/common"
+  common_tags                              = local.common_tags
+  is_multi_nic                             = local.is_multi_nic
+  azurerm_vnet_address_space               = var.azurerm_vnet_address_space
+  azurerm_resource_group_name              = local.f5xc_azure_resource_group
+  azure_linux_security_sli_rules           = local.is_multi_nic ? (length(var.azure_security_group_rules_sli) > 0 ? var.azure_security_group_rules_sli : var.azure_security_group_rules_sli_default) : []
+  azure_linux_security_slo_rules           = length(var.azure_security_group_rules_slo) > 0 ? var.azure_security_group_rules_slo : (var.f5xc_is_secure_cloud_ce == false ? var.azure_security_group_rules_slo_default : [])
+  azure_security_group_rules_sli_secure_ce = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : []
+  azure_security_group_rules_slo_secure_ce = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : []
+  azurerm_existing_virtual_network_name    = var.azurerm_existing_virtual_network_name
+  f5xc_azure_region                        = var.f5xc_azure_region
+  f5xc_cluster_name                        = var.f5xc_cluster_name
 }
 
 module "nlb_common" {

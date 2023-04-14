@@ -11,26 +11,9 @@ locals {
     "Owner"                                          = var.owner_tag
   }
 
-  /*
-  resource "azurerm_network_security_rule" "slo_ingress" {
-  name                        = "all"
-  priority                    = 140
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = local.any
-  source_port_range           = local.any
-  destination_port_range      = local.any
-  source_address_prefix       = local.any
-  destination_address_prefix  = local.any
-  resource_group_name         = var.azurerm_resource_group_name
-  network_security_group_name = module.sg_slo.security_group["name"]
-}
-*/
-
-
-  azure_security_group_rules_slo_egress_secure_ce = [
+  azure_security_group_rules_slo_secure_ce = [
     {
-      name                       = "DEFAULT SLO EGRESS"
+      name                       = "SECURE CE SLO EGRESS ICMP"
       priority                   = 150
       direction                  = "Outbound"
       access                     = "Allow"
@@ -39,73 +22,97 @@ locals {
       destination_port_range     = "*"
       source_address_prefix      = "*"
       destination_address_prefix = "*"
+    },
+    {
+      name                       = "SECURE CE SLO EGRESS NTP"
+      priority                   = 151
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "udp"
+      source_port_range          = "*"
+      destination_port_range     = "123"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                         = "SECURE CE SLO EGRESS NAT-T"
+      priority                     = 152
+      direction                    = "Outbound"
+      access                       = "Allow"
+      protocol                     = "udp"
+      source_port_range            = "*"
+      destination_port_range       = "4500"
+      source_address_prefix        = "*"
+      destination_address_prefixes = local.f5xc_ip_ranges_all
+    },
+    {
+      name                         = "SECURE CE SLO EGRESS HTTPS"
+      priority                     = 153
+      direction                    = "Outbound"
+      access                       = "Allow"
+      protocol                     = "tcp"
+      source_port_range            = "*"
+      destination_port_range       = "443"
+      source_address_prefix        = "*"
+      destination_address_prefixes = local.f5xc_ip_ranges_all
+    },
+    {
+      name                       = "SECURE CE SLO INGRESS NAT-T"
+      priority                   = 154
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "udp"
+      source_port_range          = "*"
+      destination_port_range     = "4500"
+      source_address_prefixes    = local.f5xc_ip_ranges_all
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = "SECURE CE SLO INGRESS SSH"
+      priority                   = 155
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "tcp"
+      source_port_range          = "*"
+      destination_port_range     = "22"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
     }
   ]
 
-  azure_security_group_rules_slo_egress_secure_ce = [
+  azure_security_group_rules_sli_secure_ce = [
     {
-      from_port   = "-1"
-      to_port     = "-1"
-      ip_protocol = "icmp"
-      cidr_blocks = ["0.0.0.0/0"]
+      name                       = "SECURE CE SLI EGRESS ICMP"
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "icmp"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
     },
     {
-      from_port   = "4500"
-      to_port     = "4500"
-      ip_protocol = "udp"
-      cidr_blocks = local.f5xc_ip_ranges_all
+      name                       = "SECURE CE SLI EGRESS SSH"
+      priority                   = 151
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "tcp"
+      source_port_range          = "*"
+      destination_port_range     = "22"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
     },
     {
-      from_port   = "123"
-      to_port     = "123"
-      ip_protocol = "udp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = "443"
-      to_port     = "443"
-      ip_protocol = "tcp"
-      cidr_blocks = local.f5xc_ip_ranges_all
-    }
-  ]
-
-
-  aws_security_group_rules_slo_ingress_secure_ce = [
-    {
-      from_port   = "4500"
-      to_port     = "4500"
-      ip_protocol = "udp"
-      cidr_blocks = local.f5xc_ip_ranges_all
-    },
-    {
-      from_port   = "22"
-      to_port     = "22"
-      ip_protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-
-  aws_security_group_rules_sli_egress_secure_ce = [
-    {
-      from_port   = "-1"
-      to_port     = "-1"
-      ip_protocol = "icmp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = "22"
-      to_port     = "22"
-      ip_protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-  ]
-
-  aws_security_group_rules_sli_ingress_secure_ce = [
-    {
-      from_port   = "22"
-      to_port     = "22"
-      ip_protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      name                       = "SECURE CE SLI INGRESS SSH"
+      priority                   = 152
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "tcp"
+      source_port_range          = "*"
+      destination_port_range     = "22"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
     }
   ]
 }

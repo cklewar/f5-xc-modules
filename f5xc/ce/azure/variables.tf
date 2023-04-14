@@ -219,6 +219,11 @@ variable "azure_security_group_rules_sli_ingress_default" {
   ]
 }
 
+variable "f5xc_is_secure_cloud_ce" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {

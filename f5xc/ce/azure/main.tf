@@ -6,8 +6,8 @@
 
 resource "azurerm_resource_group" "rg" {
   count    = var.f5xc_existing_azure_resource_group != "" ? 0 : 1
-  location = var.f5xc_azure_region
   name     = format("%s-rg", var.f5xc_cluster_name)
+  location = var.f5xc_azure_region
 }
 
 module "network_common" {

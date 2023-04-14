@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "slo" {
   ip_configuration {
     name                          = "slo"
     subnet_id                     = azurerm_subnet.slo.id
-    private_ip_address_allocation = var.azurerm_private_ip_address_allocation
+    private_ip_address_allocation = var.azurerm_private_ip_address_allocation_method
     public_ip_address_id          = var.has_public_ip ? azurerm_public_ip.ip[0].id : null
   }
 }
@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "sli" {
   ip_configuration {
     name                          = "sli"
     subnet_id                     = azurerm_subnet.sli.*.id
-    private_ip_address_allocation = var.azurerm_private_ip_address_allocation
+    private_ip_address_allocation = var.azurerm_private_ip_address_allocation_method
   }
 }
 

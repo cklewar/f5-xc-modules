@@ -31,7 +31,7 @@ variable "azurerm_public_ip_allocation_method" {
   default = "Static"
 }
 
-variable "azurerm_private_ip_address_allocation" {
+variable "azurerm_private_ip_address_allocation_method" {
   type    = string
   default = "Dynamic"
 }

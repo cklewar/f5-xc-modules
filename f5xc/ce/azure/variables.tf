@@ -63,6 +63,162 @@ variable "azurerm_marketplace_version" {
   default = "latest"
 }
 
+variable "azure_security_group_rules_slo_default" {
+  type = list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  }))
+  default = [
+    {
+      name                       = "DEFAULT SLO EGRESS"
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = "DEFAULT SLO INGRESS"
+      priority                   = 151
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+}
+
+variable "azure_security_group_rules_sli_default" {
+  type = list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  }))
+  default = [
+    {
+      name                       = "DEFAULT SLI EGRESS"
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                       = "DEFAULT SLI INGRESS"
+      priority                   = 151
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "*"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+}
+
+variable "azure_security_group_rules_slo" {
+  type = list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  }))
+}
+
+variable "azure_security_group_rules_sli" {
+  type = list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  }))
+  default = []
+}
+
+variable "azure_security_group_rules_slo_ingress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "azure_security_group_rules_sli_egress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "azure_security_group_rules_sli_ingress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {

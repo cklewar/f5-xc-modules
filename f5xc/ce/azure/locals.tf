@@ -11,6 +11,37 @@ locals {
     "Owner"                                          = var.owner_tag
   }
 
+  /*
+  resource "azurerm_network_security_rule" "slo_ingress" {
+  name                        = "all"
+  priority                    = 140
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = local.any
+  source_port_range           = local.any
+  destination_port_range      = local.any
+  source_address_prefix       = local.any
+  destination_address_prefix  = local.any
+  resource_group_name         = var.azurerm_resource_group_name
+  network_security_group_name = module.sg_slo.security_group["name"]
+}
+*/
+
+
+  azure_security_group_rules_slo_egress_secure_ce = [
+    {
+      name                       = "DEFAULT SLO EGRESS"
+      priority                   = 150
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "icmp"
+      source_port_range          = "*"
+      destination_port_range     = "*"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+  ]
+
   azure_security_group_rules_slo_egress_secure_ce = [
     {
       from_port   = "-1"

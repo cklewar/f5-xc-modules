@@ -10,27 +10,6 @@ resource "azurerm_resource_group" "rg" {
   name     = format("%s-rg", var.f5xc_cluster_name)
 }
 
-module "config" {
-  source                      = "./config"
-  for_each                    = {for k, v in var.f5xc_azure_az_nodes : k=>v}
-  f5xc_azure_region           = var.f5xc_azure_region
-  f5xc_cluster_name           = var.f5xc_cluster_name
-  f5xc_cluster_labels         = var.f5xc_cluster_labels
-  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
-  f5xc_cluster_latitude       = var.f5xc_cluster_latitude
-  f5xc_cluster_longitude      = var.f5xc_cluster_longitude
-  f5xc_ce_hosts_public_name   = var.f5xc_ce_hosts_public_name
-  azurerm_tenant_id           = var.azurerm_tenant_id
-  azurerm_client_id           = var.azurerm_client_id
-  azurerm_client_secret       = var.azurerm_client_secret
-  azurerm_resource_group      = local.f5xc_azure_resource_group
-  azurerm_subscription_id     = var.azurerm_subscription_id
-  azurerm_vnet_subnet_name    = ""
-  azurerm_vnet_resource_group = ""
-  owner_tag                   = var.owner_tag
-  ssh_public_key              = var.ssh_public_key
-}
-
 module "network_common" {
   source                                = "./network/common"
   common_tags                           = local.common_tags
@@ -84,6 +63,29 @@ module "nlb_node" {
   azurerm_backend_address_pool_id_sli = local.is_multi_nic ?  module.nlb_common[0].common["backend_address_pool_sli"] : null
 }
 
+module "config" {
+  source                      = "./config"
+  for_each                    = {for k, v in var.f5xc_azure_az_nodes : k=>v}
+  f5xc_azure_region           = var.f5xc_azure_region
+  f5xc_cluster_name           = var.f5xc_cluster_name
+  f5xc_cluster_labels         = var.f5xc_cluster_labels
+  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
+  f5xc_cluster_latitude       = var.f5xc_cluster_latitude
+  f5xc_cluster_longitude      = var.f5xc_cluster_longitude
+  f5xc_ce_hosts_public_name   = var.f5xc_ce_hosts_public_name
+  azurerm_vnet_name           = var.azurerm_existing_virtual_network_name != "" ? var.azurerm_existing_virtual_network_name : format("%s-vnet", var.f5xc_cluster_name)
+  azurerm_tenant_id           = var.azurerm_tenant_id
+  azurerm_client_id           = var.azurerm_client_id
+  azurerm_client_secret       = var.azurerm_client_secret
+  azurerm_resource_group      = local.f5xc_azure_resource_group
+  azurerm_subscription_id     = var.azurerm_subscription_id
+  azurerm_vnet_subnet_name    = module.network_node[each.key].ce["slo_subnet"]["name"]
+  azurerm_vnet_resource_group = local.f5xc_azure_resource_group
+  owner_tag                   = var.owner_tag
+  ssh_public_key              = var.ssh_public_key
+
+}
+
 module "node" {
   source                                 = "./nodes"
   for_each                               = {for k, v in var.f5xc_azure_az_nodes : k=>v}
@@ -113,9 +115,6 @@ module "node" {
   common_tags                            = local.common_tags
   ssh_public_key                         = var.ssh_public_key
 }
-# depends_on                       = [azurerm_marketplace_agreement.volterra]
-# azurerm_public_ip.compute_public_ip.*.id
-# }
 
 module "site_wait_for_online" {
   depends_on     = [module.node]

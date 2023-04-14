@@ -1,8 +1,8 @@
-resource "azurerm_marketplace_agreement" "ce" {
+/*resource "azurerm_marketplace_agreement" "ce" {
   publisher = var.f5xc_azure_marketplace_agreement_publisher
   offer     = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_ce_gateway_type]
   plan      = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_ce_gateway_type]
-}
+}*/
 
 resource "azurerm_resource_group" "rg" {
   count    = var.f5xc_existing_azure_resource_group != "" ? 0 : 1
@@ -107,14 +107,14 @@ module "config" {
 module "node" {
   source                                 = "./nodes"
   for_each                               = {for k, v in var.f5xc_azure_az_nodes : k=>v}
-  azurerm_marketplace_plan               = azurerm_marketplace_agreement.ce.plan
+  azurerm_marketplace_plan               = var.f5xc_azure_marketplace_agreement_plans[var.f5xc_ce_gateway_type]
   azurerm_instance_vm_size               = var.azurerm_instance_vm_size
-  azurerm_marketplace_offer              = azurerm_marketplace_agreement.ce.offer
+  azurerm_marketplace_offer              = var.f5xc_azure_marketplace_agreement_offers[var.f5xc_ce_gateway_type]
   azurerm_instance_disk_size             = var.azurerm_instance_disk_size
   azurerm_resource_group_name            = local.f5xc_azure_resource_group
   azurerm_availability_set_id            = var.azurerm_availability_set_id
   azurerm_marketplace_version            = var.azurerm_marketplace_version
-  azurerm_marketplace_publisher          = azurerm_marketplace_agreement.ce.publisher
+  azurerm_marketplace_publisher          = var.f5xc_azure_marketplace_agreement_publisher
   azurerm_instance_admin_username        = var.azurerm_instance_admin_username
   azurerm_primary_network_interface_id   = module.network_node[each.key].ce["slo"]["id"]
   azurerm_instance_network_interface_ids = module.network_node[each.key].ce["interface_ids"]

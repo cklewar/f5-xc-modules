@@ -242,11 +242,6 @@ variable "f5xc_azure_marketplace_agreement_plans" {
   }
 }
 
-variable "azurerm_marketplace_image_name" {
-  type    = string
-  default = ""
-}
-
 variable "azurerm_existing_virtual_network_name" {
   type    = string
   default = ""

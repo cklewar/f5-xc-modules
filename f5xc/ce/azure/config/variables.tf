@@ -1,6 +1,6 @@
 variable "f5xc_certified_hardware_endpoint" {
   type    = string
-  default = "https://vesio.blob.core.windows.net/releases/certified-hardware/aws.yml"
+  default = "https://vesio.blob.core.windows.net/releases/certified-hardware/azure.yml"
 }
 
 variable "maurice_endpoint" {

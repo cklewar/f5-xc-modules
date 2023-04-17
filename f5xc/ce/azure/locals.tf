@@ -164,5 +164,4 @@ locals {
       destination_address_prefix = "*"
     }
   ]
-
 }

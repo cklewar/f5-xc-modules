@@ -1,4 +1,4 @@
-/*output "nodes" {
+output "nodes" {
   value = {
     vnet           = module.network_common.common["existing_vnet"] == null ? module.network_common.common["vnet"] : null
     existing_vnet  = module.network_common.common["existing_vnet"] != null ? module.network_common.common["existing_vnet"] : null
@@ -27,11 +27,5 @@
         common = module.network_common.common
       }
     } : null
-  }
-}*/
-
-output "nodes" {
-  value = {
-   sg_slo_secure_ce = module.network_common.common["sg_slo_secure_ce"]
   }
 }

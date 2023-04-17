@@ -38,7 +38,7 @@ locals {
     }
     Kubernetes : {
       CloudProvider : ""
-      EtcdUseTLS : True
+      EtcdUseTLS : true
       Server : var.f5xc_ce_hosts_public_name
     }
   })

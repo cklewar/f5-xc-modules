@@ -86,7 +86,6 @@ module "config" {
   f5xc_azure_region           = var.f5xc_azure_region
   f5xc_cluster_name           = var.f5xc_cluster_name
   f5xc_cluster_labels         = var.f5xc_cluster_labels
-  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude       = var.f5xc_cluster_latitude
   f5xc_cluster_longitude      = var.f5xc_cluster_longitude
   f5xc_registration_token     = volterra_token.token.id

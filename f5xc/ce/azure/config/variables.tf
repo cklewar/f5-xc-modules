@@ -1,3 +1,7 @@
+variable "is_multi_nic" {
+  type = bool
+}
+
 variable "f5xc_certified_hardware_endpoint" {
   type    = string
   default = "https://vesio.blob.core.windows.net/releases/certified-hardware/azure.yml"
@@ -13,6 +17,10 @@ variable "maurice_mtls_endpoint" {
   default = "https://register-tls.ves.volterra.io"
 }
 
+variable "f5xc_registration_token" {
+  type = string
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -25,10 +33,6 @@ variable "customer_route" {
 variable "f5xc_cluster_type" {
   type    = string
   default = "ce"
-}
-
-variable "f5xc_ce_gateway_type" {
-  type = string
 }
 
 variable "f5xc_cluster_latitude" {
@@ -81,7 +85,7 @@ variable "azurerm_vnet_resource_group" {
 }
 
 variable "azurerm_vnet_name" {
-  type    = string
+  type = string
 }
 
 variable "azurerm_vnet_subnet_name" {

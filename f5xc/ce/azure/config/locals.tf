@@ -23,19 +23,23 @@ locals {
   })
 
   vpm_config = yamlencode({
-    "Vpm" : {
-      "Labels" : var.f5xc_cluster_labels,
-      "Latitude" : var.f5xc_cluster_latitude,
-      "Longitude" : var.f5xc_cluster_longitude,
-      "ClusterName" : var.f5xc_cluster_name,
-      "ClusterType" : var.f5xc_cluster_type,
-      "MauriceEndpoint" : var.maurice_endpoint,
-      "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
-      "CertifiedHardwareEndpoint" : var.f5xc_certified_hardware_endpoint,
+    Vpm : {
+      Labels : var.f5xc_cluster_labels,
+      Latitude : var.f5xc_cluster_latitude,
+      Longitude : var.f5xc_cluster_longitude,
+      ClusterName : var.f5xc_cluster_name,
+      ClusterType : var.f5xc_cluster_type,
+      Token : var.f5xc_registration_token
+      MauriceEndpoint : var.maurice_endpoint,
+      InsideNic : var.is_multi_nic ? "eth1" : null
+      PrivateNIC : "eth0"
+      MauricePrivateEndpoint : var.maurice_mtls_endpoint,
+      CertifiedHardwareEndpoint : var.f5xc_certified_hardware_endpoint,
     }
     Kubernetes : {
-      "EtcdUseTLS" : true
-      "Server" : var.f5xc_ce_hosts_public_name
+      CloudProvider : ""
+      EtcdUseTLS : True
+      Server : var.f5xc_ce_hosts_public_name
     }
   })
 

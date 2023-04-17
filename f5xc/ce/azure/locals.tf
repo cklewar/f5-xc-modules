@@ -54,7 +54,7 @@ locals {
       source_port_range            = "*"
       destination_port_range       = "443"
       source_address_prefix        = "*"
-      destination_address_prefixes = local.f5xc_ip_ranges_all
+      destination_address_prefixes = var.f5xc_ce_egress_ip_ranges
     },
     {
       name                       = format("%s-secure-ce-slo-ingress-nat-t", var.f5xc_cluster_name)

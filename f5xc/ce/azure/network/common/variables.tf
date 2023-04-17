@@ -10,7 +10,7 @@ variable "azurerm_vnet_address_space" {
   type = list(string)
 }
 
-variable "azurerm_existing_virtual_network_name" {
+variable "azurerm_existing_vnet_name" {
   type = string
 }
 
@@ -26,7 +26,7 @@ variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
 
-variable "azure_linux_security_sli_rules_secure_ce" {
+variable "azurerm_security_group_secure_ce_sli_id" {
   type = list(object({
     name                       = string
     access                     = string
@@ -40,7 +40,7 @@ variable "azure_linux_security_sli_rules_secure_ce" {
   }))
 }
 
-variable "azure_linux_security_slo_rules_secure_ce" {
+variable "azurerm_security_group_secure_ce_slo_id" {
   type = list(object({
     name                       = string
     access                     = string
@@ -58,7 +58,7 @@ variable "azurerm_resource_group_name" {
   type = string
 }
 
-variable "azure_linux_security_slo_rules" {
+variable "azurerm_security_group_sli_id" {
   type = list(object({
     name                       = string
     access                     = string
@@ -72,7 +72,7 @@ variable "azure_linux_security_slo_rules" {
   }))
 }
 
-variable "azure_linux_security_sli_rules" {
+variable "azurerm_security_group_slo_id" {
   type = list(object({
     name                       = string
     access                     = string

@@ -166,7 +166,7 @@ variable "f5xc_azure_marketplace_agreement_plans" {
   }
 }
 
-variable "azurerm_existing_virtual_network_name" {
+variable "azurerm_existing_vnet_name" {
   type    = string
   default = ""
 }

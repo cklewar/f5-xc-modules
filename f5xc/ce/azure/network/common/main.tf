@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "vnet" {
-  count               = var.azurerm_existing_virtual_network_name != "" ? 0 : 1
+  count               = var.azurerm_existing_vnet_name != "" ? 0 : 1
   name                = format("%s-vnet", var.f5xc_cluster_name)
   location            = var.f5xc_azure_region
   address_space       = var.azurerm_vnet_address_space
@@ -13,7 +13,7 @@ module "sg_slo" {
   azure_region                                = var.f5xc_azure_region
   azure_resource_group_name                   = var.azurerm_resource_group_name
   azure_security_group_name                   = format("%s-slo", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azure_linux_security_slo_rules
+  azure_linux_security_rules                  = var.azurerm_security_group_slo_id
   create_interface_security_group_association = false
 }
 
@@ -24,7 +24,7 @@ module "sg_sli" {
   azure_region                                = var.f5xc_azure_region
   azure_resource_group_name                   = var.azurerm_resource_group_name
   azure_security_group_name                   = format("%s-sli", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azure_linux_security_sli_rules
+  azure_linux_security_rules                  = var.azurerm_security_group_sli_id
   create_interface_security_group_association = false
 }
 
@@ -35,7 +35,7 @@ module "sg_slo_secure_ce" {
   azure_region                                = var.f5xc_azure_region
   azure_resource_group_name                   = var.azurerm_resource_group_name
   azure_security_group_name                   = format("%s-slo", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azure_linux_security_slo_rules
+  azure_linux_security_rules                  = var.azurerm_security_group_secure_ce_slo_id
   create_interface_security_group_association = false
 }
 
@@ -46,6 +46,6 @@ module "sg_sli_secure_ce" {
   azure_region                                = var.f5xc_azure_region
   azure_resource_group_name                   = var.azurerm_resource_group_name
   azure_security_group_name                   = format("%s-sli", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azure_linux_security_sli_rules
+  azure_linux_security_rules                  = var.azurerm_security_group_secure_ce_sli_id
   create_interface_security_group_association = false
 }

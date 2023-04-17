@@ -17,7 +17,7 @@ locals {
       priority                   = 150
       direction                  = "Outbound"
       access                     = "Allow"
-      protocol                   = "icmp"
+      protocol                   = "Icmp"
       source_port_range          = "*"
       destination_port_range     = "*"
       source_address_prefix      = "*"
@@ -28,7 +28,7 @@ locals {
       priority                   = 151
       direction                  = "Outbound"
       access                     = "Allow"
-      protocol                   = "udp"
+      protocol                   = "Udp"
       source_port_range          = "*"
       destination_port_range     = "123"
       source_address_prefix      = "*"
@@ -39,7 +39,7 @@ locals {
       priority                     = 152
       direction                    = "Outbound"
       access                       = "Allow"
-      protocol                     = "udp"
+      protocol                     = "Udp"
       source_port_range            = "*"
       destination_port_range       = "4500"
       source_address_prefix        = "*"
@@ -50,7 +50,7 @@ locals {
       priority                     = 153
       direction                    = "Outbound"
       access                       = "Allow"
-      protocol                     = "tcp"
+      protocol                     = "Tcp"
       source_port_range            = "*"
       destination_port_range       = "443"
       source_address_prefix        = "*"
@@ -61,7 +61,7 @@ locals {
       priority                   = 154
       direction                  = "Inbound"
       access                     = "Allow"
-      protocol                   = "udp"
+      protocol                   = "Udp"
       source_port_range          = "*"
       destination_port_range     = "4500"
       source_address_prefixes    = local.f5xc_ip_ranges_all
@@ -72,7 +72,7 @@ locals {
       priority                   = 155
       direction                  = "Inbound"
       access                     = "Allow"
-      protocol                   = "tcp"
+      protocol                   = "Tcp"
       source_port_range          = "*"
       destination_port_range     = "22"
       source_address_prefix      = "*"
@@ -86,7 +86,7 @@ locals {
       priority                   = 150
       direction                  = "Outbound"
       access                     = "Allow"
-      protocol                   = "icmp"
+      protocol                   = "Icmp"
       source_port_range          = "*"
       destination_port_range     = "*"
       source_address_prefix      = "*"
@@ -97,7 +97,7 @@ locals {
       priority                   = 151
       direction                  = "Outbound"
       access                     = "Allow"
-      protocol                   = "tcp"
+      protocol                   = "Tcp"
       source_port_range          = "*"
       destination_port_range     = "22"
       source_address_prefix      = "*"
@@ -108,7 +108,7 @@ locals {
       priority                   = 152
       direction                  = "Inbound"
       access                     = "Allow"
-      protocol                   = "tcp"
+      protocol                   = "Tcp"
       source_port_range          = "*"
       destination_port_range     = "22"
       source_address_prefix      = "*"

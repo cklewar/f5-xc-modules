@@ -148,6 +148,11 @@ variable "f5xc_is_secure_cloud_ce" {
   default = false
 }
 
+variable "f5xc_secure_cloud_ce_zones" {
+  type    = list(string)
+  default = ["1"]
+}
+
 variable "f5xc_azure_marketplace_agreement_offers" {
   type    = map(string)
   default = {

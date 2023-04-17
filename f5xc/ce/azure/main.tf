@@ -42,17 +42,18 @@ module "network_node" {
 }
 
 module "secure_ce" {
-  source                                  = "./network/secure"
-  for_each                                = var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_azure_az_nodes : k=>v} : {}
-  is_multi_nic                            = local.is_multi_nic
-  f5xc_azure_region                       = var.f5xc_azure_region
-  f5xc_cluster_name                       = var.f5xc_cluster_name
-  azurerm_resource_group_name             = local.f5xc_azure_resource_group
-  azurerm_nat_gateway_subnet_id           = module.network_node[each.key].ce["slo_subnet"]["id"]
-  azurerm_network_interface_slo_id        = module.network_node[each.key].ce["slo"]["id"]
-  azurerm_network_interface_sli_id        = local.is_multi_nic ? module.network_node[each.key].ce["sli"]["id"] : null
-  azurerm_security_group_secure_ce_slo_id = module.network_common.common["sg_slo_secure_ce"]["id"]
-  azurerm_security_group_secure_ce_sli_id = local.is_multi_nic ? module.network_common.common["sg_sli_secure_ce"]["id"] : null
+  source                           = "./network/secure"
+  for_each                         = var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_azure_az_nodes : k=>v} : {}
+  is_multi_nic                     = local.is_multi_nic
+  f5xc_azure_region                = var.f5xc_azure_region
+  f5xc_cluster_name                = var.f5xc_cluster_name
+  f5xc_secure_ce_zones             = var.f5xc_secure_cloud_ce_zones
+  azurerm_security_group_slo_id    = module.network_common.common["sg_slo_secure_ce"]["id"]
+  azurerm_security_group_sli_id    = local.is_multi_nic ? module.network_common.common["sg_sli_secure_ce"]["id"] : null
+  azurerm_resource_group_name      = local.f5xc_azure_resource_group
+  azurerm_nat_gateway_subnet_id    = module.network_node[each.key].ce["slo_subnet"]["id"]
+  azurerm_network_interface_slo_id = module.network_node[each.key].ce["slo"]["id"]
+  azurerm_network_interface_sli_id = local.is_multi_nic ? module.network_node[each.key].ce["sli"]["id"] : null
 }
 
 module "nlb_common" {

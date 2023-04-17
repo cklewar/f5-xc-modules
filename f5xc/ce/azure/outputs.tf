@@ -6,6 +6,7 @@ output "nodes" {
     master-0       = {
       node    = module.node["node0"].ce
       config  = module.config["node0"].ce
+      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node0"].ce : null
       network = {
         node   = module.network_node["node0"].ce
         common = module.network_common.common
@@ -14,6 +15,7 @@ output "nodes" {
     master-1 = length(var.f5xc_azure_az_nodes) == 3 ? {
       node    = module.node["node1"].ce
       config  = module.config["node1"].ce
+      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node1"].ce : null
       network = {
         node   = module.network_node["node1"].ce
         common = module.network_common.common
@@ -22,6 +24,7 @@ output "nodes" {
     master-2 = length(var.f5xc_azure_az_nodes) == 3 ? {
       node    = module.node["node2"].ce
       config  = module.config["node2"].ce
+      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node2"].ce : null
       network = {
         node   = module.network_node["node2"].ce
         common = module.network_common.common

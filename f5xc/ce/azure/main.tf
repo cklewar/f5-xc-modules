@@ -10,14 +10,14 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "secure_ce_security_rules" {
-  source                         = "network/sgr"
+  source                         = "./network/sgr"
   count                          = var.f5xc_is_secure_cloud_ce ? 1 : 0
   azure_security_group_rules_slo = local.azure_security_group_rules_slo_secure_ce
   azure_security_group_rules_sli = local.is_multi_nic ? local.azure_security_group_rules_sli_secure_ce : []
 }
 
 module "ce_default_security_rules" {
-  source                         = "network/sgr"
+  source                         = "./network/sgr"
   azure_security_group_rules_slo = local.azure_security_group_rules_slo_default
   azure_security_group_rules_sli = local.is_multi_nic ? local.azure_security_group_rules_sli_default : []
 }

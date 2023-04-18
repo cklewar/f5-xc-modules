@@ -9,20 +9,30 @@ resource "azurerm_resource_group" "rg" {
   location = var.f5xc_azure_region
 }
 
+module "secure_ce_security_rules" {
+  source                         = "network/sgr"
+  count                          = var.f5xc_is_secure_cloud_ce ? 1 : 0
+  azure_security_group_rules_slo = local.azure_security_group_rules_slo_secure_ce
+  azure_security_group_rules_sli = local.is_multi_nic ? local.azure_security_group_rules_sli_secure_ce : []
+}
+
+module "ce_default_security_rules" {
+  source                         = "network/sgr"
+  azure_security_group_rules_slo = local.azure_security_group_rules_slo_default
+  azure_security_group_rules_sli = local.is_multi_nic ? local.azure_security_group_rules_sli_default : []
+}
+
 module "network_common" {
-  source                                  = "./network/common"
-  common_tags                             = local.common_tags
-  is_multi_nic                            = local.is_multi_nic
-  azurerm_vnet_address_space              = var.azurerm_vnet_address_space
-  azurerm_existing_vnet_name              = var.azurerm_existing_vnet_name
-  azurerm_resource_group_name             = local.f5xc_azure_resource_group
-  azurerm_security_group_sli_id           = local.is_multi_nic ? (length(var.azure_security_group_rules_sli) > 0 ? var.azure_security_group_rules_sli : local.azure_security_group_rules_sli_default) : []
-  azurerm_security_group_slo_id           = length(var.azure_security_group_rules_slo) > 0 ? var.azure_security_group_rules_slo : (var.f5xc_is_secure_cloud_ce == false ? local.azure_security_group_rules_slo_default : [])
-  azurerm_security_group_secure_ce_sli_id = local.is_multi_nic && var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_sli_secure_ce : null
-  azurerm_security_group_secure_ce_slo_id = var.f5xc_is_secure_cloud_ce ? local.azure_security_group_rules_slo_secure_ce : null
-  f5xc_azure_region                       = var.f5xc_azure_region
-  f5xc_cluster_name                       = var.f5xc_cluster_name
-  f5xc_is_secure_cloud_ce                 = var.f5xc_is_secure_cloud_ce
+  source                        = "./network/common"
+  common_tags                   = local.common_tags
+  is_multi_nic                  = local.is_multi_nic
+  f5xc_azure_region             = var.f5xc_azure_region
+  f5xc_cluster_name             = var.f5xc_cluster_name
+  azurerm_vnet_address_space    = var.azurerm_vnet_address_space
+  azurerm_existing_vnet_name    = var.azurerm_existing_vnet_name
+  azurerm_resource_group_name   = local.f5xc_azure_resource_group
+  azurerm_security_group_sli_id = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? concat(var.azure_security_group_rules_sli, module.secure_ce_security_rules[0].sgr["security_group_rules_sli"]) : ((var.f5xc_is_secure_cloud_ce == false && length(var.azure_security_group_rules_sli) > 0 ? var.azure_security_group_rules_sli : module.ce_default_security_rules.sgr["security_group_rules_sli"]))) : []
+  azurerm_security_group_slo_id = var.f5xc_is_secure_cloud_ce ? concat(module.secure_ce_security_rules[0].sgr["security_group_rules_slo"], var.azure_security_group_rules_slo) : (var.f5xc_is_secure_cloud_ce == false && length(var.azure_security_group_rules_slo) > 0 ? var.azure_security_group_rules_slo : module.ce_default_security_rules.sgr["security_group_rules_slo"])
 }
 
 module "network_node" {
@@ -41,19 +51,15 @@ module "network_node" {
   f5xc_azure_region                 = var.f5xc_azure_region
 }
 
-module "secure_ce" {
-  source                           = "./network/secure"
-  for_each                         = var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_azure_az_nodes : k=>v} : {}
-  is_multi_nic                     = local.is_multi_nic
-  f5xc_azure_region                = var.f5xc_azure_region
-  f5xc_cluster_name                = var.f5xc_cluster_name
-  f5xc_secure_ce_zones             = var.f5xc_secure_cloud_ce_zones
-  azurerm_security_group_slo_id    = module.network_common.common["sg_slo_secure_ce"]["id"]
-  azurerm_security_group_sli_id    = local.is_multi_nic ? module.network_common.common["sg_sli_secure_ce"]["id"] : null
-  azurerm_resource_group_name      = local.f5xc_azure_resource_group
-  azurerm_nat_gateway_subnet_id    = module.network_node[each.key].ce["slo_subnet"]["id"]
-  azurerm_network_interface_slo_id = module.network_node[each.key].ce["slo"]["id"]
-  azurerm_network_interface_sli_id = local.is_multi_nic ? module.network_node[each.key].ce["sli"]["id"] : null
+module "secure_ce_node" {
+  source                        = "./network/secure/node"
+  for_each                      = var.f5xc_is_secure_cloud_ce ? {for k, v in var.f5xc_azure_az_nodes : k=>v} : {}
+  is_multi_nic                  = local.is_multi_nic
+  f5xc_azure_region             = var.f5xc_azure_region
+  f5xc_cluster_name             = var.f5xc_cluster_name
+  f5xc_secure_ce_zones          = var.f5xc_secure_cloud_ce_zones
+  azurerm_resource_group_name   = local.f5xc_azure_resource_group
+  azurerm_nat_gateway_subnet_id = module.network_node[each.key].ce["slo_subnet"]["id"]
 }
 
 module "nlb_common" {

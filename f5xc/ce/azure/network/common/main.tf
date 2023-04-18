@@ -27,25 +27,3 @@ module "sg_sli" {
   azure_linux_security_rules                  = var.azurerm_security_group_sli_id
   create_interface_security_group_association = false
 }
-
-module "sg_slo_secure_ce" {
-  source                                      = "../../../../../azure/security_group"
-  count                                       = var.f5xc_is_secure_cloud_ce ? 1 : 0
-  custom_tags                                 = var.common_tags
-  azure_region                                = var.f5xc_azure_region
-  azure_resource_group_name                   = var.azurerm_resource_group_name
-  azure_security_group_name                   = format("%s-secure-ce-slo", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azurerm_security_group_secure_ce_slo_id
-  create_interface_security_group_association = false
-}
-
-module "sg_sli_secure_ce" {
-  source                                      = "../../../../../azure/security_group"
-  count                                       = var.is_multi_nic && var.f5xc_is_secure_cloud_ce ? 1 : 0
-  custom_tags                                 = var.common_tags
-  azure_region                                = var.f5xc_azure_region
-  azure_resource_group_name                   = var.azurerm_resource_group_name
-  azure_security_group_name                   = format("%s-secure-ce-sli", var.f5xc_cluster_name)
-  azure_linux_security_rules                  = var.azurerm_security_group_secure_ce_sli_id
-  create_interface_security_group_association = false
-}

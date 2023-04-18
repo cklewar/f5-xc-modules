@@ -25,14 +25,3 @@ resource "azurerm_subnet_nat_gateway_association" "sn_nat_gw_a" {
   subnet_id      = var.azurerm_nat_gateway_subnet_id
   nat_gateway_id = azurerm_nat_gateway.gw.id
 }
-
-resource "azurerm_network_interface_security_group_association" "sga_slo_secure_ce" {
-  network_interface_id      = var.azurerm_network_interface_slo_id
-  network_security_group_id = var.azurerm_security_group_slo_id
-}
-
-resource "azurerm_network_interface_security_group_association" "sga_sli_secure_ce" {
-  count                     = var.is_multi_nic ? 1 : 0
-  network_interface_id      = var.azurerm_network_interface_sli_id
-  network_security_group_id = var.azurerm_security_group_sli_id
-}

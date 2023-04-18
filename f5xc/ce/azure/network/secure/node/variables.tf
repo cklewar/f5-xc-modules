@@ -23,22 +23,6 @@ variable "azurerm_nat_gateway_subnet_id" {
   type = string
 }
 
-variable "azurerm_network_interface_slo_id" {
-  type = string
-}
-
-variable "azurerm_network_interface_sli_id" {
-  type = string
-}
-
-variable "azurerm_security_group_slo_id" {
-  type = string
-}
-
-variable "azurerm_security_group_sli_id" {
-  type = string
-}
-
 variable "azurerm_public_ip_prefix_prefix_length" {
   type    = number
   default = 31

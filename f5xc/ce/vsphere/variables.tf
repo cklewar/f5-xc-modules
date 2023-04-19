@@ -47,14 +47,6 @@ variable "cluster_name" {}
 variable "guest_type" {}
 variable "sitelatitude" {}
 variable "sitelongitude" {}
-variable "custom_labels" {
-  type  = map(string)
-  default = {}
-}
-variable "outside_vip" {
-  type = string
-  default = ""
-}
 variable "admin_password" {
   type = string
   default = ""

@@ -120,16 +120,6 @@ resource "volterra_site_state" "decommission_when_delete" {
   depends_on = [volterra_registration_approval.ce]
 }
 
-resource "volterra_modify_site" "site" {
-  namespace               = "system"
-  name                    = var.cluster_name
-  labels                  = var.custom_labels
-  outside_vip             = var.outside_vip
-  vip_vrrp_mode           = var.outside_vip == "" ? "VIP_VRRP_DISABLE" : "VIP_VRRP_ENABLE"
-  site_to_site_tunnel_ip  = var.outside_vip == "" ? split("/",var.nodes[0]["ipaddress"])[0] : var.outside_vip
-  depends_on              = [volterra_registration_approval.ce]
-}
-
 output "vm" {
   value = vsphere_virtual_machine.vm
 }

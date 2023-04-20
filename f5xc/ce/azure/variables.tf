@@ -19,9 +19,13 @@ variable "azurerm_availability_set_id" {
   default = ""
 }
 
+variable "azurerm_vnet_address_space" {
+  type = list(string)
+}
+
 variable "azurerm_instance_vm_size" {
   type    = string
-  default = "Standard_F2"
+  default = "Standard_D3_v2"
 }
 
 variable "azurerm_instance_disk_size" {
@@ -52,6 +56,138 @@ variable "azurerm_client_id" {
 
 variable "azurerm_client_secret" {
   type = string
+}
+
+variable "azurerm_marketplace_version" {
+  type    = string
+  default = "latest"
+}
+
+variable "azure_security_group_rules_slo" {
+  type = list(object({
+    name                         = string
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = string
+    destination_port_range       = string
+    source_address_prefix        = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
+  }))
+}
+
+variable "azure_security_group_rules_sli" {
+  type = list(object({
+    name                         = string
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = string
+    destination_port_range       = string
+    source_address_prefix        = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = []
+}
+
+variable "azure_security_group_rules_slo_ingress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "azure_security_group_rules_sli_egress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "azure_security_group_rules_sli_ingress_default" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      from_port   = 0
+      to_port     = 0
+      ip_protocol = -1
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "f5xc_is_secure_cloud_ce" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_secure_cloud_ce_zones" {
+  type    = list(string)
+  default = ["1"]
+}
+
+variable "f5xc_azure_marketplace_agreement_offers" {
+  type    = map(string)
+  default = {
+    ingress_egress_gateway = "entcloud_voltmesh_voltstack_node"
+    ingress_gateway        = "volterra-node"
+    app_stack              = "entcloud_voltmesh_voltstack_node"
+  }
+}
+
+variable "f5xc_azure_marketplace_agreement_plans" {
+  type    = map(string)
+  default = {
+    ingress_egress_gateway = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
+    ingress_gateway        = "volterra-node"
+    app_stack              = "freeplan_entcloud_voltmesh_voltstack_node"
+  }
+}
+
+variable "azurerm_existing_vnet_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_marketplace_agreement_publisher" {
+  type    = string
+  default = "volterraedgeservices"
+}
+
+variable "f5xc_ce_hosts_public_name" {
+  type    = string
+  default = "vip"
 }
 
 variable "f5xc_site_set_vip_info_namespace" {
@@ -166,7 +302,6 @@ variable "f5xc_ce_egress_ip_ranges" {
     "18.64.0.0/10",
     "52.223.128.0/18",
     "20.152.0.0/15",
-    "13.107.238.0/24",
     "142.250.0.0/15",
     "20.34.0.0/15",
     "52.192.0.0/12",
@@ -174,13 +309,11 @@ variable "f5xc_ce_egress_ip_ranges" {
     "52.223.0.0/17",
     "18.32.0.0/11",
     "3.208.0.0/12",
-    "13.107.237.0/24",
     "20.36.0.0/14",
     "52.222.0.0/16",
     "52.220.0.0/15",
     "3.0.0.0/9",
     "100.64.0.0/10",
-    "54.88.0.0/16",
     "52.216.0.0/14",
     "108.177.0.0/17",
     "20.40.0.0/13",
@@ -211,7 +344,6 @@ variable "f5xc_ce_egress_ip_ranges" {
     "52.88.0.0/13",
     "52.84.0.0/14",
     "52.119.128.0/17",
-    "54.240.192.0/18",
-    "52.94.208.0/21"
+    "54.240.192.0/18"
   ]
 }

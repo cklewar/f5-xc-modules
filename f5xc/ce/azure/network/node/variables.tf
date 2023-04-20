@@ -10,10 +10,6 @@ variable "f5xc_node_name" {
   type = string
 }
 
-variable "f5xc_ce_public_ip_id" {
-  type = string
-}
-
 variable "f5xc_azure_region" {
   type = string
 }
@@ -26,18 +22,6 @@ variable "azurerm_vnet_name" {
   type = string
 }
 
-variable "subnet_slo_id" {
-  type = string
-}
-
-variable "subnet_sli_id" {
-  type = string
-}
-
-variable "azurerm_backend_address_pool_id" {
-  type = string
-}
-
 variable "azurerm_route_table_next_hop_type" {
   type = string
 }
@@ -47,9 +31,9 @@ variable "azurerm_public_ip_allocation_method" {
   default = "Static"
 }
 
-variable "azurerm_private_ip_address_allocation" {
+variable "azurerm_private_ip_address_allocation_method" {
   type    = string
-  default = "dynamic"
+  default = "Dynamic"
 }
 
 variable "azurerm_security_group_slo_id" {
@@ -58,6 +42,14 @@ variable "azurerm_security_group_slo_id" {
 
 variable "azurerm_security_group_sli_id" {
   type = string
+}
+
+variable "azurerm_subnet_slo_address_prefix" {
+  type = list(string)
+}
+
+variable "azurerm_subnet_sli_address_prefix" {
+  type = list(string)
 }
 
 variable "enable_ip_forwarding" {

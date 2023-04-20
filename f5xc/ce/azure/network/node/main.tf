@@ -52,8 +52,7 @@ resource "azurerm_subnet" "sli" {
 
   /*lifecycle {
     ignore_changes = [
-      azurerm_route_table.sli.id
-      # route_table_id
+      route_table_id
     ]
   }*/
 }

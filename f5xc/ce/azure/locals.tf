@@ -6,6 +6,7 @@ locals {
   f5xc_ip_ranges_asia       = setunion(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
   f5xc_ip_ranges_all        = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP, var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP, var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
   f5xc_azure_resource_group = var.f5xc_existing_azure_resource_group != "" ? var.f5xc_existing_azure_resource_group : azurerm_resource_group.rg[0].name
+  f5xc_azure_security_group_rules_slo = length(var.azure_security_group_rules_slo) > 0 && var.f5xc_is_secure_cloud_ce ? concat(var.azure_security_group_rules_slo, local.azure_security_group_rules_slo_secure_ce) : (length(var.azure_security_group_rules_slo) == 0 && var.f5xc_is_secure_cloud_ce == false ? local.azure_security_group_rules_slo_default : [])
   common_tags               = {
     # "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
     "Owner" = var.owner_tag

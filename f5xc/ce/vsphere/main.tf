@@ -60,7 +60,7 @@ resource "vsphere_virtual_machine" "vm" {
       "guestinfo.interface.0.ip.0.address"        = each.value.ipaddress,
       "guestinfo.interface.0.name"                = "eth0",
       "guestinfo.interface.0.route.0.destination" = var.publicdefaultroute,
-      "guestinfo.interface.0.dhcp"                = "no",
+      "guestinfo.interface.0.dhcp"                = each.value.ipaddress == "dhcp" ? "yes": "no",
       "guestinfo.interface.0.role"                = "public",
       "guestinfo.interface.0.route.0.gateway"     = var.publicdefaultgateway,
       "guestinfo.dns.server.0"                    = var.dnsservers["primary"],

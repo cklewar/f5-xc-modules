@@ -24,7 +24,14 @@ variable "inside_network" {
   type = string
   default = ""
 }
-variable "publicdefaultgateway" {}
+variable "publicdefaultgateway" {
+  type = string
+  default = ""
+}
+variable "publicdefaultroute" {
+  type = string
+  default = ""
+}
 variable "dnsservers" {}
 variable "cpus" {}
 variable "memory" {}
@@ -42,7 +49,6 @@ variable "f5xc_reg_url" {
 }
 
 variable "certifiedhardware" {}
-variable "publicdefaultroute" {}
 variable "cluster_name" {}
 variable "guest_type" {}
 variable "sitelatitude" {}

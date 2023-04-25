@@ -20,7 +20,7 @@ output "nfv" {
           internal = lookup(data.aws_network_interface.nfv_big_ip_internal_interface_node1, keys(var.f5xc_aws_nfv_nodes)[0])
         }
       } : null
-      node2 = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service ? {
+      node2 = var.f5xc_nfv_type == var.f5xc_nfv_type_f5_big_ip_aws_service && local.is_cluster ? {
         instance   = lookup(data.aws_instance.nfv_bigip_node2, keys(var.f5xc_aws_nfv_nodes)[1])
         public_dns = format("%s.%s", keys(var.f5xc_aws_nfv_nodes)[1], var.f5xc_nfv_domain_suffix)
         interfaces = {

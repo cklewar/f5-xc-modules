@@ -1,4 +1,4 @@
-variable "butane_ami_owner_id" {
+variable "coreos_ami_owner_id" {
   type    = string
   default = "125523088429"
 }

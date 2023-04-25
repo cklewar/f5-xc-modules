@@ -30,3 +30,12 @@ variable "f5xc_site_name" {
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
+
+variable "f5xc_custom_vip_cidr" {
+  type = string
+}
+
+variable "ce_config_template_file" {
+  type    = string
+  default = "./templates/ce.yml"
+}

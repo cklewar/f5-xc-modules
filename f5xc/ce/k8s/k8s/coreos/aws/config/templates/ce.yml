@@ -299,10 +299,14 @@ storage:
               DisableModules: ["recruiter"]
               Latitude: <latitude>
               Longitude: <longitude>
+              %{~ if length(cluster_labels) > 0 ~}
               Labels:
-              {% for label in site_labels %}
-                ${label}
-              {% endfor %}
+                %{~ for k, v in cluster_labels ~}
+                ${k}: ${v}
+                %{~ endfor ~}
+              %{~ else ~}
+              Labels:
+              %{~ endif ~}
               MauriceEndpoint: https://register.staging.volterra.us
               MauricePrivateEndpoint: https://register-tls.staging.volterra.us
               PrivateNIC: eth0

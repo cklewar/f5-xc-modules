@@ -27,6 +27,6 @@ variable "f5xc_site_name" {
   type = string
 }
 
-variable "f5xc_site_labels" {
+variable "f5xc_cluster_labels" {
   type = list(string)
 }

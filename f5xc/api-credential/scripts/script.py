@@ -371,7 +371,8 @@ if __name__ == '__main__':
             if r.status_code == 200:
                 print("Creating new object... Done. Creating state:", apic.create_state_file(data=r.json()))
             else:
-                print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
+                print("R:", r)
+                # print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
         else:
             print("Found local state... Checking object exists...")
             r = apic.get()

@@ -1,0 +1,476 @@
+---
+variant: ${ssh_public_key}
+version: 1.4.0
+kernel_arguments:
+  should_exist:
+    - hugepages=400
+    - hugepagesz=2M
+    - mitigations=auto
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ${ssh_public_key}
+systemd:
+  units:
+    - name: custom-vip.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=custom vip route
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        ExecStart=/usr/local/bin/add-custom-vip-route.sh ${custom_vip_cidr}
+        [Install]
+        WantedBy=multi-user.target
+    - name: run-k0s-installer.service
+      enabled: true
+      contents: |
+        [Unit]
+        After=network-online.target
+        Wants=network-online.target
+        OnFailure=emergency.target
+        OnFailureJobMode=replace-irreversibly
+        ConditionPathExists=!/var/lib/k0s-installed
+        [Service]
+        RemainAfterExit=yes
+        Type=oneshot
+        ExecStart=/usr/local/bin/run-k0s-installer
+        ExecStartPost=/usr/bin/touch /var/lib/k0s-installed
+        StandardOutput=kmsg+console
+        StandardError=kmsg+console
+        [Install]
+        WantedBy=default.target
+storage:
+  files:
+    - path: /usr/local/bin/add-custom-vip-route.sh
+      mode: 755
+      contents:
+        inline: >
+           #!/usr/bin/env bash
+
+          vip=$1
+          test -z "$vip" && echo "Usage: $0 <vip>" && exit
+
+          while true; do
+            echo -n "waiting 5 secs ... "
+            sleep 5
+            verPodIp=$(kubectl -n ves-system get pod ver-0 --template '{{.status.podIP}}')
+            test -z "$verPodIp" && echo "waiting for pod ver-0 ..."
+            echo -n "verPodIP=$verPodIp "
+            if test -z "$(ip route show $vip via $verPodIp)"; then
+              echo -n "route missing, adding ..."
+              ip route del $vip
+              ip route add $vip via $verPodIp
+              echo ""
+            else
+              echo "route $vip via $verPodIp present"
+            fi
+          done
+    - path: /usr/local/bin/run-k0s-installer
+      mode: 755
+      contents:
+        inline: >
+          #!/usr/bin/env sh
+
+          echo "Download and install k0s..."
+          curl -sSLf https://get.k0s.sh | K0S_VERSION=v1.24.6+k0s.0 sh
+          /usr/local/bin/k0s install controller --single --config /usr/local/etc/k0s.yaml
+          /usr/local/bin/k0s start
+          ln -s /usr/local/bin/k0s /usr/local/bin/kubectl
+          until /usr/local/bin/k0s kubectl get storageclass openebs-hostpath; do echo "waiting for k0s ready ..." && sleep 5; done
+          echo "set default storage class ..."
+          /usr/local/bin/k0s kubectl patch storageclass openebs-hostpath -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+          echo "Set up F5 XC CE..."
+          /usr/local/bin/k0s kubectl apply -f /usr/local/etc/ce_ver.yaml
+          # /usr/local/bin/k0s kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+          # /usr/local/bin/k0s kubectl apply -f /usr/local/etc/metallb-vip.yaml
+    - path: /usr/local/etc/metallb-vip.yaml
+      mode: 644
+      contents:
+        inline: |
+          apiVersion: metallb.io/v1beta1
+          kind: IPAddressPool
+          metadata:
+            name: custom-vip-pool
+            namespace: metallb-system
+          spec:
+            addresses:
+            - 10.64.15.254/32
+          ---
+          apiVersion: metallb.io/v1beta1
+          kind: L2Advertisement
+          metadata:
+            name: l2-metallb
+            namespace: metallb-system
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: custom-vip-pool
+            namespace: ves-system
+            annotations:
+              metallb.universe.tf/address-pool: custom-vip-pool
+          spec:
+            ports:
+            - port: 80
+              targetPort: 80
+            selector:
+              app: ver-0
+            type: LoadBalancer
+    - path: /usr/local/bin/getk9s
+      mode: 755
+      contents:
+        inline: >
+          #!/usr/bin/env sh
+
+          curl -L https://github.com/derailed/k9s/releases/download/v0.26.6/k9s_Linux_x86_64.tar.gz | tar -C /usr/local/bin -xvz k9s
+          mkdir -p /root/.kube
+          /usr/local/bin/k0s kubeconfig admin > /root/.kube/config
+    - path: /usr/local/etc/k0s.yaml
+      mode: 644
+      contents:
+        inline: |
+          spec:
+            extensions:
+              storage:
+                type: openebs_local_storage
+    - path: /usr/local/etc/ce_ver.yaml
+      mode: 644
+      contents:
+        inline: >
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: ves-system
+          
+          ---
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: volterra-sa
+            namespace: ves-system
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            name: volterra-admin-role
+            namespace: ves-system
+          rules:
+          - apiGroups: ["*"]
+            resources: ["*"]
+            verbs: ["*"]
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: volterra-admin-role-binding
+            namespace: ves-system
+          subjects:
+          - kind: ServiceAccount
+            name: volterra-sa
+            apiGroup: ""
+            namespace: ves-system
+          roleRef:
+            kind: Role
+            name: volterra-admin-role
+            apiGroup: rbac.authorization.k8s.io
+          
+          ---
+          apiVersion: apps/v1
+          kind: DaemonSet
+          metadata:
+            name: volterra-ce-init 
+            namespace: ves-system
+          spec:
+            selector:
+              matchLabels:
+                name: volterra-ce-init
+            template:
+              metadata:
+                labels:
+                  name: volterra-ce-init 
+              spec:
+                hostNetwork: true
+                hostPID: true
+                serviceAccountName: volterra-sa
+                containers:
+                - name: volterra-ce-init
+                  image: gcr.io/volterraio/volterra-ce-init
+                  volumeMounts:
+                  - name: hostroot 
+                    mountPath: /host
+                  securityContext:
+                    privileged: true
+                volumes:
+                - name: hostroot
+                  hostPath:
+                    path: /
+          
+          ---
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: vpm-sa
+            namespace: ves-system
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            name: vpm-role
+            namespace: ves-system
+          rules:
+          - apiGroups: ["*"]
+            resources: ["*"]
+            verbs: ["*"]
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: vpm-cluster-role
+            namespace: ves-system
+          rules:
+          - apiGroups: [""]
+            resources: ["nodes"]
+            verbs: ["get", "list"]
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: vpm-role-binding
+            namespace: ves-system
+          subjects:
+          - kind: ServiceAccount
+            name: vpm-sa
+            apiGroup: ""
+            namespace: ves-system
+          roleRef:
+            kind: Role
+            name: vpm-role
+            apiGroup: rbac.authorization.k8s.io
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: vpm-sa
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: vpm-cluster-role
+          subjects:
+          - kind: ServiceAccount
+            name: vpm-sa
+            namespace: ves-system
+          
+          ---
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: ver
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+          - kind: ServiceAccount
+            name: ver
+            namespace: ves-system
+          
+          ---
+
+          apiVersion: v1 
+          kind: ConfigMap 
+          metadata:
+            name: vpm-cfg
+            namespace: ves-system
+          data: 
+           config.yaml: | 
+            Vpm:
+              ClusterName: ${cluster_name}
+              ClusterType: ce
+              Config: /etc/vpm/config.yaml
+              DisableModules: ["recruiter"]
+              Latitude: <latitude>
+              Longitude: <longitude>
+              Labels:
+              {% for label in site_labels %}
+                ${label}
+              {% endfor %}
+              MauriceEndpoint: https://register.staging.volterra.us
+              MauricePrivateEndpoint: https://register-tls.staging.volterra.us
+              PrivateNIC: eth0
+              SkipStages: ["osSetup", "etcd", "kubelet", "master", "voucher", "workload", "controlWorkload"]
+              Token: ${site_token}
+              CertifiedHardware: k8s-minikube-voltmesh
+          
+          ---
+          apiVersion: apps/v1
+          kind: StatefulSet 
+          metadata:
+            name: vp-manager
+            namespace: ves-system
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                name: vpm
+            serviceName: "vp-manager"
+            template:
+              metadata:
+                labels:
+                  name: vpm
+                  statefulset: vp-manager
+              spec:
+                serviceAccountName: vpm-sa
+                affinity:
+                  podAntiAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                    - labelSelector:
+                        matchExpressions:
+                        - key: name
+                          operator: In
+                          values:
+                          - vpm
+                      topologyKey: kubernetes.io/hostname
+                initContainers:
+                - name : vpm-init-config
+                  image: busybox
+                  volumeMounts:
+                  - name: etcvpm
+                    mountPath: /etc/vpm
+                  - name: vpmconfigmap
+                    mountPath: /tmp/config.yaml
+                    subPath: config.yaml
+                  command:
+                  - "/bin/sh"
+                  - "-c"
+                  - "cp /tmp/config.yaml /etc/vpm"
+                containers:
+                - name: vp-manager 
+                  image: gcr.io/volterraio/vpm
+                  imagePullPolicy: Always
+                  volumeMounts:
+                  - name: etcvpm
+                    mountPath: /etc/vpm
+                  - name: varvpm
+                    mountPath: /var/lib/vpm
+                  - name: podinfo
+                    mountPath: /etc/podinfo
+                  - name: data
+                    mountPath: /data
+                  securityContext:
+                    privileged: true
+                terminationGracePeriodSeconds: 1 
+                volumes:
+                - name: podinfo
+                  downwardAPI:
+                    items:
+                      - path: "labels"
+                        fieldRef:
+                          fieldPath: metadata.labels
+                - name: vpmconfigmap
+                  configMap:
+                    name: vpm-cfg
+            volumeClaimTemplates:
+            - metadata:
+                name: etcvpm
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                resources:
+                  requests:
+                    storage: 1Gi
+            - metadata:
+                name: varvpm
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                resources:
+                  requests:
+                    storage: 1Gi
+            - metadata:
+                name: data
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                resources:
+                  requests:
+                    storage: 1Gi
+          
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: vpm
+            namespace: ves-system
+          spec:
+            type: NodePort
+            selector:
+              name: vpm
+            ports:
+            - protocol: TCP
+              port: 65003
+              targetPort: 65003
+          
+          # CHANGE ME
+          # PLEASE UNCOMMENT TO ENABLE SITE TO SITE ACCESS VIA NODEPORT
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: ver-nodeport-ver-0
+            namespace: ves-system
+            labels:
+              app: ver
+          spec:
+            type: NodePort
+            ports:
+              - name: "ver-ike"
+                protocol: UDP
+                port: 4500
+                targetPort: 4500
+                nodePort: 30500
+            selector:
+              statefulset.kubernetes.io/pod-name: ver-0
+          
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: ver-nodeport-ver-1
+            namespace: ves-system
+            labels:
+              app: ver
+          spec:
+            type: NodePort
+            ports:
+              - name: "ver-ike"
+                protocol: UDP
+                port: 4500
+                targetPort: 4500
+                nodePort: 30501
+            selector:
+              statefulset.kubernetes.io/pod-name: ver-1
+          
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: ver-nodeport-ver-2
+            namespace: ves-system
+            labels:
+              app: ver
+          spec:
+            type: NodePort
+            ports:
+              - name: "ver-ike"
+                protocol: UDP
+                port: 4500
+                targetPort: 4500
+                nodePort: 30502
+            selector:
+              statefulset.kubernetes.io/pod-name: ver-2

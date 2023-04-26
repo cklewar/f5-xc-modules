@@ -14,7 +14,10 @@ module "node" {
   f5xc_ce_gateway_type                               = var.f5xc_ce_gateway_type
   f5xc_vsphere_site_nodes                            = var.f5xc_vsphere_site_nodes
   f5xc_certified_hardware                            = var.f5xc_certified_hardware
+  f5xc_vsphere_instance_template                     = var.f5xc_vsphere_instance_template
+  vsphere_host                                       = each.value["host"]
   vsphere_cluster                                    = var.vsphere_cluster
+  vsphere_datastore                                  = each.value["datastore"]
   vsphere_datacenter                                 = var.vsphere_datacenter
   vsphere_instance_cpu_count                         = var.vsphere_instance_cpu_count
   vsphere_instance_guest_type                        = var.vsphere_instance_guest_type

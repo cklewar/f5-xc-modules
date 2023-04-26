@@ -79,6 +79,14 @@ variable "vsphere_instance_outside_network_name" {
   type = string
 }
 
+variable "vsphere_instance_outside_interface_default_route" {
+  type = string
+}
+
+variable "vsphere_instance_outside_interface_default_gateway" {
+  type = string
+}
+
 variable "vsphere_instance_admin_password" {
   type = string
 }

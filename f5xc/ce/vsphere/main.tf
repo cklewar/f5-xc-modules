@@ -19,7 +19,7 @@ module "node" {
   vsphere_instance_datastore                         = var.vsphere_instance_datastore
   vsphere_instance_cpu_count                         = var.vsphere_instance_cpu_count
   vsphere_instance_esxi_host                         = var.vsphere_instance_esxi_host
-  vsphere_instance_guest_type                        = ""
+  vsphere_instance_guest_type                        = var.vsphere_instance_guest_type
   vsphere_instance_memory_size                       = var.vsphere_instance_memory_size
   vsphere_instance_dns_servers                       = var.vsphere_instance_dns_servers
   vsphere_instance_admin_password                    = var.vsphere_instance_admin_password
@@ -28,8 +28,8 @@ module "node" {
   vsphere_instance_network_adapter_type              = each.value["adapter_type"]
   vsphere_instance_outside_interface_dhcp            = each.value["dhcp"]
   vsphere_instance_outside_interface_ip_address      = each.value["outside_network_ip_address"]
-  vsphere_instance_outside_interface_default_route   = each.value["outside_network_default_route"]
-  vsphere_instance_outside_interface_default_gateway = each.value["outside_network_default_gateway"]
+  vsphere_instance_outside_interface_default_route   = var.vsphere_instance_outside_interface_default_route
+  vsphere_instance_outside_interface_default_gateway = var.vsphere_instance_outside_interface_default_gateway
 }
 
 module "site_wait_for_online" {

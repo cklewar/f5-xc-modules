@@ -163,14 +163,6 @@ variable "vsphere_cluster" {
   type = string
 }
 
-variable "vsphere_instance_datastore" {
-  type = string
-}
-
-variable "vsphere_instance_esxi_host" {
-  type = string
-}
-
 variable "vsphere_virtual_machine_disk_size" {
   type    = number
   default = 40

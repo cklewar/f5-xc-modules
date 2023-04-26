@@ -16,9 +16,7 @@ module "node" {
   f5xc_certified_hardware                            = var.f5xc_certified_hardware
   vsphere_cluster                                    = var.vsphere_cluster
   vsphere_datacenter                                 = var.vsphere_datacenter
-  vsphere_instance_datastore                         = var.vsphere_instance_datastore
   vsphere_instance_cpu_count                         = var.vsphere_instance_cpu_count
-  vsphere_instance_esxi_host                         = var.vsphere_instance_esxi_host
   vsphere_instance_guest_type                        = var.vsphere_instance_guest_type
   vsphere_instance_memory_size                       = var.vsphere_instance_memory_size
   vsphere_instance_dns_servers                       = var.vsphere_instance_dns_servers

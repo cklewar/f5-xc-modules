@@ -66,10 +66,6 @@ variable "f5xc_vsphere_instance_template" {
   default = ""
 }
 
-variable "vsphere_host" {
-  type = string
-}
-
 variable "vsphere_instance_cpu_count" {
   type    = number
   default = 4

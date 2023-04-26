@@ -106,14 +106,6 @@ variable "vsphere_datacenter" {
   type = string
 }
 
-variable "vsphere_instance_datastore" {
-  type = string
-}
-
-variable "vsphere_instance_esxi_host" {
-  type = string
-}
-
 variable "vsphere_instance_guest_type" {
   type    = string
   default = "centos64Guest"

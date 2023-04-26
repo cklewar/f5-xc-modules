@@ -57,9 +57,8 @@ variable "f5xc_node_name" {
   type = string
 }
 
-variable "f5xc_vm_template" {
-  type    = string
-  default = ""
+variable "f5xc_vsphere_instance_template" {
+  type = string
 }
 
 variable "f5xc_reg_url" {
@@ -94,6 +93,14 @@ variable "f5xc_certified_hardware" {
   default = "vmware-voltmesh"
 }
 
+variable "vsphere_host" {
+  type = string
+}
+
+variable "vsphere_datastore" {
+  type = string
+}
+
 variable "vsphere_instance_admin_password" {
   type = string
 }
@@ -103,7 +110,7 @@ variable "vsphere_instance_network_adapter_type" {
 }
 
 variable "vsphere_instance_inside_network_name" {
-  type    = string
+  type = string
 }
 
 variable "vsphere_instance_outside_network_name" {

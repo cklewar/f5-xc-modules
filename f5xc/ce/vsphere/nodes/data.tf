@@ -8,12 +8,12 @@ data "vsphere_compute_cluster" "cluster" {
 }
 
 data "vsphere_datastore" "ds" {
-  name          = var.vsphere_instance_datastore
+  name          = var.vsphere_datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_host" "host" {
-  name          = var.vsphere_instance_esxi_host
+  name          = var.vsphere_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -29,7 +29,7 @@ data "vsphere_network" "inside" {
 }
 
 data "vsphere_virtual_machine" "template" {
-  count         = var.f5xc_vm_template != "" ? 1 : 0
-  name          = var.f5xc_vm_template
+  count         = var.f5xc_vsphere_instance_template != "" ? 1 : 0
+  name          = var.f5xc_vsphere_instance_template
   datacenter_id = data.vsphere_datacenter.dc.id
 }

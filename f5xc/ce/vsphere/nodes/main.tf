@@ -49,7 +49,7 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
   dynamic "clone" {
-    for_each = var.f5xc_vm_template != "" ? [1] : []
+    for_each = var.f5xc_vsphere_instance_template != "" ? [1] : []
     content {
       template_uuid = data.vsphere_virtual_machine.template[0].id
     }

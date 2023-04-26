@@ -61,6 +61,10 @@ variable "f5xc_site_type_certified_hw" {
   }
 }
 
+variable "f5xc_cluster_name" {
+  type = string
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -87,10 +91,78 @@ variable "f5xc_site_name" {
 
 variable "f5xc_site_latitude" {
   type    = number
-  default = 0
+  default = 37.4
 }
 
 variable "f5xc_site_longitude" {
   type    = number
-  default = 0
+  default = -121.9
+}
+
+variable "f5xc_site_vsphere_public_default_gateway" {
+  type = string
+}
+
+variable "f5xc_site_vsphere_public_default_route" {
+  type = string
+}
+
+variable "f5xc_site_vsphere_guest_type" {
+  type    = string
+  default = "centos64Guest"
+}
+
+variable "f5xc_site_vsphere_cpu_count" {
+  type    = number
+  default = 4
+}
+
+variable "f5xc_site_vsphere_memory" {
+  type    = number
+  default = 16384
+}
+
+variable "f5xc_site_vsphere_outside_network" {
+  type    = string
+  default = "VM Network"
+}
+
+variable "f5xc_site_vsphere_dns_servers" {
+  type    = map(string)
+  default = {
+    primary   = "8.8.8.8"
+    secondary = "8.8.4.4"
+  }
+}
+
+variable "f5xc_ves_reg_url" {
+  type    = string
+  default = "ves.volterra.io"
+}
+
+variable "f5xc_site_vsphere_vm_template" {
+  type = string
+}
+
+variable "f5xc_site_username" {
+  type = string
+}
+
+variable "f5xc_site_password" {
+  type = string
+}
+
+variable "f5xc_site_vsphere_server" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_site_vsphere_datacenter" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_site_vsphere_cluster" {
+  type    = string
+  default = ""
 }

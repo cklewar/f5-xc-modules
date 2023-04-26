@@ -8,29 +8,28 @@ data "vsphere_compute_cluster" "cluster" {
 }
 
 data "vsphere_datastore" "ds" {
-  for_each         = {for k,v in var.nodes: k => v}
-  name          = each.value.datastore
+  name          = var.vsphere_instance_datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_host" "host" {
-  for_each         = {for k,v in var.nodes: k => v}
-  name          = each.value.host
+  name          = var.vsphere_instance_esxi_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "outside" {
-  name          = var.outside_network
+  name          = var.vsphere_instance_outside_network_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "inside" {
-  name          = var.inside_network == "" ? var.outside_network : var.inside_network
+  count         = var.is_multi_nic ? 1 : 0
+  name          = var.vsphere_instance_inside_network_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_virtual_machine" "template" {
-  count = var.f5xc_vm_template == "" ? 0 : 1
-  name = var.f5xc_vm_template
+  count         = var.f5xc_vm_template != "" ? 1 : 0
+  name          = var.f5xc_vm_template
   datacenter_id = data.vsphere_datacenter.dc.id
 }

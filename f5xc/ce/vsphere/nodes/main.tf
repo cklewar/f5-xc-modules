@@ -89,7 +89,7 @@ resource "vsphere_virtual_machine" "vm" {
 
 resource "volterra_registration_approval" "ce" {
   depends_on   = [vsphere_virtual_machine.vm]
-  cluster_name = f5xc_cluster_name
+  cluster_name = var.f5xc_cluster_name
   hostname     = var.f5xc_node_name
   cluster_size = length(var.f5xc_vsphere_site_nodes)
   retry        = var.f5xc_registration_retry

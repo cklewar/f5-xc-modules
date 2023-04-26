@@ -71,11 +71,6 @@ variable "vsphere_instance_memory_size" {
   default = 16384
 }
 
-variable "vsphere_instance_network_adapter_type" {
-  type    = string
-  default = "vmxnet3"
-}
-
 variable "vsphere_instance_inside_network_name" {
   type = string
 }

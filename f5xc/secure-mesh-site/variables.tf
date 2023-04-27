@@ -87,7 +87,7 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_site_name" {
+variable "f5xc_secure_mesh_name" {
   type = string
 }
 

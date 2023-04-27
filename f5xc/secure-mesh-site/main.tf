@@ -85,15 +85,15 @@ module "azure" {
   depends_on                      = [restapi_object.secure_mesh_site]
   source                          = "../ce/azure"
   count                           = var.f5xc_site_type == var.f5xc_site_type_azure ? 1 : 0
-  owner_tag                       = ""
+  owner_tag                       = var.azurerm_owner
   is_sensitive                    = false
-  has_public_ip                   = false
-  azurerm_tenant_id               = ""
-  azurerm_client_id               = ""
-  azurerm_client_secret           = ""
-  azurerm_subscription_id         = ""
-  azurerm_vnet_address_space      = []
-  azure_security_group_rules_slo  = []
+  has_public_ip                   = var.f5xc_azure_ce_has_public_ip
+  azurerm_tenant_id               = var.azurerm_tenant_id
+  azurerm_client_id               = var.azurerm_client_id
+  azurerm_client_secret           = var.azurerm_client_secret
+  azurerm_subscription_id         = var.azurerm_subscription_id
+  azurerm_vnet_address_space      = var.azurerm_vnet_address_space
+  azure_security_group_rules_slo  = var.azure_security_group_rules_slo
   azurerm_instance_admin_username = var.azurerm_instance_admin_username
   f5xc_tenant                     = var.f5xc_tenant
   f5xc_api_url                    = var.f5xc_api_url

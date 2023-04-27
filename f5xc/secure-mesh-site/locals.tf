@@ -3,7 +3,7 @@ locals {
   is_multi_nic            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
   secure_mesh_site_config = jsonencode({
     metadata : {
-      name : var.f5xc_site_name
+      name : var.f5xc_secure_mesh_name
       labels : var.f5xc_cluster_labels,
       namespace : var.f5xc_namespace,
     },

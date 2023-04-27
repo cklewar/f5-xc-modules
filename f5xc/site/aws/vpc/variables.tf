@@ -100,7 +100,7 @@ variable "f5xc_aws_vpc_no_global_network" {
   default = true
 }
 
-variable "f5xc_sm_connection_public_ip" {
+variable "f5xc_aws_vpc_sm_connection_public_ip" {
   type    = bool
   default = true
 }

@@ -65,8 +65,8 @@ resource "volterra_aws_vpc_site" "site" {
   dynamic "ingress_gw" {
     for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
-      sm_connection_public_ip = var.f5xc_sm_connection_public_ip
-      sm_connection_pvt_ip    = var.f5xc_sm_connection_public_ip ? false : true
+      sm_connection_public_ip = var.f5xc_aws_vpc_sm_connection_public_ip
+      sm_connection_pvt_ip    = var.f5xc_aws_vpc_sm_connection_public_ip ? false : true
       aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       allowed_vip_port {
         use_http_https_port = var.f5xc_aws_vpc_use_http_https_port

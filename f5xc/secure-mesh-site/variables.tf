@@ -36,10 +36,15 @@ variable "f5xc_site_type_vsphere" {
   default = "vmware"
 }
 
+variable "f5xc_site_type_k8s" {
+  type    = string
+  default = "k8s"
+}
+
 variable "f5xc_site_type" {
   type = string
   validation {
-    condition = contains(["vsphere", "aws", "gcp", "azure"], var.f5xc_site_type)
+    condition = contains(["vsphere", "aws", "gcp", "azure", "k8s"], var.f5xc_site_type)
   }
 }
 
@@ -49,6 +54,7 @@ variable "f5xc_secure_mesh_site_nodes" {
     condition     = length(var.f5xc_secure_mesh_site_nodes) == 1 || length(var.f5xc_secure_mesh_site_nodes) == 3
     error_message = "f5xc_secure_mesh_site_nodes must be 1 or 3"
   }
+  default = {}
 }
 
 variable "f5xc_site_type_certified_hw" {
@@ -89,45 +95,76 @@ variable "f5xc_site_name" {
   type = string
 }
 
-variable "f5xc_site_latitude" {
+variable "f5xc_vsphere_site_latitude" {
   type    = number
   default = 37.4
 }
 
-variable "f5xc_site_longitude" {
+variable "f5xc_vsphere_site_longitude" {
   type    = number
   default = -121.9
 }
 
-variable "f5xc_site_vsphere_public_default_gateway" {
-  type = string
-}
-
-variable "f5xc_site_vsphere_public_default_route" {
-  type = string
-}
-
-variable "f5xc_site_vsphere_guest_type" {
+variable "f5xc_token_name" {
   type    = string
-  default = "centos64Guest"
+  default = ""
 }
 
-variable "f5xc_site_vsphere_cpu_count" {
-  type    = number
-  default = 4
-}
-
-variable "f5xc_site_vsphere_memory" {
-  type    = number
-  default = 16384
-}
-
-variable "f5xc_site_vsphere_outside_network" {
+variable "f5xc_aws_region" {
   type    = string
-  default = "VM Network"
+  default = "us-west-2"
 }
 
-variable "f5xc_site_vsphere_dns_servers" {
+variable "f5xc_aws_vpc_az_nodes" {
+  type = map(map(string))
+  validation {
+    condition     = length(var.f5xc_aws_vpc_az_nodes) == 1 || length(var.f5xc_aws_vpc_az_nodes) == 3
+    error_message = "f5xc_aws_vpc_az_nodes must be 1 or 3"
+  }
+  default = {}
+}
+
+variable "f5xc_aws_site_latitude" {
+  type    = number
+  default = 37.4
+}
+
+variable "f5xc_aws_site_longitude" {
+  type    = number
+  default = -121.9
+}
+
+variable "f5xc_aws_ce_has_public_ip" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_vsphere_instance_template" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_instance_outside_interface_default_gateway" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_instance_outside_interface_default_route" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_instance_outside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_instance_inside_network_name" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_dns_servers" {
   type    = map(string)
   default = {
     primary   = "8.8.8.8"
@@ -135,34 +172,106 @@ variable "f5xc_site_vsphere_dns_servers" {
   }
 }
 
-variable "f5xc_ves_reg_url" {
-  type    = string
-  default = "ves.volterra.io"
-}
-
-variable "f5xc_site_vsphere_vm_template" {
-  type = string
-}
-
-variable "f5xc_site_username" {
-  type = string
-}
-
-variable "f5xc_site_password" {
-  type = string
-}
-
-variable "f5xc_site_vsphere_server" {
+variable "vsphere_user" {
   type    = string
   default = ""
 }
 
-variable "f5xc_site_vsphere_datacenter" {
+variable "vsphere_user_password" {
   type    = string
   default = ""
 }
 
-variable "f5xc_site_vsphere_cluster" {
+variable "vsphere_server" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_datacenter" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_cluster" {
+  type    = string
+  default = ""
+}
+
+variable "vsphere_instance_admin_password" {
+  type    = string
+  default = ""
+}
+
+variable "aws_owner" {
+  type    = string
+  default = ""
+}
+
+variable "aws_vpc_cidr_block" {
+  type    = string
+  default = ""
+}
+
+variable "ssh_public_key_file" {
+  type = string
+}
+
+variable "aws_security_group_rules_slo_egress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "aws_security_group_rules_slo_ingress" {
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "f5xc_gcp_instance_name" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_machine_disk_size" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_machine_image" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_machine_type" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_gcp_site_latitude" {
+  type    = number
+  default = 37.4
+}
+
+variable "f5xc_gcp_site_longitude" {
+  type    = number
+  default = -121.9
+}
+
+variable "gcp_project_name" {
+  type    = string
+  default = ""
+}
+
+variable "gcp_region" {
   type    = string
   default = ""
 }

@@ -326,3 +326,50 @@ variable "azurerm_instance_admin_username" {
   default = ""
 }
 
+variable "azurerm_owner" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_tenant_id" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_client_id" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_client_secret" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_subscription_id" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_vnet_address_space" {
+  type    = list(string)
+  default = []
+}
+
+variable "azure_security_group_rules_slo" {
+  type = list(object({
+    name                         = string
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = string
+    destination_port_range       = string
+    source_address_prefix        = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = []
+}
+

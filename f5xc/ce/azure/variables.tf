@@ -197,6 +197,10 @@ variable "f5xc_site_set_vip_info_namespace" {
 
 variable "f5xc_azure_az_nodes" {
   type = map(map(string))
+  validation {
+    condition     = length(var.f5xc_azure_az_nodes) == 1 || length(var.f5xc_azure_az_nodes) == 3
+    error_message = "f5xc_azure_az_nodes must be 1 or 3"
+  }
 }
 
 variable "f5xc_cluster_labels" {

@@ -67,10 +67,6 @@ variable "f5xc_site_type_certified_hw" {
   }
 }
 
-variable "f5xc_cluster_name" {
-  type = string
-}
-
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -124,6 +120,11 @@ variable "f5xc_aws_vpc_az_nodes" {
   default = {}
 }
 
+variable "f5xc_aws_cluster_name" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_aws_site_latitude" {
   type    = number
   default = 37.4
@@ -140,6 +141,11 @@ variable "f5xc_aws_ce_has_public_ip" {
 }
 
 variable "f5xc_vsphere_instance_template" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_vsphere_cluster_name" {
   type    = string
   default = ""
 }
@@ -266,6 +272,11 @@ variable "f5xc_gcp_site_longitude" {
   default = -121.9
 }
 
+variable "f5xc_gcp_ce_has_public_ip" {
+  type    = bool
+  default = true
+}
+
 variable "gcp_project_name" {
   type    = string
   default = ""
@@ -275,3 +286,43 @@ variable "gcp_region" {
   type    = string
   default = ""
 }
+
+variable "f5xc_azure_site_latitude" {
+  type    = number
+  default = 37.4
+}
+
+variable "f5xc_azure_site_longitude" {
+  type    = number
+  default = -121.9
+}
+
+variable "f5xc_azure_region" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_azure_ce_has_public_ip" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_azure_az_nodes" {
+  type = map(map(string))
+  validation {
+    condition     = length(var.f5xc_azure_az_nodes) == 1 || length(var.f5xc_azure_az_nodes) == 3
+    error_message = "f5xc_azure_az_nodes must be 1 or 3"
+  }
+  default = {}
+}
+
+variable "f5xc_azure_cluster_name" {
+  type    = string
+  default = ""
+}
+
+variable "azurerm_instance_admin_username" {
+  type    = string
+  default = ""
+}
+

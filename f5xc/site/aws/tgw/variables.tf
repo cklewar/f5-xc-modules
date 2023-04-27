@@ -266,3 +266,8 @@ variable "f5xc_aws_tgw_no_global_network" {
   default = true
 }
 
+variable "f5xc_aws_tgw_sm_connection_public_ip" {
+  type    = bool
+  default = true
+}
+

@@ -14,7 +14,7 @@ module "vsphere" {
   f5xc_namespace                                     = var.f5xc_namespace
   f5xc_api_token                                     = var.f5xc_api_token
   f5xc_vm_template                                   = var.f5xc_vsphere_instance_template
-  f5xc_cluster_name                                  = var.f5xc_cluster_name
+  f5xc_cluster_name                                  = var.f5xc_vsphere_cluster_name
   f5xc_site_latitude                                 = var.f5xc_vsphere_site_latitude
   f5xc_site_longitude                                = var.f5xc_vsphere_site_longitude
   f5xc_ce_gateway_type                               = var.f5xc_ce_gateway_type
@@ -45,7 +45,7 @@ module "aws" {
   f5xc_namespace                       = var.f5xc_namespace
   f5xc_aws_region                      = var.f5xc_aws_region
   f5xc_token_name                      = var.f5xc_token_name
-  f5xc_cluster_name                    = var.f5xc_cluster_name
+  f5xc_cluster_name                    = var.f5xc_aws_cluster_name
   f5xc_cluster_labels                  = var.f5xc_cluster_labels
   f5xc_aws_vpc_az_nodes                = var.f5xc_aws_vpc_az_nodes
   f5xc_ce_gateway_type                 = var.f5xc_ce_gateway_type
@@ -61,6 +61,8 @@ module "gcp" {
   depends_on             = [restapi_object.secure_mesh_site]
   source                 = "../ce/gcp"
   count                  = var.f5xc_site_type == var.f5xc_site_type_gcp ? 1 : 0
+  is_sensitive           = false
+  has_public_ip          = var.f5xc_gcp_ce_has_public_ip
   f5xc_tenant            = var.f5xc_tenant
   f5xc_api_url           = var.f5xc_api_url
   f5xc_namespace         = var.f5xc_namespace
@@ -77,4 +79,32 @@ module "gcp" {
   instance_name          = var.f5xc_gcp_instance_name
   ssh_public_key         = var.ssh_public_key_file
   machine_disk_size      = var.f5xc_gcp_machine_disk_size
+}
+
+module "azure" {
+  depends_on                      = [restapi_object.secure_mesh_site]
+  source                          = "../ce/azure"
+  count                           = var.f5xc_site_type == var.f5xc_site_type_azure ? 1 : 0
+  owner_tag                       = ""
+  is_sensitive                    = false
+  has_public_ip                   = false
+  azurerm_tenant_id               = ""
+  azurerm_client_id               = ""
+  azurerm_client_secret           = ""
+  azurerm_subscription_id         = ""
+  azurerm_vnet_address_space      = []
+  azure_security_group_rules_slo  = []
+  azurerm_instance_admin_username = var.azurerm_instance_admin_username
+  f5xc_tenant                     = var.f5xc_tenant
+  f5xc_api_url                    = var.f5xc_api_url
+  f5xc_api_token                  = var.f5xc_api_token
+  f5xc_namespace                  = var.f5xc_namespace
+  f5xc_azure_region               = var.f5xc_azure_region
+  f5xc_cluster_name               = var.f5xc_azure_cluster_name
+  f5xc_azure_az_nodes             = var.f5xc_azure_az_nodes
+  f5xc_cluster_labels             = var.f5xc_cluster_labels
+  f5xc_ce_gateway_type            = var.f5xc_ce_gateway_type
+  f5xc_cluster_latitude           = var.f5xc_azure_site_latitude
+  f5xc_cluster_longitude          = var.f5xc_azure_site_longitude
+  ssh_public_key                  = file(var.ssh_public_key_file)
 }

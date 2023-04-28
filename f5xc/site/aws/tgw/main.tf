@@ -40,7 +40,9 @@ resource "volterra_aws_tgw_site" "site" {
         }
       }
     }
-    no_global_network = var.f5xc_aws_tgw_no_global_network
+    no_global_network       = var.f5xc_aws_tgw_no_global_network
+    sm_connection_pvt_ip    = var.f5xc_aws_tgw_sm_connection_public_ip ? false : true
+    sm_connection_public_ip = var.f5xc_aws_tgw_sm_connection_public_ip
   }
 
   lifecycle {

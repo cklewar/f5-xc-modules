@@ -21,13 +21,6 @@ module "network_interface_slo" {
   aws_interface_source_dest_check = true
 }
 
-module "apply_timeout_workaround" {
-  source         = "../../../../../utils/timeout"
-  depend_on      = module.network_interface_slo.aws_network_interface
-  create_timeout = "10s"
-  delete_timeout = "1s"
-}
-
 module "network_interface_sli" {
   source                          = "../../../../../aws/network_interface"
   count                           = var.is_multi_nic ? 1 : 0

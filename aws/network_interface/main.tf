@@ -6,6 +6,14 @@ resource "aws_network_interface" "interface" {
   tags              = var.custom_tags
 }
 
+module "apply_timeout_workaround" {
+  depend_on      = aws_network_interface.interface.id
+  source         = "../../utils/timeout"
+  count          = var.aws_interface_create_eip ? 1 : 0
+  create_timeout = "10s"
+  delete_timeout = "1s"
+}
+
 resource "aws_eip" "eip" {
   count             = var.aws_interface_create_eip ? 1 : 0
   vpc               = true

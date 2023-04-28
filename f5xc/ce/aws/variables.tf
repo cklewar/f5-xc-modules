@@ -48,8 +48,8 @@ variable "aws_security_group_rules_slo_egress_default" {
   }))
   default = [
     {
-      from_port   = 0
-      to_port     = 0
+      from_port   = -1
+      to_port     = -1
       ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
@@ -65,8 +65,8 @@ variable "aws_security_group_rules_slo_ingress_default" {
   }))
   default = [
     {
-      from_port   = 0
-      to_port     = 0
+      from_port   = -1
+      to_port     = -1
       ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
@@ -82,8 +82,8 @@ variable "aws_security_group_rules_sli_egress_default" {
   }))
   default = [
     {
-      from_port   = 0
-      to_port     = 0
+      from_port   = -1
+      to_port     = -1
       ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }
@@ -99,8 +99,8 @@ variable "aws_security_group_rules_sli_ingress_default" {
   }))
   default = [
     {
-      from_port   = 0
-      to_port     = 0
+      from_port   = -1
+      to_port     = -1
       ip_protocol = -1
       cidr_blocks = ["0.0.0.0/0"]
     }

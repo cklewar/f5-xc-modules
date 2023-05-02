@@ -368,7 +368,7 @@ variable "f5xc_ce_machine_image" {
       ap-southeast-3 = "ami-0f0c6b2822abb73e2"
       ca-central-1   = "ami-0e1d39ac2c1c6ef2b"
       eu-central-1   = "ami-094c24e0ff9141647"
-      eu-north-1     = "ami-0648b746bb1341bf4"
+      eu-north-1     = "ami-0e939f8711e36b456"
       eu-south-1     = "ami-0648b746bb1341bf4"
       eu-west-1      = "ami-01ef385d886b812d2"
       eu-west-2      = "ami-041138a60e1cb4314"

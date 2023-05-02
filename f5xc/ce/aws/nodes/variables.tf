@@ -74,6 +74,11 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "f5xc_api_ca_cert" {
+  type = string
+  default = ""
+}
+
 variable "f5xc_api_token" {
   type = string
 }
@@ -113,3 +118,4 @@ variable "f5xc_node_name" {
 variable "f5xc_instance_config" {
   type = string
 }
+

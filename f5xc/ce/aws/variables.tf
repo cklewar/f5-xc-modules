@@ -218,8 +218,8 @@ variable "f5xc_registration_retry" {
 variable "f5xc_aws_vpc_az_nodes" {
   type = map(map(string))
   validation {
-    condition     = length(var.f5xc_aws_vpc_az_nodes) == 1 || length(var.f5xc_aws_vpc_az_nodes) == 3
-    error_message = "f5xc_aws_vpc_az_nodes must be 1 or 3"
+    condition     = length(var.f5xc_aws_vpc_az_nodes) == 1 || length(var.f5xc_aws_vpc_az_nodes) == 3 || length(var.f5xc_aws_vpc_az_nodes) == 0
+    error_message = "f5xc_aws_vpc_az_nodes must be 0,1 or 3"
   }
 }
 

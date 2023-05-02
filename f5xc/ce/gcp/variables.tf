@@ -24,10 +24,6 @@ variable "project_name" {
   type = string
 }
 
-variable "instance_name" {
-  type = string
-}
-
 variable "machine_type" {
   type = string
 }
@@ -191,11 +187,6 @@ variable "f5xc_ce_gateway_type" {
   }
 }
 
-variable "f5xc_ce_gateway_multi_node" {
-  type    = bool
-  default = false
-}
-
 variable "f5xc_cluster_latitude" {
   type = string
 }
@@ -204,8 +195,20 @@ variable "f5xc_cluster_longitude" {
   type = string
 }
 
-variable "f5xc_fleet_label" {
+variable "f5xc_cluster_labels" {
+  type = map(string)
+}
+
+variable "f5xc_cluster_name" {
   type = string
+}
+
+variable "f5xc_ce_nodes" {
+  type = map(map(string))
+  validation {
+    condition     = length(var.f5xc_ce_nodes) == 1 || length(var.f5xc_ce_nodes) == 3 || length(var.f5xc_ce_nodes) == 0
+    error_message = "f5xc_ce_nodes must be 0,1 or 3"
+  }
 }
 
 variable "f5xc_api_url" {

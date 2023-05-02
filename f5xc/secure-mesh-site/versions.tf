@@ -17,6 +17,11 @@ terraform {
       version = ">= 1.18.0"
     }
 
+    vsphere = {
+      source  = "hashicorp/vsphere"
+      version = ">= 2.3.1"
+    }
+
     local = ">= 2.2.3"
     null  = ">= 3.1.1"
   }

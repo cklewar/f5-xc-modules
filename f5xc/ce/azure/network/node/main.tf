@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "sli" {
 
 resource "azurerm_subnet" "slo" {
   name                 = format("%s-subnet-slo", var.f5xc_node_name)
-  address_prefixes     = var.azurerm_subnet_slo_address_prefix
+  address_prefixes     = [var.azurerm_subnet_slo_address_prefix]
   resource_group_name  = var.azurerm_resource_group_name
   virtual_network_name = var.azurerm_vnet_name
 }
@@ -46,7 +46,7 @@ resource "azurerm_subnet" "slo" {
 resource "azurerm_subnet" "sli" {
   count                = var.is_multi_nic ? 1 : 0
   name                 = format("%s-subnet-sli", var.f5xc_node_name)
-  address_prefixes     = var.azurerm_subnet_sli_address_prefix
+  address_prefixes     = [var.azurerm_subnet_sli_address_prefix]
   resource_group_name  = var.azurerm_resource_group_name
   virtual_network_name = var.azurerm_vnet_name
 

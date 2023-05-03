@@ -1,7 +1,7 @@
 module "smg" {
   source                           = "../site-mesh-group"
   f5xc_tenant                      = var.f5xc_tenant
-  f5xc_site_mesh_group_name        = var.f5xc_secure_mesh_name
+  f5xc_site_mesh_group_name        = var.f5xc_site_mesh_group_name
   f5xc_site_2_site_connection_type = var.f5xc_site_2_site_connection_type
 }
 
@@ -87,30 +87,30 @@ module "gcp" {
   machine_disk_size      = var.f5xc_secure_mesh_site.gcp.machine_disk_size
 }
 
-/*module "azure" {
+module "azure" {
   depends_on                      = [restapi_object.secure_mesh_site]
   source                          = "../ce/azure"
-  count                           = var.f5xc_site_type == var.f5xc_site_type_azure ? 1 : 0
-  owner_tag                       = var.azurerm_owner
-  is_sensitive                    = false
-  has_public_ip                   = var.f5xc_azure_ce_has_public_ip
-  azurerm_tenant_id               = var.azurerm_tenant_id
-  azurerm_client_id               = var.azurerm_client_id
-  azurerm_client_secret           = var.azurerm_client_secret
-  azurerm_subscription_id         = var.azurerm_subscription_id
-  azurerm_vnet_address_space      = var.azurerm_vnet_address_space
-  azure_security_group_rules_slo  = var.azure_security_group_rules_slo
-  azurerm_instance_admin_username = var.azurerm_instance_admin_username
+  count                           = length(var.f5xc_secure_mesh_site.azure) > 0 ? 1 : 0
+  owner_tag                       = var.f5xc_secure_mesh_site.azure.owner
+  is_sensitive                    = var.f5xc_secure_mesh_site.azure.is_sensitive
+  has_public_ip                   = var.f5xc_secure_mesh_site.azure.has_public_ip
+  azurerm_tenant_id               = var.f5xc_secure_mesh_site.azure.tenant_id
+  azurerm_client_id               = var.f5xc_secure_mesh_site.azure.client_id
+  azurerm_client_secret           = var.f5xc_secure_mesh_site.azure.client_secret
+  azurerm_subscription_id         = var.f5xc_secure_mesh_site.azure.subscription_id
+  azurerm_vnet_address_space      = var.f5xc_secure_mesh_site.azure.vnet_address_space
+  azure_security_group_rules_slo  = var.f5xc_secure_mesh_site.azure.security_group_rules_slo
+  azurerm_instance_admin_username = var.f5xc_secure_mesh_site.azure.instance_admin_username
   f5xc_tenant                     = var.f5xc_tenant
   f5xc_api_url                    = var.f5xc_api_url
   f5xc_api_token                  = var.f5xc_api_token
   f5xc_namespace                  = var.f5xc_namespace
-  f5xc_azure_region               = var.f5xc_azure_region
-  f5xc_cluster_name               = var.f5xc_azure_cluster_name
-  f5xc_azure_az_nodes             = var.f5xc_azure_az_nodes
-  f5xc_cluster_labels             = var.f5xc_cluster_labels
-  f5xc_ce_gateway_type            = var.f5xc_ce_gateway_type
-  f5xc_cluster_latitude           = var.f5xc_azure_site_latitude
-  f5xc_cluster_longitude          = var.f5xc_azure_site_longitude
+  f5xc_azure_region               = var.f5xc_secure_mesh_site.azure.region
+  f5xc_cluster_name               = var.f5xc_secure_mesh_site.azure.f5xc_cluster_name
+  f5xc_azure_az_nodes             = var.f5xc_secure_mesh_site.azure.f5xc_nodes
+  f5xc_cluster_labels             = var.f5xc_secure_mesh_site.azure.f5xc_cluster_labels
+  f5xc_ce_gateway_type            = var.f5xc_secure_mesh_site.azure.f5xc_ce_gateway_type
+  f5xc_cluster_latitude           = var.f5xc_secure_mesh_site.azure.f5xc_cluster_latitude
+  f5xc_cluster_longitude          = var.f5xc_secure_mesh_site.azure.f5xc_cluster_longitude
   ssh_public_key                  = file(var.ssh_public_key_file)
-}*/
+}

@@ -3,18 +3,17 @@ output "secure-mesh-site" {
     smg   = module.smg
     sites = {
       aws = {
-        ce     = module.aws
+        ce     = module.aws[0]
         config = restapi_object.secure_mesh_site["aws"].api_data
       }
       gcp = {
-        ce     = module.gcp
+        ce     = module.gcp[0]
         config = restapi_object.secure_mesh_site["gcp"].api_data
       }
-      //vmware = module.vsphere
+      azure = {
+        ce     = module.azure[0]
+        config = restapi_object.secure_mesh_site["azure"].api_data
+      }
     }
-    /*for key in keys(var.f5xc_secure_mesh_site) : key => {
-      ce     = var.f5xc_secure_mesh_site[key]
-      config = local.secure_mesh_site[key]
-    }*/
   }
 }

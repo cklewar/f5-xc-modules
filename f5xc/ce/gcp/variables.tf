@@ -2,16 +2,6 @@ variable "gcp_region" {
   type = string
 }
 
-variable "subnet_slo_ip_cidr_range" {
-  type    = string
-  default = ""
-}
-
-variable "subnet_sli_ip_cidr_range" {
-  type    = string
-  default = ""
-}
-
 variable "existing_network_inside" {
   default = null
 }

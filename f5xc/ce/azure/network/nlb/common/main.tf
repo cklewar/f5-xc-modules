@@ -36,7 +36,7 @@ resource "azurerm_lb_rule" "k8s" {
   backend_port                   = var.f5xc_ce_k8s_api_server_port
   frontend_port                  = var.f5xc_ce_k8s_api_server_port
   loadbalancer_id                = azurerm_lb.lb.id
-  backend_address_pool_ids       = azurerm_lb_backend_address_pool.slo.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.slo.id]
   frontend_ip_configuration_name = "loadbalancer-frontend-slo-ip"
 }
 
@@ -47,7 +47,7 @@ resource "azurerm_lb_rule" "slo" {
   backend_port                   = 0
   frontend_port                  = 0
   loadbalancer_id                = azurerm_lb.lb.id
-  backend_address_pool_ids       = azurerm_lb_backend_address_pool.slo.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.slo.id]
   frontend_ip_configuration_name = "loadbalancer-slo-all"
 }
 
@@ -72,8 +72,8 @@ resource "volterra_site_set_vip_info" "site" {
     for_each = local.f5xc_site_set_vip_info_vip_params_per_az
     content {
       az_name     = vip_params_per_az.value.az
-      outside_vip = vip_params_per_az.value.slo_vip
-      inside_vip  = var.is_multi_nic ? vip_params_per_az.value.sli_vip : null
+      inside_vip  = var.is_multi_nic ? [vip_params_per_az.value.sli_vip] : null
+      outside_vip = [vip_params_per_az.value.slo_vip]
     }
   }
 }

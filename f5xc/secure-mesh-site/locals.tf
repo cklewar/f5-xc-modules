@@ -3,7 +3,7 @@ locals {
     for key, value in var.f5xc_secure_mesh_site : key => jsonencode(
       {
         metadata : {
-          name : var.f5xc_secure_mesh_name
+          name : var.f5xc_secure_mesh_site[key].f5xc_cluster_name
           labels : var.f5xc_secure_mesh_site[key].f5xc_cluster_labels,
           namespace : var.f5xc_namespace,
         },

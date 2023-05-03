@@ -14,16 +14,16 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_secure_mesh_name" {
-  type = string
-}
-
 variable "f5xc_site_2_site_connection_type" {
   type    = string
   default = "full_mesh"
 }
 
 variable "ssh_public_key_file" {
+  type = string
+}
+
+variable "f5xc_site_mesh_group_name" {
   type = string
 }
 
@@ -92,7 +92,8 @@ variable "f5xc_secure_mesh_site" {
       has_public_ip            = bool
       client_secret            = string
       subscription_id          = string
-      vnet_address_space       = string
+      vnet_address_space       = list(string)
+      f5xc_cluster_name        = string
       f5xc_cluster_labels      = map(string)
       f5xc_ce_gateway_type     = string
       f5xc_cluster_latitude    = string
@@ -113,8 +114,8 @@ variable "f5xc_secure_mesh_site" {
       instance_admin_username = string
       f5xc_nodes              = map(object({
         f5xc_azure_az              = string
-        f5xc_ce_gateway_type       = string
         f5xc_azure_vnet_slo_subnet = string
+        f5xc_azure_vnet_sli_subnet = optional(string)
       }))
     }))
     vmware = optional(object({

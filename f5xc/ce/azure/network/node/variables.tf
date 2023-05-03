@@ -45,11 +45,11 @@ variable "azurerm_security_group_sli_id" {
 }
 
 variable "azurerm_subnet_slo_address_prefix" {
-  type = list(string)
+  type = string
 }
 
 variable "azurerm_subnet_sli_address_prefix" {
-  type = list(string)
+  type = string
 }
 
 variable "enable_ip_forwarding" {

@@ -1,10 +1,10 @@
 output "ce" {
   value = {
-    master-0 = {
-      node     = module.node[0].ce["master-0"]
-      config   = module.config[0].ce["master-0"]
-      network  = local.create_network ? module.network[0].ce["master-0"] : null
-      firewall = module.firewall[0].ce["master-0"]
+    for node in keys(var.f5xc_ce_nodes) : node=> {
+      node     = module.node[node].ce
+      config   = module.config[node].ce
+      network  = module.network[node].ce
+      firewall = module.firewall[node].ce
     }
   }
 }

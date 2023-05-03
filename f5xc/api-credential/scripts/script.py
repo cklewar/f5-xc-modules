@@ -335,7 +335,7 @@ if __name__ == '__main__':
     parser.add_argument("api_token", help="F5XC API TOKEN", type=str)
     parser.add_argument("tenant", help="F5XC Tenant", type=str)
     parser.add_argument("name", help="API Credential Object Name", type=str)
-    parser.add_argument("-v", "--vk8s", help="F5XC Virtual k8s Name", type=str)
+    parser.add_argument("-v", "--vk8s", help="F5XC Virtual k0s Name", type=str)
     parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)

@@ -5,17 +5,38 @@ module "smg" {
   f5xc_site_2_site_connection_type = var.f5xc_site_2_site_connection_type
 }
 
-resource "restapi_object" "secure_mesh_site" {
-  for_each     = var.f5xc_secure_mesh_site
+resource "restapi_object" "secure_mesh_site_aws" {
+  for_each     = contains(keys(local.secure_mesh_site_data), "aws") ? {for index, site in local.secure_mesh_site_data["aws"] : site.name => site.json} : {}
   path         = "/config/namespaces/system/securemesh_sites"
-  data         = local.secure_mesh_site[each.key]
+  data         = each.value
   id_attribute = "metadata/name"
 }
 
+resource "restapi_object" "secure_mesh_site_gcp" {
+  for_each     = contains(keys(local.secure_mesh_site_data), "gcp") ? {for index, site in local.secure_mesh_site_data["gcp"] : index => site} : {}
+  path         = "/config/namespaces/system/securemesh_sites"
+  data         = each.value
+  id_attribute = "metadata/name"
+}
+
+resource "restapi_object" "secure_mesh_site_azure" {
+  for_each     = contains(keys(local.secure_mesh_site_data), "azure") ? {for index, site in local.secure_mesh_site_data["azure"] : index => site} : {}
+  path         = "/config/namespaces/system/securemesh_sites"
+  data         = each.value
+  id_attribute = "metadata/name"
+}
+
+/*resource "restapi_object" "secure_mesh_site_vmware" {
+  for_each     = contains(keys(local.secure_mesh_site_data), "vmware") ? {for index, site in local.secure_mesh_site_data["vmware"] : index => site} : {}
+  path         = "/config/namespaces/system/securemesh_sites"
+  data         = each.value
+  id_attribute = "metadata/name"
+}*
+
 /*module "vsphere" {
-  depends_on                                         = [restapi_object.secure_mesh_site]
+  depends_on                                         = [restapi_object.secure_mesh_site_vmware]
   source                                             = "../ce/vsphere"
-  count                                              = length(var.f5xc_secure_mesh_site.vmware) > 0 ? 1 : 0
+  count                                              = var.f5xc_secure_mesh_site.vmware != null ? length(var.f5xc_secure_mesh_site.vmware) : 0
   is_sensitive                                       = var.f5xc_secure_mesh_site.vmware.is_sensitive
   f5xc_tenant                                        = var.f5xc_tenant
   f5xc_api_url                                       = var.f5xc_api_url
@@ -38,79 +59,79 @@ resource "restapi_object" "secure_mesh_site" {
 }*/
 
 module "aws" {
-  depends_on                           = [restapi_object.secure_mesh_site]
+  depends_on                           = [restapi_object.secure_mesh_site_aws]
   source                               = "../ce/aws"
-  count                                = length(var.f5xc_secure_mesh_site.aws) > 0 ? 1 : 0
-  owner_tag                            = var.f5xc_secure_mesh_site.aws.owner
-  is_sensitive                         = var.f5xc_secure_mesh_site.aws.is_sensitive
-  has_public_ip                        = var.f5xc_secure_mesh_site.aws.has_public_ip
+  count                                = var.f5xc_secure_mesh_site.aws != null ? length(var.f5xc_secure_mesh_site.aws) : 0
+  owner_tag                            = var.f5xc_secure_mesh_site.aws[count.index].owner
+  is_sensitive                         = var.f5xc_secure_mesh_site.aws[count.index].is_sensitive
+  has_public_ip                        = var.f5xc_secure_mesh_site.aws[count.index].has_public_ip
   ssh_public_key                       = file(var.ssh_public_key_file)
   f5xc_tenant                          = var.f5xc_tenant
   f5xc_api_url                         = var.f5xc_api_url
   f5xc_api_token                       = var.f5xc_api_token
   f5xc_namespace                       = var.f5xc_namespace
-  f5xc_aws_region                      = var.f5xc_secure_mesh_site.aws.region
-  f5xc_token_name                      = var.f5xc_secure_mesh_site.aws.f5xc_token_name
-  f5xc_cluster_name                    = var.f5xc_secure_mesh_site.aws.f5xc_cluster_name
-  f5xc_cluster_labels                  = var.f5xc_secure_mesh_site.aws.f5xc_cluster_labels
-  f5xc_aws_vpc_az_nodes                = var.f5xc_secure_mesh_site.aws.f5xc_nodes
-  f5xc_ce_gateway_type                 = var.f5xc_secure_mesh_site.aws.f5xc_ce_gateway_type
-  f5xc_cluster_latitude                = var.f5xc_secure_mesh_site.aws.f5xc_cluster_latitude
-  f5xc_cluster_longitude               = var.f5xc_secure_mesh_site.aws.f5xc_cluster_longitude
-  aws_vpc_cidr_block                   = var.f5xc_secure_mesh_site.aws.vpc_cidr_block
-  aws_security_group_rules_slo_egress  = var.f5xc_secure_mesh_site.aws.security_group_rules_slo_egress
-  aws_security_group_rules_slo_ingress = var.f5xc_secure_mesh_site.aws.security_group_rules_slo_ingress
+  f5xc_aws_region                      = var.f5xc_secure_mesh_site.aws[count.index].region
+  f5xc_token_name                      = var.f5xc_secure_mesh_site.aws[count.index].f5xc_token_name
+  f5xc_cluster_name                    = var.f5xc_secure_mesh_site.aws[count.index].f5xc_cluster_name
+  f5xc_cluster_labels                  = var.f5xc_secure_mesh_site.aws[count.index].f5xc_cluster_labels
+  f5xc_aws_vpc_az_nodes                = var.f5xc_secure_mesh_site.aws[count.index].f5xc_nodes
+  f5xc_ce_gateway_type                 = var.f5xc_secure_mesh_site.aws[count.index].f5xc_ce_gateway_type
+  f5xc_cluster_latitude                = var.f5xc_secure_mesh_site.aws[count.index].f5xc_cluster_latitude
+  f5xc_cluster_longitude               = var.f5xc_secure_mesh_site.aws[count.index].f5xc_cluster_longitude
+  aws_vpc_cidr_block                   = var.f5xc_secure_mesh_site.aws[count.index].vpc_cidr_block
+  aws_security_group_rules_slo_egress  = var.f5xc_secure_mesh_site.aws[count.index].security_group_rules_slo_egress
+  aws_security_group_rules_slo_ingress = var.f5xc_secure_mesh_site.aws[count.index].security_group_rules_slo_ingress
 }
 
 module "gcp" {
-  depends_on             = [restapi_object.secure_mesh_site]
+  depends_on             = [restapi_object.secure_mesh_site_gcp]
   source                 = "../ce/gcp"
-  count                  = length(var.f5xc_secure_mesh_site.gcp) > 0 ? 1 : 0
-  is_sensitive           = false
-  has_public_ip          = var.f5xc_secure_mesh_site.gcp.has_public_ip
+  count                  = var.f5xc_secure_mesh_site.gcp != null ? length(var.f5xc_secure_mesh_site.gcp) : 0
+  is_sensitive           = var.f5xc_secure_mesh_site.gcp[count.index].is_sensitive
+  has_public_ip          = var.f5xc_secure_mesh_site.gcp[count.index].has_public_ip
   f5xc_tenant            = var.f5xc_tenant
   f5xc_api_url           = var.f5xc_api_url
-  f5xc_ce_nodes          = var.f5xc_secure_mesh_site.gcp.f5xc_nodes
+  f5xc_ce_nodes          = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_nodes
   f5xc_namespace         = var.f5xc_namespace
   f5xc_api_token         = var.f5xc_api_token
-  f5xc_token_name        = var.f5xc_secure_mesh_site.gcp.f5xc_token_name
-  f5xc_cluster_name      = var.f5xc_secure_mesh_site.gcp.f5xc_cluster_name
-  f5xc_cluster_labels    = var.f5xc_secure_mesh_site.gcp.f5xc_cluster_labels
-  f5xc_ce_gateway_type   = var.f5xc_secure_mesh_site.gcp.f5xc_ce_gateway_type
-  f5xc_cluster_latitude  = var.f5xc_secure_mesh_site.gcp.f5xc_cluster_latitude
-  f5xc_cluster_longitude = var.f5xc_secure_mesh_site.gcp.f5xc_cluster_longitude
-  gcp_region             = var.f5xc_secure_mesh_site.gcp.region
-  machine_type           = var.f5xc_secure_mesh_site.gcp.machine_type
-  project_name           = var.f5xc_secure_mesh_site.gcp.project_name
-  machine_image          = var.f5xc_secure_mesh_site.gcp.machine_image
+  f5xc_token_name        = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_token_name
+  f5xc_cluster_name      = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_name
+  f5xc_cluster_labels    = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_labels
+  f5xc_ce_gateway_type   = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_ce_gateway_type
+  f5xc_cluster_latitude  = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_latitude
+  f5xc_cluster_longitude = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_longitude
+  gcp_region             = var.f5xc_secure_mesh_site.gcp[count.index].region
+  machine_type           = var.f5xc_secure_mesh_site.gcp[count.index].machine_type
+  project_name           = var.f5xc_secure_mesh_site.gcp[count.index].project_name
+  machine_image          = var.f5xc_secure_mesh_site.gcp[count.index].machine_image
   ssh_public_key         = var.ssh_public_key_file
-  machine_disk_size      = var.f5xc_secure_mesh_site.gcp.machine_disk_size
+  machine_disk_size      = var.f5xc_secure_mesh_site.gcp[count.index].machine_disk_size
 }
 
 module "azure" {
-  depends_on                      = [restapi_object.secure_mesh_site]
+  depends_on                      = [restapi_object.secure_mesh_site_azure]
   source                          = "../ce/azure"
-  count                           = length(var.f5xc_secure_mesh_site.azure) > 0 ? 1 : 0
-  owner_tag                       = var.f5xc_secure_mesh_site.azure.owner
-  is_sensitive                    = var.f5xc_secure_mesh_site.azure.is_sensitive
-  has_public_ip                   = var.f5xc_secure_mesh_site.azure.has_public_ip
-  azurerm_tenant_id               = var.f5xc_secure_mesh_site.azure.tenant_id
-  azurerm_client_id               = var.f5xc_secure_mesh_site.azure.client_id
-  azurerm_client_secret           = var.f5xc_secure_mesh_site.azure.client_secret
-  azurerm_subscription_id         = var.f5xc_secure_mesh_site.azure.subscription_id
-  azurerm_vnet_address_space      = var.f5xc_secure_mesh_site.azure.vnet_address_space
-  azure_security_group_rules_slo  = var.f5xc_secure_mesh_site.azure.security_group_rules_slo
-  azurerm_instance_admin_username = var.f5xc_secure_mesh_site.azure.instance_admin_username
+  count                           = var.f5xc_secure_mesh_site.azure != null ? length(var.f5xc_secure_mesh_site.azure) : 0
+  owner_tag                       = var.f5xc_secure_mesh_site.azure[count.index].owner
+  is_sensitive                    = var.f5xc_secure_mesh_site.azure[count.index].is_sensitive
+  has_public_ip                   = var.f5xc_secure_mesh_site.azure[count.index].has_public_ip
+  azurerm_tenant_id               = var.f5xc_secure_mesh_site.azure[count.index].tenant_id
+  azurerm_client_id               = var.f5xc_secure_mesh_site.azure[count.index].client_id
+  azurerm_client_secret           = var.f5xc_secure_mesh_site.azure[count.index].client_secret
+  azurerm_subscription_id         = var.f5xc_secure_mesh_site.azure[count.index].subscription_id
+  azurerm_vnet_address_space      = var.f5xc_secure_mesh_site.azure[count.index].vnet_address_space
+  azure_security_group_rules_slo  = var.f5xc_secure_mesh_site.azure[count.index].security_group_rules_slo
+  azurerm_instance_admin_username = var.f5xc_secure_mesh_site.azure[count.index].instance_admin_username
   f5xc_tenant                     = var.f5xc_tenant
   f5xc_api_url                    = var.f5xc_api_url
   f5xc_api_token                  = var.f5xc_api_token
   f5xc_namespace                  = var.f5xc_namespace
-  f5xc_azure_region               = var.f5xc_secure_mesh_site.azure.region
-  f5xc_cluster_name               = var.f5xc_secure_mesh_site.azure.f5xc_cluster_name
-  f5xc_azure_az_nodes             = var.f5xc_secure_mesh_site.azure.f5xc_nodes
-  f5xc_cluster_labels             = var.f5xc_secure_mesh_site.azure.f5xc_cluster_labels
-  f5xc_ce_gateway_type            = var.f5xc_secure_mesh_site.azure.f5xc_ce_gateway_type
-  f5xc_cluster_latitude           = var.f5xc_secure_mesh_site.azure.f5xc_cluster_latitude
-  f5xc_cluster_longitude          = var.f5xc_secure_mesh_site.azure.f5xc_cluster_longitude
+  f5xc_azure_region               = var.f5xc_secure_mesh_site.azure[count.index].region
+  f5xc_cluster_name               = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_name
+  f5xc_azure_az_nodes             = var.f5xc_secure_mesh_site.azure[count.index].f5xc_nodes
+  f5xc_cluster_labels             = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_labels
+  f5xc_ce_gateway_type            = var.f5xc_secure_mesh_site.azure[count.index].f5xc_ce_gateway_type
+  f5xc_cluster_latitude           = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_latitude
+  f5xc_cluster_longitude          = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_longitude
   ssh_public_key                  = file(var.ssh_public_key_file)
 }

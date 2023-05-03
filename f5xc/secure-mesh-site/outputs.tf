@@ -2,10 +2,10 @@ output "secure-mesh-site" {
   value = {
     smg      = module.smg
     provider = {
-      aws = {
+      aws = length(module.aws) > 0 ? {
         ce     = module.aws[0].ce
         config = restapi_object.secure_mesh_site_aws
-      }
+      } : null
       gcp = length(module.gcp) > 0 ? {
         ce     = module.gcp[0].ce
         config = restapi_object.secure_mesh_site_gcp

@@ -29,7 +29,7 @@ variable "f5xc_site_mesh_group_name" {
 
 variable "f5xc_secure_mesh_site" {
   type = object({
-    aws = optional(object({
+    aws = optional(list(object({
       owner                           = string
       region                          = string
       is_sensitive                    = optional(bool, false)
@@ -58,8 +58,8 @@ variable "f5xc_secure_mesh_site" {
         f5xc_aws_vpc_slo_subnet = string
         f5xc_aws_vpc_sli_subnet = optional(string)
       }))
-    }))
-    gcp = optional(object({
+    })))
+    gcp = optional(list(object({
       region                         = string
       is_sensitive                   = optional(bool, false)
       machine_type                   = string
@@ -82,8 +82,8 @@ variable "f5xc_secure_mesh_site" {
         slo_subnet = string
         sli_subnet = optional(string)
       }))
-    }))
-    azure = optional(object({
+    })))
+    azure = optional(list(object({
       owner                    = string
       region                   = string
       tenant_id                = string
@@ -117,8 +117,8 @@ variable "f5xc_secure_mesh_site" {
         f5xc_azure_vnet_slo_subnet = string
         f5xc_azure_vnet_sli_subnet = optional(string)
       }))
-    }))
-    vmware = optional(object({
+    })))
+    vmware = optional(list(object({
       is_sensitive                   = optional(bool, false)
       f5xc_cluster_name              = string
       f5xc_cluster_labels            = map(string)
@@ -144,7 +144,7 @@ variable "f5xc_secure_mesh_site" {
         adapter_type               = optional(string, "vmxnet3")
         outside_network_ip_address = string
       }))
-    }))
+    })))
   })
 }
 

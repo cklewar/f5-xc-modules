@@ -89,3 +89,7 @@ variable "f5xc_virtual_site_type" {
   type    = string
   default = "CUSTOMER_EDGE"
 }
+
+variable "f5xc_virtual_site_selector_expression" {
+  type = list(string)
+}

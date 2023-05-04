@@ -24,11 +24,38 @@ variable "ssh_public_key_file" {
 }
 
 variable "f5xc_site_mesh_group_name" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_virtual_site_name" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "f5xc_secure_mesh_site_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_secure_mesh_site_suffix" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_virtual_site_selector_expression" {
+  type    = list(string)
+  default = []
+}
+
+variable "f5xc_create_site_mesh_group" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_create_virtual_site" {
+  type    = bool
+  default = true
 }
 
 variable "f5xc_secure_mesh_site" {

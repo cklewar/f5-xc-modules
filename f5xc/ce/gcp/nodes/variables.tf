@@ -14,19 +14,15 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "instance_name" {
+variable "instance_type" {
   type = string
 }
 
-variable "machine_type" {
+variable "instance_image" {
   type = string
 }
 
-variable "machine_image" {
-  type = string
-}
-
-variable "machine_disk_size" {
+variable "instance_disk_size" {
   type = string
 }
 
@@ -104,6 +100,15 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
+variable "f5xc_node_name" {
+  type = string
+}
+
 variable "f5xc_cluster_name" {
   type = string
+}
+
+variable "f5xc_cluster_labels" {
+  type    = map(string)
+  default = {}
 }

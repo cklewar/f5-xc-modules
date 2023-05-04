@@ -1,13 +1,14 @@
 resource "google_compute_instance" "instance" {
-  name                      = var.instance_name
-  machine_type              = var.machine_type
-  allow_stopping_for_update = var.allow_stopping_for_update
+  name                      = var.f5xc_node_name
   tags                      = var.instance_tags
+  labels                    = var.f5xc_cluster_labels
+  machine_type              = var.instance_type
+  allow_stopping_for_update = var.allow_stopping_for_update
 
   boot_disk {
     initialize_params {
-      image = var.machine_image
-      size  = var.machine_disk_size
+      image = var.instance_image
+      size  = var.instance_disk_size
     }
   }
 
@@ -53,14 +54,14 @@ resource "volterra_registration_approval" "nodes" {
   depends_on   = [google_compute_instance.instance]
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size
-  hostname     = var.instance_name
+  hostname     = var.f5xc_node_name
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
 }
 
 resource "volterra_site_state" "decommission_when_delete" {
   depends_on = [volterra_registration_approval.nodes]
-  name       = var.instance_name
+  name       = var.f5xc_node_name
   when       = "delete"
   state      = "DECOMMISSIONING"
   wait_time  = var.f5xc_registration_wait_time

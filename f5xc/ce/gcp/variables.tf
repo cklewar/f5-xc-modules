@@ -10,10 +10,6 @@ variable "existing_network_outside" {
   default = null
 }
 
-variable "project_name" {
-  type = string
-}
-
 variable "machine_type" {
   type = string
 }

@@ -1,6 +1,10 @@
+variable "availabilty_zone" {
+  default = ""
+}
 resource "google_compute_instance" "instance" {
   name                      = var.f5xc_node_name
   tags                      = var.instance_tags
+  zone                      = var.availability_zone
   labels                    = var.f5xc_cluster_labels
   machine_type              = var.instance_type
   allow_stopping_for_update = var.allow_stopping_for_update

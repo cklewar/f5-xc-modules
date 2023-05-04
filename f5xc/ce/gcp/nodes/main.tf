@@ -37,6 +37,16 @@ resource "google_compute_instance" "instance" {
     email  = var.gcp_service_account_email != "" ? var.gcp_service_account_email : null
     scopes = var.gcp_service_account_scopes
   }
+
+  lifecycle {
+    ignore_changes = all
+  }
+
+  timeouts {
+    create = "15m"
+    delete = "15m"
+    update = "15m"
+  }
 }
 
 resource "volterra_registration_approval" "nodes" {

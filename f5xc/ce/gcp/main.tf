@@ -3,24 +3,34 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
-module "network" {
+module "network_common" {
+  for_each                = local.create_network ? [1] : []
+  source                  = "./network/common"
+  is_multi_nic            = local.is_multi_nic
+  project_name            = var.project_name
+  auto_create_subnetworks = var.auto_create_subnetworks
+  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
+}
+
+module "network_node" {
   for_each                 = local.create_network ? {for k, v in var.f5xc_ce_nodes : k=>v} : {}
-  source                   = "./network"
+  source                   = "./network/node"
   gcp_region               = var.gcp_region
   is_multi_nic             = local.is_multi_nic
-  project_name             = var.project_name
-  auto_create_subnetworks  = var.auto_create_subnetworks
+  slo_subnet_name          = "${var.project_name}-${each.key}-slo-subnetwork"
+  sli_subnet_name          = "${var.project_name}-${each.key-}sli-subnetwork"
+  slo_vpc_network_id       = module.network_common.common["slo_network"]["id"]
+  sli_vpc_network_id       = local.is_multi_nic ? module.network_common.common["sli_network"]["id"] : ""
   subnet_slo_ip_cidr_range = var.f5xc_ce_nodes[each.key].slo_subnet
-  subnet_sli_ip_cidr_range = var.f5xc_ce_nodes[each.key].sli_subnet
-  f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
+  subnet_sli_ip_cidr_range = local.is_multi_nic ? var.f5xc_ce_nodes[each.key].sli_subnet : ""
 }
 
 module "firewall" {
-  source               = "./firewall"
+  source               = "firewall"
   for_each             = local.create_network ? {for k, v in var.f5xc_ce_nodes : k=>v} : {}
   is_multi_nic         = local.is_multi_nic
-  sli_network          = local.create_network && local.is_multi_nic ? module.network[each.key].ce["sli_network"]["id"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
-  slo_network          = local.create_network ? module.network[each.key].ce["slo_network"]["id"] : var.existing_network_outside.network_name
+  sli_network          = local.create_network && local.is_multi_nic ? module.network_common.common["sli_network"]["id"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
+  slo_network          = local.create_network ? module.network_common.common["slo_network"]["id"] : var.existing_network_outside.network_name
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall.rules) > 0 ? var.f5xc_ce_sli_firewall : local.f5xc_secure_ce_sli_firewall_default)) : {
     rules = []
@@ -51,8 +61,8 @@ module "node" {
   instance_tags               = var.instance_tags
   machine_image               = var.machine_image
   instance_name               = format("%s-%s", var.f5xc_cluster_name, each.key)
-  sli_subnetwork              = local.create_network && local.is_multi_nic ? module.network[each.key].ce["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
-  slo_subnetwork              = local.create_network ? module.network[each.key].ce["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
+  sli_subnetwork              = local.create_network && local.is_multi_nic ? module.network_node[each.key].ce["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
+  slo_subnetwork              = local.create_network ? module.network_node[each.key].ce["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
   ssh_public_key              = var.ssh_public_key
   machine_disk_size           = var.machine_disk_size
   access_config_nat_ip        = var.access_config_nat_ip

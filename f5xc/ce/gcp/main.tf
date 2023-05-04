@@ -55,15 +55,15 @@ module "node" {
   source                      = "./nodes"
   for_each                    = {for k, v in var.f5xc_ce_nodes : k=>v}
   is_sensitive                = var.is_sensitive
-  machine_type                = var.machine_type
   ssh_username                = var.ssh_username
+  instance_type               = var.machine_type
   has_public_ip               = var.has_public_ip
   instance_tags               = var.instance_tags
-  machine_image               = var.machine_image
+  instance_image              = var.machine_image
   sli_subnetwork              = local.create_network && local.is_multi_nic ? module.network_node[each.key].ce["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
   slo_subnetwork              = local.create_network ? module.network_node[each.key].ce["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
   ssh_public_key              = var.ssh_public_key
-  machine_disk_size           = var.machine_disk_size
+  instance_disk_size          = var.machine_disk_size
   access_config_nat_ip        = var.access_config_nat_ip
   allow_stopping_for_update   = var.allow_stopping_for_update
   gcp_service_account_email   = var.gcp_service_account_email

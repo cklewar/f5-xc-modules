@@ -108,8 +108,8 @@ module "gcp" {
   machine_type           = var.f5xc_secure_mesh_site.gcp[count.index].machine_type
   project_name           = var.f5xc_secure_mesh_site.gcp[count.index].project_name
   machine_image          = var.f5xc_secure_mesh_site.gcp[count.index].machine_image
-  ssh_public_key         = var.ssh_public_key_file
   machine_disk_size      = var.f5xc_secure_mesh_site.gcp[count.index].machine_disk_size
+  ssh_public_key         = var.ssh_public_key_file
 }
 
 module "azure" {
@@ -119,6 +119,7 @@ module "azure" {
   owner_tag                       = var.f5xc_secure_mesh_site.azure[count.index].owner
   is_sensitive                    = var.f5xc_secure_mesh_site.azure[count.index].is_sensitive
   has_public_ip                   = var.f5xc_secure_mesh_site.azure[count.index].has_public_ip
+  ssh_public_key                  = file(var.ssh_public_key_file)
   azurerm_tenant_id               = var.f5xc_secure_mesh_site.azure[count.index].tenant_id
   azurerm_client_id               = var.f5xc_secure_mesh_site.azure[count.index].client_id
   azurerm_client_secret           = var.f5xc_secure_mesh_site.azure[count.index].client_secret
@@ -137,5 +138,4 @@ module "azure" {
   f5xc_ce_gateway_type            = var.f5xc_secure_mesh_site.azure[count.index].f5xc_ce_gateway_type
   f5xc_cluster_latitude           = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_latitude
   f5xc_cluster_longitude          = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_longitude
-  ssh_public_key                  = file(var.ssh_public_key_file)
 }

@@ -1,6 +1,6 @@
 locals {
-  site_selector_expression = [format("site-mesh in (%s)", var.f5xc_secure_mesh_site_prefix)]
-  secure_mesh_site_data    = {
+  virtual_site_selector_expression = [format("site-mesh in (%s)", var.f5xc_secure_mesh_site_prefix)]
+  secure_mesh_site_data            = {
     for provider in keys(var.f5xc_secure_mesh_site) : provider => [
       for site in var.f5xc_secure_mesh_site[provider] : {
         name = site.f5xc_cluster_name

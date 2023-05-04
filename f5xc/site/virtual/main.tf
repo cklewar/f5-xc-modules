@@ -1,4 +1,4 @@
-resource "volterra_virtual_site" "virtual-site" {
+resource "volterra_virtual_site" "virtual_site" {
   name      = var.f5xc_virtual_site_name
   namespace = var.f5xc_namespace
 

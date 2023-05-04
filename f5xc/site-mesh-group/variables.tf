@@ -79,3 +79,13 @@ variable "f5xc_labels" {
   type    = map(string)
   default = {}
 }
+
+variable "f5xc_create_virtual_site" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_virtual_site_type" {
+  type    = string
+  default = "CUSTOMER_EDGE"
+}

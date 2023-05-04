@@ -27,6 +27,10 @@ variable "f5xc_site_mesh_group_name" {
   type = string
 }
 
+variable "f5xc_virtual_site_name" {
+  type = string
+}
+
 variable "f5xc_secure_mesh_site" {
   type = object({
     aws = optional(list(object({

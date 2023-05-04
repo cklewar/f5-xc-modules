@@ -39,7 +39,7 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
   dynamic "virtual_site" {
     for_each = var.f5xc_virtual_site_name != "" ? [1] : []
     content {
-      name      = var.f5xc_create_virtual_site ? module.virtual_site.virtual_site["name"] : var.f5xc_virtual_site_name
+      name      = var.f5xc_create_virtual_site ? module.virtual_site[0].virtual_site["name"] : var.f5xc_virtual_site_name
       tenant    = var.f5xc_tenant
       namespace = var.f5xc_namespace
     }

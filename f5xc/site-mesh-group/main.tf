@@ -7,8 +7,8 @@ module "virtual_site" {
 
 resource "volterra_site_mesh_group" "site_mesh_group" {
   name        = var.f5xc_site_mesh_group_name
-  namespace   = var.f5xc_namespace
   type        = var.f5xc_site_2_site_connection_type
+  namespace   = var.f5xc_namespace
   description = var.f5xc_site_mesh_group_description
   dynamic "hub_mesh" {
     for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_hub_mesh ? [1] : []

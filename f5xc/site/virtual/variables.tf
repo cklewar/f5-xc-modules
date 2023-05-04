@@ -12,6 +12,16 @@ variable "f5xc_virtual_site_selector_expression" {
   default = []
 }
 
+variable "f5xc_virtual_site_description" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_virtual_site_labels" {
+  type    = map(string)
+  default = {}
+}
+
 variable "f5xc_virtual_site_type" {
   type = string
   validation {

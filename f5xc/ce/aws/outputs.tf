@@ -1,4 +1,4 @@
-output "nodes" {
+output "ce" {
   value = {
     vpc_id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : null
     iam    = {
@@ -11,32 +11,16 @@ output "nodes" {
     nlb     = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
       nlb = module.network_nlb[0].nlb
     } : null
-    master-0 = {
-      node    = module.node["node0"].ce
-      config  = module.config["node0"].ce
-      network = {
-        common = module.network_common.common
-        node   = module.network_node["node0"].ce
+    nodes = {
+      for node in keys(var.f5xc_aws_vpc_az_nodes) : node=> {
+        node    = module.node[node].ce
+        config  = module.config[node].ce
+        network = {
+          common = module.network_common.common
+          node   = module.network_node[node].ce
+        }
+        secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce[node].ce : null
       }
-      secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node0"].ce : null
     }
-    master-1 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
-      node    = module.node["node1"].ce
-      config  = module.config["node1"].ce
-      network = {
-        common = module.network_common.common
-        node   = module.network_node["node1"].ce
-      }
-      secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node1"].ce : null
-    } : null
-    master-2 = length(var.f5xc_aws_vpc_az_nodes) == 3 ? {
-      node    = module.node["node2"].ce
-      config  = module.config["node2"].ce
-      network = {
-        common = module.network_common.common
-        node   = module.network_node["node2"].ce
-      }
-      secure_ce = var.f5xc_is_secure_cloud_ce ? module.secure_ce["node2"].ce : null
-    } : null
   }
 }

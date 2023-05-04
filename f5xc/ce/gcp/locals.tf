@@ -1,6 +1,5 @@
 locals {
-  cluster_labels          = var.f5xc_fleet_label != "" ? { "ves.io/fleet" = var.f5xc_fleet_label } : {}
-  create_network          = var.subnet_slo_ip_cidr_range != "" || (var.subnet_slo_ip_cidr_range != "" && var.subnet_sli_ip_cidr_range != "") ? true : false
+  create_network          = var.existing_network_outside == null || (var.existing_network_outside == null && var.existing_network_inside == null) ? true : false
   is_multi_nic            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
   f5xc_ip_ranges_americas = concat(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
   f5xc_ip_ranges_europe   = concat(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)

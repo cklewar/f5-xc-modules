@@ -1,76 +1,3 @@
-variable "f5xc_ce_gateway_type_ingress" {
-  type    = string
-  default = "ingress_gateway"
-}
-
-variable "f5xc_ce_gateway_type_ingress_egress" {
-  type    = string
-  default = "ingress_egress_gateway"
-}
-
-variable "f5xc_ce_gateway_type" {
-  type = string
-  validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
-    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
-  }
-}
-
-variable "f5xc_site_type_azure" {
-  type    = string
-  default = "azure"
-}
-
-variable "f5xc_site_type_gcp" {
-  type    = string
-  default = "gcp"
-}
-
-variable "f5xc_site_type_aws" {
-  type    = string
-  default = "aws"
-}
-
-variable "f5xc_site_type_vsphere" {
-  type    = string
-  default = "vmware"
-}
-
-variable "f5xc_site_type_k8s" {
-  type    = string
-  default = "k8s"
-}
-
-variable "f5xc_site_type" {
-  type = string
-  validation {
-    condition = contains(["vsphere", "aws", "gcp", "azure", "k8s"], var.f5xc_site_type)
-  }
-}
-
-variable "f5xc_secure_mesh_site_nodes" {
-  type = map(map(string))
-  validation {
-    condition     = length(var.f5xc_secure_mesh_site_nodes) == 1 || length(var.f5xc_secure_mesh_site_nodes) == 3
-    error_message = "f5xc_secure_mesh_site_nodes must be 1 or 3"
-  }
-  default = {}
-}
-
-variable "f5xc_site_type_certified_hw" {
-  type    = map(string)
-  default = {
-    "aws"     = "aws-voltmesh"
-    "gcp"     = "gcp-voltmesh"
-    "azure"   = "azure-voltmesh"
-    "vsphere" = "vmware-voltmesh"
-  }
-}
-
-variable "f5xc_cluster_labels" {
-  type = map(string)
-}
-
 variable "f5xc_api_url" {
   type = string
 }
@@ -87,289 +14,178 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_secure_mesh_name" {
-  type = string
-}
-
-variable "f5xc_vsphere_site_latitude" {
-  type    = number
-  default = 37.4
-}
-
-variable "f5xc_vsphere_site_longitude" {
-  type    = number
-  default = -121.9
-}
-
-variable "f5xc_token_name" {
+variable "f5xc_site_2_site_connection_type" {
   type    = string
-  default = ""
-}
-
-variable "f5xc_aws_region" {
-  type    = string
-  default = "us-west-2"
-}
-
-variable "f5xc_aws_vpc_az_nodes" {
-  type = map(map(string))
-  validation {
-    condition     = length(var.f5xc_aws_vpc_az_nodes) == 1 || length(var.f5xc_aws_vpc_az_nodes) == 3
-    error_message = "f5xc_aws_vpc_az_nodes must be 1 or 3"
-  }
-  default = {}
-}
-
-variable "f5xc_aws_cluster_name" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_aws_site_latitude" {
-  type    = number
-  default = 37.4
-}
-
-variable "f5xc_aws_site_longitude" {
-  type    = number
-  default = -121.9
-}
-
-variable "f5xc_aws_ce_has_public_ip" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_vsphere_instance_template" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_vsphere_cluster_name" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_instance_outside_interface_default_gateway" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_instance_outside_interface_default_route" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_instance_outside_network_name" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_instance_inside_network_name" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_dns_servers" {
-  type    = map(string)
-  default = {
-    primary   = "8.8.8.8"
-    secondary = "8.8.4.4"
-  }
-}
-
-variable "vsphere_user" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_user_password" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_server" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_datacenter" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_cluster" {
-  type    = string
-  default = ""
-}
-
-variable "vsphere_instance_admin_password" {
-  type    = string
-  default = ""
-}
-
-variable "aws_owner" {
-  type    = string
-  default = ""
-}
-
-variable "aws_vpc_cidr_block" {
-  type    = string
-  default = ""
+  default = "full_mesh"
 }
 
 variable "ssh_public_key_file" {
   type = string
 }
 
-variable "aws_security_group_rules_slo_egress" {
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    ip_protocol = string
-    cidr_blocks = list(string)
-  }))
-  default = []
-}
-
-variable "aws_security_group_rules_slo_ingress" {
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    ip_protocol = string
-    cidr_blocks = list(string)
-  }))
-  default = []
-}
-
-variable "f5xc_gcp_instance_name" {
+variable "f5xc_site_mesh_group_name" {
   type    = string
   default = ""
 }
 
-variable "f5xc_gcp_machine_disk_size" {
+variable "f5xc_virtual_site_name" {
   type    = string
   default = ""
 }
 
-variable "f5xc_gcp_machine_image" {
+variable "f5xc_secure_mesh_site_prefix" {
   type    = string
   default = ""
 }
 
-variable "f5xc_gcp_machine_type" {
+variable "f5xc_secure_mesh_site_suffix" {
   type    = string
   default = ""
 }
 
-variable "f5xc_gcp_site_latitude" {
-  type    = number
-  default = 37.4
-}
-
-variable "f5xc_gcp_site_longitude" {
-  type    = number
-  default = -121.9
-}
-
-variable "f5xc_gcp_ce_has_public_ip" {
-  type    = bool
-  default = true
-}
-
-variable "gcp_project_name" {
-  type    = string
-  default = ""
-}
-
-variable "gcp_region" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_azure_site_latitude" {
-  type    = number
-  default = 37.4
-}
-
-variable "f5xc_azure_site_longitude" {
-  type    = number
-  default = -121.9
-}
-
-variable "f5xc_azure_region" {
-  type    = string
-  default = ""
-}
-
-variable "f5xc_azure_ce_has_public_ip" {
-  type    = bool
-  default = true
-}
-
-variable "f5xc_azure_az_nodes" {
-  type = map(map(string))
-  validation {
-    condition     = length(var.f5xc_azure_az_nodes) == 1 || length(var.f5xc_azure_az_nodes) == 3
-    error_message = "f5xc_azure_az_nodes must be 1 or 3"
-  }
-  default = {}
-}
-
-variable "f5xc_azure_cluster_name" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_instance_admin_username" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_owner" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_tenant_id" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_client_id" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_client_secret" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_subscription_id" {
-  type    = string
-  default = ""
-}
-
-variable "azurerm_vnet_address_space" {
+variable "f5xc_virtual_site_selector_expression" {
   type    = list(string)
   default = []
 }
 
-variable "azure_security_group_rules_slo" {
-  type = list(object({
-    name                         = string
-    priority                     = number
-    direction                    = string
-    access                       = string
-    protocol                     = string
-    source_port_range            = string
-    destination_port_range       = string
-    source_address_prefix        = optional(string)
-    source_address_prefixes      = optional(list(string))
-    destination_address_prefix   = optional(string)
-    destination_address_prefixes = optional(list(string))
-  }))
-  default = []
+variable "f5xc_create_site_mesh_group" {
+  type    = bool
+  default = false
 }
 
+variable "f5xc_create_virtual_site" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_secure_mesh_site" {
+  type = object({
+    aws = optional(list(object({
+      owner                           = string
+      region                          = string
+      is_sensitive                    = optional(bool, false)
+      has_public_ip                   = bool
+      vpc_cidr_block                  = string
+      f5xc_token_name                 = string
+      f5xc_cluster_name               = string
+      f5xc_cluster_labels             = map(string)
+      f5xc_ce_gateway_type            = string
+      f5xc_cluster_latitude           = string
+      f5xc_cluster_longitude          = string
+      security_group_rules_slo_egress = optional(list(object({
+        from_port   = number
+        to_port     = number
+        ip_protocol = string
+        cidr_blocks = list(string)
+      })), [])
+      security_group_rules_slo_ingress = optional(list(object({
+        from_port   = number
+        to_port     = number
+        ip_protocol = string
+        cidr_blocks = list(string)
+      })), [])
+      f5xc_nodes = map(object({
+        f5xc_aws_vpc_az_name    = string
+        f5xc_aws_vpc_slo_subnet = string
+        f5xc_aws_vpc_sli_subnet = optional(string)
+      }))
+    })))
+    gcp = optional(list(object({
+      region                         = string
+      is_sensitive                   = optional(bool, false)
+      machine_type                   = string
+      project_name                   = string
+      machine_image                  = string
+      has_public_ip                  = bool
+      machine_disk_size              = string
+      existing_network_inside        = optional(object({}))
+      existing_network_outside       = optional(object({}))
+      subnet_slo_ip_cidr_range       = string
+      existing_fabric_subnet_outside = optional(string)
+      f5xc_token_name                = string
+      f5xc_cluster_name              = string
+      f5xc_cluster_labels            = map(string)
+      f5xc_ce_gateway_type           = string
+      f5xc_cluster_latitude          = string
+      f5xc_cluster_longitude         = string
+      f5xc_nodes                     = map(object({
+        az_name    = string
+        slo_subnet = string
+        sli_subnet = optional(string)
+      }))
+    })))
+    azure = optional(list(object({
+      owner                    = string
+      region                   = string
+      tenant_id                = string
+      client_id                = string
+      is_sensitive             = optional(bool, false)
+      has_public_ip            = bool
+      client_secret            = string
+      subscription_id          = string
+      vnet_address_space       = list(string)
+      f5xc_cluster_name        = string
+      f5xc_cluster_labels      = map(string)
+      f5xc_ce_gateway_type     = string
+      f5xc_cluster_latitude    = string
+      f5xc_cluster_longitude   = string
+      security_group_rules_slo = optional(list(object({
+        name                         = string
+        priority                     = number
+        direction                    = string
+        access                       = string
+        protocol                     = string
+        source_port_range            = string
+        destination_port_range       = string
+        source_address_prefix        = optional(string)
+        source_address_prefixes      = optional(list(string))
+        destination_address_prefix   = optional(string)
+        destination_address_prefixes = optional(list(string))
+      })), [])
+      instance_admin_username = string
+      f5xc_nodes              = map(object({
+        f5xc_azure_az              = string
+        f5xc_azure_vnet_slo_subnet = string
+        f5xc_azure_vnet_sli_subnet = optional(string)
+      }))
+    })))
+    vmware = optional(list(object({
+      is_sensitive                   = optional(bool, false)
+      f5xc_cluster_name              = string
+      f5xc_cluster_labels            = map(string)
+      f5xc_ce_gateway_type           = string
+      f5xc_cluster_latitude          = string
+      f5xc_cluster_longitude         = string
+      f5xc_vsphere_instance_template = optional(string)
+      vsphere_cluster                = string
+      vsphere_datacenter             = string
+      vsphere_instance_dns_servers   = object({
+        primary   = string
+        secondary = optional(string)
+      })
+      vsphere_instance_admin_password                    = string
+      vsphere_instance_inside_network_name               = string
+      vsphere_instance_outside_network_name              = string
+      vsphere_instance_outside_interface_default_route   = string
+      vsphere_instance_outside_interface_default_gateway = string
+      f5xc_nodes                                         = map(object({
+        host                       = string
+        dhcp                       = optional(bool, false)
+        datastore                  = string
+        adapter_type               = optional(string, "vmxnet3")
+        outside_network_ip_address = string
+      }))
+    })))
+  })
+}
+
+variable "f5xc_site_type_certified_hw" {
+  type    = map(string)
+  default = {
+    aws    = "aws-byol-voltmesh"
+    gcp    = "gcp-byol-voltmesh"
+    kvm    = "kvm-voltmesh"
+    azure  = "azure-byol-voltmesh"
+    vmware = "vmware-voltmesh"
+  }
+}

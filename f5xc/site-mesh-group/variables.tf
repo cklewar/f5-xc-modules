@@ -4,7 +4,7 @@ variable "f5xc_tenant" {
 
 variable "f5xc_namespace" {
   type    = string
-  default = "shared"
+  default = "system"
 }
 
 variable "f5xc_site_mesh_group_name" {
@@ -78,4 +78,18 @@ variable "f5xc_site_mesh_group_hub_mesh" {
 variable "f5xc_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "f5xc_create_virtual_site" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_virtual_site_type" {
+  type    = string
+  default = "CUSTOMER_EDGE"
+}
+
+variable "f5xc_virtual_site_selector_expression" {
+  type = list(string)
 }

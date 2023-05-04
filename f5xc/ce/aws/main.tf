@@ -84,6 +84,8 @@ module "config" {
   f5xc_ce_gateway_type         = var.f5xc_ce_gateway_type
   f5xc_ce_hosts_public_name    = var.f5xc_ce_hosts_public_name
   f5xc_ce_hosts_public_address = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? module.secure_ce[each.key].ce["eip"][0]["public_dns"] : module.network_node[each.key].ce["slo"]["public_dns"][0]
+  maurice_endpoint             = var.maurice_endpoint[var.f5xc_environment]
+  maurice_mtls_endpoint        = var.maurice_mtls_endpoint[var.f5xc_environment]
 }
 
 module "node" {

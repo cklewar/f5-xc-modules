@@ -1,7 +1,10 @@
-output "virtual-site" {
+output "virtual_site" {
   value = {
-    "name"      = volterra_virtual_site.virtual-site.name
-    "id"        = volterra_virtual_site.virtual-site.id
-    "site_type" = volterra_virtual_site.virtual-site.site_type
+    id            = volterra_virtual_site.virtual_site.id
+    name          = volterra_virtual_site.virtual_site.name
+    labels        = volterra_virtual_site.virtual_site.labels
+    site_type     = volterra_virtual_site.virtual_site.site_type
+    description   = volterra_virtual_site.virtual_site.description
+    site_selector = volterra_virtual_site.virtual_site.site_selector
   }
 }

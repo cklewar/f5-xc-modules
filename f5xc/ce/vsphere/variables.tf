@@ -39,7 +39,7 @@ variable "f5xc_ce_gateway_type" {
 variable "f5xc_vsphere_site_nodes" {
   type = map(map(string))
   validation {
-    condition     = length(var.f5xc_vsphere_site_nodes) == 1 || length(var.f5xc_vsphere_site_nodes) == 3
+    condition     = length(var.f5xc_vsphere_site_nodes) == 1 || length(var.f5xc_vsphere_site_nodes) == 3 || length(var.f5xc_vsphere_site_nodes) == 0
     error_message = "f5xc_vsphere_site_nodes must be 1 or 3"
   }
 }

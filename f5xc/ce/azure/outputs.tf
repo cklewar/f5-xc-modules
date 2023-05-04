@@ -1,34 +1,18 @@
-output "nodes" {
+output "ce" {
   value = {
     vnet           = module.network_common.common["existing_vnet"] == null ? module.network_common.common["vnet"] : null
     existing_vnet  = module.network_common.common["existing_vnet"] != null ? module.network_common.common["existing_vnet"] : null
     resource_group = local.f5xc_azure_resource_group
-    master-0       = {
-      node    = module.node["node0"].ce
-      config  = module.config["node0"].ce
-      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce_node["node0"].ce : null
-      network = {
-        node   = module.network_node["node0"].ce
-        common = module.network_common.common
+    nodes          = {
+      for node in keys(var.f5xc_azure_az_nodes) : node=> {
+        node    = module.node[node].ce
+        config  = module.config[node].ce
+        secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce_node[node].ce : null
+        network = {
+          node   = module.network_node[node].ce
+          common = module.network_common.common
+        }
       }
     }
-    master-1 = length(var.f5xc_azure_az_nodes) == 3 ? {
-      node    = module.node["node1"].ce
-      config  = module.config["node1"].ce
-      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce_node["node1"].ce : null
-      network = {
-        node   = module.network_node["node1"].ce
-        common = module.network_common.common
-      }
-    } : null
-    master-2 = length(var.f5xc_azure_az_nodes) == 3 ? {
-      node    = module.node["node2"].ce
-      config  = module.config["node2"].ce
-      secure  = var.f5xc_is_secure_cloud_ce ? module.secure_ce_node["node2"].ce : null
-      network = {
-        node   = module.network_node["node2"].ce
-        common = module.network_common.common
-      }
-    } : null
   }
 }

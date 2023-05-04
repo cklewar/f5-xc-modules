@@ -14,15 +14,18 @@ variable "subnet_sli_ip_cidr_range" {
   type = string
 }
 
-variable "project_name" {
+variable "slo_vpc_network_id" {
   type = string
 }
 
-variable "auto_create_subnetworks" {
-  type    = bool
-  default = false
+variable "slo_subnet_name" {
+  type = string
 }
 
-variable "f5xc_is_secure_cloud_ce" {
-  type = bool
+variable "sli_subnet_name" {
+  type = string
+}
+
+variable "sli_vpc_network_id" {
+  type = string
 }

@@ -13,11 +13,3 @@ resource "aws_eip" "eip" {
   tags              = var.custom_tags
   network_interface = aws_network_interface.interface.id
 }
-
-/*module "apply_timeout_workaround" {
-  depend_on      = aws_eip.eip[0].id
-  source         = "../../utils/timeout"
-  count          = var.aws_interface_create_eip ? 1 : 0
-  create_timeout = "30s"
-  delete_timeout = "30s"
-}*/

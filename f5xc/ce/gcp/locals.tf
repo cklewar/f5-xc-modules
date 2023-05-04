@@ -9,7 +9,7 @@ locals {
   f5xc_secure_ce_slo_firewall_default = {
     rules = [
       {
-        name        = format("%s-default-slo-ingress-allow-all", var.project_name)
+        name        = format("%s-default-slo-ingress-allow-all", var.f5xc_cluster_name)
         priority    = 65534
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
@@ -32,7 +32,7 @@ locals {
   f5xc_secure_ce_sli_firewall_default = {
     rules = [
       {
-        name        = format("%s-default-sli-ingress-allow-all", var.project_name)
+        name        = format("%s-default-sli-ingress-allow-all", var.f5xc_cluster_name)
         priority    = 65534
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
@@ -55,7 +55,7 @@ locals {
   f5xc_secure_ce_slo_firewall = {
     rules = concat([
       {
-        name        = "${var.project_name}-slo-allow-http-nat-t-ingress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-allow-http-nat-t-ingress-${var.gcp_region}"
         priority    = 1000
         description = "Allow SLO INGRESS HTTPS and NAT-T"
         direction   = "INGRESS"
@@ -77,7 +77,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-allow-http-nat-t-egress-${var.gcp_region}"
         priority    = 1001
         description = "Allow SLO EGRESS HTTPS and NAT-T"
         direction   = "EGRESS"
@@ -99,7 +99,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-allow-http-https-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-allow-http-https-egress-${var.gcp_region}"
         priority    = 1002
         description = "Allow SLO EGRESS HTTP/HTTPS"
         direction   = "EGRESS"
@@ -117,7 +117,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-allow-ntp-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-allow-ntp-egress-${var.gcp_region}"
         priority    = 1003
         description = "Allow SLO EGRESS NTP"
         direction   = "EGRESS"
@@ -135,7 +135,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-allow-ssh-iap-ingress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-allow-ssh-iap-ingress-${var.gcp_region}"
         priority    = 65534
         description = "Allow SLO INGRESS SSH and IAP"
         direction   = "INGRESS"
@@ -153,7 +153,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-slo-deny-all-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-slo-deny-all-egress-${var.gcp_region}"
         priority    = 65535
         description = "Deny SLO EGRESS ALL"
         direction   = "EGRESS"
@@ -176,7 +176,7 @@ locals {
   f5xc_secure_ce_sli_firewall = {
     rules = concat([
       {
-        name        = "${var.project_name}-sli-allow-ssh-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-sli-allow-ssh-egress-${var.gcp_region}"
         priority    = 65534
         description = "Allow SLO EGRESS NTP"
         direction   = "EGRESS"
@@ -194,7 +194,7 @@ locals {
         }
       },
       {
-        name        = "${var.project_name}-sli-deny-all-egress-${var.gcp_region}"
+        name        = "${var.f5xc_cluster_name}-sli-deny-all-egress-${var.gcp_region}"
         priority    = 65535
         description = "Deny SLI EGRESS ALL"
         direction   = "EGRESS"

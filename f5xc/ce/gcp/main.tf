@@ -60,6 +60,7 @@ module "node" {
   has_public_ip               = var.has_public_ip
   instance_tags               = var.instance_tags
   instance_image              = var.machine_image
+  availability_zone           = var.f5xc_ce_nodes[each.key].az
   sli_subnetwork              = local.create_network && local.is_multi_nic ? module.network_node[each.key].ce["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
   slo_subnetwork              = local.create_network ? module.network_node[each.key].ce["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
   ssh_public_key              = var.ssh_public_key
@@ -75,7 +76,8 @@ module "node" {
   f5xc_node_name              = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_ce_user_data           = module.config[each.key].ce["user_data"]
   f5xc_cluster_name           = var.f5xc_cluster_name
-  f5xc_cluster_size           = var.f5xc_cluster_size
+  f5xc_cluster_size           = length(var.f5xc_ce_nodes)
+  f5xc_cluster_labels         = var.f5xc_cluster_labels
   f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time

@@ -42,6 +42,10 @@ variable "instance_tags" {
   type = list(string)
 }
 
+variable "availability_zone" {
+  type = string
+}
+
 variable "ssh_public_key" {
   type = string
 }

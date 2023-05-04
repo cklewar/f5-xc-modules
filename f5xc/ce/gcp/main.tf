@@ -27,7 +27,7 @@ module "network_node" {
 
 module "firewall" {
   source               = "./firewall"
-  for_each             = local.create_network ? {for k, v in var.f5xc_ce_nodes : k=>v} : {}
+  count                = local.create_network ? 1 : 0
   is_multi_nic         = local.is_multi_nic
   sli_network          = local.create_network && local.is_multi_nic ? module.network_common[0].common["sli_network"]["id"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
   slo_network          = local.create_network ? module.network_common[0].common["slo_network"]["id"] : var.existing_network_outside.network_name
@@ -74,8 +74,20 @@ module "node" {
   f5xc_api_token              = var.f5xc_api_token
   f5xc_namespace              = var.f5xc_namespace
   f5xc_ce_user_data           = module.config[each.key].ce["user_data"]
+  f5xc_cluster_name           = var.f5xc_cluster_name
   f5xc_cluster_size           = var.f5xc_cluster_size
   f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
   f5xc_registration_retry     = var.f5xc_registration_retry
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
+}
+
+module "site_wait_for_online" {
+  depends_on     = [module.node]
+  source         = "../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = var.f5xc_cluster_name
+  f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

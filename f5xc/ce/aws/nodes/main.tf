@@ -1,11 +1,11 @@
 resource "aws_instance" "instance" {
   ami                  = var.aws_instance_image
+  tags                 = local.common_tags
+  key_name             = var.ssh_public_key_name
+  monitoring           = var.aws_instance_monitoring
   instance_type        = var.aws_instance_type
   user_data_base64     = base64encode(var.f5xc_instance_config)
-  monitoring           = var.aws_instance_monitoring
-  key_name             = var.ssh_public_key_name
   iam_instance_profile = var.aws_iam_instance_profile_id
-  tags                 = local.common_tags
 
   root_block_device {
     volume_size = var.aws_instance_disk_size

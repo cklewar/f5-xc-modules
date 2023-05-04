@@ -6,7 +6,7 @@ module "smg" {
   f5xc_create_virtual_site              = var.f5xc_create_virtual_site
   f5xc_site_mesh_group_name             = var.f5xc_site_mesh_group_name != "" ? var.f5xc_site_mesh_group_name : format("%s-%s-%s", var.f5xc_secure_mesh_site_prefix, "smg", var.f5xc_secure_mesh_site_suffix)
   f5xc_site_2_site_connection_type      = var.f5xc_site_2_site_connection_type
-  f5xc_virtual_site_selector_expression = length(var.f5xc_virtual_site_selector_expression) > 0 ? var.f5xc_virtual_site_selector_expression : local.site_selector_expression
+  f5xc_virtual_site_selector_expression = length(var.f5xc_virtual_site_selector_expression) > 0 ? var.f5xc_virtual_site_selector_expression : local.virtual_site_selector_expression
 }
 
 resource "restapi_object" "secure_mesh_site_aws" {

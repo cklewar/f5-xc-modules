@@ -182,9 +182,10 @@ variable "f5xc_secure_mesh_site" {
 variable "f5xc_site_type_certified_hw" {
   type    = map(string)
   default = {
-    "aws"    = "aws-voltmesh"
-    "gcp"    = "gcp-voltmesh"
-    "azure"  = "azure-voltmesh"
-    "vmware" = "vmware-voltmesh"
+    aws    = "generic-single-nic-voltmesh"
+    gcp    = "generic-single-nic-voltmesh"
+    kvm    = "kvm-voltmesh"
+    azure  = "generic-single-nic-voltmesh"
+    vmware = "vmware-voltmesh"
   }
 }

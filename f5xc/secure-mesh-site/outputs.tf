@@ -18,6 +18,6 @@ output "secure-mesh-site" {
         config = restapi_object.secure_mesh_site_azure
       } : null*/
     }
-    site_mesh_group = var.f5xc_create_virtual_site ? module.smg.site_mesh_group : null
+    site_mesh_group = var.f5xc_create_site_mesh_group ? module.smg[0].site_mesh_group : null
   }
 }

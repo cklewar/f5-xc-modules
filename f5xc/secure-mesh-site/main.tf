@@ -1,6 +1,8 @@
 module "smg" {
   source                           = "../site-mesh-group"
   f5xc_tenant                      = var.f5xc_tenant
+  f5xc_virtual_site_name           = var.f5xc_virtual_site_name
+  f5xc_create_virtual_site         = true
   f5xc_site_mesh_group_name        = var.f5xc_site_mesh_group_name
   f5xc_site_2_site_connection_type = var.f5xc_site_2_site_connection_type
 }

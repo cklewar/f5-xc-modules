@@ -1,6 +1,5 @@
 output "secure-mesh-site" {
   value = {
-    smg      = module.smg
     provider = {
       aws = length(module.aws) > 0 ? {
         ce   = module.aws[0].ce
@@ -19,5 +18,6 @@ output "secure-mesh-site" {
         config = restapi_object.secure_mesh_site_azure
       } : null*/
     }
+    site_mesh_group = module.smg.site_mesh_group
   }
 }

@@ -1,3 +1,10 @@
+module "virtual_site" {
+  source                 = "../site/virtual"
+  count                  = var.f5xc_create_virtual_site && var.f5xc_virtual_site_name != ""? 1 : 0
+  f5xc_virtual_site_name = var.f5xc_virtual_site_name
+  f5xc_virtual_site_type = var.f5xc_virtual_site_type
+}
+
 resource "volterra_site_mesh_group" "site_mesh_group" {
   name        = var.f5xc_site_mesh_group_name
   namespace   = var.f5xc_namespace
@@ -13,10 +20,7 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
 
   dynamic "full_mesh" {
     for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_full_mesh ? [1] : []
-    content {
-      # control_and_data_plane_mesh = var.f5xc_site_mesh_group_full_mesh_control_and_data_plane_mesh
-      # data_plane_mesh             = var.f5xc_site_mesh_group_full_mesh_data_plane_mesh
-    }
+    content {}
   }
 
   dynamic "spoke_mesh" {

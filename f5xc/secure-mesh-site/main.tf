@@ -1,10 +1,12 @@
 module "smg" {
-  source                           = "../site-mesh-group"
-  f5xc_tenant                      = var.f5xc_tenant
-  f5xc_virtual_site_name           = var.f5xc_virtual_site_name
-  f5xc_create_virtual_site         = true
-  f5xc_site_mesh_group_name        = var.f5xc_site_mesh_group_name
-  f5xc_site_2_site_connection_type = var.f5xc_site_2_site_connection_type
+  source                                = "../site-mesh-group"
+  count                                 = var.f5xc_create_site_mesh_group ? 1 : 0
+  f5xc_tenant                           = var.f5xc_tenant
+  f5xc_virtual_site_name                = var.f5xc_virtual_site_name != "" ? var.f5xc_virtual_site_name : format("%s-%s-%s", var.f5xc_secure_mesh_site_prefix, "vs", var.f5xc_secure_mesh_site_suffix)
+  f5xc_create_virtual_site              = var.f5xc_create_virtual_site
+  f5xc_site_mesh_group_name             = var.f5xc_site_mesh_group_name != "" ? var.f5xc_site_mesh_group_name : format("%s-%s-%s", var.f5xc_secure_mesh_site_prefix, "smg", var.f5xc_secure_mesh_site_suffix)
+  f5xc_site_2_site_connection_type      = var.f5xc_site_2_site_connection_type
+  f5xc_virtual_site_selector_expression = var.f5xc_virtual_site_selector_expression != "" ? var.f5xc_virtual_site_selector_expression : local.site_selector_expression
 }
 
 resource "restapi_object" "secure_mesh_site_aws" {
@@ -15,21 +17,21 @@ resource "restapi_object" "secure_mesh_site_aws" {
 }
 
 resource "restapi_object" "secure_mesh_site_gcp" {
-  for_each     = contains(keys(local.secure_mesh_site_data), "gcp") ? {for index, site in local.secure_mesh_site_data["gcp"] : index => site} : {}
+  for_each     = contains(keys(local.secure_mesh_site_data), "gcp") ? {for index, site in local.secure_mesh_site_data["gcp"] : site.name => site.json} : {}
   path         = "/config/namespaces/system/securemesh_sites"
   data         = each.value
   id_attribute = "metadata/name"
 }
 
 resource "restapi_object" "secure_mesh_site_azure" {
-  for_each     = contains(keys(local.secure_mesh_site_data), "azure") ? {for index, site in local.secure_mesh_site_data["azure"] : index => site} : {}
+  for_each     = contains(keys(local.secure_mesh_site_data), "azure") ? {for index, site in local.secure_mesh_site_data["azure"] : site.name => site.json} : {}
   path         = "/config/namespaces/system/securemesh_sites"
   data         = each.value
   id_attribute = "metadata/name"
 }
 
 /*resource "restapi_object" "secure_mesh_site_vmware" {
-  for_each     = contains(keys(local.secure_mesh_site_data), "vmware") ? {for index, site in local.secure_mesh_site_data["vmware"] : index => site} : {}
+  for_each     = contains(keys(local.secure_mesh_site_data), "vmware") ? {for index, site in local.secure_mesh_site_data["vmware"] : site.name => site.json} : {}
   path         = "/config/namespaces/system/securemesh_sites"
   data         = each.value
   id_attribute = "metadata/name"

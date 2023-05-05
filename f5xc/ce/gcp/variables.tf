@@ -10,15 +10,15 @@ variable "existing_network_outside" {
   default = null
 }
 
-variable "machine_type" {
+variable "instance_type" {
   type = string
 }
 
-variable "machine_image" {
+variable "instance_image" {
   type = string
 }
 
-variable "machine_disk_size" {
+variable "instance_disk_size" {
   type = string
 }
 

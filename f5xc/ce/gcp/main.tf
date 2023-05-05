@@ -13,14 +13,14 @@ module "network_common" {
 }
 
 module "network_node" {
-  for_each                 = local.create_network ? {for k, v in var.f5xc_ce_nodes : k=>v} : {}
+  for_each                 = {for k, v in var.f5xc_ce_nodes : k=>v}
   source                   = "./network/node"
   gcp_region               = var.gcp_region
   is_multi_nic             = local.is_multi_nic
   slo_subnet_name          = "${var.f5xc_cluster_name}-${each.key}-slo-subnetwork"
   sli_subnet_name          = "${var.f5xc_cluster_name}-${each.key}-sli-subnetwork"
-  slo_vpc_network_id       = module.network_common[0].common["slo_network"]["id"]
-  sli_vpc_network_id       = local.is_multi_nic ? module.network_common[0].common["sli_network"]["id"] : ""
+  slo_vpc_network_id       = local.create_network ? module.network_common[0].common["slo_network"]["id"] : var.existing_network_outside["network_id"]
+  sli_vpc_network_id       = local.is_multi_nic ? local.create_network ? module.network_common[0].common["sli_network"]["id"] : var.existing_network_inside["network_id"] : ""
   subnet_slo_ip_cidr_range = var.f5xc_ce_nodes[each.key].slo_subnet
   subnet_sli_ip_cidr_range = local.is_multi_nic ? var.f5xc_ce_nodes[each.key].sli_subnet : ""
 }
@@ -29,8 +29,8 @@ module "firewall" {
   source               = "./firewall"
   count                = local.create_network ? 1 : 0
   is_multi_nic         = local.is_multi_nic
-  sli_network          = local.create_network && local.is_multi_nic ? module.network_common[0].common["sli_network"]["id"] : local.is_multi_nic ? var.existing_network_inside.network_name : ""
-  slo_network          = local.create_network ? module.network_common[0].common["slo_network"]["id"] : var.existing_network_outside.network_name
+  sli_network          = local.is_multi_nic ? local.create_network ? module.network_common[0].common["sli_network"]["name"] : var.existing_network_inside["network_name"] : ""
+  slo_network          = local.create_network ? module.network_common[0].common["slo_network"]["name"] : var.existing_network_outside["network_name"]
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall.rules) > 0 ? var.f5xc_ce_sli_firewall : local.f5xc_secure_ce_sli_firewall_default)) : {
     rules = []

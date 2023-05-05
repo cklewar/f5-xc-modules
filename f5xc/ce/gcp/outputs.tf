@@ -1,9 +1,9 @@
 output "ce" {
   value = {
     network = {
-      common = module.network_common[0].common
+      common = local.create_network ? module.network_common[0].common : null
     }
-    firewall = module.firewall[0].ce
+    firewall = local.create_network ? module.firewall[0].ce : null
     nodes    = {
       for node in keys(var.f5xc_ce_nodes) : node=> {
         node    = module.node[node].ce

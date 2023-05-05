@@ -3,7 +3,7 @@ locals {
   vpm_vars     = {
     service_ip                  = var.host_localhost_public_name
     cluster_type                = var.cluster_type
-    cluster_name                = var.instance_name
+    cluster_name                = var.cluster_name
     private_nic                 = var.slo_nic
     cluster_token               = var.volterra_token
     cluster_latitude            = var.f5xc_cluster_latitude

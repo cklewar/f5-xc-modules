@@ -1,3 +1,7 @@
+variable "owner" {
+  type = string
+}
+
 variable "gcp_region" {
   type = string
 }
@@ -177,7 +181,8 @@ variable "f5xc_cluster_longitude" {
 }
 
 variable "f5xc_cluster_labels" {
-  type = map(string)
+  type    = map(string)
+  default = {}
 }
 
 variable "f5xc_cluster_name" {

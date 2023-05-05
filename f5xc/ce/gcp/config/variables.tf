@@ -44,7 +44,7 @@ variable "certified_hardware_endpoint" {
   default = "https://vesio.blob.core.windows.net/releases/certified-hardware/gcp.yml"
 }
 
-variable "instance_name" {
+variable "cluster_name" {
   type = string
 }
 

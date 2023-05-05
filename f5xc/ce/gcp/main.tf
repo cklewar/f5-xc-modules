@@ -41,7 +41,7 @@ module "firewall" {
 module "config" {
   source                     = "./config"
   for_each                   = {for k, v in var.f5xc_ce_nodes : k=>v}
-  instance_name              = format("%s-%s", var.f5xc_cluster_name, each.key)
+  cluster_name               = var.f5xc_cluster_name
   volterra_token             = volterra_token.site.id
   cluster_labels             = var.f5xc_cluster_labels
   ssh_public_key             = var.ssh_public_key

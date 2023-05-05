@@ -1,6 +1,3 @@
-variable "availabilty_zone" {
-  default = ""
-}
 resource "google_compute_instance" "instance" {
   name                      = var.f5xc_node_name
   tags                      = var.instance_tags

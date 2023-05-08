@@ -1,5 +1,20 @@
-data "google_compute_instance" "instance" {
+data "google_compute_instance" "node0" {
   depends_on = [module.site_wait_for_online]
-  name = regex(local.f5xc_gcp_instance_name_pattern, volterra_tf_params_action.gcp_vpc_action.tf_output)[0]
-  zone = element(var.f5xc_gcp_zone_names, 0)
+  count      = length(local.f5xc_instance_names)
+  name       = local.f5xc_instance_names[count.index]
+  zone       = element(var.f5xc_gcp_zone_names, 0)
+}
+
+data "google_compute_instance" "node1" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(local.f5xc_instance_names)
+  name       = local.f5xc_instance_names[count.index]
+  zone       = element(var.f5xc_gcp_zone_names, 1)
+}
+
+data "google_compute_instance" "node2" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(local.f5xc_instance_names)
+  name       = local.f5xc_instance_names[count.index]
+  zone       = element(var.f5xc_gcp_zone_names, 2)
 }

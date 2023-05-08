@@ -1,3 +1,7 @@
+variable "is_multi_node" {
+  type = bool
+}
+
 variable "f5xc_api_url" {
   type = string
 }
@@ -26,6 +30,34 @@ variable "instance_disk_size" {
   type = string
 }
 
+variable "instance_template_description" {
+  type = string
+}
+
+variable "instance_template_create_timeout" {
+  type = string
+}
+
+variable "instance_template_delete_timeout" {
+  type = string
+}
+
+variable "instance_group_manager_description" {
+  type = string
+}
+
+variable "instance_group_manager_distribution_policy_zones" {
+  type = list(string)
+}
+
+variable "instance_group_manager_wait_for_instances" {
+  type = bool
+}
+
+variable "instance_group_manager_base_instance_name" {
+  type = string
+}
+
 variable "sli_subnetwork" {
   type = string
 }
@@ -34,16 +66,8 @@ variable "slo_subnetwork" {
   type = string
 }
 
-variable "allow_stopping_for_update" {
-  type = bool
-}
-
 variable "instance_tags" {
   type = list(string)
-}
-
-variable "availability_zone" {
-  type = string
 }
 
 variable "ssh_public_key" {
@@ -51,6 +75,10 @@ variable "ssh_public_key" {
 }
 
 variable "ssh_username" {
+  type = string
+}
+
+variable "gcp_region" {
   type = string
 }
 
@@ -104,8 +132,8 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "f5xc_node_name" {
-  type = string
+variable "f5xc_ce_nodes" {
+  type = map(map(string))
 }
 
 variable "f5xc_cluster_name" {

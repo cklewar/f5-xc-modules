@@ -2,6 +2,7 @@ locals {
   is_multi_nic            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
   create_network          = var.existing_network_outside == null || (var.existing_network_outside == null && var.existing_network_inside == null) ? true : false
   f5xc_cluster_labels     = merge({ ves-io-site-name = var.f5xc_cluster_name, ves-io-creator-id = var.owner }, var.f5xc_cluster_labels)
+  f5xc_cluster_node_azs   = [for node in var.f5xc_ce_nodes : node["az"]]
   f5xc_ip_ranges_americas = concat(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
   f5xc_ip_ranges_europe   = concat(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)
   f5xc_ip_ranges_asia     = concat(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)

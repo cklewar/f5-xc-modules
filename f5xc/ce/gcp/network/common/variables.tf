@@ -13,3 +13,23 @@ variable "f5xc_cluster_name" {
 variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
+
+variable "gcp_region" {
+  type = string
+}
+
+variable "subnet_slo_ip_cidr_range" {
+  type = string
+}
+
+variable "subnet_sli_ip_cidr_range" {
+  type = string
+}
+
+variable "slo_subnet_name" {
+  type = string
+}
+
+variable "sli_subnet_name" {
+  type = string
+}

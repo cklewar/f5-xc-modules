@@ -26,6 +26,26 @@ variable "instance_disk_size" {
   type = string
 }
 
+variable "instance_template_description" {
+  type    = string
+  default = "F5XC Cloud CE default template"
+}
+
+variable "instance_group_manager_description" {
+  type    = string
+  default = "F5XC Cloud CE default instance group manager"
+}
+
+variable "instance_group_manager_wait_for_instances" {
+  type    = bool
+  default = true
+}
+
+variable "instance_group_manager_base_instance_name" {
+  type    = string
+  default = "node"
+}
+
 variable "host_localhost_public_name" {
   type    = string
   default = "vip"
@@ -39,6 +59,16 @@ variable "allow_stopping_for_update" {
 variable "instance_tags" {
   type    = list(string)
   default = []
+}
+
+variable "instance_template_create_timeout" {
+  type    = string
+  default = "15m"
+}
+
+variable "instance_template_delete_timeout" {
+  type    = string
+  default = "15m"
 }
 
 variable "gcp_service_account_email" {
@@ -173,11 +203,13 @@ variable "f5xc_ce_gateway_type" {
 }
 
 variable "f5xc_cluster_latitude" {
-  type = string
+  type    = string
+  default = 37.773972
 }
 
 variable "f5xc_cluster_longitude" {
-  type = string
+  type    = string
+  default = -122.431297
 }
 
 variable "f5xc_cluster_labels" {
@@ -195,6 +227,15 @@ variable "f5xc_ce_nodes" {
     condition     = length(var.f5xc_ce_nodes) == 1 || length(var.f5xc_ce_nodes) == 3 || length(var.f5xc_ce_nodes) == 0
     error_message = "f5xc_ce_nodes must be 0,1 or 3"
   }
+}
+
+variable "f5xc_ce_slo_subnet" {
+  type = string
+}
+
+variable "f5xc_ce_sli_subnet" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_api_url" {

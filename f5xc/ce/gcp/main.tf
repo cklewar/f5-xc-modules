@@ -4,25 +4,17 @@ resource "volterra_token" "site" {
 }
 
 module "network_common" {
-  count                   = local.create_network ? 1 : 0
-  source                  = "./network/common"
-  is_multi_nic            = local.is_multi_nic
-  f5xc_cluster_name       = var.f5xc_cluster_name
-  auto_create_subnetworks = var.auto_create_subnetworks
-  f5xc_is_secure_cloud_ce = var.f5xc_is_secure_cloud_ce
-}
-
-module "network_node" {
-  for_each                 = {for k, v in var.f5xc_ce_nodes : k=>v}
-  source                   = "./network/node"
+  count                    = local.create_network ? 1 : 0
+  source                   = "./network/common"
   gcp_region               = var.gcp_region
   is_multi_nic             = local.is_multi_nic
-  slo_subnet_name          = "${var.f5xc_cluster_name}-${each.key}-slo-subnetwork"
-  sli_subnet_name          = "${var.f5xc_cluster_name}-${each.key}-sli-subnetwork"
-  slo_vpc_network_id       = local.create_network ? module.network_common[0].common["slo_network"]["id"] : var.existing_network_outside["network_id"]
-  sli_vpc_network_id       = local.is_multi_nic ? local.create_network ? module.network_common[0].common["sli_network"]["id"] : var.existing_network_inside["network_id"] : ""
-  subnet_slo_ip_cidr_range = var.f5xc_ce_nodes[each.key].slo_subnet
-  subnet_sli_ip_cidr_range = local.is_multi_nic ? var.f5xc_ce_nodes[each.key].sli_subnet : ""
+  slo_subnet_name          = "${var.f5xc_cluster_name}-slo-subnetwork"
+  sli_subnet_name          = "${var.f5xc_cluster_name}-sli-subnetwork"
+  f5xc_cluster_name        = var.f5xc_cluster_name
+  auto_create_subnetworks  = var.auto_create_subnetworks
+  f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
+  subnet_slo_ip_cidr_range = var.f5xc_ce_slo_subnet
+  subnet_sli_ip_cidr_range = local.is_multi_nic ? var.f5xc_ce_sli_subnet : ""
 }
 
 module "firewall" {
@@ -40,7 +32,6 @@ module "firewall" {
 
 module "config" {
   source                     = "./config"
-  for_each                   = {for k, v in var.f5xc_ce_nodes : k=>v}
   cluster_name               = var.f5xc_cluster_name
   volterra_token             = volterra_token.site.id
   cluster_labels             = var.f5xc_cluster_labels
@@ -52,35 +43,41 @@ module "config" {
 }
 
 module "node" {
-  source                      = "./nodes"
-  for_each                    = {for k, v in var.f5xc_ce_nodes : k=>v}
-  is_sensitive                = var.is_sensitive
-  ssh_username                = var.ssh_username
-  instance_type               = var.instance_type
-  has_public_ip               = var.has_public_ip
-  instance_tags               = var.instance_tags
-  instance_image              = var.instance_image
-  availability_zone           = var.f5xc_ce_nodes[each.key].az
-  sli_subnetwork              = local.create_network && local.is_multi_nic ? module.network_node[each.key].ce["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
-  slo_subnetwork              = local.create_network ? module.network_node[each.key].ce["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
-  ssh_public_key              = var.ssh_public_key
-  instance_disk_size          = var.instance_disk_size
-  access_config_nat_ip        = var.access_config_nat_ip
-  allow_stopping_for_update   = var.allow_stopping_for_update
-  gcp_service_account_email   = var.gcp_service_account_email
-  gcp_service_account_scopes  = var.gcp_service_account_scopes
-  f5xc_tenant                 = var.f5xc_tenant
-  f5xc_api_url                = var.f5xc_api_url
-  f5xc_api_token              = var.f5xc_api_token
-  f5xc_namespace              = var.f5xc_namespace
-  f5xc_node_name              = format("%s-%s", var.f5xc_cluster_name, each.key)
-  f5xc_ce_user_data           = module.config[each.key].ce["user_data"]
-  f5xc_cluster_name           = var.f5xc_cluster_name
-  f5xc_cluster_size           = length(var.f5xc_ce_nodes)
-  f5xc_cluster_labels         = var.f5xc_cluster_labels
-  f5xc_ce_gateway_type        = var.f5xc_ce_gateway_type
-  f5xc_registration_retry     = var.f5xc_registration_retry
-  f5xc_registration_wait_time = var.f5xc_registration_wait_time
+  source                                           = "./nodes"
+  gcp_region                                       = var.gcp_region
+  is_sensitive                                     = var.is_sensitive
+  is_multi_node                                    = false
+  ssh_username                                     = var.ssh_username
+  instance_type                                    = var.instance_type
+  has_public_ip                                    = var.has_public_ip
+  ssh_public_key                                   = var.ssh_public_key
+  slo_subnetwork                                   = local.create_network ? module.network_common[0].common["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
+  sli_subnetwork                                   = local.create_network && local.is_multi_nic ? module.network_common[0].common["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
+  access_config_nat_ip                             = var.access_config_nat_ip
+  gcp_service_account_email                        = var.gcp_service_account_email
+  gcp_service_account_scopes                       = var.gcp_service_account_scopes
+  instance_tags                                    = var.instance_tags
+  instance_image                                   = var.instance_image
+  instance_disk_size                               = var.instance_disk_size
+  instance_template_description                    = var.instance_template_description
+  instance_template_create_timeout                 = var.instance_template_create_timeout
+  instance_template_delete_timeout                 = var.instance_template_delete_timeout
+  instance_group_manager_description               = var.instance_group_manager_description
+  instance_group_manager_wait_for_instances        = var.instance_group_manager_wait_for_instances
+  instance_group_manager_base_instance_name        = var.instance_group_manager_base_instance_name
+  instance_group_manager_distribution_policy_zones = local.f5xc_cluster_node_azs
+  f5xc_tenant                                      = var.f5xc_tenant
+  f5xc_api_url                                     = var.f5xc_api_url
+  f5xc_ce_nodes                                    = var.f5xc_ce_nodes
+  f5xc_api_token                                   = var.f5xc_api_token
+  f5xc_namespace                                   = var.f5xc_namespace
+  f5xc_ce_user_data                                = module.config.ce["user_data"]
+  f5xc_cluster_name                                = var.f5xc_cluster_name
+  f5xc_cluster_size                                = length(var.f5xc_ce_nodes)
+  f5xc_cluster_labels                              = var.f5xc_cluster_labels
+  f5xc_ce_gateway_type                             = var.f5xc_ce_gateway_type
+  f5xc_registration_retry                          = var.f5xc_registration_retry
+  f5xc_registration_wait_time                      = var.f5xc_registration_wait_time
 }
 
 module "site_wait_for_online" {

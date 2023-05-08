@@ -80,8 +80,16 @@ module "node" {
   f5xc_registration_wait_time                      = var.f5xc_registration_wait_time
 }
 
+/*module "timeout" {
+  source         = "../../../utils/timeout"
+  depend_on      = [module.node.ce]
+  create_timeout = "1m"
+  delete_timeout = "1m"
+}*/
+
 module "site_wait_for_online" {
-  depends_on     = [module.node]
+  # depends_on     = [module.timeout]
+  depends_on     = [module.node.ce]
   source         = "../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url

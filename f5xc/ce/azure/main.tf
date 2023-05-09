@@ -22,6 +22,11 @@ module "ce_default_security_rules" {
   azure_security_group_rules_sli = local.is_multi_nic ? local.azure_security_group_rules_sli_default : []
 }
 
+module "maurice" {
+  source       = "../../../utils/maurice"
+  f5xc_api_url = var.f5xc_api_url
+}
+
 module "network_common" {
   source                        = "./network/common"
   common_tags                   = local.common_tags
@@ -112,6 +117,8 @@ module "config" {
   owner_tag                   = var.owner_tag
   is_multi_nic                = local.is_multi_nic
   ssh_public_key              = var.ssh_public_key
+  maurice_endpoint            = module.maurice.endpoints.maurice
+  maurice_mtls_endpoint       = module.maurice.endpoints.maurice_mtls
 }
 
 module "node" {

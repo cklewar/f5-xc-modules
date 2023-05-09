@@ -16,18 +16,11 @@ locals {
 
   vpm_config = yamlencode({
     "Vpm" : {
-      # "Roles" : var.server_roles, # pool only
-      # "SkipStages" : var.vp_manager_node_skip_stages # || var.vp_manager_pool_skip_stages,
-      # "DisableModules" : [],
-      # "ClusterUid" : var.cluster_uid,
       "ClusterName" : var.f5xc_cluster_name,
       "ClusterType" : var.f5xc_cluster_type,
       "Token" : var.f5xc_site_token,
-      "InsideNIC" : "" # var.public_nic,
-      "PrivateNIC" : "" # var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_nic : "",
-      # "PrivateDefaultGw" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_default_gw : "",
-      # "PrivateVnPrefix" : var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? var.private_vn_prefix : "",
-      # "CustomerRoute" : var.customer_route,
+      # "InsideNIC" : ""
+      # "PrivateNIC" : ""
       "Latitude" : var.f5xc_cluster_latitude,
       "Longitude" : var.f5xc_cluster_longitude,
       "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
@@ -35,17 +28,9 @@ locals {
       "Labels" : var.f5xc_cluster_labels,
       "CertifiedHardwareEndpoint" : var.f5xc_certified_hardware_endpoint,
     }
-    # Workload : var.cluster_workload,
     Kubernetes : {
-      # "CloudProvider" : "",
-      # "EtcdClusterServers" : [] # pool only
-      "EtcdUseTLS" : true # node only
+      "EtcdUseTLS" : true
       "Server" : var.f5xc_ce_hosts_public_name
-      #"Images" : {
-      #  "Hyperkube" : var.container_images["Hyperkube"]
-      #  "CoreDNS" : var.container_images["CoreDNS"] # node only
-      #  "Etcd" : var.container_images["Etcd"] # node only
-      #}
     }
   })
 

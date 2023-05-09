@@ -1,6 +1,6 @@
 data "google_compute_instance" "node0" {
   depends_on = [module.site_wait_for_online]
-  count      = length(local.f5xc_instance_names)
+  count      = var.f5xc_gcp_node_number
   name       = local.f5xc_instance_names[count.index]
   zone       = element(var.f5xc_gcp_zone_names, 0)
 }

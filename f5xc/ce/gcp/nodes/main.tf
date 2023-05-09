@@ -79,9 +79,16 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
   }
 }
 
+module "wait" {
+  source         = "../../../../utils/timeout"
+  depend_on      = "google_compute_region_instance_group_manager.instance_group_manager"
+  create_timeout = "1m"
+  delete_timeout = "1m"
+}
+
 resource "volterra_registration_approval" "nodes" {
+  depends_on   = [module.wait]
   # depends_on   = [google_compute_region_instance_group_manager.instance_group_manager]
-  depends_on   = [google_compute_region_instance_group_manager.instance_group_manager]
   for_each     = {for k, v in data.google_compute_instance.instances : k => v.name if data.google_compute_instance.instances[k].name != null}
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size

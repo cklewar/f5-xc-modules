@@ -8,13 +8,11 @@ variable "f5xc_certified_hardware_endpoint" {
 }
 
 variable "maurice_endpoint" {
-  type    = string
-  default = "https://register.ves.volterra.io"
+  type = string
 }
 
 variable "maurice_mtls_endpoint" {
-  type    = string
-  default = "https://register-tls.ves.volterra.io"
+  type = string
 }
 
 variable "f5xc_registration_token" {

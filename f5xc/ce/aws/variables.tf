@@ -475,24 +475,3 @@ variable "f5xc_ce_egress_ip_ranges" {
     "52.94.208.0/21"
   ]
 }
-
-variable "f5xc_environment" {
-  type    = string
-  default = "production"
-}
-
-variable "maurice_endpoint" {
-  type    = map(string)
-  default = {
-    production = "https://register.ves.volterra.io"
-    staging    = ""
-  }
-}
-
-variable "maurice_mtls_endpoint" {
-  type    = map(string)
-  default = {
-    production = "https://register-tls.ves.volterra.io"
-    staging    = ""
-  }
-}

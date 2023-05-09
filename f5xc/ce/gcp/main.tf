@@ -3,6 +3,11 @@ resource "volterra_token" "site" {
   namespace = var.f5xc_namespace
 }
 
+module "maurice" {
+  source       = "../../../utils/maurice"
+  f5xc_api_url = var.f5xc_api_url
+}
+
 module "network_common" {
   count                    = local.create_network ? 1 : 0
   source                   = "./network/common"
@@ -40,6 +45,8 @@ module "config" {
   f5xc_ce_gateway_type       = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude      = var.f5xc_cluster_latitude
   f5xc_cluster_longitude     = var.f5xc_cluster_longitude
+  maurice_endpoint           = module.maurice.endpoints.maurice
+  maurice_mtls_endpoint      = module.maurice.endpoints.maurice_mtls
 }
 
 module "node" {

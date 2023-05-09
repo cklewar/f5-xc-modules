@@ -97,13 +97,11 @@ variable "vp_manager_mask_fetch_latest" {
 }
 
 variable "maurice_endpoint" {
-  type    = string
-  default = "https://register.ves.volterra.io"
+  type = string
 }
 
 variable "maurice_mtls_endpoint" {
-  type    = string
-  default = "https://register-tls.ves.volterra.io"
+  type = string
 }
 
 variable "f5xc_cluster_uid" {

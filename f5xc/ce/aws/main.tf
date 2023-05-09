@@ -8,6 +8,11 @@ resource "aws_key_pair" "aws_key" {
   public_key = var.ssh_public_key
 }
 
+module "maurice" {
+  source       = "../../../utils/maurice"
+  f5xc_api_url = var.f5xc_api_url
+}
+
 module "network_common" {
   source                                                 = "./network/common"
   owner_tag                                              = var.owner_tag
@@ -84,8 +89,8 @@ module "config" {
   f5xc_ce_gateway_type         = var.f5xc_ce_gateway_type
   f5xc_ce_hosts_public_name    = var.f5xc_ce_hosts_public_name
   f5xc_ce_hosts_public_address = var.has_public_ip == false && var.f5xc_is_secure_cloud_ce ? module.secure_ce[each.key].ce["eip"][0]["public_dns"] : module.network_node[each.key].ce["slo"]["public_dns"][0]
-  maurice_endpoint             = var.maurice_endpoint[var.f5xc_environment]
-  maurice_mtls_endpoint        = var.maurice_mtls_endpoint[var.f5xc_environment]
+  maurice_endpoint             = module.maurice.endpoints.maurice
+  maurice_mtls_endpoint        = module.maurice.endpoints.maurice_mtls
 }
 
 module "node" {

@@ -191,6 +191,9 @@ resource "volterra_gcp_vpc_site" "site" {
     }
   }
   ssh_key = var.ssh_public_key
+  lifecycle {
+    ignore_changes = [labels]
+  }
 }
 
 resource "volterra_cloud_site_labels" "labels" {

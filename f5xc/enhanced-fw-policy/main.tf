@@ -12,24 +12,24 @@ resource "volterra_enhanced_firewall_policy" "efp" {
           name = rules.value.metadata.name
         }
         applications {
-          applications = rules.value.applications != null ? rules.value.applications.applications : []
+          applications = rules.value.applications
         }
         insert_service {
           nfv_service {
-            name = rules.value.insert_service != null ? rules.value.insert_service.nfv_service.name : ""
+            name = rules.value.insert_service.nfv_service != null ? rules.value.insert_service.nfv_service.name : ""
           }
         }
         source_aws_vpc_ids {
-          vpc_id = rules.value.source_aws_vpc_ids != null ? rules.value.source_aws_vpc_ids.vpc_id : []
+          vpc_id = rules.value.source_aws_vpc_ids
         }
         destination_aws_vpc_ids {
-          vpc_id = rules.value.destination_aws_vpc_ids != null ? rules.value.destination_aws_vpc_ids.vpc_id : []
+          vpc_id = rules.value.destination_aws_vpc_ids
         }
         source_prefix_list {
-          prefixes = rules.value.source_prefix_list != null ? rules.value.source_prefix_list.prefixes : []
+          prefixes = rules.value.source_prefix_list
         }
         destination_prefix_list {
-          prefixes = rules.value.destination_prefix_list != null ? rules.value.destination_prefix_list.prefixes : []
+          prefixes = rules.value.destination_prefix_list
         }
       }
     }

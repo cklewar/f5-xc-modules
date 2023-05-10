@@ -53,7 +53,6 @@ module "node" {
   source                                           = "./nodes"
   gcp_region                                       = var.gcp_region
   is_sensitive                                     = var.is_sensitive
-  is_multi_node                                    = false
   ssh_username                                     = var.ssh_username
   instance_type                                    = var.instance_type
   has_public_ip                                    = var.has_public_ip

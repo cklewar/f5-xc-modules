@@ -18,6 +18,7 @@ output "f5xc_aws_tgw" {
             public_ip        = data.aws_network_interface.master-0-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-0-slo.*.association[0][0].public_dns_name
             subnet_id        = data.aws_network_interface.master-0-slo.*.subnet_id[0]
+            security_groups  = data.aws_network_interface.master-0-slo.*.security_groups
           },
           sli = {
             id               = data.aws_network_interface.master-0-sli.*.id[0]
@@ -25,6 +26,7 @@ output "f5xc_aws_tgw" {
             private_dns_name = data.aws_network_interface.master-0-sli.*.private_dns_name[0]
             subnet_id        = data.aws_network_interface.master-0-sli.*.subnet_id[0]
             route_table_id   = data.aws_route_table.master-0-sli-rt.*.id[0]
+            security_groups  = data.aws_network_interface.master-0-sli.*.security_groups
           }
         }
       }
@@ -39,6 +41,7 @@ output "f5xc_aws_tgw" {
             public_ip        = data.aws_network_interface.master-1-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-1-slo.*.association[0][0].public_dns_name
             subnet_id        = data.aws_network_interface.master-1-slo.*.subnet_id[0]
+            security_groups  = data.aws_network_interface.master-1-slo.*.security_groups
           },
           sli = {
             id               = data.aws_network_interface.master-1-sli.*.id[0]
@@ -46,6 +49,7 @@ output "f5xc_aws_tgw" {
             private_dns_name = data.aws_network_interface.master-1-sli.*.private_dns_name[0]
             subnet_id        = data.aws_network_interface.master-1-sli.*.subnet_id[0]
             route_table_id   = data.aws_route_table.master-1-sli-rt.*.id[0]
+            security_groups  = data.aws_network_interface.master-1-sli.*.security_groups
           }
         }
       } : null,
@@ -59,7 +63,8 @@ output "f5xc_aws_tgw" {
             private_dns_name = data.aws_network_interface.master-2-slo.*.private_dns_name[0]
             public_ip        = data.aws_network_interface.master-2-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-2-slo.*.association[0][0].public_dns_name
-            subnet_id        = data.aws_network_interface.master-2-slo.*.subnet_id
+            subnet_id        = data.aws_network_interface.master-2-slo.*.subnet_id[0]
+            security_groups  = data.aws_network_interface.master-2-slo.*.security_groups
           },
           sli = {
             id               = data.aws_network_interface.master-2-sli.*.id[0]
@@ -67,6 +72,7 @@ output "f5xc_aws_tgw" {
             private_dns_name = data.aws_network_interface.master-2-sli.*.private_dns_name[0]
             subnet_id        = data.aws_network_interface.master-2-sli.*.subnet_id[0]
             route_table_id   = data.aws_route_table.master-2-sli-rt.*.id[0]
+            security_groups  = data.aws_network_interface.master-2-sli.*.security_groups
           }
         }
       } : null

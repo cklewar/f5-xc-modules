@@ -79,16 +79,8 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
   }
 }
 
-module "wait" {
-  source         = "../../../../utils/timeout"
-  depend_on      = "google_compute_region_instance_group_manager.instance_group_manager"
-  create_timeout = "1m"
-  delete_timeout = "1m"
-}
-
 resource "volterra_registration_approval" "nodes" {
-  depends_on   = [module.wait]
-  # depends_on   = [google_compute_region_instance_group_manager.instance_group_manager]
+  depends_on   = [google_compute_region_instance_group_manager.instance_group_manager]
   for_each     = {for k, v in data.google_compute_instance.instances : k => v.name if data.google_compute_instance.instances[k].name != null}
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size
@@ -104,4 +96,22 @@ resource "volterra_site_state" "decommission_when_delete" {
   state      = "DECOMMISSIONING"
   wait_time  = var.f5xc_registration_wait_time
   retry      = var.f5xc_registration_retry
+}
+
+module "timeout" {
+  source         = "../../../../utils/timeout"
+  depend_on      = volterra_registration_approval.nodes
+  create_timeout = "1m"
+  delete_timeout = "1m"
+}
+
+module "site_wait_for_online" {
+  depends_on     = [module.timeout]
+  source         = "../../../status/site"
+  f5xc_api_token = var.f5xc_api_token
+  f5xc_api_url   = var.f5xc_api_url
+  f5xc_namespace = var.f5xc_namespace
+  f5xc_site_name = var.f5xc_cluster_name
+  f5xc_tenant    = var.f5xc_tenant
+  is_sensitive   = var.is_sensitive
 }

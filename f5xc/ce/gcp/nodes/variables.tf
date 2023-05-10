@@ -1,7 +1,3 @@
-variable "is_multi_node" {
-  type = bool
-}
-
 variable "f5xc_api_url" {
   type = string
 }

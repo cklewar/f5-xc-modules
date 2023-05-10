@@ -16,7 +16,7 @@ resource "volterra_enhanced_firewall_policy" "efp" {
         }
         insert_service {
           nfv_service {
-            name = rules.value.insert_service.nfv_service != null ? rules.value.insert_service.nfv_service.name : ""
+            name = rules.value.insert_service != null ? rules.value.insert_service.nfv_service.name : ""
           }
         }
         source_aws_vpc_ids {

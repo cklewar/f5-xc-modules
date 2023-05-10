@@ -6,7 +6,7 @@ variable "f5xc_enhanced_fw_policy_name" {
   type = string
 }
 
-variable "rules" {
+variable "f5xc_enhanced_fw_policy_rules" {
   type = list(object({
     allow      = bool
     all_source = bool

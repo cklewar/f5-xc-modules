@@ -98,15 +98,16 @@ resource "volterra_site_state" "decommission_when_delete" {
   retry      = var.f5xc_registration_retry
 }
 
-module "timeout" {
+/*module "timeout" {
   source         = "../../../../utils/timeout"
   depend_on      = volterra_registration_approval.nodes
   create_timeout = "2m"
   delete_timeout = "30s"
-}
+}*/
 
 module "site_wait_for_online" {
-  depends_on     = [module.timeout]
+  # depends_on     = [module.timeout]
+  depends_on     = [volterra_registration_approval.nodes]
   source         = "../../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url

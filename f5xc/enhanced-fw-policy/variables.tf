@@ -8,8 +8,8 @@ variable "f5xc_enhanced_fw_policy_name" {
 
 variable "rules" {
   type = list(object({
-    all_source = bool
     allow      = bool
+    all_source = bool
     metadata   = object({
       name = string
     })

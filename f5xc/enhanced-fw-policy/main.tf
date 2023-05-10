@@ -3,20 +3,17 @@ resource "volterra_enhanced_firewall_policy" "efp" {
   namespace = var.f5xc_namespace
 
   rule_list {
-    rules {
-      metadata {
-        name = "rule1"
-      }
-      source_prefix_list {
-        prefixes = [element(var.f5xc_aws_vpc_prefixes, 0)]
-      }
-      destination_prefix_list {
-        prefixes = [element(var.f5xc_aws_vpc_prefixes, 1)]
-      }
-      insert_service {
-        nfv_service {
-          name = var.f5xc_nfv_name
-        }
+    dynamic "rules" {
+      for_each = var.rules
+      content {
+        allow                   = rules.value.all_source
+        metadata                = rules.value.metadata
+        all_source              = rules.value.all_source
+        applications            = rules.value.applications
+        insert_service          = rules.value.insert_service
+        source_aws_vpc_ids      = rules.value.source_aws_vpc_ids
+        source_prefix_list      = rules.value.source_prefix_list
+        destination_prefix_list = rules.value.destination_prefix_list
       }
     }
   }

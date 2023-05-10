@@ -81,7 +81,7 @@ variable "aws_ec2_network_interfaces_ref" {
 variable "aws_ec2_network_interfaces" {
   type = list(object({
     create_eip      = bool
-    private_ips     = list(string)
+    private_ips     = optional(list(string), [])
     security_groups = list(string)
     subnet_id       = string
     custom_tags     = optional(map(string))

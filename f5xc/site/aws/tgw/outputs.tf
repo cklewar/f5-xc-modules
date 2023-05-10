@@ -59,7 +59,7 @@ output "f5xc_aws_tgw" {
             private_dns_name = data.aws_network_interface.master-2-slo.*.private_dns_name[0]
             public_ip        = data.aws_network_interface.master-2-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-2-slo.*.association[0][0].public_dns_name
-            subnet_id        = data.aws_network_interface.master-2-slo.*.subnet_id
+            subnet_id        = data.aws_network_interface.master-2-slo.*.subnet_id[0]
           },
           sli = {
             id               = data.aws_network_interface.master-2-sli.*.id[0]

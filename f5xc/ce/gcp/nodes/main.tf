@@ -101,8 +101,8 @@ resource "volterra_site_state" "decommission_when_delete" {
 module "timeout" {
   source         = "../../../../utils/timeout"
   depend_on      = volterra_registration_approval.nodes
-  create_timeout = "1m"
-  delete_timeout = "1m"
+  create_timeout = "2m"
+  delete_timeout = "30s"
 }
 
 module "site_wait_for_online" {

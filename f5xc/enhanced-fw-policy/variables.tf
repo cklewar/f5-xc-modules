@@ -16,6 +16,9 @@ variable "f5xc_enhanced_fw_policy_rules" {
     source_aws_vpc_ids = optional(object({
       vpc_id = list(string)
     }))
+    destination_aws_vpc_ids = optional(object({
+      vpc_id = list(string)
+    }))
     source_prefix_list = optional(object({
       prefixes = list(string)
     }))

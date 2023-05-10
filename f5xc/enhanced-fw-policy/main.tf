@@ -6,14 +6,31 @@ resource "volterra_enhanced_firewall_policy" "efp" {
     dynamic "rules" {
       for_each = var.f5xc_enhanced_fw_policy_rules
       content {
-        allow                   = rules.value.all_source
-        metadata                = rules.value.metadata
-        all_source              = rules.value.all_source
-        applications            = rules.value.applications
-        insert_service          = rules.value.insert_service
-        source_aws_vpc_ids      = rules.value.source_aws_vpc_ids
-        source_prefix_list      = rules.value.source_prefix_list
-        destination_prefix_list = rules.value.destination_prefix_list
+        allow       = rules.value.allow
+        all_sources = rules.value.all_source
+        metadata {
+          name = rules.value.metadata.name
+        }
+        applications {
+          applications = rules.value.applications != null ? rules.value.applications.applications : []
+        }
+        insert_service {
+          nfv_service {
+            name = rules.value.insert_service != null ? rules.value.insert_service.nfv_service.name : ""
+          }
+        }
+        source_aws_vpc_ids {
+          vpc_id = rules.value.source_aws_vpc_ids != null ? rules.value.source_aws_vpc_ids.vpc_id : []
+        }
+        destination_aws_vpc_ids {
+          vpc_id = rules.value.destination_aws_vpc_ids != null ? rules.value.destination_aws_vpc_ids.vpc_id : []
+        }
+        source_prefix_list {
+          prefixes = rules.value.source_prefix_list != null ? rules.value.source_prefix_list.prefixes : []
+        }
+        destination_prefix_list {
+          prefixes = rules.value.destination_prefix_list != null ? rules.value.destination_prefix_list.prefixes : []
+        }
       }
     }
   }

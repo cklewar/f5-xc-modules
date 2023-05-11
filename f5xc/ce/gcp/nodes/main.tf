@@ -80,11 +80,11 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
 }
 
 resource "volterra_registration_approval" "nodes" {
-  depends_on   = [google_compute_region_instance_group_manager.instance_group_manager]
-  for_each     = {for k, v in data.google_compute_instance.instances : k => v.name if data.google_compute_instance.instances[k].name != null}
+  # depends_on   = [data.google_compute_instance.instances]
+  count        = length(local.node_names)
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size
-  hostname     = each.value
+  hostname     = local.node_names[count.index]
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
 }
@@ -98,15 +98,7 @@ resource "volterra_site_state" "decommission_when_delete" {
   retry      = var.f5xc_registration_retry
 }
 
-/*module "timeout" {
-  source         = "../../../../utils/timeout"
-  depend_on      = volterra_registration_approval.nodes
-  create_timeout = "2m"
-  delete_timeout = "30s"
-}*/
-
 module "site_wait_for_online" {
-  # depends_on     = [module.timeout]
   depends_on     = [volterra_registration_approval.nodes]
   source         = "../../../status/site"
   f5xc_api_token = var.f5xc_api_token

@@ -80,7 +80,6 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
 }
 
 resource "volterra_registration_approval" "nodes" {
-  # depends_on   = [data.google_compute_instance.instances]
   count        = length(local.node_names)
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.f5xc_cluster_size

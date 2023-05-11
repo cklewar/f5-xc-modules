@@ -8,5 +8,4 @@ variable "delete_timeout" {
   default = "5s"
 }
 
-variable "depend_on" {
-}
+variable "depend_on" {}

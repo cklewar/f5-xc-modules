@@ -254,7 +254,7 @@ variable "f5xc_gcp_labels" {
   default = {}
 }
 
-variable "f5xc_forward_proxy_policies" {
+variable "f5xc_active_forward_proxy_policies" {
   type = list(object({
     name      = string
     tenant    = string

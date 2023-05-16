@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -252,4 +252,22 @@ variable "f5xc_labels" {
 variable "f5xc_gcp_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "f5xc_forward_proxy_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
+variable "f5xc_active_network_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
 }

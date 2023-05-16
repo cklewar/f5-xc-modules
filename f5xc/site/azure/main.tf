@@ -188,7 +188,6 @@ resource "volterra_azure_vnet_site" "site" {
         content {
           forward_proxy_policies {
             name      = active_forward_proxy_policies.value.name
-            # kind      = "forward_proxy_policy"
             tenant    = active_forward_proxy_policies.value.tenant
             namespace = active_forward_proxy_policies.value.namespace
           }
@@ -200,7 +199,6 @@ resource "volterra_azure_vnet_site" "site" {
         content {
           network_policies {
             name      = active_network_policies.value.name
-            # kind      = "network_policy_view"
             tenant    = active_network_policies.value.tenant
             namespace = active_network_policies.value.namespace
           }

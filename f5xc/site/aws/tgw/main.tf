@@ -1,13 +1,39 @@
 resource "volterra_aws_tgw_site" "site" {
   name                     = var.f5xc_aws_tgw_name
-  labels                   = var.f5xc_aws_tgw_labels
   tags                     = var.custom_tags
+  labels                   = var.f5xc_aws_tgw_labels
   namespace                = var.f5xc_namespace
   description              = var.f5xc_aws_tgw_description
   annotations              = var.f5xc_aws_tgw_annotations
   direct_connect_disabled  = var.f5xc_aws_tgw_direct_connect_disabled
   logs_streaming_disabled  = var.f5xc_aws_tgw_logs_streaming_disabled
   default_blocked_services = var.f5xc_aws_tgw_default_blocked_services
+
+  tgw_security {
+    dynamic "active_forward_proxy_policies" {
+      for_each = var.f5xc_forward_proxy_policies
+      content {
+        forward_proxy_policies {
+          name      = active_forward_proxy_policies.value.name
+          kind      = "forward_proxy_policy"
+          tenant    = active_forward_proxy_policies.value.tenant
+          namespace = active_forward_proxy_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_network_policies" {
+      for_each = var.f5xc_active_network_policies
+      content {
+        network_policies {
+          name      = active_network_policies.value.name
+          kind      = "network_policy_view"
+          tenant    = active_network_policies.value.tenant
+          namespace = active_network_policies.value.namespace
+        }
+      }
+    }
+  }
 
   dynamic "direct_connect_enabled" {
     for_each = var.f5xc_aws_tgw_direct_connect_disabled == false ? [1] : []

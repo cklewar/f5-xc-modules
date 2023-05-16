@@ -271,3 +271,20 @@ variable "f5xc_aws_tgw_sm_connection_public_ip" {
   default = true
 }
 
+variable "f5xc_forward_proxy_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
+variable "f5xc_active_network_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}

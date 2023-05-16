@@ -8,6 +8,7 @@ resource "volterra_gcp_vpc_site" "site" {
   default_blocked_services = var.f5xc_gcp_default_blocked_services
   labels                   = var.f5xc_labels
   gcp_labels               = var.f5xc_gcp_labels
+
   cloud_credentials {
     name      = var.f5xc_gcp_cred
     namespace = var.f5xc_namespace
@@ -26,9 +27,14 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
-      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
-      gcp_zone_names   = var.f5xc_gcp_zone_names
-      node_number      = var.f5xc_gcp_node_number
+      node_number              = var.f5xc_gcp_node_number
+      gcp_zone_names           = var.f5xc_gcp_zone_names
+      gcp_certified_hw         = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
+      no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
+      no_network_policy        = var.f5xc_gcp_no_network_policy
+      no_global_network        = var.f5xc_gcp_no_global_network
+      no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
+      no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
 
       dynamic "local_network" {
         for_each = var.f5xc_gcp_local_network_name != "" || (var.f5xc_gcp_local_network_name == "" && var.f5xc_gcp_new_network_autogenerate == true) || var.f5xc_gcp_existing_local_network_name != "" ? [
@@ -80,8 +86,8 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
-      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
       gcp_zone_names   = var.f5xc_gcp_zone_names
+      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
 
       dynamic "outside_network" {
         for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
@@ -182,14 +188,32 @@ resource "volterra_gcp_vpc_site" "site" {
         }
       }
 
-      no_global_network        = var.f5xc_gcp_no_global_network
-      no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
-      no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
-      no_network_policy        = var.f5xc_gcp_no_network_policy
-      no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
-      node_number              = var.f5xc_gcp_node_number
+      dynamic "active_forward_proxy_policies" {
+        for_each = var.f5xc_forward_proxy_policies
+        content {
+          forward_proxy_policies {
+            name      = active_forward_proxy_policies.value.name
+            kind      = "forward_proxy_policy"
+            tenant    = active_forward_proxy_policies.value.tenant
+            namespace = active_forward_proxy_policies.value.namespace
+          }
+        }
+      }
+
+      dynamic "active_network_policies" {
+        for_each = var.f5xc_active_network_policies
+        content {
+          network_policies {
+            name      = active_network_policies.value.name
+            kind      = "network_policy_view"
+            tenant    = active_network_policies.value.tenant
+            namespace = active_network_policies.value.namespace
+          }
+        }
+      }
     }
   }
+
   ssh_key = var.ssh_public_key
   lifecycle {
     ignore_changes = [labels]
@@ -198,16 +222,15 @@ resource "volterra_gcp_vpc_site" "site" {
 
 resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_gcp_vpc_site.site.name
-  site_type        = var.f5xc_gcp_site_kind
-  # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.f5xc_labels)
+  site_type        = var.f5xc_gcp_site_kind
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }
 
 resource "volterra_tf_params_action" "gcp_vpc_action" {
+  action          = var.f5xc_tf_params_action
   site_name       = volterra_gcp_vpc_site.site.name
   site_kind       = var.f5xc_gcp_site_kind
-  action          = var.f5xc_tf_params_action
   wait_for_action = var.f5xc_tf_wait_for_action
 }
 

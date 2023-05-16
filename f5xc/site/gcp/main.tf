@@ -81,8 +81,13 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
-      gcp_zone_names   = var.f5xc_gcp_zone_names
-      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
+      gcp_zone_names           = var.f5xc_gcp_zone_names
+      no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
+      gcp_certified_hw         = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
+      no_network_policy        = var.f5xc_gcp_no_network_policy
+      no_global_network        = var.f5xc_gcp_no_global_network
+      no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
+      no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
 
       dynamic "outside_network" {
         for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
@@ -204,13 +209,8 @@ resource "volterra_gcp_vpc_site" "site" {
           }
         }
       }
-    }
 
-    no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
-    no_network_policy        = var.f5xc_gcp_no_network_policy
-    no_global_network        = var.f5xc_gcp_no_global_network
-    no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
-    no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
+    }
   }
 
   ssh_key = var.ssh_public_key

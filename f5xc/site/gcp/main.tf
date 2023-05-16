@@ -189,7 +189,7 @@ resource "volterra_gcp_vpc_site" "site" {
       }
 
       dynamic "active_forward_proxy_policies" {
-        for_each = var.f5xc_forward_proxy_policies
+        for_each = var.f5xc_active_forward_proxy_policies
         content {
           forward_proxy_policies {
             name      = active_forward_proxy_policies.value.name

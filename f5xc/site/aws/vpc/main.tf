@@ -177,7 +177,6 @@ resource "volterra_aws_vpc_site" "site" {
       }
 
       no_global_network = var.f5xc_aws_vpc_no_global_network
-      # no_outside_static_routes = var.f5xc_aws_vpc_no_outside_static_routes
       dynamic "outside_static_routes" {
         for_each = length(var.f5xc_aws_vpc_outside_static_routes) > 0 ? [1] : []
         content {
@@ -190,7 +189,6 @@ resource "volterra_aws_vpc_site" "site" {
         }
       }
 
-      # no_inside_static_routes = var.f5xc_aws_vpc_no_inside_static_routes
       dynamic "inside_static_routes" {
         for_each = length(var.f5xc_aws_vpc_inside_static_routes) > 0 ? [1] : []
         content {
@@ -202,8 +200,32 @@ resource "volterra_aws_vpc_site" "site" {
           }
         }
       }
-      no_network_policy = var.f5xc_aws_vpc_no_network_policy
-      no_forward_proxy  = var.f5xc_aws_vpc_no_forward_proxy
+      no_network_policy = length(var.f5xc_active_network_policies) > 0 ? false : true
+      no_forward_proxy  = length(var.f5xc_active_forward_proxy_policies) > 0 ? false : true
+
+      dynamic "active_forward_proxy_policies" {
+        for_each = var.f5xc_active_forward_proxy_policies
+        content {
+          forward_proxy_policies {
+            name      = active_forward_proxy_policies.value.name
+            kind      = "forward_proxy_policy"
+            tenant    = active_forward_proxy_policies.value.tenant
+            namespace = active_forward_proxy_policies.value.namespace
+          }
+        }
+      }
+
+      dynamic "active_network_policies" {
+        for_each = var.f5xc_active_network_policies
+        content {
+          network_policies {
+            name      = active_network_policies.value.name
+            kind      = "network_policy_view"
+            tenant    = active_network_policies.value.tenant
+            namespace = active_network_policies.value.namespace
+          }
+        }
+      }
     }
   }
 

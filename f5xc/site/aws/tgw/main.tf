@@ -31,6 +31,28 @@ resource "volterra_aws_tgw_site" "site" {
         }
       }
     }
+
+    dynamic "active_enhanced_firewall_policies" {
+      for_each = var.f5xc_active_enhanced_firewall_policies
+      content {
+        enhanced_firewall_policies {
+          name      = active_enhanced_firewall_policies.value.name
+          tenant    = active_enhanced_firewall_policies.value.tenant
+          namespace = active_enhanced_firewall_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_enhanced_firewall_policies" {
+      for_each = var.f5xc_active_enhanced_firewall_policies
+      content {
+        enhanced_firewall_policies {
+          name      = active_enhanced_firewall_policies.value.name
+          tenant    = active_enhanced_firewall_policies.value.tenant
+          namespace = active_enhanced_firewall_policies.value.namespace
+        }
+      }
+    }
   }
 
   dynamic "direct_connect_enabled" {

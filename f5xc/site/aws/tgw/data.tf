@@ -35,6 +35,15 @@ data "aws_vpc" "tgw_vpc" {
   }
 }
 
+data "aws_lb" "tgw_nlb" {
+  depends_on = [module.site_wait_for_online]
+  count      = var.f5xc_aws_tgw_enable_internet_vip ? 1 : 0
+  tags       = {
+    "ves-io/nlb-type"  = "internet-vip",
+    "ves-io-site-name" = var.f5xc_aws_tgw_name
+  }
+}
+
 data "aws_instance" "master-0" {
   depends_on = [module.site_wait_for_online]
 

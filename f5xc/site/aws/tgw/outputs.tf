@@ -2,6 +2,7 @@ output "f5xc_aws_tgw" {
   value = {
     tgw                 = data.aws_ec2_transit_gateway.tgw
     tgw_vpc             = data.aws_vpc.tgw_vpc
+    tgw_nlb             = var.f5xc_aws_tgw_enable_internet_vip ? data.aws_lb.tgw_nlb : null
     params              = volterra_tf_params_action.aws_tgw_action
     site_name           = volterra_aws_tgw_site.site.name
     namespace           = volterra_aws_tgw_site.site.namespace

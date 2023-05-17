@@ -81,6 +81,7 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
+      node_number              = var.f5xc_gcp_node_number
       gcp_zone_names           = var.f5xc_gcp_zone_names
       no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
       gcp_certified_hw         = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]

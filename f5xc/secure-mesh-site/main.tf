@@ -39,7 +39,7 @@ resource "restapi_object" "secure_mesh_site_vmware" {
 
 /*module "vmware" {
   depends_on                                         = [restapi_object.secure_mesh_site_vmware]
-  source                                             = "../ce/vsphere"
+  source                                             = "../ce/vsphere_new"
   count                                              = var.f5xc_secure_mesh_site.vmware != null ? length(var.f5xc_secure_mesh_site.vmware) : 0
   is_sensitive                                       = var.f5xc_secure_mesh_site.vmware[count.index].is_sensitive
   f5xc_tenant                                        = var.f5xc_tenant

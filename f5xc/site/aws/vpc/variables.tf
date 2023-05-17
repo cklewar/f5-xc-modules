@@ -265,6 +265,15 @@ variable "f5xc_active_network_policies" {
   default = []
 }
 
+variable "f5xc_active_enhanced_firewall_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
 variable "is_sensitive" {
   type    = bool
   default = false

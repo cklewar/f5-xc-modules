@@ -27,14 +27,9 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
-      node_number              = var.f5xc_gcp_node_number
-      gcp_zone_names           = var.f5xc_gcp_zone_names
-      gcp_certified_hw         = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
-      no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
-      no_network_policy        = var.f5xc_gcp_no_network_policy
-      no_global_network        = var.f5xc_gcp_no_global_network
-      no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
-      no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
+      node_number      = var.f5xc_gcp_node_number
+      gcp_zone_names   = var.f5xc_gcp_zone_names
+      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
 
       dynamic "local_network" {
         for_each = var.f5xc_gcp_local_network_name != "" || (var.f5xc_gcp_local_network_name == "" && var.f5xc_gcp_new_network_autogenerate == true) || var.f5xc_gcp_existing_local_network_name != "" ? [
@@ -86,8 +81,14 @@ resource "volterra_gcp_vpc_site" "site" {
   dynamic "ingress_egress_gw" {
     for_each = var.f5xc_gcp_ce_gw_type == var.f5xc_nic_type_multi_nic ? [1] : []
     content {
-      gcp_zone_names   = var.f5xc_gcp_zone_names
-      gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
+      node_number              = var.f5xc_gcp_node_number
+      gcp_zone_names           = var.f5xc_gcp_zone_names
+      no_forward_proxy         = var.f5xc_gcp_no_forward_proxy
+      gcp_certified_hw         = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
+      no_network_policy        = var.f5xc_gcp_no_network_policy
+      no_global_network        = var.f5xc_gcp_no_global_network
+      no_inside_static_routes  = var.f5xc_gcp_no_inside_static_routes
+      no_outside_static_routes = var.f5xc_gcp_no_outside_static_routes
 
       dynamic "outside_network" {
         for_each = var.f5xc_gcp_outside_network_name != "" || (var.f5xc_gcp_new_network_autogenerate == true && var.f5xc_gcp_outside_network_name == "") || (var.f5xc_gcp_existing_outside_network_name != "") ? [1] : []
@@ -193,7 +194,6 @@ resource "volterra_gcp_vpc_site" "site" {
         content {
           forward_proxy_policies {
             name      = active_forward_proxy_policies.value.name
-            kind      = "forward_proxy_policy"
             tenant    = active_forward_proxy_policies.value.tenant
             namespace = active_forward_proxy_policies.value.namespace
           }
@@ -205,9 +205,19 @@ resource "volterra_gcp_vpc_site" "site" {
         content {
           network_policies {
             name      = active_network_policies.value.name
-            kind      = "network_policy_view"
             tenant    = active_network_policies.value.tenant
             namespace = active_network_policies.value.namespace
+          }
+        }
+      }
+
+      dynamic "active_enhanced_firewall_policies" {
+        for_each = var.f5xc_active_enhanced_firewall_policies
+        content {
+          enhanced_firewall_policies {
+            name      = active_enhanced_firewall_policies.value.name
+            tenant    = active_enhanced_firewall_policies.value.tenant
+            namespace = active_enhanced_firewall_policies.value.namespace
           }
         }
       }

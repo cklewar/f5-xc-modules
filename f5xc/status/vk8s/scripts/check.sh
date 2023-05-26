@@ -43,7 +43,7 @@ fi
 while true; do
   content=$(
     curl -s -X 'GET' \
-      "$4" \
+      "${check_url}" \
       -H 'accept: application/data' \
       -H 'Access-Control-Allow-Origin: *' \
       -H 'Authorization: APIToken '"${api_token}" \
@@ -58,7 +58,7 @@ while true; do
       ((counter += 1))
       content=$(
         curl -s -X 'GET' \
-          "$1" \
+          "${url}" \
           -H 'accept: application/data' \
           -H 'Access-Control-Allow-Origin: *' \
           -H 'Authorization: APIToken '"${api_token}" \
@@ -120,7 +120,7 @@ fi
 while true; do
   content=$(
     curl --cert-type P12 --cert "${cert_p12_file}":"${cert_password}" -s -X 'GET' \
-      "$4" \
+      "${check_url}" \
       -H 'accept: application/data' \
       -H 'Access-Control-Allow-Origin: *' \
       -H 'x-volterra-apigw-tenant: '"${tenant}" 2>/dev/null
@@ -134,7 +134,7 @@ while true; do
       ((counter += 1))
       content=$(
         curl --cert-type P12 --cert "${cert_p12_file}":"${cert_password}" -s -X 'GET' \
-          "$1" \
+          "${url}" \
           -H 'accept: application/data' \
           -H 'Access-Control-Allow-Origin: *' \
           -H 'x-volterra-apigw-tenant: '"${tenant}" 2>/dev/null

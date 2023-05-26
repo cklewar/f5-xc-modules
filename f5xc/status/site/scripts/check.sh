@@ -143,5 +143,3 @@ if [[ "${check_type}" == "cert" ]] ; then
 
   done
 fi
-
-

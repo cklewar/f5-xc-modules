@@ -262,7 +262,6 @@ resource "google_compute_network_peering" "hub_to_spoke_a" {
   peer_network         = google_compute_network.spoke_a.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider             = google.us-east1
 }
 
 resource "google_compute_network_peering" "spoke_a_to_hub" {
@@ -272,7 +271,6 @@ resource "google_compute_network_peering" "spoke_a_to_hub" {
   peer_network         = data.google_compute_network.hub.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider             = google.us-east1
 }
 
 resource "google_compute_network_peering" "hub_to_spoke_b" {
@@ -282,7 +280,6 @@ resource "google_compute_network_peering" "hub_to_spoke_b" {
   peer_network         = google_compute_network.spoke_b.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider             = google.us-east1
 }
 
 resource "google_compute_network_peering" "spoke_b_to_hub" {
@@ -292,6 +289,5 @@ resource "google_compute_network_peering" "spoke_b_to_hub" {
   peer_network         = data.google_compute_network.hub.self_link
   import_custom_routes = true
   export_custom_routes = true
-  provider             = google.us-east1
 }
 */

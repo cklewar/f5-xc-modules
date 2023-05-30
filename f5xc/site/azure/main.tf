@@ -7,8 +7,8 @@ resource "volterra_azure_vnet_site" "site" {
 
   azure_cred {
     name      = var.f5xc_azure_cred
-    namespace = var.f5xc_namespace
     tenant    = var.f5xc_tenant
+    namespace = var.f5xc_namespace
   }
 
   logs_streaming_disabled = var.f5xc_azure_logs_streaming_disabled
@@ -182,39 +182,6 @@ resource "volterra_azure_vnet_site" "site" {
       no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
       no_network_policy        = var.f5xc_azure_no_network_policy
       no_forward_proxy         = var.f5xc_azure_no_forward_proxy
-
-      dynamic "active_forward_proxy_policies" {
-        for_each = var.f5xc_active_forward_proxy_policies
-        content {
-          forward_proxy_policies {
-            name      = active_forward_proxy_policies.value.name
-            tenant    = active_forward_proxy_policies.value.tenant
-            namespace = active_forward_proxy_policies.value.namespace
-          }
-        }
-      }
-
-      dynamic "active_network_policies" {
-        for_each = var.f5xc_active_network_policies
-        content {
-          network_policies {
-            name      = active_network_policies.value.name
-            tenant    = active_network_policies.value.tenant
-            namespace = active_network_policies.value.namespace
-          }
-        }
-      }
-
-      dynamic "active_enhanced_firewall_policies" {
-        for_each = var.f5xc_active_enhanced_firewall_policies
-        content {
-          enhanced_firewall_policies {
-            name      = active_enhanced_firewall_policies.value.name
-            tenant    = active_enhanced_firewall_policies.value.tenant
-            namespace = active_enhanced_firewall_policies.value.namespace
-          }
-        }
-      }
     }
   }
 

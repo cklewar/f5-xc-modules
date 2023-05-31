@@ -10,7 +10,7 @@ variable "aws_vpc_subnets" {
     cidr_block               = string
     custom_tags              = map(string)
     availability_zone        = string
-    create_igw_default_route = optional(bool, false)
     map_public_ip_on_launch  = bool
+    create_igw_default_route = optional(bool, false)
   }))
 }

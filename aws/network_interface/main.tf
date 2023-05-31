@@ -9,7 +9,6 @@ resource "aws_network_interface" "interface" {
 
 resource "aws_eip" "eip" {
   count             = var.aws_interface_create_eip ? 1 : 0
-  # vpc               = true # deprecated
   tags              = var.custom_tags
   network_interface = aws_network_interface.interface.id
 }

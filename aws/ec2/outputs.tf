@@ -8,7 +8,7 @@ output "aws_ec2_instance" {
     private_dns        = aws_instance.instance.private_dns
     script_file        = var.aws_ec2_instance_script_file
     script_source      = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
-    network_interface  = aws_instance.instance.network_interface
+    network_interface  = data.aws_network_interface.interfaces
     script_destination = format("/tmp/%s", var.aws_ec2_instance_script_file)
     custom_data_dirs   = var.aws_ec2_instance_custom_data_dirs
   }

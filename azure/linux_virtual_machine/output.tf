@@ -10,5 +10,9 @@ output "virtual_machine" {
     network_interfaces    = [for interface in azurerm_network_interface.network_interface : interface]
     resource_group_name   = azurerm_linux_virtual_machine.vm.resource_group_name
     network_interface_ids = azurerm_linux_virtual_machine.vm.network_interface_ids
+    network_interfaces    = {
+      0 = azurerm_network_interface.network_interface[0]
+      1 = azurerm_network_interface.network_interface[1]
+    }
   }
 }

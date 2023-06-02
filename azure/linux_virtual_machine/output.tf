@@ -4,7 +4,6 @@ output "virtual_machine" {
     name                  = azurerm_linux_virtual_machine.vm.name
     public_ip             = azurerm_linux_virtual_machine.vm.public_ip_address
     private_ip            = azurerm_linux_virtual_machine.vm.private_ip_address
-    interfaces            = [for interface in azurerm_network_interface.network_interface : interface]
     custom_data           = azurerm_linux_virtual_machine.vm.custom_data
     admin_ssh_key         = azurerm_linux_virtual_machine.vm.admin_ssh_key
     admin_username        = azurerm_linux_virtual_machine.vm.admin_username

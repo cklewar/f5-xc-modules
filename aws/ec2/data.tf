@@ -5,6 +5,6 @@ data "aws_network_interface" "outside" {
 
 data "aws_network_interface" "inside" {
   depends_on = [aws_instance.instance]
-  count      = length(var.aws_ec2_network_interfaces) > 1 ? 1 : 0
+  count      = length(var.aws_ec2_network_interfaces) > 1 || var.aws_ec2_network_interfaces_ref > 0 ? 1 : 0
   id         = tolist(aws_instance.instance.network_interface)[1].network_interface_id
 }

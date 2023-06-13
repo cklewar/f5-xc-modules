@@ -213,7 +213,7 @@ variable "f5xc_origin_pool_origin_servers" {
       inside_network  = bool
       outside_network = bool
       site_locator    = optional(object({
-        sites = object({
+        eut = object({
           name      = string
           namespace = string
         })
@@ -237,7 +237,7 @@ variable "f5xc_origin_pool_origin_servers" {
       inside_network  = bool
       outside_network = bool
       site_locator    = optional(object({
-        sites = object({
+        eut = object({
           name      = string
           namespace = string
         })
@@ -253,7 +253,7 @@ variable "f5xc_origin_pool_origin_servers" {
       inside_network  = bool
       outside_network = bool
       site_locator    = optional(object({
-        sites = object({
+        eut = object({
           name      = string
           namespace = string
         })
@@ -269,7 +269,7 @@ variable "f5xc_origin_pool_origin_servers" {
       inside_network  = bool
       outside_network = bool
       site_locator    = optional(object({
-        sites = object({
+        eut = object({
           name      = string
           namespace = string
         })

@@ -223,11 +223,11 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
-variable "f5xc_ce_nodes" {
-  type = map(map(string))
+variable "f5xc_cluster_size" {
+  type = number
   validation {
-    condition     = length(var.f5xc_ce_nodes) == 1 || length(var.f5xc_ce_nodes) == 3 || length(var.f5xc_ce_nodes) == 0
-    error_message = "f5xc_ce_nodes must be 0,1 or 3"
+    condition     = length(var.f5xc_cluster_size) == 1 || length(var.f5xc_cluster_size) == 3 || length(var.f5xc_cluster_size) == 0
+    error_message = "f5xc_cluster_size must be 1 or 3"
   }
 }
 

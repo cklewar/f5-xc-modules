@@ -74,12 +74,11 @@ module "node" {
   instance_group_manager_distribution_policy_zones = local.f5xc_cluster_node_azs
   f5xc_tenant                                      = var.f5xc_tenant
   f5xc_api_url                                     = var.f5xc_api_url
-  f5xc_ce_nodes                                    = var.f5xc_ce_nodes
   f5xc_api_token                                   = var.f5xc_api_token
   f5xc_namespace                                   = var.f5xc_namespace
   f5xc_ce_user_data                                = module.config.ce["user_data"]
   f5xc_cluster_name                                = var.f5xc_cluster_name
-  f5xc_cluster_size                                = length(var.f5xc_ce_nodes)
+  f5xc_cluster_size                                = var.f5xc_cluster_size
   f5xc_cluster_labels                              = var.f5xc_cluster_labels
   f5xc_ce_gateway_type                             = var.f5xc_ce_gateway_type
   f5xc_registration_retry                          = var.f5xc_registration_retry

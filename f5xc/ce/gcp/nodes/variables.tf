@@ -128,10 +128,6 @@ variable "f5xc_ce_gateway_type" {
   type = string
 }
 
-variable "f5xc_ce_nodes" {
-  type = map(map(string))
-}
-
 variable "f5xc_cluster_name" {
   type = string
 }
@@ -139,4 +135,8 @@ variable "f5xc_cluster_name" {
 variable "f5xc_cluster_labels" {
   type    = map(string)
   default = {}
+}
+
+variable "f5xc_is_secure_cloud_ce" {
+  type = bool
 }

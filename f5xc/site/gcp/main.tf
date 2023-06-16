@@ -254,19 +254,40 @@ module "site_wait_for_online" {
   f5xc_tenant    = var.f5xc_tenant
 }
 
-/*resource "null_resource" "hcl2json_get" {
-  depends_on = [module.site_wait_for_online]
-  triggers   = {
-    url      = var.hcl2json_bin_url
-    filename = "hcl2json"
-    version  = var.hcl2json_version
-  }
-  provisioner "local-exec" {
-    command     = <<-EOT
-      PLATFORM=$(echo "$(uname)" | tr '[:upper:]' '[:lower:]')
-      ARCH=$(uname -m)
-      curl -o ${path.module}/scripts/${self.triggers.filename} -X 'GET' 2>/dev/null ${self.triggers.url}/${self.triggers.version}/hcl2json_$PLATFORM_$ARCH
-    EOT
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-  }
-}*/
+/*
+resource "google_compute_network_peering" "hub_to_spoke_a" {
+  depends_on           = [module.site_wait_for_online]
+  name                 = format("%s-hub-spoke-a-%s", var.project_prefix, var.project_suffix)
+  network              = data.google_compute_network.hub.self_link
+  peer_network         = google_compute_network.spoke_a.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+}
+
+resource "google_compute_network_peering" "spoke_a_to_hub" {
+  depends_on           = [module.site_wait_for_online]
+  name                 = format("%s-spoke-a-hub-%s", var.project_prefix, var.project_suffix)
+  network              = google_compute_network.spoke_a.self_link
+  peer_network         = data.google_compute_network.hub.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+}
+
+resource "google_compute_network_peering" "hub_to_spoke_b" {
+  depends_on           = [module.site_wait_for_online]
+  name                 = format("%s-hub-spoke-b-%s", var.project_prefix, var.project_suffix)
+  network              = data.google_compute_network.hub.self_link
+  peer_network         = google_compute_network.spoke_b.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+}
+
+resource "google_compute_network_peering" "spoke_b_to_hub" {
+  depends_on           = [module.site_wait_for_online]
+  name                 = format("%s-hub-spoke-b-%s", var.project_prefix, var.project_suffix)
+  network              = google_compute_network.spoke_b.self_link
+  peer_network         = data.google_compute_network.hub.self_link
+  import_custom_routes = true
+  export_custom_routes = true
+}
+*/

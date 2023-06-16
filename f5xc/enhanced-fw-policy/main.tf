@@ -7,6 +7,7 @@ resource "volterra_enhanced_firewall_policy" "efp" {
       for_each = var.f5xc_enhanced_fw_policy_rules
       content {
         allow       = rules.value.allow
+        all_traffic = rules.value.all_traffic
         all_sources = rules.value.all_source
         metadata {
           name = rules.value.metadata.name

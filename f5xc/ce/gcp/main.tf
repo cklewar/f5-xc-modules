@@ -17,9 +17,9 @@ module "network_common" {
   sli_subnet_name          = "${var.f5xc_cluster_name}-sli-subnetwork"
   f5xc_cluster_name        = var.f5xc_cluster_name
   auto_create_subnetworks  = var.auto_create_subnetworks
-  f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
   subnet_slo_ip_cidr_range = var.f5xc_ce_slo_subnet
   subnet_sli_ip_cidr_range = local.is_multi_nic ? var.f5xc_ce_sli_subnet : ""
+  f5xc_is_secure_cloud_ce  = var.f5xc_is_secure_cloud_ce
 }
 
 module "firewall" {
@@ -32,7 +32,7 @@ module "firewall" {
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall.rules) > 0 ? var.f5xc_ce_sli_firewall : local.f5xc_secure_ce_sli_firewall_default)) : {
     rules = []
   }
-  f5xc_ce_slo_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_slo_firewall : (length(var.f5xc_ce_slo_firewall.rules) > 0 ? var.f5xc_ce_slo_firewall : local.f5xc_secure_ce_slo_firewall_default)
+  f5xc_ce_slo_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_slo_firewall : var.f5xc_ce_slo_enable_secure_sg ? local.f5xc_secure_ce_slo_firewall : (length(var.f5xc_ce_slo_firewall.rules) > 0 ? var.f5xc_ce_slo_firewall : local.f5xc_secure_ce_slo_firewall_default)
 }
 
 module "config" {
@@ -74,7 +74,6 @@ module "node" {
   instance_group_manager_distribution_policy_zones = local.f5xc_cluster_node_azs
   f5xc_tenant                                      = var.f5xc_tenant
   f5xc_api_url                                     = var.f5xc_api_url
-  f5xc_ce_nodes                                    = var.f5xc_ce_nodes
   f5xc_api_token                                   = var.f5xc_api_token
   f5xc_namespace                                   = var.f5xc_namespace
   f5xc_ce_user_data                                = module.config.ce["user_data"]
@@ -83,5 +82,6 @@ module "node" {
   f5xc_cluster_labels                              = var.f5xc_cluster_labels
   f5xc_ce_gateway_type                             = var.f5xc_ce_gateway_type
   f5xc_registration_retry                          = var.f5xc_registration_retry
+  f5xc_is_secure_cloud_ce                          = var.f5xc_is_secure_cloud_ce
   f5xc_registration_wait_time                      = var.f5xc_registration_wait_time
 }

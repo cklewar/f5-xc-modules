@@ -136,3 +136,7 @@ variable "f5xc_cluster_labels" {
   type    = map(string)
   default = {}
 }
+
+variable "f5xc_is_secure_cloud_ce" {
+  type = bool
+}

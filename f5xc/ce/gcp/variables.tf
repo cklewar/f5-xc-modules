@@ -15,7 +15,8 @@ variable "existing_network_outside" {
 }
 
 variable "instance_type" {
-  type = string
+  type    = string
+  default = "n1-standard-4"
 }
 
 variable "instance_image" {
@@ -23,7 +24,8 @@ variable "instance_image" {
 }
 
 variable "instance_disk_size" {
-  type = string
+  type    = string
+  default = "40"
 }
 
 variable "instance_template_description" {
@@ -259,6 +261,11 @@ variable "f5xc_namespace" {
 }
 
 variable "f5xc_is_secure_cloud_ce" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_ce_slo_enable_secure_sg" {
   type    = bool
   default = false
 }

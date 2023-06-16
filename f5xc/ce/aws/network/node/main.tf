@@ -16,7 +16,7 @@ resource "aws_subnet" "sli" {
 module "network_interface_slo" {
   source                          = "../../../../../aws/network_interface"
   aws_interface_subnet_id         = aws_subnet.slo.id
-  aws_interface_create_eip        = var.has_public_ip
+  aws_interface_create_eip        = var.f5xc_is_secure_cloud_ce ? false : var.has_public_ip
   aws_interface_security_groups   = var.aws_sg_slo_ids
   aws_interface_source_dest_check = true
 }

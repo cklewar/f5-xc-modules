@@ -21,17 +21,18 @@ module "network_common" {
   create_new_aws_vpc                                     = var.create_new_aws_vpc
   f5xc_cluster_name                                      = var.f5xc_cluster_name
   f5xc_is_secure_cloud_ce                                = var.f5xc_is_secure_cloud_ce
+  f5xc_ce_slo_enable_secure_sg                           = var.f5xc_ce_slo_enable_secure_sg
   aws_vpc_cidr_block                                     = var.aws_vpc_cidr_block
   aws_existing_vpc_id                                    = var.aws_existing_vpc_id
   aws_security_group_rules_sli_egress                    = local.is_multi_nic ? (length(var.aws_security_group_rules_sli_egress) > 0 ? var.aws_security_group_rules_sli_egress : var.aws_security_group_rules_sli_egress_default) : []
   aws_security_group_rules_sli_ingress                   = local.is_multi_nic ? (length(var.aws_security_group_rules_sli_ingress) > 0 ? var.aws_security_group_rules_sli_ingress : var.aws_security_group_rules_sli_ingress_default) : []
-  aws_security_group_rules_slo_egress                    = length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : (var.f5xc_is_secure_cloud_ce == false ? var.aws_security_group_rules_slo_egress_default : [])
-  aws_security_group_rules_slo_ingress                   = length(var.aws_security_group_rules_slo_ingress) > 0 ? var.aws_security_group_rules_slo_ingress : (var.f5xc_is_secure_cloud_ce == false ? var.aws_security_group_rules_slo_ingress_default : [])
+  aws_security_group_rules_slo_egress                    = length(var.aws_security_group_rules_slo_egress) > 0 ? var.aws_security_group_rules_slo_egress : (var.f5xc_is_secure_cloud_ce == false || var.f5xc_ce_slo_enable_secure_sg == false ? var.aws_security_group_rules_slo_egress_default : [])
+  aws_security_group_rules_slo_ingress                   = length(var.aws_security_group_rules_slo_ingress) > 0 ? var.aws_security_group_rules_slo_ingress : (var.f5xc_is_secure_cloud_ce == false  || var.f5xc_ce_slo_enable_secure_sg == false ? var.aws_security_group_rules_slo_ingress_default : [])
   aws_security_group_rules_sli_egress_secure_ce          = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_egress_secure_ce : []
   aws_security_group_rules_sli_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_sli_ingress_secure_ce : []
-  aws_security_group_rules_slo_egress_secure_ce          = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce : []
-  aws_security_group_rules_slo_egress_secure_ce_extended = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_egress_secure_ce_extended : []
-  aws_security_group_rules_slo_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce ? local.aws_security_group_rules_slo_ingress_secure_ce : []
+  aws_security_group_rules_slo_egress_secure_ce          = var.f5xc_is_secure_cloud_ce || var.f5xc_ce_slo_enable_secure_sg ? local.aws_security_group_rules_slo_egress_secure_ce : []
+  aws_security_group_rules_slo_egress_secure_ce_extended = var.f5xc_is_secure_cloud_ce || var.f5xc_ce_slo_enable_secure_sg ? local.aws_security_group_rules_slo_egress_secure_ce_extended : []
+  aws_security_group_rules_slo_ingress_secure_ce         = var.f5xc_is_secure_cloud_ce || var.f5xc_ce_slo_enable_secure_sg ? local.aws_security_group_rules_slo_ingress_secure_ce : []
 }
 
 module "network_node" {

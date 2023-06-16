@@ -3,7 +3,8 @@ variable "is_sensitive" {
 }
 
 variable "has_public_ip" {
-  type = bool
+  type    = bool
+  default = true
 }
 
 variable "instance_type" {
@@ -150,11 +151,13 @@ variable "f5xc_cluster_labels" {
 }
 
 variable "f5xc_cluster_latitude" {
-  type = number
+  type    = number
+  default = -73.935242
 }
 
 variable "f5xc_cluster_longitude" {
-  type = number
+  type    = number
+  default = 40.730610
 }
 
 variable "f5xc_api_url" {
@@ -232,6 +235,11 @@ variable "f5xc_cluster_name" {
 }
 
 variable "f5xc_is_secure_cloud_ce" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_ce_slo_enable_secure_sg" {
   type    = bool
   default = false
 }

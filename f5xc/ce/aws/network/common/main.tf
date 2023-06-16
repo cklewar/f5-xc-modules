@@ -29,7 +29,7 @@ module "aws_security_group_sli" {
 
 module "aws_security_group_slo_secure_ce" {
   source                      = "../../../../../aws/security_group"
-  count                       = var.f5xc_is_secure_cloud_ce ? 1 : 0
+  count                       = var.f5xc_is_secure_cloud_ce || var.f5xc_ce_slo_enable_secure_sg ? 1 : 0
   aws_vpc_id                  = var.create_new_aws_vpc == false && var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   description                 = "F5 XC SECURE CLOUD CE SLO SG"
@@ -40,7 +40,7 @@ module "aws_security_group_slo_secure_ce" {
 
 module "aws_security_group_slo_secure_ce_extended" {
   source                      = "../../../../../aws/security_group"
-  count                       = var.f5xc_is_secure_cloud_ce ? 1 : 0
+  count                       = var.f5xc_is_secure_cloud_ce || var.f5xc_ce_slo_enable_secure_sg ? 1 : 0
   aws_vpc_id                  = var.create_new_aws_vpc == false && var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
   custom_tags                 = var.common_tags
   description                 = "F5 XC SECURE CLOUD CE SLO SG EXTENDED"

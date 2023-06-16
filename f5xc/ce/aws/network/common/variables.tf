@@ -120,3 +120,7 @@ variable "aws_security_group_rules_sli_ingress" {
 variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
+
+variable "f5xc_ce_slo_enable_secure_sg" {
+  type    = bool
+}

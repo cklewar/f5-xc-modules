@@ -1,6 +1,5 @@
 resource "aws_eip" "secure_ce" {
   count = 1
-  vpc   = true
 }
 
 resource "aws_subnet" "secure_ce" {

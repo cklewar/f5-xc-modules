@@ -267,6 +267,6 @@ module "site_wait_for_online" {
       ARCH=$(uname -m)
       curl -o ${path.module}/scripts/${self.triggers.filename} -X 'GET' 2>/dev/null ${self.triggers.url}/${self.triggers.version}/hcl2json_$PLATFORM_$ARCH
     EOT
-    interpreter = ["/usr/bin/env", "bash", "-c"]
+    interpreter = ["/usr/bin/env", "bash", "-client"]
   }
 }*/

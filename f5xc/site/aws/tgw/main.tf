@@ -269,13 +269,13 @@ resource "volterra_aws_tgw_site" "site" {
   }
 }
 
-resource "volterra_cloud_site_labels" "labels" {
+/*resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_aws_tgw_site.site.name
   site_type        = "aws_tgw_site"
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.f5xc_aws_tgw_labels)
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
-}
+}*/
 
 resource "volterra_tf_params_action" "aws_tgw_action" {
   site_name       = volterra_aws_tgw_site.site.name

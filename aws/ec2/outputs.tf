@@ -15,5 +15,7 @@ output "aws_ec2_instance" {
       0 = data.aws_network_interface.outside
       1 = length(aws_instance.instance.network_interface) > 1 ? data.aws_network_interface.inside[0] : null
     }
+    path_1 = format("%s/%s", var.template_input_dir_path, var.aws_ec2_instance_script_template)
+    template_data = var.aws_ec2_instance_script.template_data
   }
 }

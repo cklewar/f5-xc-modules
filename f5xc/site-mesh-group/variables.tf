@@ -1,7 +1,3 @@
-variable "f5xc_tenant" {
-  type = string
-}
-
 variable "f5xc_namespace" {
   type    = string
   default = "system"

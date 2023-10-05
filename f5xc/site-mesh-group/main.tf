@@ -4,6 +4,7 @@ module "virtual_site" {
   f5xc_virtual_site_name                = var.f5xc_virtual_site_name
   f5xc_virtual_site_type                = var.f5xc_virtual_site_type
   f5xc_virtual_site_selector_expression = var.f5xc_virtual_site_selector_expression
+
 }
 
 resource "volterra_site_mesh_group" "site_mesh_group" {

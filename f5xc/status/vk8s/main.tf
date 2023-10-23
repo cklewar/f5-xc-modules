@@ -1,4 +1,4 @@
-resource "null_resource" "check_vk8s_status" {
+resource "null_resource" "check_vk8s_status_by_token" {
   count    = var.f5xc_api_token != "" ? 1 : 0
   triggers = {
     always = local.random_id
@@ -10,7 +10,7 @@ resource "null_resource" "check_vk8s_status" {
   }
 }
 
-resource "null_resource" "check_vk8s_status" {
+resource "null_resource" "check_vk8s_status_by_cert" {
   count    = var.f5xc_api_p12_cert != "" ? 1 : 0
   triggers = {
     always = local.random_id

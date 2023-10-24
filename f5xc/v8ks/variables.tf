@@ -20,6 +20,10 @@ variable "f5xc_virtual_k8s_namespace" {
 
 variable "f5xc_vk8s_name" {
   type = string
+  validation {
+    condition     = length(var.f5xc_vk8s_name) <= 31
+    error_message = "The f5xc_vk8s_name value must be not longer than 31 characters"
+  }
 }
 
 variable "f5xc_vk8s_description" {
@@ -50,6 +54,10 @@ variable "f5xc_create_k8s_creds" {
 variable "f5xc_k8s_credentials_name" {
   type    = string
   default = ""
+  validation {
+    condition     = length(var.f5xc_k8s_credentials_name) <= 31
+    error_message = "The f5xc_k8s_credentials_name value must be not longer than 31 characters"
+  }
 }
 
 variable "f5xc_labels" {
@@ -66,4 +74,8 @@ variable "is_sensitive" {
 variable "f5xc_api_credential_expiry_days" {
   type    = number
   default = 10
+}
+
+variable "f5xc_api_credential_module_root" {
+  type = string
 }

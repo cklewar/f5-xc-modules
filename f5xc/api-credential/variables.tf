@@ -68,3 +68,8 @@ variable "is_sensitive" {
   default     = false
   description = "Whether to mask sensitive data in output or not"
 }
+
+variable "f5xc_api_credential_module_root" {
+  type        = string
+  description = "Path to XC modules directory"
+}

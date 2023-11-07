@@ -26,6 +26,18 @@ resource "null_resource" "apply_credential" {
   }
 
   provisioner "local-exec" {
+    command     = "ls -la ${var.f5xc_api_credential_module_root}"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+    on_failure  = fail
+  }
+
+  provisioner "local-exec" {
+    command     = "ls -la ${var.f5xc_api_credential_module_root}/modules/f5xc/api-credential/_out/asstral-sesne8-smg-scale-test"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+    on_failure  = fail
+  }
+
+  provisioner "local-exec" {
     when        = destroy
     command     = "${path.module}/scripts/delete.sh"
     interpreter = ["/usr/bin/env", "bash", "-c"]

@@ -3,7 +3,8 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_tenant" {
@@ -26,6 +27,31 @@ variable "f5xc_vk8s_get_uri_filter" {
 
 variable "f5xc_vk8s_name" {
   type = string
+}
+
+variable "check_type_token" {
+  type    = string
+  default = "token"
+}
+
+variable "check_type_cert" {
+  type    = string
+  default = "cert"
+}
+
+variable "f5xc_max_timeout" {
+  type    = number
+  default = 120
+}
+
+variable "f5xc_api_p12_cert" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_api_p12_cert_password" {
+  type    = string
+  default = ""
 }
 
 variable "is_sensitive" {

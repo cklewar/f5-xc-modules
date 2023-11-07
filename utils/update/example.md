@@ -22,5 +22,8 @@ module "update_site" {
     }
   })
 }
-```
 
+output "merged" {
+  value = module.update_site.*.data
+}
+```

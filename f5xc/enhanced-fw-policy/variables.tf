@@ -13,6 +13,7 @@ variable "f5xc_enhanced_fw_policy_rules" {
       name = string
     })
     all_source     = optional(bool)
+    all_traffic    = optional(bool)
     applications   = optional(list(string), [])
     insert_service = optional(object({
       nfv_service = object({

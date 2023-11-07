@@ -1,3 +1,7 @@
+data "volterra_namespace" "shared" {
+  name = "shared"
+}
+
 module "virtual_site" {
   source                                = "../site/virtual"
   count                                 = var.f5xc_create_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
@@ -30,8 +34,8 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
     content {
       hub_mesh_group {
         name      = var.f5xc_site_site_hub_name
-        tenant    = var.f5xc_tenant
-        namespace = var.f5xc_namespace
+        tenant    = data.volterra_namespace.shared.tenant_name
+        namespace = data.volterra_namespace.shared.name
       }
     }
   }
@@ -40,8 +44,8 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
     for_each = var.f5xc_virtual_site_name != "" ? [1] : []
     content {
       name      = var.f5xc_create_virtual_site ? module.virtual_site[0].virtual_site["name"] : var.f5xc_virtual_site_name
-      tenant    = var.f5xc_tenant
-      namespace = var.f5xc_namespace
+      tenant    = data.volterra_namespace.shared.tenant_name
+      namespace = data.volterra_namespace.shared.name
     }
   }
 }

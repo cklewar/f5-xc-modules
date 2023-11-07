@@ -1,16 +1,18 @@
-import os
-import json
 import argparse
-
-from pathlib import Path
-from datetime import datetime
+import io
+import json
 from dataclasses import asdict, dataclass
-from requests import Session, Response
+from datetime import datetime
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict
+
+import boto3
+from botocore.exceptions import ClientError, ParamValidationError
+from dacite import Config, from_dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from jinja2.environment import Template
-from enum import Enum
-from typing import Any, Dict
-from dacite import Config, from_dict
+from requests import Session, Response
 
 F5XC_SYSTEM_NAMESPACE = "system"
 F5XC_CREDENTIAL_DELETE_URI = f"web/namespaces/{F5XC_SYSTEM_NAMESPACE}/revoke/api_credentials"
@@ -29,12 +31,15 @@ POST_PAYLOAD_TEMPLATE_FILE = "post.tpl"
 DELETE_PAYLOAD_TEMPLATE_FILE = "delete.tpl"
 API_MODULE_PATH = "modules/f5xc/api-credential"
 TEMPLATE_DIRECTORY_NAME = "templates"
-TEMPLATE_DIRECTORY = f"{os.getcwd()}/{API_MODULE_PATH}/{TEMPLATE_DIRECTORY_NAME}"
+TEMPLATE_DIRECTORY = f"{API_MODULE_PATH}/{TEMPLATE_DIRECTORY_NAME}"
 # TEMPLATE_DIRECTORY = f"{os.getcwd()}/{TEMPLATE_DIRECTORY_NAME}"
 STATE_FILE_DIR_ROOT = "_out"
-STATE_FILE_DIR = f"{os.getcwd()}/{API_MODULE_PATH}/{STATE_FILE_DIR_ROOT}"
+STATE_FILE_DIR = f"{API_MODULE_PATH}/{STATE_FILE_DIR_ROOT}"
 # STATE_FILE_DIR = f"{os.getcwd()}/{STATE_FILE_DIR_ROOT}"
 STATE_FILE_NAME = "state.json"
+STORAGE_INTERNAL = "internal"
+STORAGE_AWS_S3 = "s3"
+STORAGE_AWS_S3_REGION = "us-east-1"
 
 
 class Action(Enum):
@@ -75,7 +80,8 @@ class State:
 class APICredential:
     def __init__(self, api_url: str = None, api_token: str = None, tenant: str = None, expiration_days: str = None, namespace: str = None, credential_type: str = None,
                  virtual_k8s_name: str = None, post_payload_template_file: str = None, delete_payload_template_file: str = None,
-                 template_directory: str = None, headers: dict = None, name: str = None, virtual_k8s_namespace: str = None):
+                 template_directory: str = None, headers: dict = None, name: str = None, virtual_k8s_namespace: str = None, modules_path: str = None,
+                 storage: str = STORAGE_INTERNAL, storage_aws_s3_region: str = None, storage_aws_s3_bucket: str = None, storage_aws_s3_key: str = None):
         if api_url is None:
             raise ValueError('"api_url" must not be None')
         else:
@@ -101,26 +107,48 @@ class APICredential:
         if headers is None:
             HEADERS["Authorization"] = f"APIToken {api_token}"
             HEADERS["x-volterra-apigw-tenant"] = f"{tenant}"
+            HEADERS["Content-Type"] = "application/json"
             self._headers = HEADERS if headers is None else headers
         else:
             self._headers = headers
         self._post_payload_template_file = POST_PAYLOAD_TEMPLATE_FILE if post_payload_template_file is None else post_payload_template_file
         self._delete_payload_template_file = DELETE_PAYLOAD_TEMPLATE_FILE if delete_payload_template_file is None else delete_payload_template_file
-        self._template_directory = TEMPLATE_DIRECTORY if template_directory is None else template_directory
+        self._template_directory = f"{modules_path}/{TEMPLATE_DIRECTORY}" if template_directory is None else f"{modules_path}/{template_directory}"
         self._session = Session()
-        self._state_file_dir = f"{STATE_FILE_DIR}/{self.name}"
+        self._storage = storage
+        self._storage_aws_s3_region = STORAGE_AWS_S3_REGION if storage_aws_s3_region is None else storage_aws_s3_region
+        self._storage_aws_s3_bucket = storage_aws_s3_bucket
+        self._storage_aws_s3_key = storage_aws_s3_key
+        self._state_file_dir = f"{modules_path}/{STATE_FILE_DIR}/{self.name}"
         self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
 
-        if Path(self._state_file).is_file():
+        if self.storage == STORAGE_AWS_S3:
             print("Loading state...")
-            with open(self._state_file, "r") as fp:
+            self._client = self.auth()
+            buffer = io.BytesIO()
+            bucket = boto3.resource('s3', region_name=self._storage_aws_s3_region).Bucket(self.storage_aws_s3_bucket)
+
+            if bool(list(bucket.objects.filter(Prefix=self.storage_aws_s3_key))):
                 try:
-                    self._state = State.from_dict(json.load(fp))
+                    self._client.download_fileobj(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Fileobj=buffer)
+                    self._state = State.from_dict(json.loads(buffer.getvalue().decode()))
                     print("Loading state... Done")
-                except json.decoder.JSONDecodeError as err:
-                    print(f"Loading state failed with error --> {err}")
-        else:
-            self._state = None
+                except ClientError as ce:
+                    print(ce.response)
+            else:
+                self._state = None
+
+        elif self.storage == STORAGE_INTERNAL:
+            if Path(self._state_file).is_file():
+                print("Loading state...")
+                with open(self._state_file, "r") as fp:
+                    try:
+                        self._state = State.from_dict(json.load(fp))
+                        print("Loading state... Done")
+                    except json.decoder.JSONDecodeError as err:
+                        print(f"Loading state failed with error --> {err}")
+            else:
+                self._state = None
 
     def __str__(self):
         return self.name
@@ -247,6 +275,43 @@ class APICredential:
     def state(self) -> dict:
         return self._state
 
+    @property
+    def storage(self) -> str:
+        return self._storage
+
+    @property
+    def storage_aws_s3_region(self) -> str:
+        return self._storage_aws_s3_region
+
+    @storage_aws_s3_region.setter
+    def storage_aws_s3_region(self, value: str = None):
+        try:
+            self._storage_aws_s3_region = str(value)
+        except ValueError:
+            raise ValueError('"value" must be str') from None
+
+    @property
+    def storage_aws_s3_bucket(self) -> str:
+        return self._storage_aws_s3_bucket
+
+    @storage_aws_s3_bucket.setter
+    def storage_aws_s3_bucket(self, value: str = None):
+        try:
+            self._storage_aws_s3_bucket = str(value)
+        except ValueError:
+            raise ValueError('"value" must be str') from None
+
+    @property
+    def storage_aws_s3_key(self) -> str:
+        return self._storage_aws_s3_key
+
+    @storage_aws_s3_key.setter
+    def storage_aws_s3_key(self, value: str = None):
+        try:
+            self._storage_aws_s3_key = str(value)
+        except ValueError:
+            raise ValueError('"value" must be str') from None
+
     def _gen_post_template_vars(self) -> dict:
         _vars = {
             "expiration_days": self.expiration_days,
@@ -289,19 +354,41 @@ class APICredential:
             print("DELETE request url:", self._delete_url)
             return s.post(url=self._delete_url, headers=self.headers, data=(self._get_template_file(self.delete_payload_template_file).render(vars=self._gen_delete_template_vars())))
 
-    def create_state_file(self, data: dict) -> bool:
+    def create_state(self, data: dict) -> bool:
         if not Path(self._state_file_dir).exists():
             print(f"Creating state file output directory <{self._state_file_dir}>...")
             try:
                 path = Path(self._state_file_dir)
                 path.mkdir(parents=True)
                 print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
-                try:
-                    with open(self._state_file, "w") as fd:
-                        fd.write(json.dumps(data, indent=4))
-                        return True
-                except (FileNotFoundError, FileExistsError) as err:
-                    print("Error:", err)
+                if self.storage == STORAGE_INTERNAL:
+                    try:
+                        with open(self._state_file, "w") as fd:
+                            fd.write(json.dumps(data, indent=4))
+                            return True
+                    except (FileNotFoundError, FileExistsError) as err:
+                        print("Error:", err)
+                        return False
+
+                elif self.storage == STORAGE_AWS_S3:
+                    if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
+                        try:
+                            self._client.put_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Body=json.dumps(data, indent=4))
+                            try:
+                                with open(self._state_file, "w") as fd:
+                                    fd.write(json.dumps(data, indent=4))
+                                    return True
+                            except (FileNotFoundError, FileExistsError) as err:
+                                print("Error:", err)
+                                return False
+                        except ParamValidationError as pve:
+                            print(f"Creating state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                            return False
+                    else:
+                        print(f"Storage type <{self.storage}> needs bucket, key and region set")
+                        return False
+                else:
+                    print(f"Unknown storage type <{self.storage}>")
                     return False
             except OSError as error:
                 if error.errno == 17:
@@ -313,19 +400,41 @@ class APICredential:
             print(f"State file directory <{data['name']}> does not exists. Stopping here")
             return False
 
-    def delete_state_file(self) -> bool:
-        try:
-            Path(self._state_file).unlink()
-            print(f"Removing state file successful")
-            Path(self._state_file_dir).rmdir()
-            print(f"Removing state file directory successful")
-            return True
-        except FileNotFoundError as err:
-            print(f"Removing state file failed with error: {err}")
+    def delete_state(self) -> bool:
+        if self.storage == STORAGE_INTERNAL:
+            try:
+                Path(self._state_file).unlink()
+                print(f"Removing state file successful")
+                Path(self._state_file_dir).rmdir()
+                print(f"Removing state file directory successful")
+                return True
+            except FileNotFoundError as err:
+                print(f"Removing state file failed with error: {err}")
+                return False
+        elif self.storage == STORAGE_AWS_S3:
+            if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
+                try:
+                    self._client.delete_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key)
+                    Path(self._state_file).unlink()
+                    print(f"Removing state file successful")
+                    Path(self._state_file_dir).rmdir()
+                    print(f"Removing state file directory successful")
+                    return True
+                except ParamValidationError as pve:
+                    print(f"Deleting state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                    return False
+            else:
+                print(f"Storage type <{self.storage}> needs bucket, key and region set")
+                return False
+        else:
+            print(f"Unknown storage type <{self.storage}>")
             return False
 
     def check_state_file(self) -> bool:
         return Path(self._state_file).is_file()
+
+    def auth(self) -> boto3.client:
+        return boto3.client('s3', region_name=self.storage_aws_s3_region)
 
 
 if __name__ == '__main__':
@@ -335,13 +444,19 @@ if __name__ == '__main__':
     parser.add_argument("api_token", help="F5XC API TOKEN", type=str)
     parser.add_argument("tenant", help="F5XC Tenant", type=str)
     parser.add_argument("name", help="API Credential Object Name", type=str)
+    parser.add_argument("modules_path", help="Root path to modules", type=str)
+    parser.add_argument("storage", help="F5XC API Credential Storage type (internal/s3)", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k0s Name", type=str)
-    parser.add_argument("-client", "--ctype", help="F5XC Credential Type", type=str)
+    parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     parser.add_argument("-e", "--expiry", help="F5XC API Credential Expiry Days", type=str)
+    parser.add_argument("-r", "--region", help="F5XC API Credential AWS S3 Region", type=str)
+    parser.add_argument("-b", "--bucket", help="F5XC API Credential AWS S3 Bucket", type=str)
+    parser.add_argument("-k", "--key", help="F5XC API Credential AWS S3 Key", type=str)
     args = parser.parse_args()
-    apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant, name=args.name)
+    apic = APICredential(api_url=args.api_url, api_token=args.api_token, tenant=args.tenant, name=args.name, modules_path=args.modules_path, storage=args.storage, storage_aws_s3_region=args.region,
+                         storage_aws_s3_bucket=args.bucket, storage_aws_s3_key=args.key)
 
     if args.action == Action.GET.value:
         if apic.state is None:
@@ -369,7 +484,7 @@ if __name__ == '__main__':
             print("Found no local state... Creating new object...")
             r = apic.post()
             if r.status_code == 200:
-                print("Creating new object... Done. Creating state:", apic.create_state_file(data=r.json()))
+                print("Creating new object... Done. Creating state:", apic.create_state(data=r.json()))
             else:
                 print("R:", r)
                 # print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
@@ -382,7 +497,7 @@ if __name__ == '__main__':
                 print("Found local state, but object does not exists. Creating object...")
                 r = apic.post()
                 if r.status_code == 200:
-                    print("Creating new object... Done. Creating state:", apic.create_state_file(data=r.json()))
+                    print("Creating new object... Done. Creating state:", apic.create_state(data=r.json()))
                 else:
                     print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     elif args.action == Action.DELETE.value:
@@ -392,7 +507,7 @@ if __name__ == '__main__':
             print(f"Initiate {Action.DELETE.name} request")
             r = apic.delete()
             if r.status_code == 200:
-                print("DELETE request... Done. Removing state:", apic.delete_state_file())
+                print("DELETE request... Done. Removing state:", apic.delete_state())
             else:
                 print(f"Response Status Code: {r.status_code} --> Response Message: {r.json()}")
     else:

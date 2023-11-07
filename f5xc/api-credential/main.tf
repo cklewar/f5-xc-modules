@@ -9,6 +9,7 @@ resource "null_resource" "apply_credential" {
     s3_key               = var.s3_key
     s3_bucket            = var.s3_bucket
     api_credentials_name = var.f5xc_api_credentials_name
+    always_run           = timestamp()
   }
 
   provisioner "local-exec" {

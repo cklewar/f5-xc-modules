@@ -2,6 +2,26 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "storage" {
+  type    = string
+  default = "internal"
+}
+
+variable "aws_region" {
+  type    = string
+  default = ""
+}
+
+variable "s3_bucket" {
+  type    = string
+  default = ""
+}
+
+variable "s3_key" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_api_token" {
   type = string
 }
@@ -67,4 +87,9 @@ variable "is_sensitive" {
   type        = bool
   default     = false
   description = "Whether to mask sensitive data in output or not"
+}
+
+variable "f5xc_api_credential_module_root" {
+  type        = string
+  description = "Path to XC modules directory"
 }

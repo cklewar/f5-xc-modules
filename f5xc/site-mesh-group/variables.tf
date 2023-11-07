@@ -89,3 +89,8 @@ variable "f5xc_virtual_site_type" {
 variable "f5xc_virtual_site_selector_expression" {
   type = list(string)
 }
+
+variable "f5xc_virtual_site_description" {
+  type    = string
+  default = ""
+}

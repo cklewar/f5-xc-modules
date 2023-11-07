@@ -355,13 +355,13 @@ class APICredential:
             return s.post(url=self._delete_url, headers=self.headers, data=(self._get_template_file(self.delete_payload_template_file).render(vars=self._gen_delete_template_vars())))
 
     def create_state(self, data: dict) -> bool:
-        if self.storage == STORAGE_INTERNAL:
-            if not Path(self._state_file_dir).exists():
-                print(f"Creating state file output directory <{self._state_file_dir}>...")
-                try:
-                    path = Path(self._state_file_dir)
-                    path.mkdir(parents=True)
-                    print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
+        if not Path(self._state_file_dir).exists():
+            print(f"Creating state file output directory <{self._state_file_dir}>...")
+            try:
+                path = Path(self._state_file_dir)
+                path.mkdir(parents=True)
+                print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
+                if self.storage == STORAGE_INTERNAL:
                     try:
                         with open(self._state_file, "w") as fd:
                             fd.write(json.dumps(data, indent=4))
@@ -369,30 +369,35 @@ class APICredential:
                     except (FileNotFoundError, FileExistsError) as err:
                         print("Error:", err)
                         return False
-                except OSError as error:
-                    if error.errno == 17:
-                        return True
+
+                elif self.storage == STORAGE_AWS_S3:
+                    if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
+                        try:
+                            self._client.put_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Body=json.dumps(data, indent=4))
+                            try:
+                                with open(self._state_file, "w") as fd:
+                                    fd.write(json.dumps(data, indent=4))
+                                    return True
+                            except (FileNotFoundError, FileExistsError) as err:
+                                print("Error:", err)
+                                return False
+                        except ParamValidationError as pve:
+                            print(f"Creating state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                            return False
                     else:
-                        print(f"Create state file output directory <{data['name']}> failed with error: <{error}> ")
+                        print(f"Storage type <{self.storage}> needs bucket, key and region set")
                         return False
-            else:
-                print(f"State file directory <{data['name']}> does not exists. Stopping here")
-                return False
-
-        elif self.storage == STORAGE_AWS_S3:
-            if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
-                try:
-                    self._client.put_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Body=json.dumps(data, indent=4))
-                    return True
-                except ParamValidationError as pve:
-                    print(f"Creating state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                else:
+                    print(f"Unknown storage type <{self.storage}>")
                     return False
-
-            else:
-                print(f"Storage type <{self.storage}> needs bucket, key and region set")
-                return False
+            except OSError as error:
+                if error.errno == 17:
+                    return True
+                else:
+                    print(f"Create state file output directory <{data['name']}> failed with error: <{error}> ")
+                    return False
         else:
-            print(f"Unknown storage type <{self.storage}>")
+            print(f"State file directory <{data['name']}> does not exists. Stopping here")
             return False
 
     def delete_state(self) -> bool:
@@ -438,7 +443,7 @@ if __name__ == '__main__':
     parser.add_argument("modules_path", help="Root path to modules", type=str)
     parser.add_argument("storage", help="F5XC API Credential Storage type (internal/s3)", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k0s Name", type=str)
-    parser.add_argument("-client", "--ctype", help="F5XC Credential Type", type=str)
+    parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     parser.add_argument("-e", "--expiry", help="F5XC API Credential Expiry Days", type=str)

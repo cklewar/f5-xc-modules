@@ -2,6 +2,7 @@ resource "null_resource" "apply_credential" {
   triggers = {
     MODULES_ROOT         = var.f5xc_api_credential_module_root
     tenant               = var.f5xc_tenant
+    storage              = var.storage
     api_url              = var.f5xc_api_url
     api_token            = local.f5xc_api_token
     aws_region           = var.aws_region
@@ -20,6 +21,7 @@ resource "null_resource" "apply_credential" {
       api_url                    = var.f5xc_api_url
       api_token                  = local.f5xc_api_token
       aws_region                 = var.aws_region
+      storage                    = var.storage
       s3_key                     = var.s3_key
       s3_bucket                  = var.s3_bucket
       virtual_k8s_name           = var.f5xc_virtual_k8s_name
@@ -52,6 +54,7 @@ resource "null_resource" "apply_credential" {
       MODULES_ROOT         = self.triggers.MODULES_ROOT
       tenant               = self.triggers.tenant
       aws_region           = self.triggers.aws_region
+      storage              = self.triggers.storage
       s3_key               = self.triggers.s3_key
       s3_bucket            = self.triggers.s3_bucket
       api_url              = self.triggers.api_url

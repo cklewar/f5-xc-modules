@@ -2,6 +2,11 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "storage" {
+  type    = string
+  default = "internal"
+}
+
 variable "aws_region" {
   type    = string
   default = ""

@@ -1,4 +1,19 @@
+variable "storage" {
+  type    = string
+  default = ""
+}
+
 variable "aws_region" {
+  type    = string
+  default = ""
+}
+
+variable "s3_key" {
+  type    = string
+  default = ""
+}
+
+variable "s3_bucket" {
   type    = string
   default = ""
 }

@@ -30,6 +30,10 @@ module "api_credential_kubeconfig" {
   depends_on                      = [module.vk8s_wait_for_online]
   count                           = var.f5xc_create_k8s_creds == true && var.f5xc_k8s_credentials_name != "" ? 1 : 0
   source                          = "../api-credential"
+  storage                         = var.storage
+  aws_region                      = var.aws_region
+  s3_key                          = var.s3_key
+  s3_bucket                       = var.s3_bucket
   is_sensitive                    = var.is_sensitive
   f5xc_tenant                     = local.f5xc_tenant
   f5xc_api_url                    = var.f5xc_api_url

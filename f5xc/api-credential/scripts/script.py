@@ -119,6 +119,8 @@ class APICredential:
         self._storage_aws_s3_region = STORAGE_AWS_S3_REGION if storage_aws_s3_region is None else storage_aws_s3_region
         self._storage_aws_s3_bucket = storage_aws_s3_bucket
         self._storage_aws_s3_key = storage_aws_s3_key
+        self._state_file_dir = f"{modules_path}/{STATE_FILE_DIR}/{self.name}"
+        self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
 
         if self.storage == STORAGE_AWS_S3:
             print("Loading state...")
@@ -137,8 +139,6 @@ class APICredential:
                 self._state = None
 
         elif self.storage == STORAGE_INTERNAL:
-            self._state_file_dir = f"{modules_path}/{STATE_FILE_DIR}/{self.name}"
-            self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
             if Path(self._state_file).is_file():
                 print("Loading state...")
                 with open(self._state_file, "r") as fp:
@@ -415,6 +415,10 @@ class APICredential:
             if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
                 try:
                     self._client.delete_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key)
+                    Path(self._state_file).unlink()
+                    print(f"Removing state file successful")
+                    Path(self._state_file_dir).rmdir()
+                    print(f"Removing state file directory successful")
                     return True
                 except ParamValidationError as pve:
                     print(f"Deleting state {self.storage_aws_s3_bucket} failed with error: {pve}")

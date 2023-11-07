@@ -2,6 +2,21 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "aws_region" {
+  type    = string
+  default = ""
+}
+
+variable "s3_bucket" {
+  type    = string
+  default = ""
+}
+
+variable "s3_key" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_api_token" {
   type = string
 }

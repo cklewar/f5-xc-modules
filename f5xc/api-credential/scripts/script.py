@@ -447,7 +447,7 @@ if __name__ == '__main__':
     parser.add_argument("modules_path", help="Root path to modules", type=str)
     parser.add_argument("storage", help="F5XC API Credential Storage type (internal/s3)", type=str)
     parser.add_argument("-v", "--vk8s", help="F5XC Virtual k0s Name", type=str)
-    parser.add_argument("-client", "--ctype", help="F5XC Credential Type", type=str)
+    parser.add_argument("-c", "--ctype", help="F5XC Credential Type", type=str)
     parser.add_argument("-n", "--namespace", help="F5XC Credential Namespace", type=str)
     parser.add_argument("-p", "--certpw", help="F5XC API Certificate Password", type=str)
     parser.add_argument("-e", "--expiry", help="F5XC API Credential Expiry Days", type=str)

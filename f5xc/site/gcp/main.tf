@@ -230,12 +230,12 @@ resource "volterra_gcp_vpc_site" "site" {
   }
 }
 
-resource "volterra_cloud_site_labels" "labels" {
+/*resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_gcp_vpc_site.site.name
   labels           = merge({ "key" = "value" }, var.f5xc_labels)
   site_type        = var.f5xc_gcp_site_kind
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
-}
+}*/
 
 resource "volterra_tf_params_action" "gcp_vpc_action" {
   action          = var.f5xc_tf_params_action

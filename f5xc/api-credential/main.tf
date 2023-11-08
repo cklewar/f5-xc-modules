@@ -9,6 +9,7 @@ resource "null_resource" "apply_credential" {
     s3_key               = var.s3_key
     s3_bucket            = var.s3_bucket
     api_credentials_name = var.f5xc_api_credentials_name
+    always_run           = timestamp()
   }
 
   provisioner "local-exec" {
@@ -31,18 +32,6 @@ resource "null_resource" "apply_credential" {
       api_credential_password    = var.f5xc_api_credential_password
       api_credential_expiry_days = var.f5xc_api_credential_expiry_days
     }
-  }
-
-  provisioner "local-exec" {
-    command     = "ls -la ${var.f5xc_api_credential_module_root}"
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-    on_failure  = fail
-  }
-
-  provisioner "local-exec" {
-    command     = "ls -la ${var.f5xc_api_credential_module_root}/modules/f5xc/api-credential/_out/asstral-sesne8-smg-scale-test"
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-    on_failure  = fail
   }
 
   provisioner "local-exec" {

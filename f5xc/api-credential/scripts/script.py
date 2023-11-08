@@ -119,6 +119,8 @@ class APICredential:
         self._storage_aws_s3_region = STORAGE_AWS_S3_REGION if storage_aws_s3_region is None else storage_aws_s3_region
         self._storage_aws_s3_bucket = storage_aws_s3_bucket
         self._storage_aws_s3_key = storage_aws_s3_key
+        self._state_file_dir = f"{modules_path}/{STATE_FILE_DIR}/{self.name}"
+        self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
 
         if self.storage == STORAGE_AWS_S3:
             print("Loading state...")
@@ -137,8 +139,6 @@ class APICredential:
                 self._state = None
 
         elif self.storage == STORAGE_INTERNAL:
-            self._state_file_dir = f"{modules_path}/{STATE_FILE_DIR}/{self.name}"
-            self._state_file = f"{self._state_file_dir}/{STATE_FILE_NAME}"
             if Path(self._state_file).is_file():
                 print("Loading state...")
                 with open(self._state_file, "r") as fp:
@@ -355,13 +355,13 @@ class APICredential:
             return s.post(url=self._delete_url, headers=self.headers, data=(self._get_template_file(self.delete_payload_template_file).render(vars=self._gen_delete_template_vars())))
 
     def create_state(self, data: dict) -> bool:
-        if self.storage == STORAGE_INTERNAL:
-            if not Path(self._state_file_dir).exists():
-                print(f"Creating state file output directory <{self._state_file_dir}>...")
-                try:
-                    path = Path(self._state_file_dir)
-                    path.mkdir(parents=True)
-                    print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
+        if not Path(self._state_file_dir).exists():
+            print(f"Creating state file output directory <{self._state_file_dir}>...")
+            try:
+                path = Path(self._state_file_dir)
+                path.mkdir(parents=True)
+                print(f"Creating state file output directory <{self._state_file_dir}> -> Done")
+                if self.storage == STORAGE_INTERNAL:
                     try:
                         with open(self._state_file, "w") as fd:
                             fd.write(json.dumps(data, indent=4))
@@ -369,30 +369,35 @@ class APICredential:
                     except (FileNotFoundError, FileExistsError) as err:
                         print("Error:", err)
                         return False
-                except OSError as error:
-                    if error.errno == 17:
-                        return True
+
+                elif self.storage == STORAGE_AWS_S3:
+                    if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
+                        try:
+                            self._client.put_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Body=json.dumps(data, indent=4))
+                            try:
+                                with open(self._state_file, "w") as fd:
+                                    fd.write(json.dumps(data, indent=4))
+                                    return True
+                            except (FileNotFoundError, FileExistsError) as err:
+                                print("Error:", err)
+                                return False
+                        except ParamValidationError as pve:
+                            print(f"Creating state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                            return False
                     else:
-                        print(f"Create state file output directory <{data['name']}> failed with error: <{error}> ")
+                        print(f"Storage type <{self.storage}> needs bucket, key and region set")
                         return False
-            else:
-                print(f"State file directory <{data['name']}> does not exists. Stopping here")
-                return False
-
-        elif self.storage == STORAGE_AWS_S3:
-            if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
-                try:
-                    self._client.put_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key, Body=json.dumps(data, indent=4))
-                    return True
-                except ParamValidationError as pve:
-                    print(f"Creating state {self.storage_aws_s3_bucket} failed with error: {pve}")
+                else:
+                    print(f"Unknown storage type <{self.storage}>")
                     return False
-
-            else:
-                print(f"Storage type <{self.storage}> needs bucket, key and region set")
-                return False
+            except OSError as error:
+                if error.errno == 17:
+                    return True
+                else:
+                    print(f"Create state file output directory <{data['name']}> failed with error: <{error}> ")
+                    return False
         else:
-            print(f"Unknown storage type <{self.storage}>")
+            print(f"State file directory <{data['name']}> does not exists. Stopping here")
             return False
 
     def delete_state(self) -> bool:
@@ -410,6 +415,10 @@ class APICredential:
             if self.storage_aws_s3_region is not None and self.storage_aws_s3_bucket is not None and self.storage_aws_s3_key is not None:
                 try:
                     self._client.delete_object(Bucket=self.storage_aws_s3_bucket, Key=self.storage_aws_s3_key)
+                    Path(self._state_file).unlink()
+                    print(f"Removing state file successful")
+                    Path(self._state_file_dir).rmdir()
+                    print(f"Removing state file directory successful")
                     return True
                 except ParamValidationError as pve:
                     print(f"Deleting state {self.storage_aws_s3_bucket} failed with error: {pve}")

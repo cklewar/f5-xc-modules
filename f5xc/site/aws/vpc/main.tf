@@ -236,13 +236,13 @@ resource "volterra_aws_vpc_site" "site" {
   }
 }
 
-resource "volterra_cloud_site_labels" "labels" {
+/*resource "volterra_cloud_site_labels" "labels" {
   name             = volterra_aws_vpc_site.site.name
   site_type        = var.f5xc_aws_site_kind
   # need at least one label, otherwise site_type is ignored
   labels           = merge({ "key" = "value" }, var.f5xc_labels)
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
-}
+}*/
 
 resource "volterra_tf_params_action" "aws_vpc_action" {
   site_name       = volterra_aws_vpc_site.site.name

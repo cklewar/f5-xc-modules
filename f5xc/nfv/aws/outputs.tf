@@ -31,10 +31,14 @@ output "nfv" {
       names = keys(var.f5xc_aws_nfv_nodes)
       count = length(var.f5xc_aws_nfv_nodes)
       node1 = {
-        instance = data.aws_instance.nfv_pan[keys(var.f5xc_aws_nfv_nodes)[0]]
+        instance   = data.aws_instance.nfv_pan[keys(var.f5xc_aws_nfv_nodes)[0]]
+        public_dns = ""
+        interfaces = {}
       }
       node2 = local.is_cluster ? {
-        instance = data.aws_instance.nfv_pan[keys(var.f5xc_aws_nfv_nodes)[1]]
+        instance   = data.aws_instance.nfv_pan[keys(var.f5xc_aws_nfv_nodes)[1]]
+        public_dns = ""
+        interfaces = {}
       } : null
     } : null
   }

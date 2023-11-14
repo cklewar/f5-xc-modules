@@ -10,13 +10,17 @@ data "http" "get" {
   provider = http-full
 }
 
+locals {
+  command = var.del_key != "" ? "echo '${data.http.get.response_body}' | jq . | jq 'del(.spec.${var.merge_key}.${var.del_key})' | jq '.spec.${var.merge_key} +=${var.merge_data}' > ${var.output_file_name}" : "echo '${data.http.get.response_body}' | jq . | jq '.spec.${var.merge_key} +=${var.merge_data}' > ${var.output_file_name}"
+}
+
 resource "null_resource" "merge" {
   depends_on = [data.http.get]
   triggers   = {
     always_run = timestamp()
   }
   provisioner "local-exec" {
-    command = "echo '${data.http.get.response_body}' | jq . | jq 'del(.spec.${var.merge_key}.${var.del_key})' | jq '.spec.${var.merge_key} +=${var.merge_data}' > ${var.output_file_name}"
+    command = local.command
   }
 }
 

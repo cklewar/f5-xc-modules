@@ -55,54 +55,59 @@ variable "f5xc_service_policy" {
     rules = optional(list(object({
       metadata = object({
         name = string
+        disable = optional(bool)
+        description = optional(string)
       })
       spec = optional(object({
         action           = optional(string)
+        scheme           = optional(list(string), [])
         any_ip           = optional(bool)
         challenge_action = optional(string, "DEFAULT_CHALLENGE")
         any_client       = optional(bool)
         waf_action       = optional(object({
           none = optional(bool)
         }))
-        asn_mather = optional(object({
+        asn_matcher = optional(object({
           asn_sets = optional(object({
             name      = optional(string)
             namespace = optional(string)
           }))
         }))
       }))
-    })))
+    })), [])
     allow_list = optional(object({
-      default_action_next_policy = optional(bool)
+      country_list               = optional(list(string))
+      tls_fingerprint_values     = optional(list(string))
+      tls_fingerprint_classes    = optional(list(string), [])
+      default_action_next_policy = optional(bool, null)
       asn_list                   = optional(object({
         as_numbers = optional(list(string), [])
-      }))
+      }), {})
       prefix_list = optional(object({
         prefixes = optional(list(string), [])
-      }))
+      }), {})
       ip_prefix_set = optional(object({
         name      = optional(string)
         tenant    = optional(string)
         namespace = optional(string)
-      }))
-      country_list            = optional(list(string), [])
-      tls_fingerprint_values  = optional(list(string), [])
-      tls_fingerprint_classes = optional(list(string), [])
-    }))
+      }), {})
+    }), {})
     deny_list = optional(object({
-      asn_list = optional(object({
+      country_list               = optional(list(string), [])
+      tls_fingerprint_values     = optional(list(string))
+      tls_fingerprint_classes    = optional(list(string), [])
+      default_action_next_policy = optional(bool, null)
+      asn_list                   = optional(object({
         as_numbers = optional(list(string), [])
-      }))
+      }), {})
       prefix_list = optional(object({
         prefixes = optional(list(string), [])
-      }))
+      }), {})
       ip_prefix_set = optional(object({
         name      = optional(string)
         tenant    = optional(string)
         namespace = optional(string)
-      }))
-      country_list            = optional(list(string), [])
-      tls_fingerprint_classes = optional(list(string), [])
-    }))
+      }), {})
+    }), {})
   })
 }

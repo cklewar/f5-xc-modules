@@ -18,66 +18,73 @@ resource "volterra_service_policy" "service_policy" {
 
   rule_list {
     dynamic "rules" {
-      for_each = var.f5xc_service_policy.rules
+      for_each = {for idx, v in var.f5xc_service_policy.rules : idx => v}
       content {
+        metadata {
+          name        = var.f5xc_service_policy.rules[rules.key].metadata.name
+          disable     = var.f5xc_service_policy.rules[rules.key].metadata.disable
+          description = var.f5xc_service_policy.rules[rules.key].metadata.description
+        }
         spec {
-          action           = rules.value.action
-          any_ip           = rules.value.any_ip
-          any_client       = rules.value.any_client
-          challenge_action = rules.value.challenge_action
-          asn_matcher {
-            asn_sets {
-              name      = rules.value.asn_matcher.asn_sets.name
-              namespace = rules.value.asn_matcher.asn_sets.namespace
+          action           = var.f5xc_service_policy.rules[rules.key].spec.action
+          scheme           = var.f5xc_service_policy.rules[rules.key].spec.scheme
+          any_ip           = var.f5xc_service_policy.rules[rules.key].spec.any_ip
+          any_client       = var.f5xc_service_policy.rules[rules.key].spec.any_client
+          challenge_action = var.f5xc_service_policy.rules[rules.key].spec.challenge_action
+          dynamic "waf_action" {
+            for_each = var.f5xc_service_policy.rules[rules.key].spec.waf_action != null ? var.f5xc_service_policy.rules[rules.key].spec.waf_action : {}
+            content {
+              none = var.f5xc_service_policy.rules[rules.key].spec.waf_action.none
             }
           }
-          waf_action {
-            none = rules.value.waf_action.none
+          dynamic "asn_matcher" {
+            for_each = var.f5xc_service_policy.rules[rules.key].spec.asn_matcher != null ? var.f5xc_service_policy.rules[rules.key].spec.asn_matcher : {}
+            content {
+              asn_sets {
+                name      = var.f5xc_service_policy.rules[rules.key].spec.asn_matcher.asn_sets.name
+                namespace = var.f5xc_service_policy.rules[rules.key].spec.asn_matcher.asn_sets.namespace
+              }
+            }
           }
         }
       }
     }
   }
 
-  dynamic "allow_list" {
-    for_each = var.f5xc_service_policy.allow_list
-    content {
-      country_list               = allow_list.value.country_list
-      tls_fingerprint_classes    = allow_list.value.tls_fingerprint_classes
-      default_action_next_policy = allow_list.value.default_action_next_policy
-      asn_list {
-        as_numbers = allow_list.value.as_numbers
-      }
-      prefix_list {
-        prefixes = allow_list.value.prefixes
-      }
-      ip_prefix_set {
-        name      = allow_list.value.ip_prefix_set.name
-        tenant    = allow_list.value.ip_prefix_set.tenant
-        namespace = allow_list.value.ip_prefix_set.namespace
-      }
+  allow_list {
+    country_list               = var.f5xc_service_policy.allow_list.country_list
+    tls_fingerprint_classes    = var.f5xc_service_policy.allow_list.tls_fingerprint_classes
+    default_action_next_policy = var.f5xc_service_policy.allow_list.default_action_next_policy
+    asn_list {
+      as_numbers = var.f5xc_service_policy.allow_list.asn_list.as_numbers
+    }
+    prefix_list {
+      prefixes = var.f5xc_service_policy.allow_list.prefix_list.prefixes
+    }
+    ip_prefix_set {
+      name      = var.f5xc_service_policy.allow_list.ip_prefix_set.name
+      tenant    = var.f5xc_service_policy.allow_list.ip_prefix_set.tenant
+      namespace = var.f5xc_service_policy.allow_list.ip_prefix_set.namespace
     }
   }
 
-  dynamic "deny_list" {
-    for_each = var.f5xc_service_policy.deny_list
-    content {
-      country_list               = deny_list.value.country_list
-      tls_fingerprint_classes    = deny_list.value.tls_fingerprint_classes
-      default_action_next_policy = deny_list.value.default_action_next_policy
-      asn_list {
-        as_numbers = deny_list.value.as_numbers
-      }
-      prefix_list {
-        prefixes = deny_list.value.prefixes
-      }
-      ip_prefix_set {
-        name      = deny_list.value.ip_prefix_set.name
-        tenant    = deny_list.value.ip_prefix_set.tenant
-        namespace = deny_list.value.ip_prefix_set.namespace
-      }
+  deny_list {
+    country_list               = var.f5xc_service_policy.deny_list.country_list
+    tls_fingerprint_classes    = var.f5xc_service_policy.deny_list.tls_fingerprint_classes
+    default_action_next_policy = var.f5xc_service_policy.deny_list.default_action_next_policy
+    asn_list {
+      as_numbers = var.f5xc_service_policy.deny_list.asn_list.as_numbers
+    }
+    prefix_list {
+      prefixes = var.f5xc_service_policy.deny_list.prefix_list.prefixes
+    }
+    ip_prefix_set {
+      name      = var.f5xc_service_policy.deny_list.ip_prefix_set.name
+      tenant    = var.f5xc_service_policy.deny_list.ip_prefix_set.tenant
+      namespace = var.f5xc_service_policy.deny_list.ip_prefix_set.namespace
     }
   }
+
 }
 
 resource "volterra_active_service_policies" "active_service_policies" {

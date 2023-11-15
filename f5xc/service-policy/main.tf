@@ -54,3 +54,11 @@ resource "volterra_service_policy" "service_policy" {
     }
   }
 }
+
+resource "volterra_active_service_policies" "active_service_policies" {
+  namespace = var.f5xc_namespace
+  policies {
+    name      = var.f5xc_service_policy_name
+    namespace = var.f5xc_namespace
+  }
+}

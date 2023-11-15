@@ -6,9 +6,23 @@ variable "f5xc_service_policy_name" {
   type = string
 }
 
-variable "f5xc_sp_search_algorithm" {
+variable "f5xc_service_policy_allow_all_requests" {
+  type    = bool
+  default = null
+}
+
+variable "f5xc_service_policy_deny_all_requests" {
+  type    = bool
+  default = null
+}
+
+variable "f5xc_service_policy_eval_algorithm" {
   type    = string
   default = "FIRST_MATCH"
+  validation {
+    condition     = contains(["FIRST_MATCH", "DENY_OVERRIDES", "DENY", "ALLOW"], var.f5xc_service_policy_eval_algorithm)
+    error_message = "Eval algo must me one of 'FIRST_MATCH', 'DENY_OVERRIDES', 'DENY', 'ALLOW'"
+  }
 }
 
 variable "f5xc_service_policy_any_server" {

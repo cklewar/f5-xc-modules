@@ -1,9 +1,11 @@
 resource "volterra_service_policy" "service_policy" {
-  name        = var.f5xc_service_policy_name
-  algo        = var.f5xc_sp_search_algorithm
-  namespace   = var.f5xc_namespace
-  any_server  = var.f5xc_service_policy_any_server
-  server_name = var.f5xc_service_policy_server_name
+  name               = var.f5xc_service_policy_name
+  algo               = var.f5xc_service_policy_eval_algorithm
+  namespace          = var.f5xc_namespace
+  any_server         = var.f5xc_service_policy_any_server
+  server_name        = var.f5xc_service_policy_server_name
+  allow_all_requests = var.f5xc_service_policy_allow_all_requests
+  deny_all_requests  = var.f5xc_service_policy_deny_all_requests
 
   server_name_matcher {
     exact_values = var.server_name_matcher_exact_values
@@ -49,6 +51,11 @@ resource "volterra_service_policy" "service_policy" {
       prefix_list {
         prefixes = allow_list.value.prefixes
       }
+      ip_prefix_set {
+        name      = allow_list.value.ip_prefix_set.name
+        tenant    = allow_list.value.ip_prefix_set.tenant
+        namespace = allow_list.value.ip_prefix_set.namespace
+      }
     }
   }
 
@@ -65,9 +72,9 @@ resource "volterra_service_policy" "service_policy" {
         prefixes = deny_list.value.prefixes
       }
       ip_prefix_set {
-        name      = "test1"
-        namespace = "staging"
-        tenant    = "acmecorp"
+        name      = deny_list.value.ip_prefix_set.name
+        tenant    = deny_list.value.ip_prefix_set.tenant
+        namespace = deny_list.value.ip_prefix_set.namespace
       }
     }
   }

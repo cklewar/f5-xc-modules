@@ -1,7 +1,18 @@
 resource "volterra_service_policy" "service_policy" {
-  name      = var.f5xc_service_policy_name
-  algo      = var.f5xc_sp_search_algorithm
-  namespace = var.f5xc_namespace
+  name        = var.f5xc_service_policy_name
+  algo        = var.f5xc_sp_search_algorithm
+  namespace   = var.f5xc_namespace
+  any_server  = var.f5xc_service_policy_any_server
+  server_name = var.f5xc_service_policy_server_name
+
+  server_name_matcher {
+    exact_values = var.server_name_matcher_exact_values
+    regex_values = var.server_name_matcher_regex_values
+  }
+
+  server_selector {
+    expressions = var.f5xc_server_selector_expressions
+  }
 
   rule_list {
     dynamic "rules" {
@@ -29,8 +40,9 @@ resource "volterra_service_policy" "service_policy" {
   dynamic "allow_list" {
     for_each = var.f5xc_service_policy.allow_list
     content {
-      country_list            = allow_list.value.country_list
-      tls_fingerprint_classes = allow_list.value.tls_fingerprint_classes
+      country_list               = allow_list.value.country_list
+      tls_fingerprint_classes    = allow_list.value.tls_fingerprint_classes
+      default_action_next_policy = allow_list.value.default_action_next_policy
       asn_list {
         as_numbers = allow_list.value.as_numbers
       }
@@ -43,13 +55,19 @@ resource "volterra_service_policy" "service_policy" {
   dynamic "deny_list" {
     for_each = var.f5xc_service_policy.deny_list
     content {
-      country_list            = deny_list.value.country_list
-      tls_fingerprint_classes = deny_list.value.tls_fingerprint_classes
+      country_list               = deny_list.value.country_list
+      tls_fingerprint_classes    = deny_list.value.tls_fingerprint_classes
+      default_action_next_policy = deny_list.value.default_action_next_policy
       asn_list {
         as_numbers = deny_list.value.as_numbers
       }
       prefix_list {
         prefixes = deny_list.value.prefixes
+      }
+      ip_prefix_set {
+        name      = "test1"
+        namespace = "staging"
+        tenant    = "acmecorp"
       }
     }
   }

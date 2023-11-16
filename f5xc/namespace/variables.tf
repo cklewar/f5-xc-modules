@@ -4,5 +4,5 @@ variable "f5xc_namespace_name" {
 
 variable "f5xc_namespace_create_timeout" {
   type    = string
-  default = "10s"
+  default = "30s"
 }

@@ -61,10 +61,13 @@ resource "volterra_service_policy" "service_policy" {
     prefix_list {
       prefixes = var.f5xc_service_policy.allow_list.prefix_list.prefixes
     }
-    ip_prefix_set {
-      name      = var.f5xc_service_policy.allow_list.ip_prefix_set.name
-      tenant    = var.f5xc_service_policy.allow_list.ip_prefix_set.tenant
-      namespace = var.f5xc_service_policy.allow_list.ip_prefix_set.namespace
+    dynamic "ip_prefix_set" {
+      for_each = var.f5xc_service_policy.allow_list.ip_prefix_set
+      content {
+        name      = ip_prefix_set.name
+        tenant    = ip_prefix_set.tenant
+        namespace = ip_prefix_set.namespace
+      }
     }
   }
 
@@ -78,10 +81,13 @@ resource "volterra_service_policy" "service_policy" {
     prefix_list {
       prefixes = var.f5xc_service_policy.deny_list.prefix_list.prefixes
     }
-    ip_prefix_set {
-      name      = var.f5xc_service_policy.deny_list.ip_prefix_set.name
-      tenant    = var.f5xc_service_policy.deny_list.ip_prefix_set.tenant
-      namespace = var.f5xc_service_policy.deny_list.ip_prefix_set.namespace
+    dynamic "ip_prefix_set" {
+      for_each = var.f5xc_service_policy.deny_list.ip_prefix_set
+      content {
+        name      = ip_prefix_set.name
+        tenant    = ip_prefix_set.tenant
+        namespace = ip_prefix_set.namespace
+      }
     }
   }
 

@@ -54,8 +54,8 @@ variable "f5xc_service_policy" {
   type = object({
     rules = optional(list(object({
       metadata = object({
-        name = string
-        disable = optional(bool)
+        name        = string
+        disable     = optional(bool)
         description = optional(string)
       })
       spec = optional(object({
@@ -86,11 +86,11 @@ variable "f5xc_service_policy" {
       prefix_list = optional(object({
         prefixes = optional(list(string), [])
       }), {})
-      ip_prefix_set = optional(object({
-        name      = optional(string)
-        tenant    = optional(string)
-        namespace = optional(string)
-      }), {})
+      ip_prefix_set = optional(list(object({
+        name      = optional(string, null)
+        tenant    = optional(string, null)
+        namespace = optional(string, null)
+      })), [])
     }), {})
     deny_list = optional(object({
       country_list               = optional(list(string), [])
@@ -103,11 +103,11 @@ variable "f5xc_service_policy" {
       prefix_list = optional(object({
         prefixes = optional(list(string), [])
       }), {})
-      ip_prefix_set = optional(object({
-        name      = optional(string)
-        tenant    = optional(string)
-        namespace = optional(string)
-      }), {})
+      ip_prefix_set = optional(list(object({
+        name      = optional(string, null)
+        tenant    = optional(string, null)
+        namespace = optional(string, null)
+      })), [])
     }), {})
   })
 }

@@ -90,7 +90,15 @@ resource "volterra_service_policy" "service_policy" {
       }
     }
   }
+}
 
+resource "time_sleep" "wait_n_seconds" {
+  depends_on      = [volterra_service_policy.service_policy]
+  create_duration = var.f5xc_service_policy_create_timeout
+}
+
+resource "null_resource" "next" {
+  depends_on = [time_sleep.wait_n_seconds]
 }
 
 resource "volterra_active_service_policies" "active_service_policies" {

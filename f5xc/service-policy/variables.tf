@@ -50,6 +50,11 @@ variable "f5xc_server_selector_expressions" {
   default = []
 }
 
+variable "f5xc_service_policy_create_timeout" {
+  type    = string
+  default = "5s"
+}
+
 variable "f5xc_service_policy" {
   type = object({
     rules = optional(list(object({

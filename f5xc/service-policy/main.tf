@@ -102,7 +102,8 @@ resource "null_resource" "next" {
 }
 
 resource "volterra_active_service_policies" "active_service_policies" {
-  namespace = var.f5xc_namespace
+  depends_on = [null_resource.next]
+  namespace  = var.f5xc_namespace
   policies {
     name      = var.f5xc_service_policy_name
     namespace = var.f5xc_namespace

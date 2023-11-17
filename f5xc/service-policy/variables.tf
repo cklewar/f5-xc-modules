@@ -52,7 +52,7 @@ variable "f5xc_server_selector_expressions" {
 
 variable "f5xc_service_policy_create_timeout" {
   type    = string
-  default = "5s"
+  default = "10s"
 }
 
 variable "f5xc_service_policy" {

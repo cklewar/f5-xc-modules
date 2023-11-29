@@ -11,6 +11,6 @@ resource "volterra_virtual_site" "virtual_site" {
 
   // This is needed so that there is some time to sync namespace between eywa and akar
   provisioner "local-exec" {
-    command = "sleep 20s"
+    command = "sleep 20"
   }
 }

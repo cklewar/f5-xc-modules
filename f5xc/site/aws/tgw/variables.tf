@@ -56,12 +56,6 @@ variable "f5xc_aws_cred" {
 
 variable "f5xc_aws_tgw_az_nodes" {
   type    = map(map(string))
-  default = {
-    node0 : {
-      f5xc_aws_tgw_workload_subnet = "192.168.168.0/24", f5xc_aws_tgw_outside_subnet = "192.168.169.0/24"
-      f5xc_aws_tgw_az_name         = "us-east-2a"
-    }
-  }
 }
 
 variable "f5xc_aws_tgw_vpc_attach_label_deploy" {

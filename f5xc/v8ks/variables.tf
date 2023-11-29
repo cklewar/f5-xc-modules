@@ -97,5 +97,6 @@ variable "f5xc_api_credential_expiry_days" {
 }
 
 variable "f5xc_api_credential_module_root" {
-  type = string
+  type    = string
+  default = ""
 }

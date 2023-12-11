@@ -85,3 +85,12 @@ module "node" {
   f5xc_is_secure_cloud_ce                          = var.f5xc_is_secure_cloud_ce
   f5xc_registration_wait_time                      = var.f5xc_registration_wait_time
 }
+
+/*
+resource "volterra_set_cloud_site_info" "site_info" {
+  name        = ""
+  site_type   = "gcp_vpc_site"
+  public_ips  = []
+  private_ips = []
+}
+*/

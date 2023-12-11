@@ -16,7 +16,7 @@ variable "existing_network_outside" {
 
 variable "instance_type" {
   type    = string
-  default = "n1-standard-4"
+  default = "n2-standard-8"
 }
 
 variable "instance_image" {

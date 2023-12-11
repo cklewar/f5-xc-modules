@@ -6,12 +6,15 @@ locals {
     cluster_name                = var.cluster_name
     private_nic                 = var.slo_nic
     cluster_token               = var.volterra_token
+    cluster_labels              = var.cluster_labels
     cluster_latitude            = var.f5xc_cluster_latitude
     cluster_longitude           = var.f5xc_cluster_longitude
     maurice_endpoint            = var.maurice_endpoint
     maurice_mtls_endpoint       = var.maurice_mtls_endpoint
     certified_hardware_endpoint = var.certified_hardware_endpoint
-    cluster_labels              = var.cluster_labels
+    private_network             = var.private_network_name == "" ? {} : {
+      name = var.private_network_name
+    }
   }
 
   hosts_localhost_vars = {

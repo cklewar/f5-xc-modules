@@ -28,6 +28,10 @@ variable "slo_nic" {
   default = "eth0"
 }
 
+variable "private_network_name" {
+  default = ""
+}
+
 variable "host_localhost_public_name" {
   type = string
 }

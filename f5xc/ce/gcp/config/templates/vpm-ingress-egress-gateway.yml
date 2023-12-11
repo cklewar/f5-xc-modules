@@ -15,6 +15,9 @@ Vpm:
   Labels:
   %{~ endif ~}
   CertifiedHardwareEndpoint: ${certified_hardware_endpoint}
+  %{~ for key, name in  private_network ~}
+  PrivateNetworkName: ${name ~}
+  %{ endfor }
 Kubernetes:
   CloudProvider: ""
   EtcdUseTLS: True

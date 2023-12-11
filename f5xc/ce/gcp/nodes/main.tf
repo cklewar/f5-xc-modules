@@ -1,7 +1,7 @@
 resource "google_compute_instance_template" "instance_template" {
   tags         = var.instance_tags
-  name_prefix  = format("%s-", var.f5xc_cluster_name)
   labels       = var.f5xc_cluster_labels
+  name_prefix  = format("%s-", var.f5xc_cluster_name)
   description  = var.instance_template_description
   machine_type = var.instance_type
 
@@ -30,9 +30,10 @@ resource "google_compute_instance_template" "instance_template" {
   }
 
   metadata = {
-    ssh-keys     = "${var.ssh_username}:${var.ssh_public_key}"
-    user-data    = var.f5xc_ce_user_data
-    VmDnsSetting = "ZonalPreferred"
+    ssh-keys           = "${var.ssh_username}:${var.ssh_public_key}"
+    user-data          = var.f5xc_ce_user_data
+    VmDnsSetting       = "ZonalPreferred"
+    serial-port-enable = true
   }
 
   service_account {

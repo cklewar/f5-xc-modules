@@ -140,3 +140,7 @@ variable "f5xc_cluster_labels" {
 variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
+
+variable "serial_port_enable" {
+  type = bool
+}

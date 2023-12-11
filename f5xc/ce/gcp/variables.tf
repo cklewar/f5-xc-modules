@@ -270,6 +270,11 @@ variable "f5xc_ce_slo_enable_secure_sg" {
   default = false
 }
 
+variable "serial_port_enable" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_ip_ranges_Americas_TCP" {
   type    = list(string)
   default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]

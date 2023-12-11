@@ -59,6 +59,7 @@ module "node" {
   ssh_public_key                                   = var.ssh_public_key
   slo_subnetwork                                   = local.create_network ? module.network_common[0].common["slo_subnetwork"]["name"] : var.existing_network_outside.subnets_ids[0]
   sli_subnetwork                                   = local.create_network && local.is_multi_nic ? module.network_common[0].common["sli_subnetwork"]["name"] : local.is_multi_nic ? var.existing_network_inside.subnets_ids[0] : ""
+  serial_port_enable                               = var.serial_port_enable
   access_config_nat_ip                             = var.access_config_nat_ip
   gcp_service_account_email                        = var.gcp_service_account_email
   gcp_service_account_scopes                       = var.gcp_service_account_scopes

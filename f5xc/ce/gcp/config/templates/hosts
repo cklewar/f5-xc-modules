@@ -2,3 +2,4 @@
 127.0.0.1           localhost
 ::1                 localhost
 ${public_address}   ${public_name}
+169.254.169.254     metadata.google.internal

@@ -7,4 +7,5 @@ locals {
   schema      = var.schema
   api_url     = "${local.schema}${local.url}/api"
   file_suffix = var.file_suffix
+  environment = contains(local._tmp, "console") ? "production" : "staging"
 }

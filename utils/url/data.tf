@@ -1,3 +1,4 @@
 data volterra_namespace "ns" {
-  name = "system"
+  name     = "system"
+  provider = volterra.default
 }

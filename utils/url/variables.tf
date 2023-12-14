@@ -2,6 +2,10 @@ variable "f5xc_url" {
   type = string
 }
 
+variable "f5xc_api_token" {
+  type = string
+}
+
 variable "contains_string" {
   type    = string
   default = "console"

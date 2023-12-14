@@ -3,7 +3,8 @@ variable "f5xc_url" {
 }
 
 variable "f5xc_api_token" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "contains_string" {

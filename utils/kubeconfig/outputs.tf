@@ -4,5 +4,5 @@ output "config" {
 }
 
 output "filename" {
-  value     = local_file.kubeconfig.filename
+  value = local_file.kubeconfig.filename
 }

@@ -8,5 +8,5 @@ locals {
   api_url     = "${local.schema}${local.url}/api"
   api_token   = "${local.environment}_api_token"
   file_suffix = var.file_suffix
-  environment = contains(local._tmp, "console") ? "production" : "staging"
+  environment = contains(local._tmp, "console") ? "production" : local.tenant
 }

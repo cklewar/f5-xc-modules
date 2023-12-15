@@ -17,6 +17,10 @@ variable "f5xc_rest_uri_sites" {
 
 variable "f5xc_k8s_config_type" {
   type = string
+  validation {
+    condition     = contains(["global", "local"], var.f5xc_k8s_config_type)
+    error_message = format("Valid values for f5xc_k8s_config_type: global, local")
+  }
 }
 
 variable "f5xc_k8s_config_types" {

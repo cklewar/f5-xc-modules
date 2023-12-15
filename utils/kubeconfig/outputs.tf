@@ -3,5 +3,6 @@ output "config" {
 }
 
 output "file" {
-  value = local_file.kubeconfig
+  value     = local_file.kubeconfig
+  sensitive = true
 }

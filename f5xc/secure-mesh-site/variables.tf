@@ -91,6 +91,7 @@ variable "f5xc_secure_mesh_site" {
       }))
     })))
     gcp = optional(list(object({
+      owner                          = string
       region                         = string
       is_sensitive                   = optional(bool, false)
       machine_type                   = string

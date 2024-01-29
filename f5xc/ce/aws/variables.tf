@@ -1,24 +1,30 @@
 variable "is_sensitive" {
-  type = bool
+  description = "mark module output as sensitive"
+  type        = bool
+
 }
 
 variable "has_public_ip" {
-  type    = bool
-  default = true
+  description = "whether the CE gets a public IP assigned to SLO"
+  type        = bool
+  default     = true
 }
 
 variable "instance_type" {
-  type    = string
-  default = "t3.xlarge"
+  description = "AWS EC2 instance flavour"
+  type        = string
+  default     = "t3.xlarge"
 }
 
 variable "owner_tag" {
-  type = string
+  description = "set a tag called owner"
+  type        = string
 }
 
 variable "create_new_aws_vpc" {
-  type    = bool
-  default = true
+  description = "create new aws vpc"
+  type        = bool
+  default     = true
 }
 
 variable "f5xc_ce_hosts_public_name" {
@@ -32,16 +38,20 @@ variable "cluster_workload" {
 }
 
 variable "ssh_public_key" {
-  type = string
+  description = "EC2 instance assigned public ssh key"
+  type        = string
+
 }
 
 variable "aws_existing_vpc_id" {
-  type    = string
-  default = ""
+  description = "inject existing aws vpc id"
+  type        = string
+  default     = ""
 }
 
 variable "aws_security_group_rules_slo_egress_default" {
-  type = list(object({
+  description = "default aws security groups assigned to slo egress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -58,7 +68,8 @@ variable "aws_security_group_rules_slo_egress_default" {
 }
 
 variable "aws_security_group_rules_slo_ingress_default" {
-  type = list(object({
+  description = "default aws security groups assigned to slo ingress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -75,7 +86,8 @@ variable "aws_security_group_rules_slo_ingress_default" {
 }
 
 variable "aws_security_group_rules_sli_egress_default" {
-  type = list(object({
+  description = "aws security groups assigned to sli egress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -92,7 +104,8 @@ variable "aws_security_group_rules_sli_egress_default" {
 }
 
 variable "aws_security_group_rules_sli_ingress_default" {
-  type = list(object({
+  description = "aws security groups assigned to sli ingress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -109,7 +122,8 @@ variable "aws_security_group_rules_sli_ingress_default" {
 }
 
 variable "aws_security_group_rules_slo_egress" {
-  type = list(object({
+  description = "provide custom aws security groups assigned to slo egress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -118,7 +132,8 @@ variable "aws_security_group_rules_slo_egress" {
 }
 
 variable "aws_security_group_rules_slo_ingress" {
-  type = list(object({
+  description = "provide custom aws security groups assigned to slo ingress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -127,7 +142,8 @@ variable "aws_security_group_rules_slo_ingress" {
 }
 
 variable "aws_security_group_rules_sli_egress" {
-  type = list(object({
+  description = "provide custom aws security groups assigned to sli egress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -137,7 +153,8 @@ variable "aws_security_group_rules_sli_egress" {
 }
 
 variable "aws_security_group_rules_sli_ingress" {
-  type = list(object({
+  description = "provide custom aws security groups assigned to sli ingress"
+  type        = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -147,42 +164,51 @@ variable "aws_security_group_rules_sli_ingress" {
 }
 
 variable "f5xc_cluster_labels" {
-  type = map(string)
+  description = ""
+  type        = map(string)
 }
 
 variable "f5xc_cluster_latitude" {
-  type    = number
-  default = -73.935242
+  description = "geo latitude"
+  type        = number
+  default     = -73.935242
 }
 
 variable "f5xc_cluster_longitude" {
-  type    = number
-  default = 40.730610
+  description = "geo longitude"
+  type        = number
+  default     = 40.730610
 }
 
 variable "f5xc_api_url" {
-  type = string
+  description = "F5 XC tenant api URL"
+  type        = string
 }
 
 variable "f5xc_api_ca_cert" {
-  type    = string
-  default = ""
+  description = "F5 XC api ca cert"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_api_token" {
-  type = string
+  description = "F5 XC api token"
+  type        = string
 }
 
 variable "f5xc_tenant" {
-  type = string
+  description = "F5 XC tenant"
+  type        = string
 }
 
 variable "f5xc_token_name" {
-  type = string
+  description = "F5 XC api token name"
+  type        = string
 }
 
 variable "f5xc_namespace" {
-  type = string
+  description = "F5 XC namespace"
+  type        = string
 }
 
 variable "f5xc_ce_gateway_type_voltstack" {
@@ -227,7 +253,8 @@ variable "f5xc_aws_vpc_az_nodes" {
 }
 
 variable "f5xc_aws_region" {
-  type = string
+  description = "AWS region"
+  type        = string
 }
 
 variable "f5xc_cluster_name" {
@@ -235,17 +262,20 @@ variable "f5xc_cluster_name" {
 }
 
 variable "f5xc_is_secure_cloud_ce" {
-  type    = bool
-  default = false
+  description = "whether CE should be secured by applying security rules on SLO and SLI"
+  type        = bool
+  default     = false
 }
 
 variable "f5xc_ce_slo_enable_secure_sg" {
-  type    = bool
-  default = false
+  description = "whether CE should be secured by applying security rules on SLO"
+  type        = bool
+  default     = false
 }
 
 variable "f5xc_ce_machine_image" {
-  type = object({
+  description = "F5 XC AWS EC2 AMIs"
+  type        = object({
     ingress_gateway = object({
       af-south-1     = string
       ap-east-1      = string
@@ -348,8 +378,9 @@ variable "f5xc_ce_machine_image" {
 }
 
 variable "aws_vpc_cidr_block" {
-  type    = string
-  default = ""
+  description = "AWS vpc CIDR block"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {

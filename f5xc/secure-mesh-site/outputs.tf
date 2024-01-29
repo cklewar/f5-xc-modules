@@ -9,10 +9,10 @@ output "secure-mesh-site" {
         ce   = module.gcp[0].ce
         site = restapi_object.secure_mesh_site_gcp
       } : null
-      azure = length(module.azure) > 0 ? {
+      /*azure = length(module.azure) > 0 ? {
         ce   = module.azure[0].ce
         site = restapi_object.secure_mesh_site_azure
-      } : null
+      } : null*/
       /*vmware = length(module.vmware) > 0 ? {
         ce     = module.vmware[0].ce
         config = restapi_object.secure_mesh_site_azure

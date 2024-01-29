@@ -1,7 +1,6 @@
 module "smg" {
   source                                = "../site-mesh-group"
   count                                 = var.f5xc_create_site_mesh_group ? 1 : 0
-  f5xc_tenant                           = var.f5xc_tenant
   f5xc_virtual_site_name                = var.f5xc_virtual_site_name != "" ? var.f5xc_virtual_site_name : format("%s-%s-%s", var.f5xc_secure_mesh_site_prefix, "vs", var.f5xc_secure_mesh_site_suffix)
   f5xc_create_virtual_site              = var.f5xc_create_virtual_site
   f5xc_site_mesh_group_name             = var.f5xc_site_mesh_group_name != "" ? var.f5xc_site_mesh_group_name : format("%s-%s-%s", var.f5xc_secure_mesh_site_prefix, "smg", var.f5xc_secure_mesh_site_suffix)
@@ -105,7 +104,6 @@ module "gcp" {
   f5xc_cluster_latitude  = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_latitude
   f5xc_cluster_longitude = var.f5xc_secure_mesh_site.gcp[count.index].f5xc_cluster_longitude
   gcp_region             = var.f5xc_secure_mesh_site.gcp[count.index].region
-  project_name           = var.f5xc_secure_mesh_site.gcp[count.index].project_name
   instance_type          = var.f5xc_secure_mesh_site.gcp[count.index].machine_type
   instance_image         = var.f5xc_secure_mesh_site.gcp[count.index].machine_image
   instance_disk_size     = var.f5xc_secure_mesh_site.gcp[count.index].machine_disk_size
@@ -114,7 +112,7 @@ module "gcp" {
   owner                  = var.f5xc_secure_mesh_site.gcp[count.index].owner
 }
 
-module "azure" {
+/*module "azure" {
   depends_on                      = [restapi_object.secure_mesh_site_azure]
   source                          = "../ce/azure"
   count                           = var.f5xc_secure_mesh_site.azure != null ? length(var.f5xc_secure_mesh_site.azure) : 0
@@ -140,4 +138,4 @@ module "azure" {
   f5xc_ce_gateway_type            = var.f5xc_secure_mesh_site.azure[count.index].f5xc_ce_gateway_type
   f5xc_cluster_latitude           = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_latitude
   f5xc_cluster_longitude          = var.f5xc_secure_mesh_site.azure[count.index].f5xc_cluster_longitude
-}
+}*/

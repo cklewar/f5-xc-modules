@@ -103,7 +103,7 @@ module "secure_mesh_site" {
   f5xc_namespace         = var.f5xc_namespace
   f5xc_api_token         = var.f5xc_api_token
   f5xc_cluster_name      = var.f5xc_cluster_name
-  f5xc_cluster_labels    = var.f5xc_cluster_labels
+  f5xc_cluster_labels    = {} # var.f5xc_cluster_labels
   f5xc_ce_gateway_type   = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude  = var.f5xc_cluster_latitude
   f5xc_cluster_longitude = var.f5xc_cluster_longitude

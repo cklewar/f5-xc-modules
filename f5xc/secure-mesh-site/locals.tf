@@ -11,7 +11,7 @@ locals {
         disable : false
         annotations : {},
         spec : {
-          volterra_certified_hw : var.f5xc_site_type_certified_hw[var.f5xc_ce_gateway_type],
+          volterra_certified_hw : "aws-byol-voltmesh" # var.f5xc_site_type_certified_hw[var.f5xc_ce_gateway_type],
           master_node_configuration : [
             for node in var.f5xc_nodes : {
               name : node.name

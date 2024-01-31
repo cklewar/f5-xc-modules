@@ -94,6 +94,21 @@ module "config" {
   maurice_mtls_endpoint        = module.maurice.endpoints.maurice_mtls
 }
 
+module "secure_mesh_site" {
+  count                  = var.f5xc_site_type_is_secure_mesh_site ? 1 : 0
+  source                 = "../../secure-mesh-site"
+  f5xc_nodes             = [for k in var.f5xc_aws_vpc_az_nodes : k]
+  f5xc_tenant            = var.f5xc_tenant
+  f5xc_api_url           = var.f5xc_api_url
+  f5xc_namespace         = var.f5xc_namespace
+  f5xc_api_token         = var.f5xc_api_token
+  f5xc_cluster_name      = var.f5xc_cluster_name
+  f5xc_cluster_labels    = var.f5xc_cluster_labels
+  f5xc_ce_gateway_type   = var.f5xc_ce_gateway_type
+  f5xc_cluster_latitude  = var.f5xc_cluster_latitude
+  f5xc_cluster_longitude = var.f5xc_cluster_longitude
+}
+
 module "node" {
   source                      = "./nodes"
   for_each                    = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
@@ -108,8 +123,12 @@ module "node" {
   f5xc_node_name              = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_cluster_name           = var.f5xc_cluster_name
   f5xc_cluster_size           = length(var.f5xc_aws_vpc_az_nodes)
+  f5xc_cluster_labels         = {}
   f5xc_instance_config        = module.config[each.key].ce["user_data"]
+  f5xc_cluster_latitude       = var.f5xc_cluster_latitude
+  f5xc_cluster_longitude      = var.f5xc_cluster_longitude
   f5xc_registration_retry     = var.f5xc_registration_retry
+  f5xc_ce_to_re_tunnel_type   = var.f5xc_ce_to_re_tunnel_type
   f5xc_registration_wait_time = var.f5xc_registration_wait_time
   aws_instance_type           = var.instance_type
   aws_instance_image          = var.f5xc_ce_machine_image[var.f5xc_ce_gateway_type][var.f5xc_aws_region]

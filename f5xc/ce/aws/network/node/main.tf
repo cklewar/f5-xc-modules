@@ -1,3 +1,10 @@
+/*resource "restapi_object" "secure_mesh_site_aws" {
+  for_each     = contains(keys(local.secure_mesh_site_data), "aws") ? {for index, site in local.secure_mesh_site_data["aws"] : site.name => site.json} : {}
+  path         = "/config/namespaces/system/securemesh_sites"
+  data         = each.value
+  id_attribute = "metadata/name"
+}*/
+
 resource "aws_subnet" "slo" {
   tags              = merge({ "Name" = format("%s-slo", var.node_name) }, var.common_tags)
   vpc_id            = var.aws_vpc_id
@@ -19,6 +26,11 @@ module "network_interface_slo" {
   aws_interface_create_eip        = var.f5xc_is_secure_cloud_ce ? false : var.has_public_ip
   aws_interface_security_groups   = var.aws_sg_slo_ids
   aws_interface_source_dest_check = true
+  custom_tags                     = merge(var.common_tags, {
+    "ves.io/interface-type" = "site-local-outside"
+    "ves-io-eni-type"       = "outside-network"
+    "ves-io-eni-az"         = aws_subnet.slo.availability_zone
+  })
 }
 
 module "network_interface_sli" {
@@ -28,6 +40,11 @@ module "network_interface_sli" {
   aws_interface_create_eip        = false
   aws_interface_security_groups   = var.aws_sg_sli_ids
   aws_interface_source_dest_check = false
+  custom_tags                     = merge(var.common_tags, {
+    "ves.io/interface-type" = "site-local-inside"
+    "ves-io-eni-type"       = "inside-network"
+    "ves-io-eni-az"         = aws_subnet.sli.0.availability_zone
+  })
 }
 
 resource "aws_route_table_association" "subnet_slo" {

@@ -5,6 +5,13 @@ resource "aws_network_interface" "interface" {
   security_groups         = var.aws_interface_security_groups
   source_dest_check       = var.aws_interface_source_dest_check
   private_ip_list_enabled = length(var.aws_interface_private_ips) > 0 ? true : false
+
+  lifecycle {
+    ignore_changes = [
+      security_groups, subnet_id,
+    ]
+  }
+
 }
 
 resource "aws_eip" "eip" {

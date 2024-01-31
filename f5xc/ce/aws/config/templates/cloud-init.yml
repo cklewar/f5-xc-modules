@@ -2,7 +2,6 @@
 ssh_authorized_keys:
   - "${ssh_public_key}"
 coreos:
-  locksmith:
   update:
     reboot-strategy: "${reboot_strategy}"
   units:

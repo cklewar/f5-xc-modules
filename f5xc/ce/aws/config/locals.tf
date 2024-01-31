@@ -15,30 +15,31 @@ locals {
   )
 
   vpm_config = yamlencode({
-    "Vpm" : {
-      "ClusterName" : var.f5xc_cluster_name,
-      "ClusterType" : var.f5xc_cluster_type,
-      "Token" : var.f5xc_site_token,
-      # "InsideNIC" : ""
-      # "PrivateNIC" : ""
-      "Latitude" : var.f5xc_cluster_latitude,
-      "Longitude" : var.f5xc_cluster_longitude,
-      "MauricePrivateEndpoint" : var.maurice_mtls_endpoint,
-      "MauriceEndpoint" : var.maurice_endpoint,
-      "Labels" : var.f5xc_cluster_labels,
-      "CertifiedHardwareEndpoint" : var.f5xc_certified_hardware_endpoint,
+    Vpm = {
+      Labels                    = var.f5xc_cluster_labels,
+      Token                     = var.f5xc_site_token,
+      Latitude                  = var.f5xc_cluster_latitude,
+      Longitude                 = var.f5xc_cluster_longitude,
+      InsideNIC                 = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? "eth1" : ""
+      PrivateNIC                = "eth0"
+      ClusterName               = var.f5xc_cluster_name,
+      ClusterType               = var.f5xc_cluster_type,
+      MauriceEndpoint           = var.maurice_endpoint,
+      MauricePrivateEndpoint    = var.maurice_mtls_endpoint,
+      CertifiedHardwareEndpoint = var.f5xc_certified_hardware_endpoint,
     }
-    Kubernetes : {
-      "EtcdUseTLS" : true
-      "Server" : var.f5xc_ce_hosts_public_name
+    Kubernetes = {
+      Server        = var.f5xc_ce_hosts_public_name
+      EtcdUseTLS    = true
+      CloudProvider = ""
     }
   })
 
   cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
     {
-      ssh_public_key    = var.ssh_public_key
       ntp_servers       = var.ntp_servers
       hosts_context     = base64encode(local.hosts_context_node)
+      ssh_public_key    = var.ssh_public_key
       reboot_strategy   = var.reboot_strategy_node
       vp_manager_config = base64encode(local.vpm_config)
     })

@@ -164,7 +164,7 @@ variable "aws_security_group_rules_sli_ingress" {
 }
 
 variable "f5xc_cluster_labels" {
-  description = ""
+  description = "F5 XC CE Cluster labels"
   type        = map(string)
 }
 
@@ -234,6 +234,16 @@ variable "f5xc_ce_gateway_type" {
   }
 }
 
+variable "f5xc_ce_to_re_tunnel_type" {
+  description = "CE to RE tunnel type"
+  type        = string
+  validation {
+    condition     = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
+    error_message = format("Valid values for tunnel_type: ssl, ipsec")
+  }
+  default = "ipsec"
+}
+
 variable "f5xc_registration_wait_time" {
   type    = number
   default = 60
@@ -273,9 +283,13 @@ variable "f5xc_ce_slo_enable_secure_sg" {
   default     = false
 }
 
+variable "f5xc_site_type_is_secure_mesh_site" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_ce_machine_image" {
-  description = "F5 XC AWS EC2 AMIs"
-  type        = object({
+  type = object({
     ingress_gateway = object({
       af-south-1     = string
       ap-east-1      = string
@@ -324,58 +338,107 @@ variable "f5xc_ce_machine_image" {
       us-west-1      = string
       us-west-2      = string
     })
+    voltstack_gateway = object({
+      af-south-1     = string
+      ap-east-1      = string
+      ap-northeast-1 = string
+      ap-northeast-2 = string
+      ap-northeast-3 = string
+      ap-south-1     = string
+      ap-southeast-1 = string
+      ap-southeast-2 = string
+      ap-southeast-3 = string
+      ca-central-1   = string
+      eu-central-1   = string
+      eu-north-1     = string
+      eu-south-1     = string
+      eu-west-1      = string
+      eu-west-2      = string
+      eu-west-3      = string
+      me-south-1     = string
+      sa-east-1      = string
+      us-east-1      = string
+      us-east-2      = string
+      us-west-1      = string
+      us-west-2      = string
+    })
   })
   default = {
     ingress_gateway = {
-      af-south-1     = "ami-0bcfb554a48878b52"
-      ap-east-1      = "ami-03cf35954fb9084fc"
-      ap-northeast-1 = "ami-07dac882268159d52"
-      ap-northeast-2 = "ami-04f6d5781039d2f88"
+      af-south-1     = "ami-0abe8656ef9666ed9"
+      ap-east-1      = "ami-00121c96d08755dc7"
+      ap-northeast-1 = "ami-022eff0a8b29f0aa0"
+      ap-northeast-2 = "ami-0baab800101568d4b"
       ap-northeast-3 = ""
-      ap-south-1     = "ami-099c0c7e19e1afd16"
-      ap-southeast-1 = "ami-0dba294abe676bd58"
-      ap-southeast-2 = "ami-0ae68f561b7d20682"
-      ap-southeast-3 = "ami-065fc7b0f6ec02011"
-      ca-central-1   = "ami-0ddc009ae69986eb4"
-      eu-central-1   = "ami-027625cb269f5d7e9"
-      eu-north-1     = "ami-0366c929eb2ac407b"
-      eu-south-1     = "ami-00cb6474298a310af"
-      eu-west-1      = "ami-01baaca2a3b1b0114"
-      eu-west-2      = "ami-05f5a414a42961df6"
-      eu-west-3      = "ami-0e1361351f9205511"
-      me-south-1     = "ami-0fb5db9d908d231c3"
-      sa-east-1      = "ami-09082c4758ef6ec36"
-      us-east-1      = "ami-0f94aee77d07b0094"
-      us-east-2      = "ami-0660aaf7b6edaa980"
-      us-west-1      = "ami-0cf44e35e2aecacb4"
-      us-west-2      = "ami-0cba83d31d405a8f5"
+      ap-south-1     = "ami-0b178530a3d2a135b"
+      ap-southeast-1 = "ami-053df8b17f6cde147"
+      ap-southeast-2 = "ami-0f8f02f4fd5aae93e"
+      ap-southeast-3 = "ami-08fcddda640e5ccff"
+      ca-central-1   = "ami-0173c5cb0bc2daf77"
+      eu-central-1   = "ami-0156dae589b1bd776"
+      eu-north-1     = "ami-078d5c45326b45a19"
+      eu-south-1     = "ami-06f4833536f41ea5d"
+      eu-west-1      = "ami-00cdd3b417a78da29"
+      eu-west-2      = "ami-003b4907ae41e26ff"
+      eu-west-3      = "ami-0e5b3114ca468df78"
+      me-south-1     = "ami-041144ec799e3c2d3"
+      sa-east-1      = "ami-0c3726fdda3296486"
+      us-east-1      = "ami-0f0d5663398ae3232"
+      us-east-2      = "ami-0d1c54456515b9a9b"
+      us-west-1      = "ami-03dd4958a62da3fc4"
+      us-west-2      = "ami-01aa136e8917ccef1"
     }
     ingress_egress_gateway = {
-      af-south-1     = "ami-0c22728f79f714ed1"
-      ap-east-1      = "ami-0a6cf3665c0612f91"
-      ap-northeast-1 = "ami-0384d075a36447e2a"
-      ap-northeast-2 = "ami-01472d819351faf92"
+      af-south-1     = "ami-0abe8656ef9666ed9"
+      ap-east-1      = "ami-00121c96d08755dc7"
+      ap-northeast-1 = "ami-022eff0a8b29f0aa0"
+      ap-northeast-2 = "ami-0baab800101568d4b"
       ap-northeast-3 = ""
-      ap-south-1     = "ami-0277ab0b4db359c93"
-      ap-southeast-1 = "ami-0d6463ee1e3727e84"
-      ap-southeast-2 = "ami-03ff18dfb7f90eb54"
-      ap-southeast-3 = "ami-0189e67b4c856e4cd"
-      ca-central-1   = "ami-052252c245ff77338"
-      eu-central-1   = "ami-06d5e0073d97ecf99"
-      eu-north-1     = "ami-006c465449ed98c69"
-      eu-south-1     = "ami-0baafa10ffcd081b7"
-      eu-west-1      = "ami-090680f491ad6d46a"
-      eu-west-2      = "ami-0df8a483722043a41"
-      eu-west-3      = "ami-03bd7c41ca1b586a8"
-      me-south-1     = "ami-094efc1a78169dd7c"
-      sa-east-1      = "ami-07369c4b06cf22299"
-      us-east-1      = "ami-089311edbe1137720"
-      us-east-2      = "ami-01ba94b5a83adcb35"
-      us-west-1      = "ami-092a2a07d2d3a445f"
-      us-west-2      = "ami-07252e5ab4023b8cf"
+      ap-south-1     = "ami-0b178530a3d2a135b"
+      ap-southeast-1 = "ami-053df8b17f6cde147"
+      ap-southeast-2 = "ami-0f8f02f4fd5aae93e"
+      ap-southeast-3 = "ami-08fcddda640e5ccff"
+      ca-central-1   = "ami-0173c5cb0bc2daf77"
+      eu-central-1   = "ami-04720f54d40337fe2"
+      eu-north-1     = "ami-078d5c45326b45a19"
+      eu-south-1     = "ami-06f4833536f41ea5d"
+      eu-west-1      = "ami-00cdd3b417a78da29"
+      eu-west-2      = "ami-003b4907ae41e26ff"
+      eu-west-3      = "ami-0e5b3114ca468df78"
+      me-south-1     = "ami-041144ec799e3c2d3"
+      sa-east-1      = "ami-0c3726fdda3296486"
+      us-east-1      = "ami-0f0d5663398ae3232"
+      us-east-2      = "ami-0d1c54456515b9a9b"
+      us-west-1      = "ami-03dd4958a62da3fc4"
+      us-west-2      = "ami-01aa136e8917ccef1"
+    }
+    voltstack_gateway = {
+      af-south-1     = "ami-0abe8656ef9666ed9"
+      ap-east-1      = "ami-00121c96d08755dc7"
+      ap-northeast-1 = "ami-022eff0a8b29f0aa0"
+      ap-northeast-2 = "ami-0baab800101568d4b"
+      ap-northeast-3 = ""
+      ap-south-1     = "ami-0b178530a3d2a135b"
+      ap-southeast-1 = "ami-053df8b17f6cde147"
+      ap-southeast-2 = "ami-0f8f02f4fd5aae93e"
+      ap-southeast-3 = "ami-08fcddda640e5ccff"
+      ca-central-1   = "ami-0173c5cb0bc2daf77"
+      eu-central-1   = "ami-07860a3b1ab83ce62"
+      eu-north-1     = "ami-078d5c45326b45a19"
+      eu-south-1     = "ami-06f4833536f41ea5d"
+      eu-west-1      = "ami-00cdd3b417a78da29"
+      eu-west-2      = "ami-003b4907ae41e26ff"
+      eu-west-3      = "ami-0e5b3114ca468df78"
+      me-south-1     = "ami-041144ec799e3c2d3"
+      sa-east-1      = "ami-0c3726fdda3296486"
+      us-east-1      = "ami-0f0d5663398ae3232"
+      us-east-2      = "ami-0d1c54456515b9a9b"
+      us-west-1      = "ami-03dd4958a62da3fc4"
+      us-west-2      = "ami-01aa136e8917ccef1"
     }
   }
 }
+
 
 variable "aws_vpc_cidr_block" {
   description = "AWS vpc CIDR block"

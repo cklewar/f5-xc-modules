@@ -27,6 +27,11 @@ variable "aws_instance_create_timeout" {
   default = "60m"
 }
 
+variable "aws_instance_update_timeout" {
+  type    = string
+  default = "30m"
+}
+
 variable "aws_instance_delete_timeout" {
   type    = string
   default = "60m"
@@ -75,7 +80,7 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_ca_cert" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -111,6 +116,18 @@ variable "f5xc_cluster_size" {
   }
 }
 
+variable "f5xc_cluster_latitude" {
+  type = number
+}
+
+variable "f5xc_cluster_longitude" {
+  type = number
+}
+
+variable "f5xc_cluster_labels" {
+  type = map(string)
+}
+
 variable "f5xc_node_name" {
   type = string
 }
@@ -119,3 +136,17 @@ variable "f5xc_instance_config" {
   type = string
 }
 
+variable "f5xc_ce_to_re_tunnel_types" {
+  type = object({
+    ssl   = string
+    ipsec = string
+  })
+  default = {
+    ssl   = "SITE_TO_SITE_TUNNEL_SSL"
+    ipsec = "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL"
+  }
+}
+
+variable "f5xc_ce_to_re_tunnel_type" {
+  type = string
+}

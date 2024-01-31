@@ -124,7 +124,7 @@ module "node" {
   f5xc_node_name              = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_cluster_name           = var.f5xc_cluster_name
   f5xc_cluster_size           = length(var.f5xc_aws_vpc_az_nodes)
-  f5xc_cluster_labels         = {}
+  f5xc_cluster_labels         = {} # var.f5xc_cluster_labels
   f5xc_instance_config        = module.config[each.key].ce["user_data"]
   f5xc_cluster_latitude       = var.f5xc_cluster_latitude
   f5xc_cluster_longitude      = var.f5xc_cluster_longitude

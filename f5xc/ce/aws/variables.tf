@@ -49,6 +49,18 @@ variable "aws_existing_vpc_id" {
   default     = ""
 }
 
+variable "aws_existing_slo_subnet_id" {
+  description = "inject existing aws slo subnet id"
+  type        = string
+  default     = ""
+}
+
+variable "aws_existing_sli_subnet_id" {
+  description = "inject existing aws sli subnet id"
+  type        = string
+  default     = ""
+}
+
 variable "aws_security_group_rules_slo_egress_default" {
   description = "default aws security groups assigned to slo egress"
   type        = list(object({

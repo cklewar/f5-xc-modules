@@ -53,3 +53,11 @@ variable "owner_tag" {
 variable "f5xc_is_secure_cloud_ce" {
   type = bool
 }
+
+variable "aws_existing_slo_subnet_id" {
+  type = string
+}
+
+variable "aws_existing_sli_subnet_id" {
+  type = string
+}

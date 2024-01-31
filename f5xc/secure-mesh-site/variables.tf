@@ -44,8 +44,8 @@ variable "f5xc_annotations" {
 variable "f5xc_site_type_certified_hw" {
   type    = map(string)
   default = {
-    ingress_gateway        = "generic-single-nic-voltmesh"
-    ingress_egress_gateway = "generic-regular-nic-voltmesh"
+    ingress_gateway        = "aws-byol-voltmesh"
+    ingress_egress_gateway = "aws-byol-multi-nic-voltmesh"
   }
 }
 

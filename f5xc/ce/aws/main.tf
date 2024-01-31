@@ -110,6 +110,7 @@ module "secure_mesh_site" {
 }
 
 module "node" {
+  depends_on                  = [module.secure_mesh_site]
   source                      = "./nodes"
   for_each                    = {for k, v in var.f5xc_aws_vpc_az_nodes : k=>v}
   owner_tag                   = var.owner_tag

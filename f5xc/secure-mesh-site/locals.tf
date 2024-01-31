@@ -13,8 +13,8 @@ locals {
         spec : {
           volterra_certified_hw : var.f5xc_site_type_certified_hw[var.f5xc_ce_gateway_type],
           master_node_configuration : [
-            for node in keys(var.f5xc_nodes) : {
-              name : node
+            for node in var.f5xc_nodes : {
+              name : node.name
             }
           ],
           worker_nodes : [],

@@ -1,7 +1,3 @@
-variable "aws_az_name" {
-  type = string
-}
-
 variable "enable_dns_support" {
   type    = bool
   default = true

@@ -23,7 +23,7 @@ module "network_interface_slo" {
   custom_tags                     = merge(var.common_tags, {
     "ves.io/interface-type" = "site-local-outside"
     "ves-io-eni-type"       = "outside-network"
-    "ves-io-eni-az"         = aws_subnet.slo.0.availability_zone
+    "ves-io-eni-az"         = var.aws_existing_slo_subnet_id != "" ? var.aws_existing_slo_subnet_id : aws_subnet.slo.0.availability_zone
   })
 }
 
@@ -37,7 +37,7 @@ module "network_interface_sli" {
   custom_tags                     = merge(var.common_tags, {
     "ves.io/interface-type" = "site-local-inside"
     "ves-io-eni-type"       = "inside-network"
-    "ves-io-eni-az"         = aws_subnet.sli.0.availability_zone
+    "ves-io-eni-az"         = var.aws_existing_sli_subnet_id != "" ? var.aws_existing_sli_subnet_id : aws_subnet.sli.0.availability_zone
   })
 }
 

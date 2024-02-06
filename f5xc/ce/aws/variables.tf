@@ -49,18 +49,6 @@ variable "aws_existing_vpc_id" {
   default     = ""
 }
 
-variable "aws_existing_slo_subnet_id" {
-  description = "inject existing aws slo subnet id"
-  type        = string
-  default     = ""
-}
-
-variable "aws_existing_sli_subnet_id" {
-  description = "inject existing aws sli subnet id"
-  type        = string
-  default     = ""
-}
-
 variable "aws_security_group_rules_slo_egress_default" {
   description = "default aws security groups assigned to slo egress"
   type        = list(object({
@@ -284,9 +272,15 @@ variable "f5xc_cluster_name" {
 }
 
 variable "f5xc_is_secure_cloud_ce" {
-  description = "whether CE should be secured by applying security rules on SLO and SLI"
+  description = "whether CE should be secured by applying security rules on SLO and SLI + NAT GW + SLO private IP"
   type        = bool
   default     = false
+}
+
+variable "f5xc_is_private_cloud_ce" {
+  description = "whether CE should be private with SLO has private IP and NAT GW in front"
+  type    = bool
+  default = false
 }
 
 variable "f5xc_ce_slo_enable_secure_sg" {

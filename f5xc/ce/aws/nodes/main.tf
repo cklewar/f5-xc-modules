@@ -1,5 +1,5 @@
 resource "aws_instance" "instance" {
-  ami                  = var.aws_instance_image # "ami-0a4218dd27123de5e"
+  ami                  = var.aws_instance_image
   tags                 = local.common_tags
   key_name             = var.ssh_public_key_name
   monitoring           = var.aws_instance_monitoring
@@ -54,7 +54,6 @@ resource "aws_volume_attachment" "ebs_attach" {
   device_name = "/dev/sdf"
   instance_id = aws_instance.instance.id
 }
-
 
 resource "aws_lb_target_group_attachment" "volterra_ce_attachment" {
   count            = var.f5xc_cluster_size == 3 ? 1 : 0

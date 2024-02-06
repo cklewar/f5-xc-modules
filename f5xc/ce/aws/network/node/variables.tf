@@ -50,7 +50,7 @@ variable "owner_tag" {
   type = string
 }
 
-variable "f5xc_is_secure_cloud_ce" {
+variable "f5xc_is_secure_or_private_cloud_ce" {
   type = bool
 }
 

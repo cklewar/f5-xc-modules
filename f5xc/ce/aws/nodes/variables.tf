@@ -10,10 +10,6 @@ variable "common_tags" {
   type = map(string)
 }
 
-variable "is_sensitive" {
-  type = bool
-}
-
 variable "aws_instance_image" {
   type = string
 }
@@ -35,14 +31,6 @@ variable "aws_instance_update_timeout" {
 variable "aws_instance_delete_timeout" {
   type    = string
   default = "60m"
-}
-
-variable "aws_subnet_slo_id" {
-  type = string
-}
-
-variable "aws_subnet_sli_id" {
-  type = string
 }
 
 variable "ssh_public_key_name" {
@@ -75,25 +63,9 @@ variable "aws_iam_instance_profile_id" {
   type = string
 }
 
-variable "f5xc_api_url" {
-  type = string
-}
-
 variable "f5xc_api_ca_cert" {
   type    = string
   default = ""
-}
-
-variable "f5xc_api_token" {
-  type = string
-}
-
-variable "f5xc_tenant" {
-  type = string
-}
-
-variable "f5xc_namespace" {
-  type = string
 }
 
 variable "f5xc_registration_wait_time" {
@@ -122,10 +94,6 @@ variable "f5xc_cluster_latitude" {
 
 variable "f5xc_cluster_longitude" {
   type = number
-}
-
-variable "f5xc_cluster_labels" {
-  type = map(string)
 }
 
 variable "f5xc_node_name" {

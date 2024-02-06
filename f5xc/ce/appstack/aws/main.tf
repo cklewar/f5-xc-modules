@@ -90,25 +90,10 @@ module "config_worker_node" {
   f5xc_cluster_latitude     = var.f5xc_cluster_latitude
   f5xc_cluster_longitude    = var.f5xc_cluster_longitude
   f5xc_ce_hosts_public_name = var.f5xc_ce_hosts_public_name
-  aws_nlb_dns_name          = module.network_nlb[0].nlb["nlb"]["dns_name"]
+  aws_nlb_dns_name          = length(var.f5xc_cluster_nodes.master) == 3 ? module.network_nlb[0].nlb["nlb"]["dns_name"] : ""
   maurice_endpoint          = module.maurice.endpoints.maurice
   maurice_mtls_endpoint     = module.maurice.endpoints.maurice_mtls
 }
-
-/*module "secure_mesh_site" {
-  count                  = var.f5xc_site_type_is_secure_mesh_site ? 1 : 0
-  source                 = "../../../secure-mesh-site"
-  f5xc_nodes             = [for k in keys(var.f5xc_cluster_nodes.master) : { name = k }]
-  f5xc_tenant            = var.f5xc_tenant
-  f5xc_api_url           = var.f5xc_api_url
-  f5xc_namespace         = var.f5xc_namespace
-  f5xc_api_token         = var.f5xc_api_token
-  f5xc_cluster_name      = var.f5xc_cluster_name
-  f5xc_cluster_labels    = {} # var.f5xc_cluster_labels
-  f5xc_ce_gateway_type   = var.f5xc_ce_gateway_type
-  f5xc_cluster_latitude  = var.f5xc_cluster_latitude
-  f5xc_cluster_longitude = var.f5xc_cluster_longitude
-}*/
 
 module "cluster" {
   source                = "./cluster"

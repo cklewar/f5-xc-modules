@@ -71,8 +71,8 @@ variable "f5xc_aws_region" {
 variable "f5xc_cluster_nodes" {
   type = map(map(map(string)))
   validation {
-    condition     = length(var.f5xc_cluster_nodes.master) == 1 || length(var.f5xc_cluster_nodes.master) == 3 || length(var.f5xc_cluster_nodes.master) == 0
-    error_message = "f5xc_master_nodes must be 0,1 or 3"
+    condition = length(var.f5xc_cluster_nodes.master) == 1 && length(var.f5xc_cluster_nodes.worker) == 0 || length(var.f5xc_cluster_nodes.master) == 3 && length(var.f5xc_cluster_nodes.worker) >= 0 || length(var.f5xc_cluster_nodes.master) == 0
+    error_message = "Supported master / worker nodes: master 1 and no worker, master 3 and <n> worker"
   }
 }
 

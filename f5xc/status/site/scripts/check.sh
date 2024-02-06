@@ -51,36 +51,41 @@ if [[ "${check_type}" == "token" ]] ; then
       -H 'Access-Control-Allow-Origin: *' \
       -H 'Authorization: APIToken '"${api_token}" \
       -H 'x-volterra-apigw-tenant: '"${tenant}")
-    status=$(jq -r '.spec.site_state' <<<"${content}")
 
-    if [[ "${status}" == "ONLINE" ]]; then
-      echo "Status: ${status} --> Wait ${sleep_second_step} secs and check status again..."
-      echo ""
-      sleep $sleep_second_step
-
-      content=$(curl -s -X 'GET' \
-        "${url}" \
-        -H 'accept: application/data' \
-        -H 'Access-Control-Allow-Origin: *' \
-        -H 'Authorization: APIToken '"${api_token}" \
-        -H 'x-volterra-apigw-tenant: '"${tenant}")
+    if jq -e . >/dev/null 2>&1 <<<"$content"; then
       status=$(jq -r '.spec.site_state' <<<"${content}")
 
       if [[ "${status}" == "ONLINE" ]]; then
-        echo "Done"
-        break
+        echo "Status: ${status} --> Wait ${sleep_second_step} secs and check status again..."
+        echo ""
+        sleep $sleep_second_step
+
+        content=$(curl -s -X 'GET' \
+          "${url}" \
+          -H 'accept: application/data' \
+          -H 'Access-Control-Allow-Origin: *' \
+          -H 'Authorization: APIToken '"${api_token}" \
+          -H 'x-volterra-apigw-tenant: '"${tenant}")
+        status=$(jq -r '.spec.site_state' <<<"${content}")
+
+        if [[ "${status}" == "ONLINE" ]]; then
+          echo "Done"
+          break
+        fi
       fi
+
+      if [ "${counter}" -eq "${max_timeout}" ]; then
+          echo "Timeout of ${max_timeout} secs reached. Stop checking status now..."
+          break
+      fi
+
+      echo "Status: ${status} --> Waiting..."
+      echo ""
+      sleep $sleep_first_step
+
+    else
+      echo "Status check failed with error: $content"
     fi
-
-    if [ "${counter}" -eq "${max_timeout}" ]; then
-        echo "Timeout of ${max_timeout} secs reached. Stop checking status now..."
-        break
-    fi
-
-    echo "Status: ${status} --> Waiting..."
-    echo ""
-    sleep $sleep_first_step
-
   done
 fi
 
@@ -112,34 +117,40 @@ if [[ "${check_type}" == "cert" ]] ; then
       -H 'accept: application/data' \
       -H 'Access-Control-Allow-Origin: *' \
       -H 'x-volterra-apigw-tenant: '"${tenant}")
-    status=$(jq -r '.spec.site_state' <<<"${content}")
 
-    if [[ "${status}" == "ONLINE" ]]; then
-      echo "Status: ${status} --> Wait ${sleep_second_step} secs and check status again..."
-      echo ""
-      sleep $sleep_second_step
-
-      content=$(curl --cert-type P12 --cert "${cert_p12_file}":"${cert_password}" -s -X 'GET' \
-        "${url}" \
-        -H 'accept: application/data' \
-        -H 'Access-Control-Allow-Origin: *' \
-        -H 'x-volterra-apigw-tenant: '"${tenant}")
+    if jq -e . >/dev/null 2>&1 <<<"$content"; then
       status=$(jq -r '.spec.site_state' <<<"${content}")
 
       if [[ "${status}" == "ONLINE" ]]; then
-        echo "Done"
-        break
+        echo "Status: ${status} --> Wait ${sleep_second_step} secs and check status again..."
+        echo ""
+        sleep $sleep_second_step
+
+        content=$(curl --cert-type P12 --cert "${cert_p12_file}":"${cert_password}" -s -X 'GET' \
+          "${url}" \
+          -H 'accept: application/data' \
+          -H 'Access-Control-Allow-Origin: *' \
+          -H 'x-volterra-apigw-tenant: '"${tenant}")
+        status=$(jq -r '.spec.site_state' <<<"${content}")
+
+        if [[ "${status}" == "ONLINE" ]]; then
+          echo "Done"
+          break
+        fi
       fi
-    fi
 
-    if [ "${counter}" -eq "${max_timeout}" ]; then
-        echo "Timeout of ${max_timeout} secs reached. Stop checking status now..."
-        break
-    fi
+      if [ "${counter}" -eq "${max_timeout}" ]; then
+          echo "Timeout of ${max_timeout} secs reached. Stop checking status now..."
+          break
+      fi
 
-    echo "Status: ${status} --> Waiting..."
-    echo ""
-    sleep $sleep_first_step
+      echo "Status: ${status} --> Waiting..."
+      echo ""
+      sleep $sleep_first_step
+
+    else
+      echo "Status check failed with error: $content"
+    fi
 
   done
 fi

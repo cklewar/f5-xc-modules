@@ -16,10 +16,9 @@ resource "aws_instance" "instance" {
   ami                         = lookup(var.amis, var.aws_region)
   tags                        = merge({ "Name" : var.aws_ec2_instance_name, "Owner" : var.owner }, var.custom_tags)
   key_name                    = aws_key_pair.aws_key.key_name
-  user_data                   = local.cloud_init_content
   instance_type               = var.aws_ec2_instance_type
+  user_data_base64            = base64encode(local.cloud_init_content)
   user_data_replace_on_change = var.aws_ec2_user_data_replace_on_change
-
 
   dynamic "network_interface" {
     for_each = var.aws_ec2_network_interfaces_ref

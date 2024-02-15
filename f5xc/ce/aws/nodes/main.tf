@@ -5,7 +5,7 @@ resource "aws_instance" "instance" {
   monitoring           = var.aws_instance_monitoring
   instance_type        = var.aws_instance_type
   user_data_base64     = base64encode(var.f5xc_instance_config)
-  iam_instance_profile = var.aws_iam_instance_profile_id
+  iam_instance_profile = var.aws_iam_instance_profile_name
 
   root_block_device {
     volume_size = var.aws_instance_disk_size

@@ -1,4 +1,5 @@
 resource "aws_iam_role" "role" {
+  count              = var.create_new_aws_iam_profile ? 1 : 0
   name               = "${var.f5xc_cluster_name}-role"
   assume_role_policy = <<EOF
 {
@@ -18,6 +19,7 @@ EOF
 }
 
 resource "aws_iam_policy" "policy" {
+  count  = var.create_new_aws_iam_profile ? 1 : 0
   name   = "${var.f5xc_cluster_name}-policy"
   policy = <<POLICY
 {
@@ -94,11 +96,13 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "attachment" {
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.policy.arn
+  count      = var.create_new_aws_iam_profile ? 1 : 0
+  role       = aws_iam_role.role.0.name
+  policy_arn = aws_iam_policy.policy.0.arn
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name = "${var.f5xc_cluster_name}-profile"
-  role = aws_iam_role.role.name
+  count = var.create_new_aws_iam_profile ? 1 : 0
+  name  = "${var.f5xc_cluster_name}-profile"
+  role  = aws_iam_role.role.0.name
 }

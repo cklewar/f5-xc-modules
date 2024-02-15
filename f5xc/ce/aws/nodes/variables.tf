@@ -59,7 +59,7 @@ variable "aws_interface_sli_id" {
   type = string
 }
 
-variable "aws_iam_instance_profile_id" {
+variable "aws_iam_instance_profile_name" {
   type = string
 }
 

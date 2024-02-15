@@ -27,6 +27,55 @@ variable "create_new_aws_vpc" {
   default     = true
 }
 
+variable "create_new_aws_igw" {
+  description = "create new aws igw"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_aws_iam_profile" {
+  description = "create new AWS IAM profile with mandatory actions"
+  type        = string
+  default     = true
+
+}
+
+variable "create_new_aws_slo_rt" {
+  description = "create new slo subnet route table"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_aws_sli_rt" {
+  description = "create new sli subnet route table"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_aws_slo_rta" {
+  description = "create new slo aws route table association"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_aws_sli_rta" {
+  description = "create new sli aws route table association"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_slo_security_group" {
+  description = "create new aws F5XC CE SLO security group"
+  type        = bool
+  default     = true
+}
+
+variable "create_new_sli_security_group" {
+  description = "create new aws F5XC CE SLI security group"
+  type        = bool
+  default     = true
+}
+
 variable "f5xc_ce_hosts_public_name" {
   type    = string
   default = "vip"
@@ -38,15 +87,54 @@ variable "cluster_workload" {
 }
 
 variable "ssh_public_key" {
-  description = "EC2 instance assigned public ssh key"
+  description = "New EC2 instance assigned public ssh key"
   type        = string
+  default     = null
+}
 
+variable "aws_slo_rt_custom_ipv4_routes" {
+  description = "Add custom ipv4 routes to aws slo rt table"
+  type        = list(object({
+    cidr_block           = string
+    gateway_id           = optional(string)
+    network_interface_id = optional(string)
+  }))
+  default = []
+}
+
+variable "aws_slo_rt_custom_ipv6_routes" {
+  description = "Add custom ipv6 routes to aws slo rt table"
+  type        = list(object({
+    cidr_block           = string
+    gateway_id           = optional(string)
+    network_interface_id = optional(string)
+  }))
+  default = []
 }
 
 variable "aws_existing_vpc_id" {
   description = "inject existing aws vpc id"
   type        = string
   default     = ""
+}
+
+
+variable "aws_existing_sg_slo_ids" {
+  description = "inject list of existing security group ids for SLO"
+  type        = list(string)
+  default     = []
+}
+
+variable "aws_existing_sg_sli_ids" {
+  description = "inject list of existing security group ids for SLI"
+  type        = list(string)
+  default     = []
+}
+
+variable "aws_existing_iam_profile_name" {
+  description = "Create new AWS IAM profile for CE with mandatory actions"
+  type        = string
+  default     = null
 }
 
 variable "aws_security_group_rules_slo_egress_default" {
@@ -161,6 +249,18 @@ variable "aws_security_group_rules_sli_ingress" {
     cidr_blocks = list(string)
   }))
   default = []
+}
+
+variable "aws_key_pair_id" {
+  description = "The ID of existing AWS ssh key pair"
+  type        = string
+  default     = null
+}
+
+variable "aws_iam_policy_id" {
+  description = "THe ID of existing AWS IAM policy"
+  type        = string
+  default     = null
 }
 
 variable "f5xc_cluster_labels" {
@@ -279,8 +379,8 @@ variable "f5xc_is_secure_cloud_ce" {
 
 variable "f5xc_is_private_cloud_ce" {
   description = "whether CE should be private with SLO has private IP and NAT GW in front"
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "f5xc_ce_slo_enable_secure_sg" {
@@ -447,27 +547,45 @@ variable "aws_vpc_cidr_block" {
 
 variable "f5xc_ip_ranges_Americas_TCP" {
   type    = list(string)
-  default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]
+  default = [
+    "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",
+    "23.158.32.0/25",
+  ]
 }
 variable "f5xc_ip_ranges_Americas_UDP" {
   type    = list(string)
-  default = ["23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",]
+  default = [
+    "23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25",
+    "84.54.61.0/25",
+  ]
 }
 variable "f5xc_ip_ranges_Europe_TCP" {
   type    = list(string)
-  default = ["84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",]
+  default = [
+    "84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25",
+    "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",
+  ]
 }
 variable "f5xc_ip_ranges_Europe_UDP" {
   type    = list(string)
-  default = ["5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25", "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",]
+  default = [
+    "5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25",
+    "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",
+  ]
 }
 variable "f5xc_ip_ranges_Asia_TCP" {
   type    = list(string)
-  default = ["103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24", "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",]
+  default = [
+    "103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24",
+    "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",
+  ]
 }
 variable "f5xc_ip_ranges_Asia_UDP" {
   type    = list(string)
-  default = ["103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24", "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",]
+  default = [
+    "103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24",
+    "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",
+  ]
 }
 
 variable "f5xc_ce_egress_ip_ranges" {

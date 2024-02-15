@@ -23,6 +23,18 @@ variable "create_new_aws_vpc" {
   type = bool
 }
 
+variable "create_new_aws_igw" {
+  type = bool
+}
+
+variable "create_new_aws_slo_rt" {
+  type = bool
+}
+
+variable "create_new_aws_sli_rt" {
+  type = bool
+}
+
 variable "aws_existing_vpc_id" {
   type = string
 }
@@ -34,6 +46,22 @@ variable "aws_vpc_enable_dns_support" {
 
 variable "aws_vpc_cidr_block" {
   type = string
+}
+
+variable "aws_slo_rt_custom_ipv4_routes" {
+  type = list(object({
+    cidr_block           = string
+    gateway_id           = optional(string)
+    network_interface_id = optional(string)
+  }))
+}
+
+variable "aws_slo_rt_custom_ipv6_routes" {
+  type = list(object({
+    cidr_block           = string
+    gateway_id           = optional(string)
+    network_interface_id = optional(string)
+  }))
 }
 
 variable "aws_security_group_rules_slo_ingress_secure_ce" {
@@ -122,5 +150,5 @@ variable "f5xc_is_secure_cloud_ce" {
 }
 
 variable "f5xc_ce_slo_enable_secure_sg" {
-  type    = bool
+  type = bool
 }

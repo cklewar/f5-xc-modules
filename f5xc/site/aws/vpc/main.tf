@@ -255,15 +255,15 @@ resource "volterra_tf_params_action" "aws_vpc_action_plan" {
   wait_for_action = var.f5xc_tf_wait_for_action
 }
 
-resource "volterra_tf_params_action" "aws_vpc_action_apply" {
+/*resource "volterra_tf_params_action" "aws_vpc_action_apply" {
   depends_on      = [volterra_tf_params_action.aws_vpc_action_plan]
   site_name       = volterra_aws_vpc_site.site.name
   site_kind       = var.f5xc_aws_site_kind
   action          = var.f5xc_tf_params_action_apply
   wait_for_action = var.f5xc_tf_wait_for_action
-}
+}*/
 
-module "site_wait_for_online" {
+/*module "site_wait_for_online" {
   depends_on     = [volterra_tf_params_action.aws_vpc_action_apply]
   source         = "../../../status/site"
   f5xc_api_token = var.f5xc_api_token
@@ -272,4 +272,4 @@ module "site_wait_for_online" {
   f5xc_site_name = volterra_aws_vpc_site.site.name
   f5xc_tenant    = var.f5xc_tenant
   is_sensitive   = var.is_sensitive
-}
+}*/

@@ -3,13 +3,13 @@ output "f5xc_aws_vpc" {
     id     = volterra_aws_vpc_site.site.id
     name   = volterra_aws_vpc_site.site.name
     region = volterra_aws_vpc_site.site.aws_region
-    # params = volterra_tf_params_action.aws_vpc_action_apply.tf_output
+    params = volterra_tf_params_action.aws_vpc_action.tf_output
     vpc_id = data.aws_vpc.vpc.id
     igw_id = data.aws_internet_gateway.igw.id
-    nodes = {
+    nodes  = {
       master-0 = {
-        id   = data.aws_instance.master-0.id
-        name = data.aws_instance.master-0.tags["Name"]
+        id         = data.aws_instance.master-0.id
+        name       = data.aws_instance.master-0.tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-0-slo.*.id[0]
@@ -29,8 +29,8 @@ output "f5xc_aws_vpc" {
         }
       },
       master-1 = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? {
-        id   = data.aws_instance.master-1[0].id
-        name = data.aws_instance.master-1[0].tags["Name"]
+        id         = data.aws_instance.master-1[0].id
+        name       = data.aws_instance.master-1[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-1-slo.*.id[0]
@@ -50,8 +50,8 @@ output "f5xc_aws_vpc" {
         }
       } : null,
       master-2 = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? {
-        id   = data.aws_instance.master-2[0].id
-        name = data.aws_instance.master-2[0].tags["Name"]
+        id         = data.aws_instance.master-2[0].id
+        name       = data.aws_instance.master-2[0].tags["Name"]
         interfaces = {
           slo = {
             id               = data.aws_network_interface.master-2-slo.*.id[0]

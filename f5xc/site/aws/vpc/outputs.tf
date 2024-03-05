@@ -3,7 +3,7 @@ output "f5xc_aws_vpc" {
     id     = volterra_aws_vpc_site.site.id
     name   = volterra_aws_vpc_site.site.name
     region = volterra_aws_vpc_site.site.aws_region
-    params = volterra_tf_params_action.aws_vpc_action
+    params = volterra_tf_params_action.aws_vpc_action_apply
     vpc_id = data.aws_vpc.vpc.id
     igw_id = data.aws_internet_gateway.igw.id
     nodes = {

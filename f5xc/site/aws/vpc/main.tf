@@ -22,7 +22,9 @@ resource "volterra_aws_vpc_site" "site" {
       manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
       standard_vifs                = var.f5xc_aws_vpc_direct_connect_standard_vifs
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
+          1
+        ] : []
         content {
           vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
         }
@@ -65,7 +67,7 @@ resource "volterra_aws_vpc_site" "site" {
   dynamic "ingress_gw" {
     for_each = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_single_nic ? [1] : []
     content {
-      aws_certified_hw        = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
+      aws_certified_hw = var.f5xc_aws_ce_certified_hw[var.f5xc_aws_ce_gw_type]
       //sm_connection_pvt_ip    = var.f5xc_aws_vpc_sm_connection_public_ip ? false : true
       //sm_connection_public_ip = var.f5xc_aws_vpc_sm_connection_public_ip
       allowed_vip_port {
@@ -151,7 +153,9 @@ resource "volterra_aws_vpc_site" "site" {
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [1] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [
+              1
+            ] : []
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_existing_subnet_id"]
             }
@@ -244,15 +248,23 @@ resource "volterra_aws_vpc_site" "site" {
   ignore_on_delete = var.f5xc_cloud_site_labels_ignore_on_delete
 }*/
 
-resource "volterra_tf_params_action" "aws_vpc_action" {
+resource "volterra_tf_params_action" "aws_vpc_action_plan" {
   site_name       = volterra_aws_vpc_site.site.name
   site_kind       = var.f5xc_aws_site_kind
-  action          = var.f5xc_tf_params_action
+  action          = var.f5xc_tf_params_action_plan
+  wait_for_action = var.f5xc_tf_wait_for_action
+}
+
+resource "volterra_tf_params_action" "aws_vpc_action_apply" {
+  depends_on      = [volterra_tf_params_action.aws_vpc_action_plan]
+  site_name       = volterra_aws_vpc_site.site.name
+  site_kind       = var.f5xc_aws_site_kind
+  action          = var.f5xc_tf_params_action_apply
   wait_for_action = var.f5xc_tf_wait_for_action
 }
 
 module "site_wait_for_online" {
-  depends_on     = [volterra_tf_params_action.aws_vpc_action]
+  depends_on     = [volterra_tf_params_action.aws_vpc_action_apply]
   source         = "../../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url

@@ -5,12 +5,12 @@ resource "local_file" "kubectl_manifest_master" {
     latitude                   = var.f5xc_cluster_latitude
     longitude                  = var.f5xc_cluster_longitude
     host_name                  = format("m%d", count.index)
-    ip_address                 = "10.251.1.${count.index + 10}/16"
-    ip_gateway                 = "10.251.0.1"
+    ip_address                 = "${var.master_node_ip_address_prefix}${count.index + 10}/${var.master_node_ip_address_suffix}"
+    ip_gateway                 = var.ip_gateway
     cluster_name               = var.f5xc_cluster_name
     maurice_endpoint           = module.maurice.endpoints.maurice
     f5xc_rhel9_container       = var.f5xc_rhel9_container
-    site_registration_token    = "596206a6-c5ec-4e40-bbfa-ec412c0e8ef9" #volterra_token.site.id
+    site_registration_token    = var.site_registration_token != "" ? var.site_registration_token : volterra_token.site.id
     maurice_private_endpoint   = module.maurice.endpoints.maurice_mtls
     certified_hardware_profile = var.f5xc_certified_hardware_profile
   })
@@ -21,17 +21,17 @@ resource "terraform_data" "master" {
   count      = var.master_nodes_count
   depends_on = [local_file.kubectl_manifest_master]
   input      = {
-    manifest   = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
-    kubeconfig = var.f5xc_kubeconfig
-    name       = "${var.f5xc_cluster_name}-m${count.index}"
+    name            = "${var.f5xc_cluster_name}-m${count.index}"
+    manifest        = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
+    kubeconfig_file = module.kubeconfig.filename
   }
 
   provisioner "local-exec" {
-    command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig}"
+    command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
   }
   provisioner "local-exec" {
     when       = destroy
     on_failure = continue
-    command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig}"
+    command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"
   }
 }

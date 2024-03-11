@@ -108,6 +108,26 @@ variable "admin_password" {
   type = string
 }
 
+variable "worker_node_ip_address_prefix" {
+  type = string
+}
+
+variable "worker_node_ip_address_suffix" {
+  type = string
+}
+
+variable "master_node_ip_address_prefix" {
+  type = string
+}
+
+variable "master_node_ip_address_suffix" {
+  type = string
+}
+
+variable "ip_gateway" {
+  type = string
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -124,4 +144,9 @@ variable "is_sensitive" {
 variable "kubevirt" {
   type    = bool
   default = false
+}
+
+variable "site_registration_token" {
+  type    = string
+  default = ""
 }

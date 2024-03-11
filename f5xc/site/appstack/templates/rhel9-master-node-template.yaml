@@ -1,7 +1,7 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: ${cluster-name}-${host-name}
+  name: ${cluster_name}-${host_name}
   creationTimestamp: null
 spec:
   runStrategy: Always
@@ -9,10 +9,8 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        cluster: ${cluster-name}
+        cluster: ${cluster_name}
     spec:
-      #      nodeSelector:
-      #    kubernetes.io/hostname: ryzen1
       domain:
         cpu:
           model: host-passthrough
@@ -31,24 +29,18 @@ spec:
           interfaces:
             - sriov: {}
               name: default-net
-                #            - bridge: {}
-                #              name: marcel-vn
       dnsPolicy: "None"
       dnsConfig:
         nameservers:
           - 8.8.8.8
       networks:
       - name: default-net
-        # pod: {} # Uses default Volterra CNI as for vk8s pods
-          #      - name: marcel-vn
-        multus: # Secondary multus network
-          networkName: ${network} #ves-system/sb-bond0-sub-vlan251
+        multus:
+          networkName: ${network}
       volumes:
         - name: containerdisk
           containerDisk:
             image: ${f5xc_rhel9_container}
-            #image: gcr.io/solutions-team-280017/vesio-ver9-ce:9.2023.29
-            #            imagePullPolicy: Always
         - name: cloudinit
           cloudInitNoCloud:
             userData: |
@@ -72,24 +64,24 @@ spec:
                     EtcdUseTLS: true
                     Server: vip
                   Vpm:
-                    ClusterName: ${cluster-name}
+                    ClusterName: ${cluster_name}
                     ClusterType: ce
                     Config: /etc/vpm/config.yaml
                     Labels:
                       testbed: make-me-a-var
-                    Hostname: ${cluster-name}-${host-name}
+                    Hostname: ${cluster_name}-${host_name}
                     Latitude: ${latitude}
                     Longitude: ${longitude}
-                    MauriceEndpoint: ${maurice-endpoint}
-                    MauricePrivateEndpoint: ${maurice-private-endpoint}
+                    MauriceEndpoint: ${maurice_endpoint}
+                    MauricePrivateEndpoint: ${maurice_private_endpoint}
                     Proxy: {}
                     EnableIpv6: true
-                    Token: ${site-registration-token}
+                    Token: ${site_registration_token}
               - path: /etc/vpm/certified-hardware.yaml
                 permissions: 0644
                 owner: root
                 content: |
-                  active: ${certifiedhardware}
+                  active: ${certified_hardware_profile}
                   certifiedHardware:
                     kvm-voltstack-combo:
                       Vpm:
@@ -101,7 +93,7 @@ spec:
                         PrivateNIC: eth0
                       outsideNic:
                       - eth0
-                    kvm-voltstack-combo-softbank-large:
+                    ${certified_hardware_profile}:
                       Vpm:
                         PrivateNIC: eth0
                       outsiteNic:
@@ -109,4 +101,4 @@ spec:
                   primaryOutsideNic: eth0
               runcmd:
                 - [ sh, -c, test -e /usr/bin/fsextend  && /usr/bin/fsextend || true ]
-              hostname: ${cluster-name}-${host-name}
+              hostname: ${cluster_name}-${host_name}

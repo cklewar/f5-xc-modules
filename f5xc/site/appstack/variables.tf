@@ -60,6 +60,15 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
+variable "f5xc_operating_system_version" {
+  type = string
+}
+
+variable "f5xc_certified_hardware_profile" {
+  type    = string
+  default = "kvm-voltstack-combo-softbank-large"
+}
+
 variable "master_nodes_count" {
   type    = number
   default = 1

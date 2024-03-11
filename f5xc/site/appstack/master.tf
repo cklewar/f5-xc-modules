@@ -30,8 +30,7 @@ resource "local_file" "kubectl_manifest_master" {
     maurice-private-endpoint = module.maurice.endpoints.maurice_mtls
     maurice-endpoint         = module.maurice.endpoints.maurice
     site-registration-token  = "596206a6-c5ec-4e40-bbfa-ec412c0e8ef9" #volterra_token.site.id
-    # certifiedhardware        = "kvm-voltstack-combo"
-    certifiedhardware        = "kvm-voltstack-combo-softbank-large"
+    certifiedhardware        = var.f5xc_certified_hardware_profile
     f5xc_rhel9_container     = var.f5xc_rhel9_container
   })
   filename = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"

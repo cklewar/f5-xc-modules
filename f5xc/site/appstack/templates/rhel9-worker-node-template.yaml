@@ -1,0 +1,107 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ${cluster-name}-${host-name}
+  creationTimestamp: null
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        cluster: ${cluster-name}
+    spec:
+      #      nodeSelector:
+      #    kubernetes.io/hostname: ryzen1
+      domain:
+        cpu:
+          model: host-passthrough
+        resources:
+          limits:
+            cpu: 8
+            memory: 64Gi
+        devices:
+          disks:
+          - name: containerdisk
+            disk:
+              bus: virtio
+          - name: cloudinit
+            disk:
+              bus: virtio
+          interfaces:
+            - sriov: {}
+              name: default-net
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+      networks:
+      - name: default-net
+        multus: # Secondary multus network
+          networkName: ${network}
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: ${f5xc_rhel9_container}
+            #            imagePullPolicy: Always
+        - name: cloudinit
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              users:
+                - name: "vesop"
+                  passwd: ""
+                  groups:
+                    - "sudo"
+              coreos:
+                update:
+                  reboot-strategy: "off"
+              network:
+                version: 2
+              write_files:
+              - path: /etc/vpm/config.yaml
+                permissions: 0644
+                owner: root
+                content: |
+                  Kubernetes:
+                    EtcdUseTLS: true
+                    Server: vip
+                  Vpm:
+                    ClusterName: ${cluster-name}
+                    ClusterType: ce
+                    Config: /etc/vpm/config.yaml
+                    Labels:
+                      testbed: make-me-a-var
+                    Hostname: ${cluster-name}-${host-name}
+                    Latitude: ${latitude}
+                    Longitude: ${longitude}
+                    MauriceEndpoint: ${maurice-endpoint}
+                    MauricePrivateEndpoint: ${maurice-private-endpoint}
+                    Proxy: {}
+                    EnableIpv6: true
+                    Token: ${site-registration-token}
+              - path: /etc/vpm/certified-hardware.yaml
+                permissions: 0644
+                owner: root
+                content: |
+                  active: ${certifiedhardware}
+                  certifiedHardware:
+                    kvm-voltstack-combo:
+                      Vpm:
+                        PrivateNIC: eth0
+                      outsideNic:
+                      - eth0
+                    kvm-regular-nic-voltmesh:
+                      Vpm:
+                        PrivateNIC: eth0
+                      outsideNic:
+                      - eth0
+                    kvm-voltstack-combo-softbank-large:
+                      Vpm:
+                        PrivateNIC: eth0
+                      outsiteNic:
+                      - eth0
+                  primaryOutsideNic: eth0
+              runcmd:
+                - [ sh, -c, test -e /usr/bin/fsextend  && /usr/bin/fsextend || true ]
+              hostname: ${cluster-name}-${host-name}

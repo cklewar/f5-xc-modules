@@ -4,7 +4,7 @@ resource "volterra_token" "site" {
 }
 
 module "maurice" {
-  source       = "../../../../../modules/utils/maurice"
+  source       = "../../../utils/maurice"
   f5xc_api_url = var.f5xc_api_url
 }
 
@@ -46,14 +46,13 @@ resource "volterra_voltstack_site" "cluster" {
   default_network_config  = true
   default_storage_config  = true
   deny_all_usb            = false
-  volterra_certified_hw   = "kvm-voltstack-combo-softbank-large"
+  volterra_certified_hw   = var.f5xc_certified_hardware_profile
   #  sw {
   #    volterra_software_version = "crt-20240213-2651"
   #    #volterra_software_version = "crt-20240123-2647"
   #  }
   os {
-    operating_system_version = "9.2024.6"
-    #operating_system_version = "9.2023.29"
+    operating_system_version = var.f5xc_operating_system_version
   }
 }
 
@@ -69,7 +68,7 @@ resource "volterra_registration_approval" "master" {
 
 module "site_wait_for_online" {
   depends_on     = [volterra_voltstack_site.cluster, terraform_data.worker]
-  source         = "../../../../../modules/f5xc/status/site"
+  source         = "../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url
   f5xc_namespace = var.f5xc_namespace

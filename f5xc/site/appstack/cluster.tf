@@ -10,7 +10,7 @@ module "maurice" {
 
 resource "volterra_k8s_cluster" "cluster" {
   name                              = var.f5xc_cluster_name
-  namespace                         = "system"
+  namespace                         = var.f5xc_namespace
   use_default_psp                   = true
   global_access_enable              = true
   no_cluster_wide_apps              = true
@@ -28,10 +28,10 @@ resource "volterra_k8s_cluster" "cluster" {
 resource "volterra_voltstack_site" "cluster" {
   depends_on = [terraform_data.master, terraform_data.worker]
   name       = var.f5xc_cluster_name
-  namespace  = "system"
+  namespace  = var.f5xc_namespace
 
   k8s_cluster {
-    namespace = "system"
+    namespace = var.f5xc_namespace
     name      = volterra_k8s_cluster.cluster.name
   }
 

@@ -57,7 +57,7 @@ resource "volterra_voltstack_site" "cluster" {
 }
 
 resource "volterra_registration_approval" "master" {
-  depends_on   = [volterra_voltstack_site.cluster, terraform_data.master]
+  depends_on   = [terraform_data.master]
   count        = var.master_nodes_count
   cluster_name = volterra_voltstack_site.cluster.name
   cluster_size = var.master_nodes_count
@@ -88,6 +88,7 @@ resource "volterra_registration_approval" "worker" {
 }
 
 module "kubeconfig" {
+  depends_on            = [volterra_registration_approval.master, volterra_registration_approval.worker]
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token
   f5xc_api_url          = var.f5xc_api_url

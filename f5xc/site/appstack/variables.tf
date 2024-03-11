@@ -69,6 +69,10 @@ variable "f5xc_certified_hardware_profile" {
   default = "kvm-voltstack-combo-softbank-large"
 }
 
+variable "f5xc_k8s_config_type" {
+  type = string
+}
+
 variable "master_nodes_count" {
   type    = number
   default = 1

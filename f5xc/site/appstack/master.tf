@@ -33,6 +33,10 @@ resource "terraform_data" "master" {
   }
 
   provisioner "local-exec" {
+    command = "kubectl cordon  ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+  }
+
+  provisioner "local-exec" {
     when       = destroy
     on_failure = continue
     command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"

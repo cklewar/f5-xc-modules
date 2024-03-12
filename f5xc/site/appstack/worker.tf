@@ -1,6 +1,6 @@
 resource "local_file" "kubectl_manifest_worker" {
   count   = var.worker_nodes_count
-  content = templatefile("${path.module}/templates/rhel9-worker-node-template-static-ip.yaml", {
+  content = templatefile("${path.module}/templates/${var.worker_node_manifest_template}.yaml", {
     latitude                   = var.f5xc_cluster_latitude
     longitude                  = var.f5xc_cluster_longitude
     network                    = count.index % 3 == 0 ? "ves-system/sb-infra-lab-v5-eno5np0-251-vfio" : count.index % 3 == 1 ? "ves-system/sb-infra-lab-v5-eno6np1-251-vfio" : "ves-system/sb-infra-lab-v5-ens1f0np0-251-vfio"

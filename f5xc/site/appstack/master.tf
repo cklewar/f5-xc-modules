@@ -1,6 +1,6 @@
 resource "local_file" "kubectl_manifest_master" {
   count   = var.master_nodes_count
-  content = templatefile("${path.module}/templates/rhel9-master-node-template-static-ip.yaml", {
+  content = templatefile("${path.module}/templates/${var.master_node_manifest_template}.yaml", {
     network                    = count.index % 3 == 0 ? "ves-system/sb-infra-lab-v5-eno5np0-251-vfio" : count.index % 3 == 1 ? "ves-system/sb-infra-lab-v5-eno6np1-251-vfio" : "ves-system/sb-infra-lab-v5-ens1f0np0-251-vfio"
     latitude                   = var.f5xc_cluster_latitude
     longitude                  = var.f5xc_cluster_longitude

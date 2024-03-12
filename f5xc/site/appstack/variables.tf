@@ -146,3 +146,11 @@ variable "site_registration_token" {
   type    = string
   default = ""
 }
+
+variable "master_node_manifest_template" {
+  type = string
+}
+
+variable "worker_node_manifest_template" {
+  type = string
+}

@@ -8,8 +8,6 @@ locals {
     "Owner"                                          = var.owner_tag
     "deployment"                                     = var.f5xc_cluster_name
   }
-  kubeconfig = format("./%s.kubeconfig", var.f5xc_cluster_name)
-
   master_vmi_manifest = [
     for counter in range(var.master_nodes_count) :
     templatefile("${path.module}/templates/${var.master_node_manifest_template}.yaml", {

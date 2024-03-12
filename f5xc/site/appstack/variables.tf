@@ -159,3 +159,8 @@ variable "worker_node_manifest_template" {
 variable "f5xc_k8s_infra_cluster_name" {
   type = string
 }
+
+variable "f5xc_k8s_infra_cluster_api_url" {
+  type    = string
+  default = ""
+}

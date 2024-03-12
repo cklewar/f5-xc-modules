@@ -83,16 +83,6 @@ spec:
                 content: |
                   active: ${certified_hardware_profile}
                   certifiedHardware:
-                    kvm-voltstack-combo:
-                      Vpm:
-                        PrivateNIC: eth0
-                      outsideNic:
-                      - eth0
-                    kvm-regular-nic-voltmesh:
-                      Vpm:
-                        PrivateNIC: eth0
-                      outsideNic:
-                      - eth0
                     ${certified_hardware_profile}:
                       Vpm:
                         PrivateNIC: eth0

@@ -160,6 +160,11 @@ variable "f5xc_k8s_infra_cluster_name" {
   type = string
 }
 
+variable "f5xc_k8s_infra_cluster_api_token" {
+  type    = string
+  default = ""
+}
+
 variable "f5xc_k8s_infra_cluster_api_url" {
   type    = string
   default = ""

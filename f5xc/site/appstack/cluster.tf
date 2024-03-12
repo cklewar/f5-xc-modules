@@ -30,7 +30,7 @@ resource "volterra_voltstack_site" "site" {
   namespace = var.f5xc_namespace
 
   dynamic "master_node_configuration" {
-    for_each = [for name in var.master_nodes_count : format("%s-m%d", volterra_k8s_cluster.cluster.name, count.index)]
+    for_each = [for i in range(var.master_nodes_count) : format("%s-m%d", volterra_k8s_cluster.cluster.name, i)]
     content {
       name = master_node_configuration.value
     }
@@ -86,7 +86,7 @@ resource "volterra_registration_approval" "worker" {
 }
 
 module "kubeconfig" {
-  depends_on            = [volterra_voltstack_site.site]
+  # depends_on            = [volterra_voltstack_site.site]
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token
   f5xc_api_url          = var.f5xc_api_url

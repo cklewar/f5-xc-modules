@@ -31,7 +31,31 @@ resource "terraform_data" "master" {
   }
 
   provisioner "local-exec" {
-    command     = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = <<EOT
+kubectl apply -f - --kubeconfig ${self.input.kubeconfig_file} <<EOF
+${self.input.manifest}
+EOF
+EOT
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    command     = "sleep 3"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    command     = "sleep 3"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

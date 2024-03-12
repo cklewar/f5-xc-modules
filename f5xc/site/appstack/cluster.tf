@@ -75,7 +75,6 @@ module "kubeconfig_testbed" {
 }
 
 resource "volterra_registration_approval" "master" {
-  depends_on   = [mas]
   count        = var.master_nodes_count
   cluster_name = volterra_voltstack_site.site.name
   cluster_size = var.master_nodes_count

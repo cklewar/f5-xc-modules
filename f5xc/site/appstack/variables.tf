@@ -61,7 +61,7 @@ variable "f5xc_operating_system_version" {
 }
 
 variable "f5xc_certified_hardware_profile" {
-  type    = string
+  type = string
 }
 
 variable "f5xc_k8s_config_type" {
@@ -82,18 +82,22 @@ variable "master_node_cpus" {
   type    = number
   default = 4
 }
+
 variable "worker_node_cpus" {
   type    = number
   default = 4
 }
+
 variable "master_node_memory" {
   type    = number
   default = 16384
 }
+
 variable "worker_node_memory" {
   type    = number
   default = 16384
 }
+
 variable "slo_network" {
   type    = string
   default = ""
@@ -151,5 +155,9 @@ variable "master_node_manifest_template" {
 }
 
 variable "worker_node_manifest_template" {
+  type = string
+}
+
+variable "f5xc_k8s_infra_cluster_name" {
   type = string
 }

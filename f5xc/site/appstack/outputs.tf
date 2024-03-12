@@ -3,7 +3,7 @@ output "eut" {
     type = "appstack"
     data = {
       tenant     = var.f5xc_tenant
-      kubeconfig = module.kubeconfig.config
+      kubeconfig = module.kubeconfig_testbed.config
     }
   }
 }

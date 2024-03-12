@@ -8,6 +8,14 @@ module "maurice" {
   f5xc_api_url = var.f5xc_api_url
 }
 
+module "kubeconfig_infrastructure" {
+  source                = "../../../utils/kubeconfig"
+  f5xc_api_token        = var.f5xc_api_token
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_k8s_cluster_name = var.f5xc_k8s_infra_cluster_name
+  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
+}
+
 resource "volterra_k8s_cluster" "cluster" {
   name                              = var.f5xc_cluster_name
   namespace                         = var.f5xc_namespace
@@ -57,7 +65,7 @@ resource "volterra_voltstack_site" "site" {
   }
 }
 
-module "kubeconfig" {
+module "kubeconfig_testbed" {
   depends_on            = [volterra_voltstack_site.site]
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token

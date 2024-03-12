@@ -23,7 +23,7 @@ resource "terraform_data" "worker" {
   input      = {
     name            = "${var.f5xc_cluster_name}-w${count.index}"
     manifest        = "manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
-    kubeconfig_file = module.kubeconfig.filename
+    kubeconfig_file = module.kubeconfig_infrastructure.filename
   }
 
   provisioner "local-exec" {

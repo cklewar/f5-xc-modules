@@ -23,7 +23,7 @@ resource "terraform_data" "master" {
   input      = {
     name            = "${var.f5xc_cluster_name}-m${count.index}"
     manifest        = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
-    kubeconfig_file = module.kubeconfig.filename
+    kubeconfig_file = module.kubeconfig_infrastructure.filename
   }
 
   provisioner "local-exec" {

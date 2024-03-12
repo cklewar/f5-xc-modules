@@ -20,7 +20,7 @@ resource "local_file" "kubectl_manifest_worker" {
 }
 
 resource "terraform_data" "worker" {
-  depends_on = [local_file.kubectl_manifest_worker, terraform_data.master]
+  depends_on = [local_file.kubectl_manifest_worker]
   count      = var.worker_nodes_count
   input      = {
     name            = "${var.f5xc_cluster_name}-w${count.index}"

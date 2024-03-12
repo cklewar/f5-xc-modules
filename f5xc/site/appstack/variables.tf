@@ -80,7 +80,7 @@ variable "worker_nodes_count" {
 
 variable "master_node_cpus" {
   type    = number
-  default = 4
+  default = 8
 }
 
 variable "worker_node_cpus" {
@@ -89,13 +89,11 @@ variable "worker_node_cpus" {
 }
 
 variable "master_node_memory" {
-  type    = number
-  default = 16384
+  type = string
 }
 
 variable "worker_node_memory" {
-  type    = number
-  default = 16384
+  type = string
 }
 
 variable "slo_network" {

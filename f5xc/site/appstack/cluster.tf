@@ -49,9 +49,9 @@ resource "volterra_voltstack_site" "site" {
     name      = volterra_k8s_cluster.cluster.name
   }
 
-  /*worker_nodes = [
+  worker_nodes = [
     for i in range(var.worker_nodes_count) :format("%s-w%d", volterra_k8s_cluster.cluster.name, i)
-  ]*/
+  ]
 
   disable_gpu             = true
   disable_vm              = var.is_kubevirt ? false : true
@@ -66,27 +66,8 @@ resource "volterra_voltstack_site" "site" {
   }
 }
 
-module "kubeconfig_testbed" {
-  depends_on            = [volterra_voltstack_site.site]
-  source                = "../../../utils/kubeconfig"
-  f5xc_api_token        = var.f5xc_api_token
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_k8s_cluster_name = var.f5xc_cluster_name
-  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
-}
-
-resource "volterra_registration_approval" "master" {
-  depends_on   = [terraform_data.master]
-  count        = var.master_nodes_count
-  cluster_name = volterra_voltstack_site.site.name
-  cluster_size = var.master_nodes_count
-  hostname     = format("%s-m%d", volterra_voltstack_site.site.name, count.index)
-  wait_time    = var.f5xc_registration_wait_time
-  retry        = var.f5xc_registration_retry
-}
-
 module "site_wait_for_online" {
-  depends_on     = [volterra_registration_approval.master]
+  depends_on     = [volterra_voltstack_site.site, terraform_data.master, terraform_data.worker]
   source         = "../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url
@@ -96,12 +77,31 @@ module "site_wait_for_online" {
   is_sensitive   = var.is_sensitive
 }
 
+resource "volterra_registration_approval" "master" {
+  depends_on   = [terraform_data.master]
+  count        = var.master_nodes_count
+  cluster_name = var.f5xc_cluster_name
+  cluster_size = var.master_nodes_count
+  hostname     = format("%s-m%d", volterra_voltstack_site.site.name, count.index)
+  wait_time    = var.f5xc_registration_wait_time
+  retry        = var.f5xc_registration_retry
+}
+
 resource "volterra_registration_approval" "worker" {
-  depends_on   = [module.site_wait_for_online]
+  depends_on   = [terraform_data.worker]
   count        = var.worker_nodes_count
-  cluster_name = volterra_voltstack_site.site.name
+  cluster_name = var.f5xc_cluster_name
   cluster_size = var.master_nodes_count
   hostname     = format("%s-w%d", volterra_voltstack_site.site.name, count.index)
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
+}
+
+module "kubeconfig_testbed" {
+  depends_on            = [module.site_wait_for_online]
+  source                = "../../../utils/kubeconfig"
+  f5xc_api_token        = var.f5xc_api_token
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_k8s_cluster_name = var.f5xc_cluster_name
+  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }

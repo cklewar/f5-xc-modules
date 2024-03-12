@@ -1,4 +1,4 @@
-/*resource "local_file" "kubectl_manifest_worker" {
+resource "local_file" "kubectl_manifest_worker" {
   count   = var.worker_nodes_count
   content = templatefile("${path.module}/templates/${var.worker_node_manifest_template}.yaml", {
     latitude                   = var.f5xc_cluster_latitude
@@ -16,7 +16,7 @@
     maurice_private_endpoint   = module.maurice.endpoints.maurice_mtls
     certified_hardware_profile = var.f5xc_certified_hardware_profile
   })
-  filename = "manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
+  filename = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
 }
 
 resource "terraform_data" "worker" {
@@ -24,7 +24,7 @@ resource "terraform_data" "worker" {
   count      = var.worker_nodes_count
   input      = {
     name            = "${var.f5xc_cluster_name}-w${count.index}"
-    manifest        = "manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
+    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
     kubeconfig_file = module.kubeconfig_infrastructure.filename
   }
 
@@ -36,4 +36,4 @@ resource "terraform_data" "worker" {
     on_failure = continue
     command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"
   }
-}*/
+}

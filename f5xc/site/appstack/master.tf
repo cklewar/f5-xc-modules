@@ -16,7 +16,7 @@ resource "local_file" "kubectl_manifest_master" {
     maurice_private_endpoint   = module.maurice.endpoints.maurice_mtls
     certified_hardware_profile = var.f5xc_certified_hardware_profile
   })
-  filename = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
+  filename = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
 }
 
 resource "terraform_data" "master" {
@@ -24,17 +24,13 @@ resource "terraform_data" "master" {
   count      = var.master_nodes_count
   input      = {
     name            = "${var.f5xc_cluster_name}-m${count.index}"
-    manifest        = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
+    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
     kubeconfig_file = module.kubeconfig_infrastructure.filename
   }
 
   provisioner "local-exec" {
-    command = "cat ${self.input.kubeconfig_file}"
-  }
-
-  /*provisioner "local-exec" {
     command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
-  }*/
+  }
 
   provisioner "local-exec" {
     when       = destroy

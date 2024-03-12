@@ -16,7 +16,7 @@ spec:
           model: host-passthrough
         resources:
           limits:
-            cpu: ${master_node_memory}
+            cpu: ${worker_node_memory}
             memory: ${worker_node_memory}
         devices:
           disks:

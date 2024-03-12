@@ -10,7 +10,7 @@ resource "local_file" "kubectl_manifest_master" {
     cluster_name               = var.f5xc_cluster_name
     maurice_endpoint           = module.maurice.endpoints.maurice
     f5xc_rhel9_container       = var.f5xc_rhel9_container
-    site_registration_token    = var.site_registration_token != "" ? var.site_registration_token : volterra_token.site.id
+    site_registration_token    = var.site_registration_token != "" ? var.site_registration_token : volterra_token.token.id
     maurice_private_endpoint   = module.maurice.endpoints.maurice_mtls
     certified_hardware_profile = var.f5xc_certified_hardware_profile
   })

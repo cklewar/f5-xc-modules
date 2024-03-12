@@ -32,13 +32,23 @@ resource "terraform_data" "master" {
     command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
   }
 
-  /*provisioner "local-exec" {
-    command = "kubectl cordon ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
-  }*/
-
   provisioner "local-exec" {
     when       = destroy
     on_failure = continue
     command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"
+  }
+}
+
+resource "terraform_data" "master_cordon" {
+  depends_on = [terraform_data.master]
+  count      = var.master_nodes_count
+  input      = {
+    name            = "${var.f5xc_cluster_name}-m${count.index}"
+    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
+    kubeconfig_file = module.kubeconfig_testbed.filename
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl cordon ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
   }
 }

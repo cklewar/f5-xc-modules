@@ -23,17 +23,35 @@ resource "terraform_data" "worker" {
   depends_on = [local_file.kubectl_manifest_worker]
   count      = var.worker_nodes_count
   input      = {
-    name            = "${var.f5xc_cluster_name}-w${count.index}"
-    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
-    kubeconfig_file = module.kubeconfig_infrastructure.filename
+    name                 = "${var.f5xc_cluster_name}-w${count.index}"
+    manifest             = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_w${count.index}.yaml"
+    kubeconfig           = module.kubeconfig_infrastructure.config
+    kubeconfig_file      = module.kubeconfig_infrastructure.filename
+    kubeconfig_file_name = basename(module.kubeconfig_infrastructure.filename)
   }
 
   provisioner "local-exec" {
-    command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
+
   provisioner "local-exec" {
-    when       = destroy
-    on_failure = continue
-    command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"
+    when        = destroy
+    command     = <<EOT
+cat > ${self.input.kubeconfig_file_name} <<EOF
+${self.input.kubeconfig}
+EOF
+EOT
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    when        = destroy
+    command     = <<EOT
+kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} <<EOF
+${self.input.manifest}
+EOF
+EOT
+    interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 }

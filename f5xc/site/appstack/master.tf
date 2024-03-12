@@ -18,8 +18,8 @@ resource "local_file" "kubectl_manifest_master" {
 }
 
 resource "terraform_data" "master" {
-  count      = var.master_nodes_count
   depends_on = [local_file.kubectl_manifest_master]
+  count      = var.master_nodes_count
   input      = {
     name            = "${var.f5xc_cluster_name}-m${count.index}"
     manifest        = "manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"

@@ -9,6 +9,8 @@ resource "local_file" "kubectl_manifest_master" {
     ip_gateway                 = var.ip_gateway
     cluster_name               = var.f5xc_cluster_name
     maurice_endpoint           = module.maurice.endpoints.maurice
+    master_node_cpus           = var.master_node_cpus
+    master_node_memory         = var.master_node_memory
     f5xc_rhel9_container       = var.f5xc_rhel9_container
     site_registration_token    = var.site_registration_token != "" ? var.site_registration_token : volterra_token.token.id
     maurice_private_endpoint   = module.maurice.endpoints.maurice_mtls

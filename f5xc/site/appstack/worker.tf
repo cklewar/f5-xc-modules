@@ -9,8 +9,6 @@ resource "local_file" "kubectl_manifest_worker" {
     ip_gateway                 = var.ip_gateway
     cluster_name               = var.f5xc_cluster_name
     maurice_endpoint           = module.maurice.endpoints.maurice
-    master_node_cpus           = var.master_node_cpus
-    master_node_memory         = var.master_node_memory
     worker_node_cpus           = var.worker_node_cpus
     worker_node_memory         = var.worker_node_memory
     f5xc_rhel9_container       = var.f5xc_rhel9_container

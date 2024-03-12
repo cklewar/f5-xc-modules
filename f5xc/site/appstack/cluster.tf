@@ -57,7 +57,7 @@ resource "volterra_voltstack_site" "cluster" {
 }
 
 resource "volterra_registration_approval" "master" {
-  depends_on   = [terraform_data.master]
+  depends_on   = [volterra_voltstack_site.cluster]
   count        = var.master_nodes_count
   cluster_name = volterra_voltstack_site.cluster.name
   cluster_size = var.master_nodes_count
@@ -67,7 +67,7 @@ resource "volterra_registration_approval" "master" {
 }
 
 module "site_wait_for_online" {
-  depends_on     = [volterra_voltstack_site.cluster, terraform_data.worker]
+  depends_on     = [volterra_registration_approval.master]
   source         = "../../status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url
@@ -75,6 +75,15 @@ module "site_wait_for_online" {
   f5xc_site_name = var.f5xc_cluster_name
   f5xc_tenant    = var.f5xc_tenant
   is_sensitive   = var.is_sensitive
+}
+
+module "kubeconfig" {
+  depends_on            = [module.site_wait_for_online]
+  source                = "../../../utils/kubeconfig"
+  f5xc_api_token        = var.f5xc_api_token
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_k8s_cluster_name = var.f5xc_cluster_name
+  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }
 
 resource "volterra_registration_approval" "worker" {
@@ -85,13 +94,4 @@ resource "volterra_registration_approval" "worker" {
   hostname     = format("%s-w%d", volterra_voltstack_site.cluster.name, count.index)
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
-}
-
-module "kubeconfig" {
-  depends_on            = [volterra_registration_approval.master, volterra_registration_approval.worker]
-  source                = "../../../utils/kubeconfig"
-  f5xc_api_token        = var.f5xc_api_token
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_k8s_cluster_name = var.f5xc_cluster_name
-  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }

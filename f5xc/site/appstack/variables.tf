@@ -33,10 +33,6 @@ variable "f5xc_namespace" {
   type = string
 }
 
-variable "f5xc_kubeconfig" {
-  type = string
-}
-
 variable "f5xc_rhel9_container" {
   type = string
 }

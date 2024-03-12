@@ -86,7 +86,7 @@ resource "volterra_registration_approval" "worker" {
 }
 
 module "kubeconfig" {
-  # depends_on            = [volterra_voltstack_site.site]
+  depends_on            = [volterra_voltstack_site.site]
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token
   f5xc_api_url          = var.f5xc_api_url

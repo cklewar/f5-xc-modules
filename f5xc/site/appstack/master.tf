@@ -32,6 +32,7 @@ resource "terraform_data" "master" {
 
   provisioner "local-exec" {
     command     = <<EOT
+cat ${self.input.manifest}
 kubectl apply -f - --kubeconfig ${self.input.kubeconfig_file} <<EOF
 ${self.input.manifest}
 EOF

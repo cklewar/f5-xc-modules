@@ -43,7 +43,7 @@ resource "volterra_voltstack_site" "site" {
 
   worker_nodes            = [for k, v in terraform_data.worker : format("%s-w%s", volterra_k8s_cluster.cluster.name, k)]
   disable_gpu             = true
-  disable_vm              = var.kubevirt ? false : true
+  disable_vm              = var.is_kubevirt ? false : true
   no_bond_devices         = true
   logs_streaming_disabled = true
   default_network_config  = true

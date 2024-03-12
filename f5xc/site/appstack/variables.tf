@@ -137,7 +137,7 @@ variable "is_sensitive" {
   default = false
 }
 
-variable "kubevirt" {
+variable "is_kubevirt" {
   type    = bool
   default = false
 }

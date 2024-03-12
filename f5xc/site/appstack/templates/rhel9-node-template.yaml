@@ -16,7 +16,7 @@ spec:
           model: host-passthrough
         resources:
           limits:
-            cpu: 8
+            cpu: s
             memory: 64Gi
         devices:
           disks:

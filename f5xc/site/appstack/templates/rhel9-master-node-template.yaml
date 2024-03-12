@@ -16,8 +16,8 @@ spec:
           model: host-passthrough
         resources:
           limits:
-            cpu: 16
-            memory: 128Gi
+            cpu: ${master_node_cpus}
+            memory: ${master_node_memory}
         devices:
           disks:
           - name: containerdisk

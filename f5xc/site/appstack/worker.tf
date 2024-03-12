@@ -1,4 +1,4 @@
-resource "local_file" "kubectl_manifest_worker" {
+/*resource "local_file" "kubectl_manifest_worker" {
   count   = var.worker_nodes_count
   content = templatefile("${path.module}/templates/${var.worker_node_manifest_template}.yaml", {
     latitude                   = var.f5xc_cluster_latitude
@@ -36,4 +36,4 @@ resource "terraform_data" "worker" {
     on_failure = continue
     command    = "kubectl delete -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file}"
   }
-}
+}*/

@@ -3,7 +3,7 @@ resource "local_file" "kubectl_manifest_worker" {
   content = templatefile("${path.module}/templates/${var.worker_node_manifest_template}.yaml", {
     latitude                   = var.f5xc_cluster_latitude
     longitude                  = var.f5xc_cluster_longitude
-    network                    = count.index % 3 == 0 ? "ves-system/sb-infra-lab-v5-eno5np0-251-vfio" : count.index % 3 == 1 ? "ves-system/sb-infra-lab-v5-eno6np1-251-vfio" : "ves-system/sb-infra-lab-v5-ens1f0np0-251-vfio"
+    network                    = count.index % 2 == 0 ? "ves-system/sb-infra-lab-v5-eno6np1-251-vfio" : "ves-system/sb-infra-lab-v5-eno5np0-251-vfio"
     host_name                  = format("w%d", count.index)
     ip_address                 = "${var.worker_node_ip_address_prefix}${count.index + 10}/${var.worker_node_ip_address_suffix}"
     ip_gateway                 = var.ip_gateway

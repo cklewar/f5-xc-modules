@@ -11,7 +11,7 @@ module "maurice" {
 module "kubeconfig_infrastructure" {
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token
-  f5xc_api_url          = var.f5xc_api_url
+  f5xc_api_url          = "playground.console.ves.volterra.io/api"
   f5xc_k8s_cluster_name = var.f5xc_k8s_infra_cluster_name
   f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }

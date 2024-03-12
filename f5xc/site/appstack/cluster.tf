@@ -33,7 +33,6 @@ resource "volterra_voltstack_site" "site" {
     for_each = [for k, v in terraform_data.master : format("%s-m%s", volterra_k8s_cluster.cluster.name, k)]
     content {
       name = master_node_configuration.value
-      # public_ip = ""
     }
   }
 
@@ -51,10 +50,6 @@ resource "volterra_voltstack_site" "site" {
   default_storage_config  = true
   deny_all_usb            = false
   volterra_certified_hw   = var.f5xc_certified_hardware_profile
-  #  sw {
-  #    volterra_software_version = "crt-20240213-2651"
-  #    #volterra_software_version = "crt-20240123-2647"
-  #  }
   os {
     operating_system_version = var.f5xc_operating_system_version
   }

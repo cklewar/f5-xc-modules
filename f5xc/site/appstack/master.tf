@@ -29,8 +29,13 @@ resource "terraform_data" "master" {
   }
 
   provisioner "local-exec" {
-    command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command = "cat ${self.input.kubeconfig_file}"
   }
+
+  /*provisioner "local-exec" {
+    command = "kubectl apply -f ${self.input.manifest} --kubeconfig ${self.input.kubeconfig_file} && kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+  }*/
+
   provisioner "local-exec" {
     when       = destroy
     on_failure = continue

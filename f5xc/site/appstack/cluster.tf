@@ -41,7 +41,9 @@ resource "volterra_voltstack_site" "site" {
     name      = volterra_k8s_cluster.cluster.name
   }
 
-  worker_nodes            = [for i in range(var.worker_nodes_count) : format("%s-w%d", volterra_k8s_cluster.cluster.name, i)]
+  worker_nodes = [
+    for i in range(var.worker_nodes_count) :format("%s-w%d", volterra_k8s_cluster.cluster.name, i)
+  ]
   disable_gpu             = true
   disable_vm              = var.is_kubevirt ? false : true
   no_bond_devices         = true
@@ -53,6 +55,15 @@ resource "volterra_voltstack_site" "site" {
   os {
     operating_system_version = var.f5xc_operating_system_version
   }
+}
+
+module "kubeconfig" {
+  depends_on            = [volterra_voltstack_site.site]
+  source                = "../../../utils/kubeconfig"
+  f5xc_api_token        = var.f5xc_api_token
+  f5xc_api_url          = var.f5xc_api_url
+  f5xc_k8s_cluster_name = var.f5xc_cluster_name
+  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }
 
 resource "volterra_registration_approval" "master" {
@@ -83,13 +94,4 @@ resource "volterra_registration_approval" "worker" {
   hostname     = format("%s-w%d", volterra_voltstack_site.site.name, count.index)
   wait_time    = var.f5xc_registration_wait_time
   retry        = var.f5xc_registration_retry
-}
-
-module "kubeconfig" {
-  depends_on            = [volterra_voltstack_site.site]
-  source                = "../../../utils/kubeconfig"
-  f5xc_api_token        = var.f5xc_api_token
-  f5xc_api_url          = var.f5xc_api_url
-  f5xc_k8s_cluster_name = var.f5xc_cluster_name
-  f5xc_k8s_config_type  = var.f5xc_k8s_config_type
 }

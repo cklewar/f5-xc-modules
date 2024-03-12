@@ -68,7 +68,7 @@ resource "terraform_data" "master_cordon" {
   }
 
   provisioner "local-exec" {
-    command     = "sleep 60"
+    command     = "sleep 120"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

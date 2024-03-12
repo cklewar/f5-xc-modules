@@ -30,7 +30,7 @@ resource "volterra_voltstack_site" "site" {
   namespace = var.f5xc_namespace
 
   dynamic "master_node_configuration" {
-    for_each = [for k, v in terraform_data.master : format("%s-m%s", volterra_k8s_cluster.cluster.name, k)]
+    for_each = [for name in var.master_nodes_count : format("%s-m%d", volterra_k8s_cluster.cluster.name, count.index)]
     content {
       name = master_node_configuration.value
     }
@@ -76,7 +76,7 @@ module "site_wait_for_online" {
 }
 
 resource "volterra_registration_approval" "worker" {
-  # depends_on   = [module.site_wait_for_online]
+  depends_on   = [module.site_wait_for_online]
   count        = var.worker_nodes_count
   cluster_name = volterra_voltstack_site.site.name
   cluster_size = var.master_nodes_count
@@ -86,6 +86,7 @@ resource "volterra_registration_approval" "worker" {
 }
 
 module "kubeconfig" {
+  depends_on            = [volterra_voltstack_site.site]
   source                = "../../../utils/kubeconfig"
   f5xc_api_token        = var.f5xc_api_token
   f5xc_api_url          = var.f5xc_api_url

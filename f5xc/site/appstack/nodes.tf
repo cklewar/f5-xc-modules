@@ -28,7 +28,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 5"
+    command     = "sleep 3"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

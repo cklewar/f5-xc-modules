@@ -62,7 +62,6 @@ variable "f5xc_operating_system_version" {
 
 variable "f5xc_certified_hardware_profile" {
   type    = string
-  default = "kvm-voltstack-combo-softbank-large"
 }
 
 variable "f5xc_k8s_config_type" {

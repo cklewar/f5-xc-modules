@@ -59,7 +59,7 @@ EOT
 }
 
 resource "terraform_data" "worker" {
-  count = 24 # var.worker_nodes_count
+  count = var.worker_nodes_count
   input = {
     name                 = "${var.f5xc_cluster_name}-w${count.index}"
     manifest             = local.worker_vmi_manifest[count.index]

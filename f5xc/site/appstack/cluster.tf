@@ -79,7 +79,7 @@ module "site_wait_for_online" {
 
 resource "volterra_registration_approval" "master" {
   depends_on   = [terraform_data.master]
-  count        = 3 #var.master_nodes_count
+  count        = var.master_nodes_count
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.master_nodes_count
   hostname     = format("%s-m%d", volterra_voltstack_site.site.name, count.index)
@@ -89,7 +89,7 @@ resource "volterra_registration_approval" "master" {
 
 resource "volterra_registration_approval" "worker" {
   depends_on   = [terraform_data.worker]
-  count        = 24 #var.worker_nodes_count
+  count        = var.worker_nodes_count
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.master_nodes_count
   hostname     = format("%s-w%d", volterra_voltstack_site.site.name, count.index)

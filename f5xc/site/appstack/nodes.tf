@@ -58,26 +58,6 @@ EOT
   }
 }
 
-/*resource "terraform_data" "master_cordon" {
-  depends_on = [module.site_wait_for_online]
-  count      = var.master_nodes_count
-  input      = {
-    name            = "${var.f5xc_cluster_name}-m${count.index}"
-    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
-    kubeconfig_file = module.kubeconfig_testbed.filename
-  }
-
-  provisioner "local-exec" {
-    command     = "sleep 120"
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-  }
-
-  provisioner "local-exec" {
-    command     = "kubectl cordon ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
-    interpreter = ["/usr/bin/env", "bash", "-c"]
-  }
-}*/
-
 resource "terraform_data" "worker" {
   count = var.worker_nodes_count
   input = {
@@ -137,3 +117,23 @@ EOT
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 }
+
+/*resource "terraform_data" "master_cordon" {
+  depends_on = [module.site_wait_for_online]
+  count      = var.master_nodes_count
+  input      = {
+    name            = "${var.f5xc_cluster_name}-m${count.index}"
+    manifest        = "${abspath(path.module)}/manifest/${var.f5xc_cluster_name}_m${count.index}.yaml"
+    kubeconfig_file = module.kubeconfig_testbed.filename
+  }
+
+  provisioner "local-exec" {
+    command     = "sleep 120"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    command     = "kubectl cordon ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+  }
+}*/

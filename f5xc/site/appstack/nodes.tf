@@ -59,7 +59,7 @@ EOT
 }
 
 resource "terraform_data" "master_cordon" {
-  depends_on = [terraform_data.master]
+  depends_on = [module.site_wait_for_online]
   count      = var.master_nodes_count
   input      = {
     name            = "${var.f5xc_cluster_name}-m${count.index}"

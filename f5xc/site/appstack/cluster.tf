@@ -89,7 +89,7 @@ resource "volterra_registration_approval" "master" {
 
 resource "volterra_registration_approval" "worker" {
   depends_on   = [terraform_data.worker]
-  count        = 12 #var.worker_nodes_count
+  count        = 24 #var.worker_nodes_count
   cluster_name = var.f5xc_cluster_name
   cluster_size = var.master_nodes_count
   hostname     = format("%s-w%d", volterra_voltstack_site.site.name, count.index)

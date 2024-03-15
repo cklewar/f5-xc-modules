@@ -58,7 +58,7 @@ EOT
   }
 }
 
-resource "terraform_data" "master_cordon" {
+/*resource "terraform_data" "master_cordon" {
   depends_on = [module.site_wait_for_online]
   count      = var.master_nodes_count
   input      = {
@@ -76,7 +76,7 @@ resource "terraform_data" "master_cordon" {
     command     = "kubectl cordon ${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
-}
+}*/
 
 resource "terraform_data" "worker" {
   count = var.worker_nodes_count
@@ -98,7 +98,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 3"
+    command     = "sleep 10"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -108,7 +108,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 3"
+    command     = "sleep 10"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

@@ -7,7 +7,7 @@ variable "f5xc_api_token" {
   default = ""
 }
 
-variable "f5xc_api_p12_cert" {
+variable "f5xc_api_p12_file" {
   type    = string
   default = ""
 }
@@ -28,6 +28,11 @@ variable "f5xc_namespace" {
 variable "f5xc_site_get_uri" {
   type    = string
   default = "config/namespaces/%s/sites/%s"
+}
+
+variable "status_check_type" {
+  type    = string
+  default = "token"
 }
 
 variable "check_type_token" {

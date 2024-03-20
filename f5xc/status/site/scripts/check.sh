@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 counter=0
 sleep_first_step=1
 sleep_second_step=30
@@ -10,6 +12,15 @@ tenant=$3
 max_timeout=$4
 check_type=$5
 
+if [[ "$is_verbose" == true ]] ; then
+  echo "1: $1"
+  echo "2: $2"
+  echo "3: $3"
+  echo "4: $4"
+  echo "5: $5"
+  echo "6: $6"
+fi
+
 if [[ "${check_type}" == "cert" ]] ; then
   cert_p12_file=$2
   cert_password=$6
@@ -19,8 +30,14 @@ if [[ "${check_type}" == "token" ]] ; then
   api_token=$2
 fi
 
-
 if [[ "${check_type}" == "token" ]] ; then
+  echo "Checking status using token"
+
+  if [ -z "$api_token" ]; then
+    echo >&2 "Fatal error: API token not set"
+    exit 2
+  fi
+
   if [[ "$is_verbose" == true ]] ; then
   echo "Status check URL: $url" \
     -H 'accept: application/data' \
@@ -90,6 +107,18 @@ if [[ "${check_type}" == "token" ]] ; then
 fi
 
 if [[ "${check_type}" == "cert" ]] ; then
+  echo "Checking status using certificate"
+
+  if [ -z "$cert_password" ]; then
+    echo >&2 "Fatal error: Cert password not set"
+    exit 2
+  fi
+
+  if [ -z "$cert_p12_file" ]; then
+    echo >&2 "Fatal error: Cert file not set"
+    exit 2
+  fi
+
   if [[ "$is_verbose" == true ]] ; then
   echo "Status check URL: ${url}" \
     -H 'accept: application/data' \

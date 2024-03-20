@@ -55,7 +55,7 @@ if [[ "${check_type}" == "token" ]] ; then
 
   if [[ "$status_code" -ne 200 ]] ; then
     echo "Error in request with status code: ${status_code}. Exiting..."
-    exit 0
+    exit 1
   else
     echo "200 OK. Good to go..."
   fi
@@ -134,7 +134,7 @@ if [[ "${check_type}" == "cert" ]] ; then
 
   if [[ "$status_code" -ne 200 ]] ; then
     echo "Error in request with status code: ${status_code}. Exiting..."
-    exit 0
+    exit 1
   else
     echo "200 OK. Good to go..."
   fi

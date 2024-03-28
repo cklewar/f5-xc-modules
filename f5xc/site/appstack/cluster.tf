@@ -53,6 +53,41 @@ resource "volterra_voltstack_site" "site" {
     for i in range(var.worker_nodes_count) :format("%s-w%d", volterra_k8s_cluster.cluster.name, i)
   ]
 
+  custom_network_config {
+    dynamic "active_forward_proxy_policies" {
+      for_each = var.f5xc_active_forward_proxy_policies
+      content {
+        forward_proxy_policies {
+          name      = active_forward_proxy_policies.value.name
+          tenant    = active_forward_proxy_policies.value.tenant
+          namespace = active_forward_proxy_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_network_policies" {
+      for_each = var.f5xc_active_network_policies
+      content {
+        network_policies {
+          name      = active_network_policies.value.name
+          tenant    = active_network_policies.value.tenant
+          namespace = active_network_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_enhanced_firewall_policies" {
+      for_each = var.f5xc_active_enhanced_firewall_policies
+      content {
+        enhanced_firewall_policies {
+          name      = active_enhanced_firewall_policies.value.name
+          tenant    = active_enhanced_firewall_policies.value.tenant
+          namespace = active_enhanced_firewall_policies.value.namespace
+        }
+      }
+    }
+  }
+
   disable_gpu             = true
   disable_vm              = var.is_kubevirt ? false : true
   no_bond_devices         = true

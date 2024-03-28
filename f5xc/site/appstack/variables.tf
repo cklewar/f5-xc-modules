@@ -68,6 +68,33 @@ variable "f5xc_k8s_config_type" {
   type = string
 }
 
+variable "f5xc_active_forward_proxy_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
+variable "f5xc_active_network_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
+variable "f5xc_active_enhanced_firewall_policies" {
+  type = list(object({
+    name      = string
+    tenant    = string
+    namespace = string
+  }))
+  default = []
+}
+
 variable "master_nodes_count" {
   type    = number
   default = 1

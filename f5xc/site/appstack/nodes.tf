@@ -1,5 +1,5 @@
 resource "terraform_data" "master" {
-  count = 3 # var.master_nodes_count
+  count = var.master_nodes_count
   input = {
     name                 = "${var.f5xc_cluster_name}-m${count.index}"
     manifest             = local.master_vmi_manifest[count.index]

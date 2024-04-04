@@ -71,7 +71,7 @@ variable "f5xc_k8s_config_type" {
 variable "f5xc_active_forward_proxy_policies" {
   type = list(object({
     name      = string
-    tenant    = string
+    tenant    = optional(string)
     namespace = string
   }))
   default = []
@@ -80,7 +80,7 @@ variable "f5xc_active_forward_proxy_policies" {
 variable "f5xc_active_network_policies" {
   type = list(object({
     name      = string
-    tenant    = string
+    tenant    = optional(string)
     namespace = string
   }))
   default = []
@@ -89,7 +89,7 @@ variable "f5xc_active_network_policies" {
 variable "f5xc_active_enhanced_firewall_policies" {
   type = list(object({
     name      = string
-    tenant    = string
+    tenant    = optional(string)
     namespace = string
   }))
   default = []

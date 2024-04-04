@@ -50,7 +50,7 @@ EOT
   provisioner "local-exec" {
     when        = destroy
     command     = <<EOT
-kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} --timeout=60s <<EOF
+kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} <<EOF
 ${self.input.manifest}
 EOF
 EOT
@@ -110,7 +110,7 @@ EOT
   provisioner "local-exec" {
     when        = destroy
     command     = <<EOT
-kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} --timeout=60s <<EOF
+kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} <<EOF
 ${self.input.manifest}
 EOF
 EOT

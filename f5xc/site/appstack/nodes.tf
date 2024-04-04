@@ -23,7 +23,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout 60s --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout=60s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -33,7 +33,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout 60s --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout=60s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -50,7 +50,7 @@ EOT
   provisioner "local-exec" {
     when        = destroy
     command     = <<EOT
-kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} <<EOF
+kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} --timeout=60s <<EOF
 ${self.input.manifest}
 EOF
 EOT
@@ -83,7 +83,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout 60s --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout=60s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -93,7 +93,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout 60s --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout=60s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -110,7 +110,7 @@ EOT
   provisioner "local-exec" {
     when        = destroy
     command     = <<EOT
-kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} <<EOF
+kubectl delete -f - --kubeconfig ${self.input.kubeconfig_file_name} --timeout=60s <<EOF
 ${self.input.manifest}
 EOF
 EOT

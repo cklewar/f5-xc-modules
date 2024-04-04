@@ -18,7 +18,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -28,7 +28,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -78,7 +78,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -88,7 +88,7 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

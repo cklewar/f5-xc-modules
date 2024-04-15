@@ -10,10 +10,10 @@ module "maurice" {
 
 module "kubeconfig_infrastructure" {
   source                = "../../../utils/kubeconfig"
-  f5xc_api_token        = var.f5xc_k8s_infra_cluster_api_token != "" ? var.f5xc_k8s_infra_cluster_api_token : var.f5xc_api_token
   f5xc_api_url          = var.f5xc_k8s_infra_cluster_api_url != "" ? var.f5xc_k8s_infra_cluster_api_url : var.f5xc_api_url
-  f5xc_k8s_cluster_name = var.f5xc_k8s_infra_cluster_name
+  f5xc_api_token        = var.f5xc_k8s_infra_cluster_api_token != "" ? var.f5xc_k8s_infra_cluster_api_token : var.f5xc_api_token
   f5xc_k8s_config_type  = var.f5xc_k8s_config_type
+  f5xc_k8s_cluster_name = var.f5xc_k8s_infra_cluster_name
 }
 
 resource "volterra_k8s_cluster" "cluster" {
@@ -52,6 +52,41 @@ resource "volterra_voltstack_site" "site" {
   worker_nodes = [
     for i in range(var.worker_nodes_count) :format("%s-w%d", volterra_k8s_cluster.cluster.name, i)
   ]
+
+  custom_network_config {
+    dynamic "active_forward_proxy_policies" {
+      for_each = var.f5xc_active_forward_proxy_policies
+      content {
+        forward_proxy_policies {
+          name      = active_forward_proxy_policies.value.name
+          tenant    = active_forward_proxy_policies.value.tenant
+          namespace = active_forward_proxy_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_network_policies" {
+      for_each = var.f5xc_active_network_policies
+      content {
+        network_policies {
+          name      = active_network_policies.value.name
+          tenant    = active_network_policies.value.tenant
+          namespace = active_network_policies.value.namespace
+        }
+      }
+    }
+
+    dynamic "active_enhanced_firewall_policies" {
+      for_each = var.f5xc_active_enhanced_firewall_policies
+      content {
+        enhanced_firewall_policies {
+          name      = active_enhanced_firewall_policies.value.name
+          tenant    = active_enhanced_firewall_policies.value.tenant
+          namespace = active_enhanced_firewall_policies.value.namespace
+        }
+      }
+    }
+  }
 
   disable_gpu             = true
   disable_vm              = var.is_kubevirt ? false : true

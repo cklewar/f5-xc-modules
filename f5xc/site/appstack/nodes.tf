@@ -1,5 +1,5 @@
 resource "terraform_data" "master" {
-  count = 3 # var.master_nodes_count
+  count = var.master_nodes_count
   input = {
     name                 = "${var.f5xc_cluster_name}-m${count.index}"
     manifest             = local.master_vmi_manifest[count.index]
@@ -18,22 +18,22 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout=90s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout=90s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
@@ -59,8 +59,9 @@ EOT
 }
 
 resource "terraform_data" "worker" {
-  count = var.worker_nodes_count
-  input = {
+  depends_on = [terraform_data.master]
+  count      = var.worker_nodes_count
+  input      = {
     name                 = "${var.f5xc_cluster_name}-w${count.index}"
     manifest             = local.worker_vmi_manifest[count.index]
     kubeconfig           = module.kubeconfig_infrastructure.config
@@ -78,22 +79,22 @@ EOT
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=ready pod -l vm.kubevirt.io/name=${self.input.name} --timeout=90s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "sleep 10"
+    command     = "sleep 20"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 
   provisioner "local-exec" {
-    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --kubeconfig ${self.input.kubeconfig_file}"
+    command     = "kubectl wait --for=condition=Ready vmis/${self.input.name} --timeout=90s --kubeconfig ${self.input.kubeconfig_file}"
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
 

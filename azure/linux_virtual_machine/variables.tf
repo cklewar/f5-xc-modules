@@ -38,8 +38,6 @@ variable "azure_virtual_machine_sku" {
   default = "Standard"
 }
 
-#Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest
-
 variable "azure_linux_virtual_machine_source_image_reference_publisher" {
   type    = string
   default = "Canonical"

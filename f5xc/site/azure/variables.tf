@@ -3,11 +3,11 @@ variable "f5xc_api_url" {
 }
 
 variable "f5xc_api_token" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -145,7 +145,7 @@ variable "f5xc_azure_ce_gw_type" {
 }
 
 variable "f5xc_azure_ce_certified_hw" {
-  type    = map(string)
+  type = map(string)
   default = {
     multi_nic  = "azure-byol-multi-nic-voltmesh"
     single_nic = "azure-byol-voltmesh"
@@ -252,7 +252,7 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
-  default     = {}
+  default = {}
 }
 
 variable "f5xc_azure_express_route_server_subnet" {
@@ -278,10 +278,10 @@ variable "f5xc_sm_connection_pvt_ip" {
 variable "custom_labels" {
   description = "Custom labels to set on resources"
   type        = map(string)
-  default     = {}
+  default = {}
 }
 
 variable "f5xc_azure_vnet_labels" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }

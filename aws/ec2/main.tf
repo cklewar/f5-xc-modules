@@ -44,7 +44,7 @@ resource "local_file" "instance_script" {
   filename   = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
 }
 
-resource "null_resource" "ec2_instance_provision_custom_data" {
+resource "terraform_data" "ec2_instance_provision_custom_data" {
   depends_on = [aws_instance.instance, local_file.instance_script]
   for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
 
@@ -61,8 +61,8 @@ resource "null_resource" "ec2_instance_provision_custom_data" {
   }
 }
 
-resource "null_resource" "ec2_execute_script_file" {
-  depends_on = [null_resource.ec2_instance_provision_custom_data]
+resource "terraform_data" "ec2_execute_script_file" {
+  depends_on = [terraform_data.ec2_instance_provision_custom_data]
   connection {
     type        = var.provisioner_connection_type
     host        = aws_instance.instance.public_ip

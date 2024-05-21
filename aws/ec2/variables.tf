@@ -55,18 +55,17 @@ variable "aws_ec2_instance_custom_data_dirs" {
 
 variable "amis" {
   type        = map(string)
-  description = "The amis instances will use - ubuntu 20.04 LTS"
-
+  description = "The amis instances will use - ubuntu 22.04 LTS"
   default = {
-    "us-east-1"    = "ami-0708edb40a885c6ee"
-    "us-east-2"    = "ami-072e87c1b25ab0a8b"
-    "us-west-1"    = "ami-0282af5c116b38803"
-    "us-west-2"    = "ami-0e623c4c77b6afcd1"
-    "eu-central-1" = "ami-06acd502731e7718e"
-    "eu-west-1"    = "ami-0076b212fad243d9e"
-    "eu-west-2"    = "ami-0d0f12c129e9acd4f"
-    "eu-west-3"    = "ami-06c781daa01c5c4d9"
-    "eu-north-1"   = "ami-0d86b044a70ecfc6e"
+    "us-east-1"    = "ami-012485deee5681dc0"
+    "us-east-2"    = "ami-0df0b6b7f8f5ea0d0"
+    "us-west-1"    = "ami-0344e2943d3053eda"
+    "us-west-2"    = "ami-0526a31610d9ba25a"
+    "eu-central-1" = "ami-0c027353d00750a02"
+    "eu-west-1"    = "ami-003c6328b40ce2af6"
+    "eu-west-2"    = "ami-0d05d6fe284781e13"
+    "eu-west-3"    = "ami-061fc0c4ca50c3135"
+    "eu-north-1"   = "ami-0c0a1c5b612d238ae"
   }
 }
 
@@ -101,7 +100,7 @@ variable "owner" {
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
-  default     = {}
+  default = {}
 }
 
 variable "provisioner_connection_type" {

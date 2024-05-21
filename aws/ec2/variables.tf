@@ -55,7 +55,7 @@ variable "aws_ec2_instance_custom_data_dirs" {
 
 variable "amis" {
   type        = map(string)
-  description = "The amis instances will use - ubuntu 22.04 LTS"
+  description = "The instance will use amis for ubuntu 22.04 LTS"
   default = {
     "us-east-1"    = "ami-012485deee5681dc0"
     "us-east-2"    = "ami-0df0b6b7f8f5ea0d0"

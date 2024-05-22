@@ -17,7 +17,7 @@ output "vnet" {
           public_ip  = data.azurerm_public_ip.master-0-pib.ip_address
         }
       }
-      master-1 = length(var.f5xc_azure_az_nodes) >= 2 ? {
+      master-1 = length(var.f5xc_azure_az_nodes) == 3 ? {
         interfaces = {
           sli_ip     = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-1-sli.*.private_ip_address : null
           slo_ip     = data.azurerm_network_interface.master-1-slo.*.private_ip_address
@@ -26,7 +26,7 @@ output "vnet" {
           public_ip  = data.azurerm_public_ip.master-1-pib.*.ip_address
         }
       } : null
-      master-2 = length(var.f5xc_azure_az_nodes) >= 2 ? {
+      master-2 = length(var.f5xc_azure_az_nodes) == 3 ? {
         interfaces = {
           sli_ip     = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-2-sli.*.private_ip_address : null
           slo_ip     = data.azurerm_network_interface.master-2-slo.*.private_ip_address

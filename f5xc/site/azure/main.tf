@@ -2,18 +2,17 @@ resource "volterra_azure_vnet_site" "site" {
   name                     = var.f5xc_azure_site_name
   labels                   = var.f5xc_azure_vnet_labels
   namespace                = var.f5xc_namespace
-  default_blocked_services = var.f5xc_azure_default_blocked_services
   machine_type             = var.f5xc_azure_ce_machine_type
+  azure_region             = var.f5xc_azure_region
+  resource_group           = var.f5xc_azure_vnet_site_resource_group
+  default_blocked_services = var.f5xc_azure_default_blocked_services
+  logs_streaming_disabled  = var.f5xc_azure_logs_streaming_disabled
 
   azure_cred {
     name      = var.f5xc_azure_cred
     tenant    = var.f5xc_tenant
     namespace = var.f5xc_namespace
   }
-
-  logs_streaming_disabled = var.f5xc_azure_logs_streaming_disabled
-  azure_region            = var.f5xc_azure_region
-  resource_group          = var.f5xc_azure_vnet_site_resource_group
 
   os {
     default_os_version       = var.f5xc_azure_default_ce_os_version
@@ -174,14 +173,15 @@ resource "volterra_azure_vnet_site" "site" {
           }
         }
       }
-      sm_connection_public_ip  = var.f5xc_sm_connection_public_ip
-      sm_connection_pvt_ip     = var.f5xc_sm_connection_pvt_ip
+
       azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
+      sm_connection_pvt_ip     = var.f5xc_sm_connection_pvt_ip
+      sm_connection_public_ip  = var.f5xc_sm_connection_public_ip
       no_global_network        = var.f5xc_azure_no_global_network
-      no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
       no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
-      no_network_policy        = var.f5xc_azure_no_network_policy
+      no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
       no_forward_proxy         = var.f5xc_azure_no_forward_proxy
+      no_network_policy        = var.f5xc_azure_no_network_policy
     }
   }
 

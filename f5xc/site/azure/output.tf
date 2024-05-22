@@ -12,7 +12,7 @@ output "vnet" {
         interfaces = {
           sli_ip     = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-0-sli.*.private_ip_address : null
           slo_ip     = data.azurerm_network_interface.master-0-slo.private_ip_address
-          sli_subnet = data.azurerm_subnet.master-0-sli-subnet
+          sli_subnet = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_subnet.master-0-sli-subnet.0 : null
           slo_subnet = data.azurerm_subnet.master-0-slo-subnet
           public_ip  = data.azurerm_public_ip.master-0-pib.ip_address
         }
@@ -21,7 +21,7 @@ output "vnet" {
         interfaces = {
           sli_ip     = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-1-sli.*.private_ip_address : null
           slo_ip     = data.azurerm_network_interface.master-1-slo.*.private_ip_address
-          sli_subnet = data.azurerm_subnet.master-1-sli-subnet
+          sli_subnet = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_subnet.master-1-sli-subnet.0 : null
           slo_subnet = data.azurerm_subnet.master-1-slo-subnet
           public_ip  = data.azurerm_public_ip.master-1-pib.*.ip_address
         }
@@ -30,7 +30,7 @@ output "vnet" {
         interfaces = {
           sli_ip     = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_network_interface.master-2-sli.*.private_ip_address : null
           slo_ip     = data.azurerm_network_interface.master-2-slo.*.private_ip_address
-          sli_subnet = data.azurerm_subnet.master-2-sli-subnet
+          sli_subnet = var.f5xc_azure_ce_gw_type == var.f5xc_nic_type_multi_nic ? data.azurerm_subnet.master-2-sli-subnet.0 : null
           slo_subnet = data.azurerm_subnet.master-2-slo-subnet
           public_ip  = data.azurerm_public_ip.master-2-pib.*.ip_address
         }

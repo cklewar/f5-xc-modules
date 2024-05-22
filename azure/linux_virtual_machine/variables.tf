@@ -17,7 +17,12 @@ variable "azure_zone" {
 
 variable "azure_linux_virtual_machine_admin_username" {
   type    = string
-  default = "azureuser"
+  default = "ubuntu"
+}
+
+variable "azure_linux_virtual_machine_admin_password" {
+  type    = string
+  default = ""
 }
 
 variable "azure_region" {
@@ -107,5 +112,5 @@ variable "create_public_ip" {
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
-  default     = {}
+  default = {}
 }

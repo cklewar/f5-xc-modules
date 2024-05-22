@@ -47,6 +47,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   computer_name                   = var.azure_virtual_machine_name
   admin_username                  = var.azure_linux_virtual_machine_admin_username
+  admin_password                  = var.azure_linux_virtual_machine_disable_password_authentication ? null : var.azure_linux_virtual_machine_admin_password
   disable_password_authentication = var.azure_linux_virtual_machine_disable_password_authentication
 
   admin_ssh_key {

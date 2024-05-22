@@ -39,6 +39,11 @@ variable "gcp_compute_instance_machine_name" {
   type = string
 }
 
+variable "gcp_compute_instance_userdata" {
+  type    = string
+  default = null
+}
+
 variable "gcp_google_compute_instance_image" {
   type    = string
   default = "ubuntu-os-cloud/ubuntu-2024-lts"
@@ -46,7 +51,7 @@ variable "gcp_google_compute_instance_image" {
 
 variable "gcp_compute_instance_metadata_startup_script" {
   type    = string
-  default = "<<-EOF #!/usr/bin/env bash sleep 30 sudo apt-get update sudo apt-get -y install net-tools tcpdump traceroute iputils-ping curl wget unzip EOF"
+  default = null
 }
 
 variable "gcp_compute_instance_target_tags" {

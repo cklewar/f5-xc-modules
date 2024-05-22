@@ -60,6 +60,7 @@ variable "aws_ec2_instance_custom_data_dirs" {
     source      = string
     destination = string
   }))
+  default = []
 }
 
 variable "amis" {

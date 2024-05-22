@@ -36,9 +36,9 @@ resource "volterra_azure_vnet_site" "site" {
 
           local_subnet {
             dynamic "subnet_param" {
-              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_local_subnet") ? [1] : []
+              for_each = contains(keys(var.f5xc_azure_az_nodes[az_nodes.key]), "f5xc_azure_vnet_outside_subnet") ? [1] : []
               content {
-                ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_local_subnet"]
+                ipv4 = var.f5xc_azure_az_nodes[az_nodes.key]["f5xc_azure_vnet_outside_subnet"]
               }
             }
             dynamic "subnet" {

@@ -1,5 +1,5 @@
 resource "time_offset" "exp_time" {
-  offset_days = 30
+  offset_days = var.offset_days
 }
 
 data "http" "kubeconfig" {

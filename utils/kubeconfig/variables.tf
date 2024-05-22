@@ -24,7 +24,7 @@ variable "f5xc_k8s_config_type" {
 }
 
 variable "f5xc_k8s_config_types" {
-  type    = map(string)
+  type = map(string)
   default = {
     global = "global-kubeconfigs"
     local  = "local-kubeconfigs"
@@ -34,4 +34,9 @@ variable "f5xc_k8s_config_types" {
 variable "output_dir_path" {
   type    = string
   default = ""
+}
+
+variable "offset_days" {
+  type    = number
+  default = 60
 }

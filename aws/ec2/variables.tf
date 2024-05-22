@@ -14,10 +14,18 @@ variable "aws_az_name" {
   type = string
 }
 
-variable "aws_ec2_instance_script" {}
+variable "aws_ec2_instance_script" {
+  default = null
+}
 
 variable "aws_ec2_instance_script_template" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "aws_ec2_instance_cloud_init_template_data" {
+  type = map(string)
+  default = {}
 }
 
 variable "aws_ec2_instance_cloud_init_template" {
@@ -34,7 +42,8 @@ variable "template_input_dir_path" {
 }
 
 variable "aws_ec2_instance_script_file" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "aws_ec2_instance_name" {

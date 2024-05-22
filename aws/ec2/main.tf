@@ -40,13 +40,14 @@ resource "aws_instance" "instance" {
 
 resource "local_file" "instance_script" {
   depends_on = [aws_instance.instance]
+  count      = var.aws_ec2_instance_script_template != "" ? 1 : 0
   content    = local.script_content
   filename   = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
 }
 
 resource "terraform_data" "ec2_instance_provision_custom_data" {
   depends_on = [aws_instance.instance, local_file.instance_script]
-  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item}
+  for_each   = {for item in var.aws_ec2_instance_custom_data_dirs : item.name => item if var.aws_ec2_instance_script_template != ""}
 
   connection {
     type        = var.provisioner_connection_type
@@ -62,6 +63,7 @@ resource "terraform_data" "ec2_instance_provision_custom_data" {
 }
 
 resource "terraform_data" "ec2_execute_script_file" {
+  count      = var.aws_ec2_instance_script_template != "" ? 1 : 0
   depends_on = [terraform_data.ec2_instance_provision_custom_data]
   connection {
     type        = var.provisioner_connection_type

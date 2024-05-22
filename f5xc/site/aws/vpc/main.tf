@@ -17,10 +17,10 @@ resource "volterra_aws_vpc_site" "site" {
   dynamic "direct_connect_enabled" {
     for_each = var.f5xc_aws_vpc_direct_connect_disabled == false ? [1] : []
     content {
-      cloud_aggregated_prefix      = var.f5xc_aws_vpc_cloud_aggregated_prefix
-      dc_connect_aggregated_prefix = var.f5xc_aws_vpc_dc_connect_aggregated_prefix
-      manual_gw                    = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
-      standard_vifs                = var.f5xc_aws_vpc_direct_connect_standard_vifs
+      #cloud_aggregated_prefix      = var.f5xc_aws_vpc_cloud_aggregated_prefix
+      #dc_connect_aggregated_prefix = var.f5xc_aws_vpc_dc_connect_aggregated_prefix
+      manual_gw     = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
+      standard_vifs = var.f5xc_aws_vpc_direct_connect_standard_vifs
       dynamic "hosted_vifs" {
         for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
           1

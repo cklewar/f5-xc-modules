@@ -5,8 +5,8 @@ resource "volterra_azure_vnet_site" "site" {
   machine_type             = var.f5xc_azure_ce_machine_type
   azure_region             = var.f5xc_azure_region
   resource_group           = var.f5xc_azure_vnet_site_resource_group
-  default_blocked_services = var.f5xc_azure_default_blocked_services
   logs_streaming_disabled  = var.f5xc_azure_logs_streaming_disabled
+  default_blocked_services = var.f5xc_azure_default_blocked_services
 
   azure_cred {
     name      = var.f5xc_azure_cred
@@ -207,6 +207,7 @@ resource "volterra_azure_vnet_site" "site" {
   nodes_per_az    = var.f5xc_azure_worker_nodes_per_az > 0 ? var.f5xc_azure_worker_nodes_per_az : null
   total_nodes     = var.f5xc_azure_total_worker_nodes > 0 ? var.f5xc_azure_total_worker_nodes : null
   ssh_key         = var.ssh_public_key
+
   lifecycle {
     ignore_changes = [labels]
   }

@@ -46,7 +46,7 @@ variable "gcp_compute_instance_userdata" {
 
 variable "gcp_google_compute_instance_image" {
   type    = string
-  default = "ubuntu-os-cloud/ubuntu-2024-lts"
+  default = "ubuntu-os-cloud/ubuntu-2204-lts"
 }
 
 variable "gcp_compute_instance_metadata_startup_script" {

@@ -124,3 +124,28 @@ variable "f5xc_site_type_is_secure_mesh_site" {
   type    = bool
   default = true
 }
+
+variable "f5xc_cluster_latitude" {
+  type = number
+}
+
+variable "f5xc_cluster_longitude" {
+  type = number
+}
+
+variable "f5xc_ce_performance_enhancement_mode" {
+  type = object({
+    perf_mode_l7_enhanced = bool
+    perf_mode_l3_enhanced = optional(object({
+      jumbo_frame_enabled = bool
+    }))
+  })
+  default = {
+    perf_mode_l7_enhanced = true
+  }
+}
+
+variable "f5xc_enable_offline_survivability_mode" {
+  type    = bool
+  default = false
+}

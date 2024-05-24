@@ -1,7 +1,15 @@
 variable "is_sensitive" {
   description = "mark module output as sensitive"
   type        = bool
+}
 
+variable "status_check_type" {
+  type    = string
+  default = "token"
+  validation {
+    condition     = contains(["token", "cert"], var.status_check_type)
+    error_message = format("Valid values for status_check_type: token or cert")
+  }
 }
 
 variable "has_public_ip" {
@@ -88,6 +96,12 @@ variable "cluster_workload" {
 
 variable "ssh_public_key" {
   description = "New EC2 instance assigned public ssh key"
+  type        = string
+  default     = null
+}
+
+variable "aws_existing_key_pair_id" {
+  description = "existing AWS ssh object id"
   type        = string
   default     = null
 }
@@ -285,7 +299,7 @@ variable "f5xc_api_url" {
   type        = string
 }
 
-variable "f5xc_api_ca_cert" {
+variable "f5xc_api_p12_file" {
   description = "F5 XC api ca cert"
   type        = string
   default     = ""
@@ -294,6 +308,7 @@ variable "f5xc_api_ca_cert" {
 variable "f5xc_api_token" {
   description = "F5 XC api token"
   type        = string
+  default     = ""
 }
 
 variable "f5xc_tenant" {
@@ -362,13 +377,24 @@ variable "f5xc_aws_vpc_az_nodes" {
   }
 }
 
-variable "f5xc_aws_region" {
+variable "aws_region" {
   description = "AWS region"
   type        = string
 }
 
 variable "f5xc_cluster_name" {
   type = string
+}
+
+variable "f5xc_enable_offline_survivability_mode" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_api_p12_cert_password" {
+  description = "XC API cert file password used later in status module to retrieve site status"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_is_secure_cloud_ce" {
@@ -536,6 +562,18 @@ variable "f5xc_ce_machine_image" {
       us-west-1      = "ami-0cae9e09eecedfec3"
       us-west-2      = "ami-04b388d0bc88442db"
     }
+  }
+}
+
+variable "f5xc_ce_performance_enhancement_mode" {
+  type = object({
+    perf_mode_l7_enhanced = bool
+    perf_mode_l3_enhanced = optional(object({
+      jumbo_frame_enabled = bool
+    }))
+  })
+  default = {
+    perf_mode_l7_enhanced = true
   }
 }
 

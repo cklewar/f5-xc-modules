@@ -10,11 +10,19 @@ variable "f5xc_node_name" {
   type = string
 }
 
-variable "f5xc_azure_region" {
+variable "azurerm_region" {
   type = string
 }
 
 variable "azurerm_resource_group_name" {
+  type = string
+}
+
+variable "azurerm_existing_subnet_name_slo" {
+  type = string
+}
+
+variable "azurerm_existing_subnet_name_sli" {
   type = string
 }
 
@@ -49,6 +57,10 @@ variable "azurerm_subnet_slo_address_prefix" {
 }
 
 variable "azurerm_subnet_sli_address_prefix" {
+  type = string
+}
+
+variable "azurerm_zone" {
   type = string
 }
 

@@ -14,13 +14,23 @@ variable "owner_tag" {
   type = string
 }
 
+variable "status_check_type" {
+  type    = string
+  default = "token"
+  validation {
+    condition     = contains(["token", "cert"], var.status_check_type)
+    error_message = format("Valid values for status_check_type: token or cert")
+  }
+}
+
 variable "azurerm_availability_set_id" {
   type    = string
   default = ""
 }
 
 variable "azurerm_vnet_address_space" {
-  type = list(string)
+  type    = list(string)
+  default = []
 }
 
 variable "azurerm_instance_vm_size" {
@@ -35,6 +45,11 @@ variable "azurerm_instance_disk_size" {
 
 variable "azurerm_instance_admin_username" {
   type = string
+}
+
+variable "azurerm_instance_admin_password" {
+  type    = string
+  default = ""
 }
 
 variable "azurerm_route_table_next_hop_type" {
@@ -152,32 +167,71 @@ variable "f5xc_is_secure_cloud_ce" {
   default = false
 }
 
-variable "f5xc_secure_cloud_ce_zones" {
-  type    = list(string)
-  default = ["1"]
+variable "f5xc_is_private_cloud_ce" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_site_type_is_secure_mesh_site" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_enable_offline_survivability_mode" {
+  type    = bool
+  default = false
+}
+
+variable "f5xc_ce_performance_enhancement_mode" {
+  type = object({
+    perf_mode_l7_enhanced = bool
+    perf_mode_l3_enhanced = optional(object({
+      jumbo_frame_enabled = bool
+    }))
+  })
+  default = {
+    perf_mode_l7_enhanced = true
+  }
 }
 
 variable "f5xc_azure_marketplace_agreement_offers" {
-  type    = map(string)
+  type = map(string)
   default = {
-    ingress_egress_gateway = "entcloud_voltmesh_voltstack_node"
-    ingress_gateway        = "volterra-node"
     app_stack              = "entcloud_voltmesh_voltstack_node"
+    ingress_gateway        = "volterra-node"
+    ingress_egress_gateway = "entcloud_voltmesh_voltstack_node"
   }
 }
 
 variable "f5xc_azure_marketplace_agreement_plans" {
-  type    = map(string)
+  type = map(string)
   default = {
-    ingress_egress_gateway = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
-    ingress_gateway        = "volterra-node"
     app_stack              = "freeplan_entcloud_voltmesh_voltstack_node"
+    ingress_gateway        = "volterra-node"
+    ingress_egress_gateway = "freeplan_entcloud_voltmesh_voltstack_node_multinic"
   }
 }
 
 variable "azurerm_existing_vnet_name" {
+  description = "Azure existing vnet name"
+  type        = string
+  default     = ""
+}
+
+variable "azurerm_existing_resource_group_name" {
+  description = "Azure existing resource group name"
+  type        = string
+  default     = ""
+}
+
+variable "azurerm_disable_password_authentication" {
+  type    = bool
+  default = true
+}
+
+variable "azurerm_os_disk_storage_account_type" {
   type    = string
-  default = ""
+  default = "Standard_LRS"
 }
 
 variable "f5xc_azure_marketplace_agreement_publisher" {
@@ -195,11 +249,11 @@ variable "f5xc_site_set_vip_info_namespace" {
   default = "system"
 }
 
-variable "f5xc_azure_az_nodes" {
+variable "f5xc_cluster_nodes" {
   type = map(map(string))
   validation {
-    condition     = length(var.f5xc_azure_az_nodes) == 1 || length(var.f5xc_azure_az_nodes) == 3
-    error_message = "f5xc_azure_az_nodes must be 1 or 3"
+    condition     = length(var.f5xc_cluster_nodes) == 1 || length(var.f5xc_cluster_nodes) == 3
+    error_message = "f5xc_cluster_nodes must be 1 or 3"
   }
 }
 
@@ -208,27 +262,52 @@ variable "f5xc_cluster_labels" {
 }
 
 variable "f5xc_cluster_latitude" {
-  type = number
+  description = "geo latitude"
+  type        = number
+  default     = -73.935242
 }
 
 variable "f5xc_cluster_longitude" {
-  type = number
+  description = "geo longitude"
+  type        = number
+  default     = 40.730610
+}
+
+variable "f5xc_api_p12_file" {
+  description = "F5 XC api ca cert"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_api_url" {
-  type = string
+  description = "F5 XC tenant api URL"
+  type        = string
 }
 
 variable "f5xc_api_token" {
-  type = string
+  description = "F5 XC api token"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_tenant" {
-  type = string
+  description = "F5 XC tenant"
+  type        = string
+}
+
+variable "f5xc_token_name" {
+  description = "F5 XC api token name"
+  type        = string
 }
 
 variable "f5xc_namespace" {
-  type = string
+  description = "F5 XC namespace"
+  type        = string
+}
+
+variable "f5xc_ce_gateway_type_voltstack" {
+  type    = string
+  default = "voltstack_gateway"
 }
 
 variable "f5xc_ce_gateway_type_ingress" {
@@ -244,9 +323,19 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
-    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
+    condition     = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack_gateway"], var.f5xc_ce_gateway_type)
+    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway, voltstack_gateway")
   }
+}
+
+variable "f5xc_ce_to_re_tunnel_type" {
+  description = "CE to RE tunnel type"
+  type        = string
+  validation {
+    condition     = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
+    error_message = format("Valid values for tunnel_type: ssl, ipsec")
+  }
+  default = "ipsec"
 }
 
 variable "f5xc_registration_wait_time" {
@@ -263,38 +352,57 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
-variable "f5xc_azure_region" {
+variable "azurerm_region" {
   type = string
 }
 
-variable "f5xc_existing_azure_resource_group" {
-  type    = string
-  default = ""
+variable "f5xc_api_p12_cert_password" {
+  description = "XC API cert file password used later in status module to retrieve site status"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {
   type    = list(string)
-  default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]
+  default = [
+    "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",
+    "23.158.32.0/25",
+  ]
 }
 variable "f5xc_ip_ranges_Americas_UDP" {
   type    = list(string)
-  default = ["23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",]
+  default = [
+    "23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25",
+    "84.54.61.0/25",
+  ]
 }
 variable "f5xc_ip_ranges_Europe_TCP" {
   type    = list(string)
-  default = ["84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",]
+  default = [
+    "84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25",
+    "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",
+  ]
 }
 variable "f5xc_ip_ranges_Europe_UDP" {
   type    = list(string)
-  default = ["5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25", "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",]
+  default = [
+    "5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25",
+    "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",
+  ]
 }
 variable "f5xc_ip_ranges_Asia_TCP" {
   type    = list(string)
-  default = ["103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24", "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",]
+  default = [
+    "103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24",
+    "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",
+  ]
 }
 variable "f5xc_ip_ranges_Asia_UDP" {
   type    = list(string)
-  default = ["103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24", "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",]
+  default = [
+    "103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24",
+    "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",
+  ]
 }
 
 variable "f5xc_ce_egress_ip_ranges" {
@@ -306,6 +414,7 @@ variable "f5xc_ce_egress_ip_ranges" {
     "18.64.0.0/10",
     "52.223.128.0/18",
     "20.152.0.0/15",
+    "13.107.238.0/24",
     "142.250.0.0/15",
     "20.34.0.0/15",
     "52.192.0.0/12",
@@ -313,11 +422,13 @@ variable "f5xc_ce_egress_ip_ranges" {
     "52.223.0.0/17",
     "18.32.0.0/11",
     "3.208.0.0/12",
+    "13.107.237.0/24",
     "20.36.0.0/14",
     "52.222.0.0/16",
     "52.220.0.0/15",
     "3.0.0.0/9",
     "100.64.0.0/10",
+    "54.88.0.0/16",
     "52.216.0.0/14",
     "108.177.0.0/17",
     "20.40.0.0/13",
@@ -348,6 +459,7 @@ variable "f5xc_ce_egress_ip_ranges" {
     "52.88.0.0/13",
     "52.84.0.0/14",
     "52.119.128.0/17",
-    "54.240.192.0/18"
+    "54.240.192.0/18",
+    "52.94.208.0/21"
   ]
 }

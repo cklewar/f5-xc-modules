@@ -2,11 +2,11 @@ variable "is_multi_nic" {
   type = bool
 }
 
-variable "slo_network" {
+variable "gcp_network_slo" {
   type = string
 }
 
-variable "sli_network" {
+variable "gcp_network_sli" {
   type = string
 }
 

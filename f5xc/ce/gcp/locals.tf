@@ -1,6 +1,7 @@
 locals {
   is_multi_nic            = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
-  create_network          = var.existing_network_outside == null || (var.existing_network_outside == null && var.existing_network_inside == null) ? true : false
+  create_network          = var.gcp_existing_network_slo == null || (var.gcp_existing_network_slo == null && var.gcp_existing_network_sli == null) ? true : false
+  create_subnetwork       = var.gcp_existing_subnet_network_slo == null || (var.gcp_existing_subnet_network_slo == null && var.gcp_existing_subnet_network_sli == null) ? true : false
   f5xc_cluster_labels     = merge({ ves-io-site-name = var.f5xc_cluster_name, ves-io-creator-id = var.owner }, var.f5xc_cluster_labels)
   f5xc_cluster_node_azs   = [for node in var.f5xc_ce_nodes : node["az"]]
   f5xc_ip_ranges_americas = concat(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
@@ -23,7 +24,7 @@ locals {
             ports    = []
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -46,7 +47,7 @@ locals {
             ports    = []
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -73,7 +74,7 @@ locals {
             ports    = ["4500"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -95,7 +96,7 @@ locals {
             ports    = ["4500"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -113,7 +114,7 @@ locals {
             ports    = ["443"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -131,7 +132,7 @@ locals {
             ports    = ["123"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -149,7 +150,7 @@ locals {
             ports    = ["22", "3389"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }
@@ -190,7 +191,7 @@ locals {
             ports    = ["22"]
           }
         ]
-        deny       = []
+        deny = []
         log_config = {
           metadata = "INCLUDE_ALL_METADATA"
         }

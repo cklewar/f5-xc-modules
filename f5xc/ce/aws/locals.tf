@@ -1,18 +1,19 @@
 locals {
-  # is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["f5xc_aws_vpc_az_name"]])) ? true : false
+  # is_slo_snet_same_az = length([for node in var.f5xc_aws_vpc_az_nodes : node["aws_vpc_az_name"]]) != length(distinct([for node in var.f5xc_aws_vpc_az_nodes : node["aws_vpc_az_name"]])) ? true : false
   is_multi_nic                  = var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress ? true : false
   is_secure_or_private_cloud_ce = var.f5xc_is_secure_cloud_ce || var.f5xc_is_private_cloud_ce ? true : false
   f5xc_ip_ranges_americas       = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP)
   f5xc_ip_ranges_europe         = setunion(var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP)
   f5xc_ip_ranges_asia           = setunion(var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
   f5xc_ip_ranges_all            = setunion(var.f5xc_ip_ranges_Americas_TCP, var.f5xc_ip_ranges_Americas_UDP, var.f5xc_ip_ranges_Europe_TCP, var.f5xc_ip_ranges_Europe_UDP, var.f5xc_ip_ranges_Asia_TCP, var.f5xc_ip_ranges_Asia_UDP)
-  server_roles                  = {
+  server_roles = {
     node0 = jsonencode(["etcd-server", "k8s-master-primary", "k8s-minion"]),
     node1 = jsonencode(["etcd-server", "k8s-master", "k8s-minion"]),
     node2 = jsonencode(["etcd-server", "k8s-master", "k8s-minion"])
   }
   common_tags = {
     "kubernetes.io/cluster/${var.f5xc_cluster_name}" = "owned"
+    "ves-io-site-name"                               = var.f5xc_cluster_name
     "Owner"                                          = var.owner_tag
   }
   aws_security_group_rules_slo_egress_secure_ce = [

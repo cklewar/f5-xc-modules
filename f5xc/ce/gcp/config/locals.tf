@@ -1,11 +1,11 @@
 locals {
   gateway_type = replace(var.f5xc_ce_gateway_type, "_", "-")
-  vpm_vars     = {
-    service_ip                  = var.host_localhost_public_name
+  vpm_vars = {
+    service_ip                  = var.f5xc_ce_hosts_public_name
+    private_nic                 = var.slo_nic
     cluster_type                = var.cluster_type
     cluster_name                = var.cluster_name
-    private_nic                 = var.slo_nic
-    cluster_token               = var.volterra_token
+    cluster_token               = var.cluster_token
     cluster_labels              = var.cluster_labels
     cluster_latitude            = var.f5xc_cluster_latitude
     cluster_longitude           = var.f5xc_cluster_longitude
@@ -18,8 +18,8 @@ locals {
   }
 
   hosts_localhost_vars = {
-    public_address = var.host_localhost_public_address
-    public_name    = var.host_localhost_public_name
+    public_name    = var.f5xc_ce_hosts_public_name
+    public_address = var.f5xc_ce_hosts_public_address
   }
 
   cloud_init_master = {

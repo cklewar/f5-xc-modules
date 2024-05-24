@@ -2,95 +2,13 @@ variable "owner" {
   type = string
 }
 
-variable "gcp_region" {
-  type = string
-}
-
-variable "existing_network_inside" {
-  default = null
-}
-
-variable "existing_network_outside" {
-  default = null
-}
-
-variable "instance_type" {
+variable "status_check_type" {
   type    = string
-  default = "n2-standard-8"
-}
-
-variable "instance_image" {
-  type = string
-}
-
-variable "instance_disk_size" {
-  type    = string
-  default = "40"
-}
-
-variable "instance_template_description" {
-  type    = string
-  default = "F5XC Cloud CE default template"
-}
-
-variable "instance_group_manager_description" {
-  type    = string
-  default = "F5XC Cloud CE default instance group manager"
-}
-
-variable "instance_group_manager_wait_for_instances" {
-  type    = bool
-  default = true
-}
-
-variable "instance_group_manager_base_instance_name" {
-  type    = string
-  default = "node"
-}
-
-variable "host_localhost_public_name" {
-  type    = string
-  default = "vip"
-}
-
-variable "allow_stopping_for_update" {
-  type    = bool
-  default = true
-}
-
-variable "instance_tags" {
-  type    = list(string)
-  default = []
-}
-
-variable "instance_template_create_timeout" {
-  type    = string
-  default = "15m"
-}
-
-variable "instance_template_delete_timeout" {
-  type    = string
-  default = "15m"
-}
-
-variable "gcp_service_account_email" {
-  type    = string
-  default = ""
-}
-
-variable "gcp_service_account_scopes" {
-  type    = list(string)
-  default = ["cloud-platform"]
-}
-
-variable "auto_create_subnetworks" {
-  type    = bool
-  default = false
-}
-
-variable "access_config_nat_ip" {
-  type    = string
-  default = ""
+  default = "token"
+  validation {
+    condition     = contains(["token", "cert"], var.status_check_type)
+    error_message = format("Valid values for status_check_type: token or cert")
+  }
 }
 
 variable "has_public_ip" {
@@ -105,13 +23,152 @@ variable "ssh_public_key" {
 
 variable "ssh_username" {
   type    = string
-  default = "centos"
+  default = "cloud-user"
 }
 
 variable "is_sensitive" {
   type        = bool
   default     = false
   description = "Whether to mask sensitive data in output or not"
+}
+
+variable "gcp_region" {
+  type = string
+}
+
+variable "gcp_project_id" {
+  description = "GCP account project id"
+  type        = string
+}
+
+variable "gcp_instance_serial_port_enable" {
+  type    = bool
+  default = false
+}
+
+variable "gcp_existing_network_slo" {
+  description = "existing gcp compute network name slo"
+  type        = string
+  default     = null
+}
+
+variable "gcp_existing_network_sli" {
+  description = "existing gcp compute network name sli"
+  type        = string
+  default     = null
+}
+
+variable "gcp_existing_subnet_network_slo" {
+  description = "existing gcp subnet network name slo"
+  type        = string
+  default     = null
+}
+
+variable "gcp_existing_subnet_network_sli" {
+  description = "existing gcp subnet network name sli"
+  type        = string
+  default     = null
+}
+
+variable "gcp_instance_type" {
+  type    = string
+  default = "n2-standard-8"
+}
+
+variable "gcp_instance_image" {
+  type = string
+}
+
+variable "gcp_instance_disk_size" {
+  type    = string
+  default = "40"
+}
+
+variable "gcp_instance_template_description" {
+  type    = string
+  default = "F5XC Cloud CE default template"
+}
+
+variable "gcp_instance_group_manager_description" {
+  type    = string
+  default = "F5XC Cloud CE default instance group manager"
+}
+
+variable "gcp_instance_group_manager_wait_for_instances" {
+  type    = bool
+  default = true
+}
+
+variable "gcp_instance_group_manager_base_instance_name" {
+  type    = string
+  default = "node"
+}
+
+variable "f5xc_ce_hosts_public_name" {
+  type    = string
+  default = "vip"
+}
+
+variable "f5xc_ce_hosts_public_address" {
+  type    = string
+  default = "127.0.1.1"
+}
+
+variable "gcp_allow_stopping_for_update" {
+  type    = bool
+  default = true
+}
+
+variable "gcp_instance_tags" {
+  type    = list(string)
+  default = []
+}
+
+variable "gcp_instance_template_create_timeout" {
+  type    = string
+  default = "15m"
+}
+
+variable "gcp_instance_template_delete_timeout" {
+  type    = string
+  default = "15m"
+}
+
+variable "gcp_service_account_email" {
+  type    = string
+  default = ""
+}
+
+variable "gcp_service_account_scopes" {
+  type    = list(string)
+  default = ["cloud-platform"]
+}
+
+variable "gcp_auto_create_subnetworks" {
+  type    = bool
+  default = false
+}
+
+variable "gcp_access_config_nat_ip" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_site_type_is_secure_mesh_site" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_private_ce_nat_name" {
+  type        = string
+  default     = null
+  description = "private ce creates gcp nat object. this object needs a name"
+}
+
+variable "f5xc_private_ce_nat_router_name" {
+  type        = string
+  default     = null
+  description = "private ce module creates gcp router object. this object needs a name"
 }
 
 variable "f5xc_ce_slo_firewall" {
@@ -206,16 +263,16 @@ variable "f5xc_ce_gateway_type" {
 
 variable "f5xc_cluster_latitude" {
   type    = string
-  default = 37.773972
+  default = -73.935242
 }
 
 variable "f5xc_cluster_longitude" {
   type    = string
-  default = -122.431297
+  default = 40.730610
 }
 
 variable "f5xc_cluster_labels" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }
 
@@ -232,7 +289,8 @@ variable "f5xc_ce_nodes" {
 }
 
 variable "f5xc_ce_slo_subnet" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "f5xc_ce_sli_subnet" {
@@ -244,35 +302,72 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "f5xc_api_p12_file" {
+  description = "F5 XC api ca cert"
+  type        = string
+  default     = ""
+}
+
 variable "f5xc_api_token" {
-  type = string
+  description = "F5 XC api token"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_tenant" {
-  type = string
+  description = "F5 XC tenant"
+  type        = string
 }
 
 variable "f5xc_token_name" {
-  type = string
+  description = "F5 XC api token name"
+  type        = string
 }
 
 variable "f5xc_namespace" {
-  type = string
+  description = "F5 XC namespace"
+  type        = string
+}
+
+variable "f5xc_api_p12_cert_password" {
+  description = "XC API cert file password used later in status module to retrieve site status"
+  type        = string
+  default     = ""
 }
 
 variable "f5xc_is_secure_cloud_ce" {
-  type    = bool
-  default = false
+  description = "whether CE should be secured by applying security rules on SLO and SLI + NAT GW + SLO private IP"
+  type        = bool
+  default     = false
+}
+
+variable "f5xc_is_private_cloud_ce" {
+  description = "whether CE should be private with SLO has private IP and NAT GW in front"
+  type        = bool
+  default     = false
 }
 
 variable "f5xc_ce_slo_enable_secure_sg" {
+  description = "whether CE should be secured by applying security rules on SLO"
+  type        = bool
+  default     = false
+}
+
+variable "f5xc_enable_offline_survivability_mode" {
   type    = bool
   default = false
 }
 
-variable "serial_port_enable" {
-  type    = bool
-  default = false
+variable "f5xc_ce_performance_enhancement_mode" {
+  type = object({
+    perf_mode_l7_enhanced = bool
+    perf_mode_l3_enhanced = optional(object({
+      jumbo_frame_enabled = bool
+    }))
+  })
+  default = {
+    perf_mode_l7_enhanced = true
+  }
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {
@@ -351,9 +446,10 @@ variable "f5xc_ce_egress_ip_ranges" {
     "54.220.0.0/15",
     "54.192.0.0/12",
     "54.160.0.0/11",
-    "52.0.0.0/10",
-    "3.128.0.0/9",
-    "52.64.0.0/12",
-    "65.8.0.0/16"
+    "52.88.0.0/13",
+    "52.84.0.0/14",
+    "52.119.128.0/17",
+    "54.240.192.0/18",
+    "52.94.208.0/21"
   ]
 }

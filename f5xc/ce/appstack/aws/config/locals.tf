@@ -37,7 +37,6 @@ locals {
   cloud_cfg_worker = var.node_type == var.node_type_worker ? templatefile("../../modules/f5xc/ce/appstack/aws/config/${var.templates_dir}/cloud_init_worker.yaml", {
     ntp_servers       = var.ntp_servers
     nlb_dns_name      = var.aws_nlb_dns_name
-    hosts_context     = base64encode(local.hosts_context_node)
     ssh_public_key    = var.ssh_public_key
     reboot_strategy   = var.reboot_strategy_node
     vp_manager_config = base64encode(local.vpm_config)

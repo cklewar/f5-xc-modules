@@ -2,15 +2,15 @@ locals {
   gateway_type       = replace(var.f5xc_ce_gateway_type, "_", "-")
   hosts_context_node = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
-      public_address = "127.0.1.1"
       public_name    = var.f5xc_ce_hosts_public_name
+      public_address = "127.0.1.1"
     }
   )
 
   hosts_context_pool = templatefile("${path.module}/${var.templates_dir}/hosts",
     {
-      public_address = var.f5xc_ce_hosts_public_address
       public_name    = var.f5xc_ce_hosts_public_name
+      public_address = var.f5xc_ce_hosts_public_address
     }
   )
 

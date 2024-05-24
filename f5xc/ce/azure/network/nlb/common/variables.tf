@@ -6,17 +6,18 @@ variable "azurerm_resource_group_name" {
   type = string
 }
 
-variable "f5xc_cluster_name" {
+variable "azurerm_region" {
   type = string
 }
 
-variable "f5xc_azure_region" {
-  type = string
+variable "f5xc_ce_slo_probe_port" {
+  type    = number
+  default = 9505
 }
 
-variable "f5xc_ce_k8s_api_server_port" {
-  type    = string
-  default = "6443"
+variable "f5xc_ce_sli_probe_port" {
+  type    = number
+  default = 65450
 }
 
 variable "azurerm_lb_frontend_ip_configuration" {
@@ -24,6 +25,14 @@ variable "azurerm_lb_frontend_ip_configuration" {
     name      = string
     subnet_id = string
   }))
+}
+
+variable "azurerm_availability_set_id" {
+  type    = string
+}
+
+variable "f5xc_cluster_name" {
+  type = string
 }
 
 variable "f5xc_site_set_vip_info_namespace" {
@@ -35,7 +44,7 @@ variable "f5xc_site_set_vip_info_site_type" {
   default = "azure_vnet_site"
 }
 
-variable "f5xc_azure_az_nodes" {
+variable "f5xc_cluster_nodes" {
   type = map(map(string))
 }
 

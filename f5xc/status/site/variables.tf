@@ -8,7 +8,7 @@ variable "f5xc_api_token" {
 }
 
 variable "f5xc_api_p12_file" {
-  type    = string
+  type = string
   default = ""
 }
 
@@ -32,7 +32,6 @@ variable "f5xc_site_get_uri" {
 
 variable "status_check_type" {
   type    = string
-  default = "token"
 }
 
 variable "check_type_token" {

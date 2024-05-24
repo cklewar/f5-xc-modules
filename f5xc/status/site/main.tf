@@ -12,5 +12,4 @@ resource "terraform_data" "check_site_status_cert" {
     command     = format("%s/scripts/check.sh %s %s %s %s %s \"%s\"", path.module, local.site_get_url, var.f5xc_api_p12_file, local.f5xc_tenant, var.f5xc_max_timeout, var.check_type_cert, var.f5xc_api_p12_cert_password)
     interpreter = ["/usr/bin/env", "bash", "-c"]
   }
-  triggers_replace = timestamp()
 }

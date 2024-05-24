@@ -6,6 +6,22 @@ variable "f5xc_node_name" {
   type = string
 }
 
+variable "f5xc_cluster_name" {
+  type = string
+}
+
+/*variable "azurerm_lb_id" {
+  type = string
+}
+
+variable "azurerm_lb_probe_id_slo" {
+  type = string
+}
+
+variable "azurerm_lb_probe_id_sli" {
+  type = string
+}*/
+
 variable "azurerm_network_interface_slo_id" {
   type = string
 }

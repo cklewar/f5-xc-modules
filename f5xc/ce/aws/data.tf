@@ -1,6 +1,6 @@
 data "aws_key_pair" "existing_aws_key" {
-  count              = var.aws_key_pair_id != null ? 1 : 0
-  key_pair_id        = var.aws_key_pair_id
+  count              = var.aws_existing_key_pair_id != null ? 1 : 0
+  key_pair_id        = var.aws_existing_key_pair_id
   include_public_key = true
 }
 

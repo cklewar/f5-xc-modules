@@ -1,6 +1,15 @@
 #cloud-config
 ssh_authorized_keys:
   - "${ssh_public_key}"
+users:
+  - default
+  - name: admin
+    primary_group: users
+    groups: users
+    lock_passwd: false
+    passwd: $y$j9T$at/eb2d.J1PXwinNlthA6/$S4voS/KV3wQm8HzDKH77YInZpPD96D37b4ZA00NEp79
+    ssh_authorized_keys:
+      - "${ssh_public_key}"
 coreos:
   locksmith:
   update:
@@ -30,6 +39,7 @@ write_files:
   - path: /etc/hosts
     permissions: 0644
     owner: root
+    encoding: b64
     content: ${hosts_context}
   - path: /etc/vpm/config.yaml
     permissions: 0644

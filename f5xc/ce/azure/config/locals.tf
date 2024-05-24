@@ -8,16 +8,16 @@ locals {
 
   azure_config = jsonencode({
     "cloud" : var.azurerm_cloud_name,
-    "tenantId" : var.azurerm_tenant_id,
-    "subscriptionId" : var.azurerm_subscription_id,
-    "aadClientId" : var.azurerm_client_id,
-    "aadClientSecret" : var.azurerm_client_secret,
-    "resourceGroup" : var.azurerm_resource_group,
-    "location" : var.f5xc_azure_region,
     "vmType" : var.azurerm_vm_type,
-    "subnetName" : var.azurerm_vnet_subnet_name,
-    "securityGroupName" : var.azurerm_vnet_security_group,
     "vnetName" : var.azurerm_vnet_name,
+    "location" : var.azurerm_region,
+    "tenantId" : var.azurerm_tenant_id,
+    "subnetName" : var.azurerm_vnet_subnet_name,
+    "aadClientId" : var.azurerm_client_id,
+    "resourceGroup" : var.azurerm_resource_group,
+    "aadClientSecret" : var.azurerm_client_secret,
+    "subscriptionId" : var.azurerm_subscription_id,
+    "securityGroupName" : var.azurerm_vnet_security_group,
     "vnetResourceGroup" : var.azurerm_vnet_resource_group,
     "primaryAvailabilitySetName" : var.azurerm_primary_availability_set
   })
@@ -49,6 +49,7 @@ locals {
       user_pubkey       = var.ssh_public_key
       azure_config      = base64encode(local.azure_config)
       hosts_context     = base64encode(local.hosts_context_node)
+      admin_username    = var.azurerm_instance_admin_username
       reboot_strategy   = var.reboot_strategy_node
       vp_manager_config = base64encode(local.vpm_config)
     })

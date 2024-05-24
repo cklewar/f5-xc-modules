@@ -49,7 +49,7 @@ variable "f5xc_ce_hosts_public_name" {
   type = string
 }
 
-variable "f5xc_azure_region" {
+variable "azurerm_region" {
   type = string
 }
 
@@ -98,6 +98,10 @@ variable "azurerm_vnet_security_group" {
 variable "azurerm_primary_availability_set" {
   type    = string
   default = "primaryAvailabilitySetName"
+}
+
+variable "azurerm_instance_admin_username" {
+  type = string
 }
 
 variable "azurerm_cloud_name" {

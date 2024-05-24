@@ -1,3 +1,4 @@
 data "aws_vpc" "vpc" {
-  id = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : aws_vpc.vpc[0].id
+  count = var.aws_existing_vpc_id != "" ? 1 : 0
+  id    = var.aws_existing_vpc_id
 }

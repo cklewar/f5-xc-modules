@@ -18,7 +18,7 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
-variable "f5xc_azure_region" {
+variable "azurerm_region" {
   type = string
 }
 
@@ -26,7 +26,12 @@ variable "azurerm_resource_group_name" {
   type = string
 }
 
-variable "azurerm_security_group_sli_id" {
+variable "azurerm_create_interface_security_group_association" {
+  type    = bool
+  default = false
+}
+
+variable "azurerm_security_group_rules_sli" {
   type = list(object({
     name                         = string
     access                       = string
@@ -42,7 +47,7 @@ variable "azurerm_security_group_sli_id" {
   }))
 }
 
-variable "azurerm_security_group_slo_id" {
+variable "azurerm_security_group_rules_slo" {
   type = list(object({
     name                         = string
     access                       = string

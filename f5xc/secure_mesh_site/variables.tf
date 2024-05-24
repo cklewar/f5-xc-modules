@@ -58,9 +58,12 @@ variable "f5xc_ce_performance_enhancement_mode" {
 
 variable "f5xc_site_type_certified_hw" {
   type = object({
-    aws   = map(string)
-    gcp   = map(string)
-    azure = map(string)
+    aws    = map(string)
+    gcp    = map(string)
+    kvm    = map(string)
+    azure  = map(string)
+    vmware = map(string)
+
   })
   default = {
     aws = {
@@ -71,9 +74,17 @@ variable "f5xc_site_type_certified_hw" {
       ingress_gateway        = "gcp-byol-voltmesh"
       ingress_egress_gateway = "gcp-byol-multi-nic-voltmesh"
     }
+    kvm = {
+      ingress_gateway        = "kvm-byol-voltmesh"
+      ingress_egress_gateway = "kvm-byol-multi-nic-voltmesh"
+    }
     azure = {
       ingress_gateway        = "azure-byol-voltmesh"
       ingress_egress_gateway = "azure-byol-multi-nic-voltmesh"
+    }
+    vmware = {
+      ingress_gateway        = "vmware-byol-voltmesh"
+      ingress_egress_gateway = "vmware-byol-multi-nic-voltmesh"
     }
   }
 }
@@ -116,7 +127,7 @@ variable "f5xc_cluster_worker_nodes" {
 variable "csp_provider" {
   type = string
   validation {
-    condition     = contains(["aws", "gcp", "azure"], var.csp_provider)
-    error_message = format("Valid values for csp_provider: aws, gcp, azure")
+    condition     = contains(["aws", "gcp", "azure", "vmware", "kvm"], var.csp_provider)
+    error_message = format("Valid values for csp_provider: aws, gcp, azure, vmware, kvm")
   }
 }

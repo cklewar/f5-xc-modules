@@ -1,60 +1,126 @@
-variable "f5xc_tenant" {}
-variable "f5xc_api_url" {}
-variable "f5xc_api_ca_cert" {}
-variable "f5xc_namespace" {}
-variable "f5xc_api_token" {}
-
-variable "vsphere_server" {}
-variable "vsphere_user" {}
-variable "vsphere_password" {}
-variable "vsphere_datacenter" {}
-variable "vsphere_cluster" {}
-
-variable "nodes" {
-  type = list(object({
-    name      = string
-    datastore = string
-    ipaddress = string
-    host      = string
-  }))
+variable "is_sensitive" {
+  type = bool
 }
 
-variable "outside_network" {}
-variable "inside_network" {
+variable "f5xc_tenant" {
   type = string
-  default = ""
 }
-variable "publicdefaultgateway" {
+
+variable "f5xc_api_url" {
   type = string
-  default = ""
 }
-variable "publicdefaultroute" {
+
+variable "f5xc_namespace" {
   type = string
-  default = ""
 }
-variable "dnsservers" {}
-variable "cpus" {}
-variable "memory" {}
-variable "f5xc_ova_image" {
+
+variable "f5xc_api_token" {
   type = string
-  default = ""
 }
-variable "f5xc_vm_template" {
-  type = string
-  default = ""
-}
-variable "f5xc_reg_url" {
+
+variable "f5xc_ce_gateway_type_ingress" {
   type    = string
-  default = "ves.volterra.io"
+  default = "ingress_gateway"
 }
 
-variable "certifiedhardware" {}
-variable "cluster_name" {}
-variable "guest_type" {}
-variable "sitelatitude" {}
-variable "sitelongitude" {}
-variable "admin_password" {
+variable "f5xc_ce_gateway_type_ingress_egress" {
+  type    = string
+  default = "ingress_egress_gateway"
+}
+
+variable "f5xc_ce_gateway_type" {
   type = string
+  validation {
+    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
+    error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
+  }
+}
+
+variable "f5xc_vsphere_site_nodes" {
+  type = map(map(string))
+  validation {
+    condition     = length(var.f5xc_vsphere_site_nodes) == 1 || length(var.f5xc_vsphere_site_nodes) == 3 || length(var.f5xc_vsphere_site_nodes) == 0
+    error_message = "f5xc_vsphere_site_nodes must be 1 or 3"
+  }
+}
+
+variable "f5xc_cluster_name" {
+  type = string
+}
+
+variable "f5xc_site_latitude" {
+  type = number
+}
+
+variable "f5xc_site_longitude" {
+  type = number
+}
+
+variable "f5xc_certified_hardware" {
+  type    = string
+  default = "vmware-voltmesh"
+}
+
+variable "f5xc_vsphere_instance_template" {
+  type    = string
   default = ""
-  description = "admin shell password, needs at least one uppercase letter"
+}
+
+variable "vsphere_instance_cpu_count" {
+  type    = number
+  default = 4
+}
+
+variable "vsphere_instance_memory_size" {
+  type    = number
+  default = 16384
+}
+
+variable "vsphere_instance_inside_network_name" {
+  type = string
+}
+
+variable "vsphere_instance_outside_network_name" {
+  type = string
+}
+
+variable "vsphere_instance_outside_interface_default_route" {
+  type = string
+}
+
+variable "vsphere_instance_outside_interface_default_gateway" {
+  type = string
+}
+
+variable "vsphere_instance_admin_password" {
+  type = string
+}
+
+variable "vsphere_instance_dns_servers" {
+  type = object({
+    primary   = string
+    secondary = optional(string)
+  })
+}
+
+variable "vsphere_cluster" {
+  type = string
+}
+
+variable "vsphere_datacenter" {
+  type = string
+}
+
+variable "vsphere_instance_guest_type" {
+  type    = string
+  default = "centos64Guest"
+}
+
+variable "status_check_type" {
+  type = string
+}
+
+variable "f5xc_site_type_is_secure_mesh_site" {
+  type    = bool
+  default = true
 }

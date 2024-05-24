@@ -2,6 +2,17 @@ variable "f5xc_api_url" {
   type = string
 }
 
+variable "f5xc_tenant" {
+  description = "F5 XC tenant"
+  type        = string
+  default     = ""
+}
+
+variable "status_check_type" {
+  type    = string
+  default = "token"
+}
+
 variable "f5xc_api_token" {
   type = string
 }
@@ -31,12 +42,17 @@ variable "f5xc_k8s_config_types" {
   }
 }
 
-variable "output_dir_path" {
+variable "f5xc_api_p12_file" {
   type    = string
   default = ""
 }
 
-variable "offset_days" {
-  type    = number
-  default = 60
+variable "f5xc_api_p12_cert_password" {
+  type    = string
+  default = ""
+}
+
+variable "output_dir_path" {
+  type    = string
+  default = ""
 }

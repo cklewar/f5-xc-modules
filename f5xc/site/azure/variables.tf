@@ -1,3 +1,12 @@
+variable "status_check_type" {
+  type = string
+}
+
+variable "is_sensitive" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_api_url" {
   type = string
 }

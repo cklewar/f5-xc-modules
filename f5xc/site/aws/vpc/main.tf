@@ -256,12 +256,13 @@ resource "volterra_tf_params_action" "aws_vpc_action" {
 }
 
 module "site_wait_for_online" {
-  depends_on     = [volterra_tf_params_action.aws_vpc_action]
-  source         = "../../../status/site"
-  f5xc_api_token = var.f5xc_api_token
-  f5xc_api_url   = var.f5xc_api_url
-  f5xc_namespace = var.f5xc_namespace
-  f5xc_site_name = volterra_aws_vpc_site.site.name
-  f5xc_tenant    = var.f5xc_tenant
-  is_sensitive   = var.is_sensitive
+  depends_on        = [volterra_tf_params_action.aws_vpc_action]
+  source            = "../../../status/site"
+  status_check_type = var.status_check_type
+  is_sensitive      = var.is_sensitive
+  f5xc_tenant       = var.f5xc_tenant
+  f5xc_api_url      = var.f5xc_api_url
+  f5xc_api_token    = var.f5xc_api_token
+  f5xc_namespace    = var.f5xc_namespace
+  f5xc_site_name    = volterra_aws_vpc_site.site.name
 }

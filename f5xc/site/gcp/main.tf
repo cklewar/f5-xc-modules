@@ -247,7 +247,8 @@ resource "volterra_tf_params_action" "gcp_vpc_action" {
 module "site_wait_for_online" {
   depends_on        = [volterra_tf_params_action.gcp_vpc_action]
   source            = "../../status/site"
-  status_check_type = "cert"
+  is_sensitive      = var.is_sensitive
+  status_check_type = var.status_check_type
   f5xc_tenant       = var.f5xc_tenant
   f5xc_api_url      = var.f5xc_api_url
   f5xc_api_token    = var.f5xc_api_token

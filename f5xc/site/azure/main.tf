@@ -229,13 +229,15 @@ resource "volterra_tf_params_action" "azure_vnet_action" {
 }
 
 module "site_wait_for_online" {
-  depends_on     = [volterra_tf_params_action.azure_vnet_action]
-  source         = "../../status/site"
-  f5xc_api_token = var.f5xc_api_token
-  f5xc_api_url   = var.f5xc_api_url
-  f5xc_namespace = var.f5xc_namespace
-  f5xc_site_name = volterra_azure_vnet_site.site.name
-  f5xc_tenant    = var.f5xc_tenant
+  depends_on        = [volterra_tf_params_action.azure_vnet_action]
+  source            = "../../status/site"
+  is_sensitive      = var.is_sensitive
+  status_check_type = var.status_check_type
+  f5xc_tenant       = var.f5xc_tenant
+  f5xc_api_url      = var.f5xc_api_url
+  f5xc_api_token    = var.f5xc_api_token
+  f5xc_namespace    = var.f5xc_namespace
+  f5xc_site_name    = volterra_azure_vnet_site.site.name
 }
 
 resource "azurerm_route" "route" {

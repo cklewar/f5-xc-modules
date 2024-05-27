@@ -1,3 +1,7 @@
+variable "status_check_type" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }
@@ -82,7 +86,7 @@ variable "f5xc_aws_ce_gw_type" {
 }
 
 variable "f5xc_aws_ce_certified_hw" {
-  type    = map(string)
+  type = map(string)
   default = {
     multi_nic  = "aws-byol-multi-nic-voltmesh"
     single_nic = "aws-byol-voltmesh"
@@ -187,14 +191,14 @@ variable "f5xc_cloud_site_labels_ignore_on_delete" {
 }
 
 variable "f5xc_labels" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }
 
 variable "custom_tags" {
   description = "Custom tags to set on resources"
   type        = map(string)
-  default     = {}
+  default = {}
 }
 
 variable "f5xc_aws_vpc_direct_connect_disabled" {

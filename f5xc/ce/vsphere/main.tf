@@ -17,6 +17,7 @@ module "secure_mesh_site" {
 }
 
 module "node" {
+  depends_on                                         = [module.secure_mesh_site]
   source                                             = "./nodes"
   for_each                                           = {for k, v in var.f5xc_vsphere_site_nodes : k => v}
   is_multi_nic                                       = local.is_multi_nic

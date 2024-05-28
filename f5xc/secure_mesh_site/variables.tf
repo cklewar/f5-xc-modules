@@ -75,16 +75,16 @@ variable "f5xc_site_type_certified_hw" {
       ingress_egress_gateway = "gcp-byol-multi-nic-voltmesh"
     }
     kvm = {
-      ingress_gateway        = "kvm-byol-voltmesh"
-      ingress_egress_gateway = "kvm-byol-multi-nic-voltmesh"
+      ingress_gateway        = "kvm-voltmesh"
+      ingress_egress_gateway = "kvm-voltmesh"
     }
     azure = {
       ingress_gateway        = "azure-byol-voltmesh"
       ingress_egress_gateway = "azure-byol-multi-nic-voltmesh"
     }
     vmware = {
-      ingress_gateway        = "vmware-byol-voltmesh"
-      ingress_egress_gateway = "vmware-byol-multi-nic-voltmesh"
+      ingress_gateway        = "vmware-voltmesh"
+      ingress_egress_gateway = "vmware--voltmesh"
     }
   }
 }

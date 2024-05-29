@@ -60,10 +60,9 @@ variable "f5xc_site_type_certified_hw" {
   type = object({
     aws    = map(string)
     gcp    = map(string)
-    kvm    = map(string)
     azure  = map(string)
+    kvm    = map(string)
     vmware = map(string)
-
   })
   default = {
     aws = {
@@ -74,13 +73,13 @@ variable "f5xc_site_type_certified_hw" {
       ingress_gateway        = "gcp-byol-voltmesh"
       ingress_egress_gateway = "gcp-byol-multi-nic-voltmesh"
     }
-    kvm = {
-      ingress_gateway        = "kvm-voltmesh"
-      ingress_egress_gateway = "kvm-voltmesh"
-    }
     azure = {
       ingress_gateway        = "azure-byol-voltmesh"
       ingress_egress_gateway = "azure-byol-multi-nic-voltmesh"
+    }
+    kvm = {
+      ingress_gateway        = "kvm-voltmesh"
+      ingress_egress_gateway = "kvm-regular-nic-voltmesh"
     }
     vmware = {
       ingress_gateway        = "vmware-voltmesh"

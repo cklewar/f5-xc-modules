@@ -15,7 +15,7 @@ variable "f5xc_api_token" {
 }
 
 variable "f5xc_qcow2_image" {
-  type    = string
+  type = string
 }
 
 variable "f5xc_node_name" {
@@ -51,15 +51,15 @@ variable "f5xc_certified_hardware" {
   }
 }
 
-#variable "f5xc_ce_gateway_type_ingress" {
-#  type    = string
-#  default = "ingress_gateway"
-#}
+variable "f5xc_ce_gateway_type_ingress" {
+  type    = string
+  default = "ingress_gateway"
+}
 
-#variable "f5xc_ce_gateway_type_ingress_egress" {
-#  type    = string
-#  default = "ingress_egress_gateway"
-#}
+variable "f5xc_ce_gateway_type_ingress_egress" {
+  type    = string
+  default = "ingress_egress_gateway"
+}
 
 variable "f5xc_ce_gateway_type" {
   type = string
@@ -85,10 +85,6 @@ variable "f5xc_registration_wait_time" {
 variable "f5xc_registration_retry" {
   type    = number
   default = 20
-}
-
-variable "kvm_host" {
-  type = string
 }
 
 variable "kvm_storage_pool" {

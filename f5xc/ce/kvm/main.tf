@@ -33,7 +33,6 @@ module "node" {
   f5xc_kvm_site_nodes               = var.f5xc_kvm_site_nodes
   f5xc_qcow2_image                  = var.f5xc_qcow2_image
   f5xc_reg_url                      = var.f5xc_reg_url
-  kvm_host                          = var.kvm_host
   kvm_storage_pool                  = var.kvm_storage_pool
   kvm_instance_cpu_count            = var.kvm_instance_cpu_count
   kvm_instance_memory_size          = var.kvm_instance_memory_size

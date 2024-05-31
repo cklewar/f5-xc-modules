@@ -1,3 +1,11 @@
+variable "f5xc_api_p12_file" {
+  type = string
+}
+
+variable "f5xc_api_url" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }
@@ -18,6 +26,14 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
+variable "f5xc_cluster_latitude" {
+  type = number
+}
+
+variable "f5xc_cluster_longitude" {
+  type = number
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
   default = {}
@@ -25,7 +41,7 @@ variable "f5xc_cluster_labels" {
 
 variable "f5xc_certified_hardware" {
   type    = string
-  default = "kvm-voltmesh"
+  default = "kvm-regular-nic-voltmesh"
 }
 
 variable "f5xc_qcow2_image" {
@@ -54,14 +70,6 @@ variable "f5xc_ce_gateway_type" {
   }
 }
 
-variable "f5xc_cluster_latitude" {
-  type = number
-}
-
-variable "f5xc_cluster_longitude" {
-  type = number
-}
-
 variable "f5xc_ce_performance_enhancement_mode" {
   type = object({
     perf_mode_l7_enhanced = bool
@@ -79,16 +87,16 @@ variable "f5xc_enable_offline_survivability_mode" {
   default = false
 }
 
+variable "qemu_uri" {
+  type = string
+}
+
 variable "f5xc_kvm_site_nodes" {
   type = map(map(string))
   validation {
     condition     = length(var.f5xc_kvm_site_nodes) == 1 || length(var.f5xc_kvm_site_nodes) == 3 || length(var.f5xc_kvm_site_nodes) == 0
     error_message = "f5xc_kvm_site_nodes must be 1 or 3"
   }
-}
-
-variable "kvm_host" {
-  type = string
 }
 
 variable "kvm_storage_pool" {

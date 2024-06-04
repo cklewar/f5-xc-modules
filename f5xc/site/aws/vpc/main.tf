@@ -1,17 +1,17 @@
 resource "volterra_aws_vpc_site" "site" {
+  tags                    = var.custom_tags
   name                    = var.f5xc_aws_vpc_site_name
+  labels                  = var.f5xc_labels
   namespace               = var.f5xc_namespace
   aws_region              = var.f5xc_aws_region
-  tags                    = var.custom_tags
-  labels                  = var.f5xc_labels
-  direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
   enable_internet_vip     = var.f5xc_aws_vpc_enable_internet_vip
   disable_internet_vip    = var.f5xc_aws_vpc_enable_internet_vip ? false : true
+  direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
 
   aws_cred {
     name      = var.f5xc_aws_cred
-    namespace = var.f5xc_namespace
     tenant    = var.f5xc_tenant
+    namespace = var.f5xc_namespace
   }
 
   dynamic "direct_connect_enabled" {
@@ -21,16 +21,15 @@ resource "volterra_aws_vpc_site" "site" {
       #dc_connect_aggregated_prefix = var.f5xc_aws_vpc_dc_connect_aggregated_prefix
       manual_gw     = var.f5xc_aws_vpc_direct_connect_manual_gw == true && var.f5xc_aws_vpc_direct_connect_hosted_vifs == false && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? true : null
       standard_vifs = var.f5xc_aws_vpc_direct_connect_standard_vifs
+
       dynamic "hosted_vifs" {
-        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [
-          1
-        ] : []
+        for_each = var.f5xc_aws_vpc_direct_connect_manual_gw == false && var.f5xc_aws_vpc_direct_connect_hosted_vifs != "" && var.f5xc_aws_vpc_direct_connect_standard_vifs == false ? [1] : []
         content {
           vifs = var.f5xc_aws_vpc_direct_connect_hosted_vifs
         }
       }
-      custom_asn = var.f5xc_aws_vpc_direct_connect_custom_asn
       auto_asn   = var.f5xc_aws_vpc_direct_connect_custom_asn == 0 ? true : null
+      custom_asn = var.f5xc_aws_vpc_direct_connect_custom_asn
     }
   }
 
@@ -77,8 +76,8 @@ resource "volterra_aws_vpc_site" "site" {
       dynamic "az_nodes" {
         for_each = var.f5xc_aws_vpc_az_nodes
         content {
-          aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
+          aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
 
           dynamic "local_subnet" {
             for_each = var.f5xc_aws_vpc_primary_ipv4 != "" ? [1] : []
@@ -88,6 +87,7 @@ resource "volterra_aws_vpc_site" "site" {
               }
             }
           }
+
           dynamic "local_subnet" {
             for_each = var.f5xc_aws_vpc_primary_ipv4 == "" ? [1] : []
             content {
@@ -145,17 +145,15 @@ resource "volterra_aws_vpc_site" "site" {
       dynamic az_nodes {
         for_each = var.f5xc_aws_vpc_primary_ipv4 == "" && var.f5xc_aws_vpc_existing_id != "" ? var.f5xc_aws_vpc_az_nodes : {}
         content {
-          aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
           disk_size   = var.f5xc_aws_vpc_ce_instance_disk_size
+          aws_az_name = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_az_name"]
 
           workload_subnet {
             existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_workload_existing_subnet_id"]
           }
 
           dynamic "inside_subnet" {
-            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [
-              1
-            ] : []
+            for_each = contains(keys(var.f5xc_aws_vpc_az_nodes[az_nodes.key]), "f5xc_aws_vpc_inside_existing_subnet_id") ? [1] : []
             content {
               existing_subnet_id = var.f5xc_aws_vpc_az_nodes[az_nodes.key]["f5xc_aws_vpc_inside_existing_subnet_id"]
             }
@@ -204,8 +202,8 @@ resource "volterra_aws_vpc_site" "site" {
           }
         }
       }
-      no_network_policy = length(var.f5xc_active_network_policies) > 0 ? false : true
       no_forward_proxy  = length(var.f5xc_active_forward_proxy_policies) > 0 ? false : true
+      no_network_policy = length(var.f5xc_active_network_policies) > 0 ? false : true
 
       dynamic "active_forward_proxy_policies" {
         for_each = var.f5xc_active_forward_proxy_policies
@@ -231,10 +229,11 @@ resource "volterra_aws_vpc_site" "site" {
     }
   }
 
-  no_worker_nodes = var.f5xc_aws_vpc_no_worker_nodes
-  nodes_per_az    = var.f5xc_aws_vpc_worker_nodes_per_az > 0 ? var.f5xc_aws_vpc_worker_nodes_per_az : null
-  total_nodes     = var.f5xc_aws_vpc_total_worker_nodes > 0 ? var.f5xc_aws_vpc_total_worker_nodes : null
   ssh_key         = var.ssh_public_key
+  total_nodes     = var.f5xc_aws_vpc_total_worker_nodes > 0 ? var.f5xc_aws_vpc_total_worker_nodes : null
+  nodes_per_az    = var.f5xc_aws_vpc_worker_nodes_per_az > 0 ? var.f5xc_aws_vpc_worker_nodes_per_az : null
+  no_worker_nodes = var.f5xc_aws_vpc_no_worker_nodes
+
   lifecycle {
     ignore_changes = [labels]
   }

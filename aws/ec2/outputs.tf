@@ -10,7 +10,7 @@ output "aws_ec2_instance" {
     script_source      = "${var.template_output_dir_path}/${var.aws_ec2_instance_script_file}"
     script_content     = local.script_content
     cloud_init_cfg     = data.cloudinit_config.config.rendered
-    cloud_init_file    = format("%s/%s", var.template_input_dir_path, var.aws_ec2_instance_cloud_init_template)
+    cloud_init_dir    = format("%s/%s", var.template_input_dir_path, var.aws_ec2_instance_cloud_init_template)
     cloud_init_content = local.cloud_init_content
     custom_data_dirs   = var.aws_ec2_instance_custom_data_dirs
     script_destination = format("/tmp/%s", var.aws_ec2_instance_script_file)

@@ -19,13 +19,13 @@ variable "gcp_compute_instance_network_name" {
 
 variable "gcp_compute_instance_network_interfaces" {
   type = list(object({
-    network_name    = optional(string)
+    network_name = optional(string)
     subnetwork_name = optional(string)
-    network_ip      = optional(string)
-    access_config   = optional(object({
-      nat_ip                 = optional(string)
+    network_ip = optional(string)
+    access_config = optional(object({
+      nat_ip = optional(string)
+      network_tier = optional(string)
       public_ptr_domain_name = optional(string)
-      network_tier           = optional(string)
     }))
   }))
 }
@@ -55,7 +55,7 @@ variable "gcp_compute_instance_metadata_startup_script" {
 }
 
 variable "gcp_compute_instance_target_tags" {
-  type    = list(string)
+  type = list(string)
   default = []
 }
 
@@ -65,4 +65,18 @@ variable "gcp_compute_instance_labels" {
 
 variable "ssh_public_key" {
   type = string
+}
+
+variable "template_input_dir_path" {
+  type = string
+}
+
+variable "gcp_compute_instance_cloud_init_template_data" {
+  type = map(string)
+  default = {}
+}
+
+variable "gcp_compute_instance_cloud_init_template" {
+  type    = string
+  default = ""
 }

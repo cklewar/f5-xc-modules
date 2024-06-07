@@ -34,7 +34,8 @@ variable "aws_ec2_instance_cloud_init_template" {
 }
 
 variable "template_output_dir_path" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "template_input_dir_path" {
@@ -64,7 +65,7 @@ variable "aws_ec2_instance_custom_data_dirs" {
 }
 
 variable "amis" {
-  type        = map(string)
+  type = map(string)
   description = "The instance will use amis for ubuntu 22.04 LTS"
   default = {
     "us-east-1"    = "ami-012485deee5681dc0"
@@ -89,11 +90,11 @@ variable "aws_ec2_network_interfaces_ref" {
 
 variable "aws_ec2_network_interfaces" {
   type = list(object({
-    create_eip      = bool
-    private_ips     = optional(list(string), [])
+    create_eip = bool
+    private_ips = optional(list(string), [])
     security_groups = list(string)
-    subnet_id       = string
-    custom_tags     = optional(map(string))
+    subnet_id  = string
+    custom_tags = optional(map(string))
   }))
   default = []
 }
@@ -109,7 +110,7 @@ variable "owner" {
 
 variable "custom_tags" {
   description = "Custom tags to set on resources"
-  type        = map(string)
+  type = map(string)
   default = {}
 }
 

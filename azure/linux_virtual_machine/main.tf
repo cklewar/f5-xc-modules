@@ -17,10 +17,9 @@ resource "azurerm_network_interface" "network_interface" {
   resource_group_name = var.azure_resource_group_name
 
   ip_configuration {
-    name = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
-    subnet_id = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
-    # private_ip_address            = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation == "Static" ? var.azure_network_interfaces[count.index].ip_configuration.private_ip_address : null
-    private_ip_address            = "192.168.168.7"
+    name                          = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
+    subnet_id                     = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
+    private_ip_address            = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation == "Static" ? var.azure_network_interfaces[count.index].ip_configuration.private_ip_address : null
     public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azure_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azure_network_interfaces[count.index].name].id : null
     private_ip_address_allocation = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation
   }

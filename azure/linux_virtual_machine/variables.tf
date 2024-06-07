@@ -99,6 +99,7 @@ variable "azure_network_interfaces" {
     name = string
     ip_configuration = object({
       subnet_id                     = string
+      private_ip_address            = optional(string)
       create_public_ip_address      = bool
       private_ip_address_allocation = string
     })

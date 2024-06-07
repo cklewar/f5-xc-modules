@@ -84,9 +84,19 @@ variable "azure_linux_virtual_machine_custom_data" {
   default = ""
 }
 
+variable "azure_virtual_machine_cloud_init_template" {
+  type    = string
+  default = ""
+}
+
+variable "azure_virtual_machine_cloud_init_template_data" {
+  type = map(string)
+  default = {}
+}
+
 variable "azure_network_interfaces" {
   type = list(object({
-    name             = string
+    name = string
     ip_configuration = object({
       subnet_id                     = string
       create_public_ip_address      = bool
@@ -107,6 +117,11 @@ variable "create_public_ip" {
 
 variable "custom_tags" {
   description = "Custom tags to set on resources"
-  type        = map(string)
+  type = map(string)
   default = {}
+}
+
+variable "template_input_dir_path" {
+  type    = string
+  default = ""
 }

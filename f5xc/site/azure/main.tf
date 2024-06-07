@@ -144,10 +144,12 @@ resource "volterra_azure_vnet_site" "site" {
                   weight = connections.value.weight
                 }
               }
+
               sku_standard  = var.f5xc_azure_express_route_sku_standard
               sku_high_perf = var.f5xc_azure_express_route_sku_high_perf
               sku_ergw1az   = var.f5xc_azure_express_route_sku_ergw1az
               sku_ergw2az   = var.f5xc_azure_express_route_sku_ergw2az
+
               gateway_subnet {
                 dynamic "subnet_param" {
                   for_each = length(var.f5xc_azure_express_gateway_subnet) > 0 ? [1] : []
@@ -177,11 +179,11 @@ resource "volterra_azure_vnet_site" "site" {
       azure_certified_hw       = var.f5xc_azure_ce_certified_hw[var.f5xc_azure_ce_gw_type]
       sm_connection_pvt_ip     = var.f5xc_sm_connection_pvt_ip
       sm_connection_public_ip  = var.f5xc_sm_connection_public_ip
+      no_forward_proxy         = var.f5xc_azure_no_forward_proxy
+      no_network_policy        = var.f5xc_azure_no_network_policy
       no_global_network        = var.f5xc_azure_no_global_network
       no_inside_static_routes  = var.f5xc_azure_no_inside_static_routes
       no_outside_static_routes = var.f5xc_azure_no_outside_static_routes
-      no_forward_proxy         = var.f5xc_azure_no_forward_proxy
-      no_network_policy        = var.f5xc_azure_no_network_policy
     }
   }
 
@@ -189,16 +191,16 @@ resource "volterra_azure_vnet_site" "site" {
     dynamic "new_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 != "" && var.f5xc_azure_existing_vnet_name == "" && var.f5xc_azure_existing_vnet_resource_group == "" ? [1] : []
       content {
-        autogenerate = var.f5xc_azure_new_vnet_name == "" ? true : false
         name         = var.f5xc_azure_new_vnet_name != "" ? var.f5xc_azure_new_vnet_name : null
+        autogenerate = var.f5xc_azure_new_vnet_name == "" ? true : false
         primary_ipv4 = var.f5xc_azure_vnet_primary_ipv4
       }
     }
     dynamic "existing_vnet" {
       for_each = var.f5xc_azure_vnet_primary_ipv4 == "" && var.f5xc_azure_existing_vnet_name != "" && var.f5xc_azure_existing_vnet_resource_group != "" ? [1] : []
       content {
-        resource_group = var.f5xc_azure_existing_vnet_resource_group
         vnet_name      = var.f5xc_azure_existing_vnet_name
+        resource_group = var.f5xc_azure_existing_vnet_resource_group
       }
     }
   }

@@ -2,26 +2,26 @@ resource "azurerm_public_ip" "ip" {
   for_each            = {for interface in var.azure_network_interfaces : interface.name => interface if interface.ip_configuration.create_public_ip_address}
   sku                 = var.azure_virtual_machine_sku
   tags                = var.custom_tags
-  name                = format("%s-public-ip", each.value.name)
-  zones               = [var.azure_zone]
+  name = format("%s-public-ip", each.value.name)
+  zones = [var.azure_zone]
   location            = var.azure_region
   allocation_method   = var.azure_virtual_machine_allocation_method
   resource_group_name = var.azure_resource_group_name
 }
 
 resource "azurerm_network_interface" "network_interface" {
-  count               = length(var.azure_network_interfaces)
+  count = length(var.azure_network_interfaces)
   tags                = var.azure_network_interfaces[count.index].tags
   name                = var.azure_network_interfaces[count.index].name
   location            = var.azure_region
   resource_group_name = var.azure_resource_group_name
 
   ip_configuration {
-    name                          = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
+    name = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
     subnet_id                     = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
+    # private_ip_address            = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation == "Static" ? var.azure_network_interfaces[count.index].ip_configuration.private_ip_address : null
     public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azure_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azure_network_interfaces[count.index].name].id : null
     private_ip_address_allocation = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation
-    private_ip_address = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation == "Static" ? var.azure_network_interfaces[count.index].ip_configuration.private_ip_address : null
   }
 }
 

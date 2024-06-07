@@ -7,10 +7,6 @@ variable "azure_virtual_machine_size" {
   default = "Standard_DS1_v2"
 }
 
-variable "azure_zones" {
-  type = list(number)
-}
-
 variable "azure_zone" {
   type = number
 }

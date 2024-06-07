@@ -3,7 +3,7 @@ resource "azurerm_public_ip" "ip" {
   sku                 = var.azure_virtual_machine_sku
   tags                = var.custom_tags
   name                = format("%s-public-ip", each.value.name)
-  zones               = var.azure_zones
+  zones               = [var.azure_zone]
   location            = var.azure_region
   allocation_method   = var.azure_virtual_machine_allocation_method
   resource_group_name = var.azure_resource_group_name

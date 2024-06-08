@@ -74,7 +74,7 @@ data "azurerm_virtual_network" "service" {
 data "azurerm_subnet" "master-0-slo-subnet-existing" {
   depends_on           = [module.site_wait_for_online]
   count                = var.f5xc_azure_existing_vnet_name != "" ? 1 : 0
-  name                 = format("subnet-%s", replace(replace(var.f5xc_azure_az_nodes["node0"]["f5xc_azure_local_subnet_name"], ".", "-"), "/", "-"))
+  name                 = replace(replace(var.f5xc_azure_az_nodes["node0"]["f5xc_azure_local_subnet_name"], ".", "-"), "/", "-")
   virtual_network_name = var.f5xc_azure_existing_vnet_name
   resource_group_name  = var.f5xc_azure_existing_vnet_resource_group
 }

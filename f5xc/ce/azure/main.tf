@@ -46,6 +46,7 @@ module "network_node" {
   is_multi_nic                      = local.is_multi_nic
   has_public_ip                     = var.has_public_ip
   f5xc_node_name                    = format("%s-%s", var.f5xc_cluster_name, each.key)
+  f5xc_ce_slo_secondary_ips         = var.f5xc_ce_slo_secondary_ips
   azurerm_zone                      = var.azurerm_availability_set_id == "" ? each.value["az"] : ""
   azurerm_region                    = var.azurerm_region
   azurerm_vnet_name                 = module.network_common.common["vnet"]["name"]

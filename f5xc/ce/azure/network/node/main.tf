@@ -52,7 +52,7 @@ resource "azurerm_network_interface" "slo" {
   dynamic "ip_configuration" {
     for_each = var.f5xc_ce_slo_secondary_ips
     content {
-      name                          = format("lb-%s", ip_configuration.value.name)
+      name                          = ip_configuration.value.name
       subnet_id                     = var.azurerm_existing_subnet_name_slo == null ? azurerm_subnet.slo.0.id : data.azurerm_subnet.slo.0.id
       private_ip_address_allocation = "Static"
       private_ip_address            = ip_configuration.value.ip

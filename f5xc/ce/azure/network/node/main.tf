@@ -49,15 +49,14 @@ resource "azurerm_network_interface" "slo" {
   }
 
   dynamic "ip_configuration" {
-    for_each = var.f5xc_lb_ips
+    for_each = var.f5xc_ce_slo_secondary_ips
     content {
-      name                          = format("lb-%s", ip_configuration)
+      name                          = format("lb-%s", ip_configuration.value.name)
       subnet_id                     = var.azurerm_existing_subnet_name_slo == null ? azurerm_subnet.slo.0.id : data.azurerm_subnet.slo.0.id
-      public_ip_address_id          = var.has_public_ip ? azurerm_public_ip.ip.0.id : null
-      private_ip_address_allocation = var.azurerm_private_ip_address_allocation_method
+      private_ip_address_allocation = "Static"
+      private_ip_address            = ip_configuration.value.ip
     }
   }
-
 }
 
 resource "azurerm_network_interface" "sli" {

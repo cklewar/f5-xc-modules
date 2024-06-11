@@ -43,6 +43,7 @@ resource "azurerm_network_interface" "slo" {
 
   ip_configuration {
     name                          = "slo"
+    primary                       = true
     subnet_id                     = var.azurerm_existing_subnet_name_slo == null ? azurerm_subnet.slo.0.id : data.azurerm_subnet.slo.0.id
     public_ip_address_id          = var.has_public_ip ? azurerm_public_ip.ip.0.id : null
     private_ip_address_allocation = var.azurerm_private_ip_address_allocation_method

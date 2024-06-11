@@ -257,6 +257,15 @@ variable "f5xc_cluster_nodes" {
   }
 }
 
+variable "f5xc_ce_slo_secondary_ips" {
+  description = "Used to initialise secondary IPs on SLO interface"
+  type = list(object({
+    ip   = string
+    name = string
+  }))
+  default = []
+}
+
 variable "f5xc_cluster_labels" {
   type = map(string)
 }

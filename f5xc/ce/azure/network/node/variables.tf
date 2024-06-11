@@ -10,6 +10,13 @@ variable "f5xc_node_name" {
   type = string
 }
 
+variable "f5xc_ce_slo_secondary_ips" {
+  type = list(object({
+    ip = string
+    name = string
+  }))
+}
+
 variable "azurerm_region" {
   type = string
 }

@@ -18,7 +18,7 @@ variable "status_check_type" {
   type    = string
   default = "token"
   validation {
-    condition     = contains(["token", "cert"], var.status_check_type)
+    condition = contains(["token", "cert"], var.status_check_type)
     error_message = format("Valid values for status_check_type: token or cert")
   }
 }
@@ -29,7 +29,7 @@ variable "azurerm_availability_set_id" {
 }
 
 variable "azurerm_vnet_address_space" {
-  type    = list(string)
+  type = list(string)
   default = []
 }
 
@@ -80,32 +80,32 @@ variable "azurerm_marketplace_version" {
 
 variable "azure_security_group_rules_slo" {
   type = list(object({
-    name                         = string
-    priority                     = number
-    direction                    = string
-    access                       = string
-    protocol                     = string
-    source_port_range            = string
-    destination_port_range       = string
-    source_address_prefix        = optional(string)
-    source_address_prefixes      = optional(list(string))
-    destination_address_prefix   = optional(string)
+    name                   = string
+    priority               = number
+    direction              = string
+    access                 = string
+    protocol               = string
+    source_port_range      = string
+    destination_port_range = string
+    source_address_prefix = optional(string)
+    source_address_prefixes = optional(list(string))
+    destination_address_prefix = optional(string)
     destination_address_prefixes = optional(list(string))
   }))
 }
 
 variable "azure_security_group_rules_sli" {
   type = list(object({
-    name                         = string
-    priority                     = number
-    direction                    = string
-    access                       = string
-    protocol                     = string
-    source_port_range            = string
-    destination_port_range       = string
-    source_address_prefix        = optional(string)
-    source_address_prefixes      = optional(list(string))
-    destination_address_prefix   = optional(string)
+    name                   = string
+    priority               = number
+    direction              = string
+    access                 = string
+    protocol               = string
+    source_port_range      = string
+    destination_port_range = string
+    source_address_prefix = optional(string)
+    source_address_prefixes = optional(list(string))
+    destination_address_prefix = optional(string)
     destination_address_prefixes = optional(list(string))
   }))
   default = []
@@ -323,7 +323,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack_gateway"], var.f5xc_ce_gateway_type)
+    condition = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack_gateway"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway, voltstack_gateway")
   }
 }
@@ -332,7 +332,7 @@ variable "f5xc_ce_to_re_tunnel_type" {
   description = "CE to RE tunnel type"
   type        = string
   validation {
-    condition     = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
+    condition = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
     error_message = format("Valid values for tunnel_type: ssl, ipsec")
   }
   default = "ipsec"
@@ -356,6 +356,10 @@ variable "azurerm_region" {
   type = string
 }
 
+variable "f5xc_cluster_default_blocked_services" {
+  type = bool
+}
+
 variable "f5xc_api_p12_cert_password" {
   description = "XC API cert file password used later in status module to retrieve site status"
   type        = string
@@ -363,42 +367,42 @@ variable "f5xc_api_p12_cert_password" {
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",
     "23.158.32.0/25",
   ]
 }
 variable "f5xc_ip_ranges_Americas_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25",
     "84.54.61.0/25",
   ]
 }
 variable "f5xc_ip_ranges_Europe_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25",
     "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",
   ]
 }
 variable "f5xc_ip_ranges_Europe_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25",
     "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",
   ]
 }
 variable "f5xc_ip_ranges_Asia_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24",
     "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",
   ]
 }
 variable "f5xc_ip_ranges_Asia_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24",
     "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",
@@ -406,9 +410,9 @@ variable "f5xc_ip_ranges_Asia_UDP" {
 }
 
 variable "f5xc_ce_egress_ip_ranges" {
-  type        = list(string)
+  type = list(string)
   description = "Egress IP ranges for F5 XC CE"
-  default     = [
+  default = [
     "20.33.0.0/16",
     "74.125.0.0/16",
     "18.64.0.0/10",

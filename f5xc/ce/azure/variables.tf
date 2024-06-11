@@ -357,7 +357,8 @@ variable "azurerm_region" {
 }
 
 variable "f5xc_cluster_default_blocked_services" {
-  type = bool
+  type    = bool
+  default = false
 }
 
 variable "f5xc_api_p12_cert_password" {

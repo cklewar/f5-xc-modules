@@ -105,7 +105,6 @@ variable "f5xc_cluster_no_bond_devices" {
 
 variable "f5xc_cluster_default_blocked_services" {
   type    = bool
-  default = true
 }
 
 variable "f5xc_cluster_logs_streaming_disabled" {

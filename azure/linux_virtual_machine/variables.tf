@@ -51,7 +51,7 @@ variable "azure_linux_virtual_machine_source_image_reference_offer" {
 
 variable "azure_linux_virtual_machine_source_image_reference_sku" {
   type    = string
-  default = "22_04-lts-gen2"
+  default = "22_04-lts-gen1"
 }
 
 variable "azure_linux_virtual_machine_source_image_reference_version" {

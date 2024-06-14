@@ -76,7 +76,7 @@ variable "azure_linux_virtual_machine_os_disk_caching" {
 
 variable "azure_linux_virtual_machine_os_disk_storage_account_type" {
   type    = string
-  default = "Premium_LRS"
+  default = "Standard_LRS"
 }
 
 variable "azure_linux_virtual_machine_custom_data" {

@@ -7,7 +7,7 @@ variable "status_check_type" {
   type    = string
   default = "token"
   validation {
-    condition     = contains(["token", "cert"], var.status_check_type)
+    condition = contains(["token", "cert"], var.status_check_type)
     error_message = format("Valid values for status_check_type: token or cert")
   }
 }
@@ -108,9 +108,9 @@ variable "aws_existing_key_pair_id" {
 
 variable "aws_slo_rt_custom_ipv4_routes" {
   description = "Add custom ipv4 routes to aws slo rt table"
-  type        = list(object({
-    cidr_block           = string
-    gateway_id           = optional(string)
+  type = list(object({
+    cidr_block = string
+    gateway_id = optional(string)
     network_interface_id = optional(string)
   }))
   default = []
@@ -118,9 +118,9 @@ variable "aws_slo_rt_custom_ipv4_routes" {
 
 variable "aws_slo_rt_custom_ipv6_routes" {
   description = "Add custom ipv6 routes to aws slo rt table"
-  type        = list(object({
-    cidr_block           = string
-    gateway_id           = optional(string)
+  type = list(object({
+    cidr_block = string
+    gateway_id = optional(string)
     network_interface_id = optional(string)
   }))
   default = []
@@ -135,14 +135,14 @@ variable "aws_existing_vpc_id" {
 
 variable "aws_existing_sg_slo_ids" {
   description = "inject list of existing security group ids for SLO"
-  type        = list(string)
-  default     = []
+  type = list(string)
+  default = []
 }
 
 variable "aws_existing_sg_sli_ids" {
   description = "inject list of existing security group ids for SLI"
-  type        = list(string)
-  default     = []
+  type = list(string)
+  default = []
 }
 
 variable "aws_existing_iam_profile_name" {
@@ -153,7 +153,7 @@ variable "aws_existing_iam_profile_name" {
 
 variable "aws_security_group_rules_slo_egress_default" {
   description = "default aws security groups assigned to slo egress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -171,7 +171,7 @@ variable "aws_security_group_rules_slo_egress_default" {
 
 variable "aws_security_group_rules_slo_ingress_default" {
   description = "default aws security groups assigned to slo ingress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -189,7 +189,7 @@ variable "aws_security_group_rules_slo_ingress_default" {
 
 variable "aws_security_group_rules_sli_egress_default" {
   description = "aws security groups assigned to sli egress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -207,7 +207,7 @@ variable "aws_security_group_rules_sli_egress_default" {
 
 variable "aws_security_group_rules_sli_ingress_default" {
   description = "aws security groups assigned to sli ingress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -225,7 +225,7 @@ variable "aws_security_group_rules_sli_ingress_default" {
 
 variable "aws_security_group_rules_slo_egress" {
   description = "provide custom aws security groups assigned to slo egress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -235,7 +235,7 @@ variable "aws_security_group_rules_slo_egress" {
 
 variable "aws_security_group_rules_slo_ingress" {
   description = "provide custom aws security groups assigned to slo ingress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -245,7 +245,7 @@ variable "aws_security_group_rules_slo_ingress" {
 
 variable "aws_security_group_rules_sli_egress" {
   description = "provide custom aws security groups assigned to sli egress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -256,7 +256,7 @@ variable "aws_security_group_rules_sli_egress" {
 
 variable "aws_security_group_rules_sli_ingress" {
   description = "provide custom aws security groups assigned to sli ingress"
-  type        = list(object({
+  type = list(object({
     from_port   = number
     to_port     = number
     ip_protocol = string
@@ -279,7 +279,7 @@ variable "aws_iam_policy_id" {
 
 variable "f5xc_cluster_labels" {
   description = "F5 XC CE Cluster labels"
-  type        = map(string)
+  type = map(string)
 }
 
 variable "f5xc_cluster_latitude" {
@@ -344,7 +344,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack"], var.f5xc_ce_gateway_type)
+    condition = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway, voltstack")
   }
 }
@@ -353,7 +353,7 @@ variable "f5xc_ce_to_re_tunnel_type" {
   description = "CE to RE tunnel type"
   type        = string
   validation {
-    condition     = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
+    condition = contains(["ssl", "ipsec"], var.f5xc_ce_to_re_tunnel_type)
     error_message = format("Valid values for tunnel_type: ssl, ipsec")
   }
   default = "ipsec"
@@ -375,6 +375,11 @@ variable "f5xc_aws_vpc_az_nodes" {
     condition     = length(var.f5xc_aws_vpc_az_nodes) == 1 || length(var.f5xc_aws_vpc_az_nodes) == 3 || length(var.f5xc_aws_vpc_az_nodes) == 0
     error_message = "f5xc_aws_vpc_az_nodes must be 0,1 or 3"
   }
+}
+
+variable "f5xc_cluster_default_blocked_services" {
+  type    = bool
+  default = false
 }
 
 variable "aws_region" {
@@ -584,42 +589,42 @@ variable "aws_vpc_cidr_block" {
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",
     "23.158.32.0/25",
   ]
 }
 variable "f5xc_ip_ranges_Americas_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25",
     "84.54.61.0/25",
   ]
 }
 variable "f5xc_ip_ranges_Europe_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25",
     "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",
   ]
 }
 variable "f5xc_ip_ranges_Europe_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25",
     "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",
   ]
 }
 variable "f5xc_ip_ranges_Asia_TCP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24",
     "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",
   ]
 }
 variable "f5xc_ip_ranges_Asia_UDP" {
-  type    = list(string)
+  type = list(string)
   default = [
     "103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24",
     "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",
@@ -627,9 +632,9 @@ variable "f5xc_ip_ranges_Asia_UDP" {
 }
 
 variable "f5xc_ce_egress_ip_ranges" {
-  type        = list(string)
+  type = list(string)
   description = "Egress IP ranges for F5 XC CE"
-  default     = [
+  default = [
     "20.33.0.0/16",
     "74.125.0.0/16",
     "18.64.0.0/10",

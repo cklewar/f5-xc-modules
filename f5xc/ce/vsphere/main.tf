@@ -8,11 +8,12 @@ module "secure_mesh_site" {
   f5xc_namespace                         = var.f5xc_namespace
   f5xc_api_token                         = var.f5xc_api_token
   f5xc_cluster_name                      = var.f5xc_cluster_name
-  f5xc_cluster_labels = {} # var.f5xc_cluster_labels
+  f5xc_cluster_labels                    = {} # var.f5xc_cluster_labels
   f5xc_ce_gateway_type                   = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude                  = var.f5xc_cluster_latitude
   f5xc_cluster_longitude                 = var.f5xc_cluster_longitude
   f5xc_ce_performance_enhancement_mode   = var.f5xc_ce_performance_enhancement_mode
+  f5xc_cluster_default_blocked_services  = var.f5xc_cluster_default_blocked_services
   f5xc_enable_offline_survivability_mode = var.f5xc_enable_offline_survivability_mode
 }
 

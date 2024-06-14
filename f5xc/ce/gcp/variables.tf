@@ -6,7 +6,7 @@ variable "status_check_type" {
   type    = string
   default = "token"
   validation {
-    condition     = contains(["token", "cert"], var.status_check_type)
+    condition = contains(["token", "cert"], var.status_check_type)
     error_message = format("Valid values for status_check_type: token or cert")
   }
 }
@@ -120,7 +120,7 @@ variable "gcp_allow_stopping_for_update" {
 }
 
 variable "gcp_instance_tags" {
-  type    = list(string)
+  type = list(string)
   default = []
 }
 
@@ -140,7 +140,7 @@ variable "gcp_service_account_email" {
 }
 
 variable "gcp_service_account_scopes" {
-  type    = list(string)
+  type = list(string)
   default = ["cloud-platform"]
 }
 
@@ -179,14 +179,14 @@ variable "f5xc_ce_slo_firewall" {
       description = string
       direction   = string
       target_tags = optional(list(string))
-      ranges      = optional(list(string))
-      allow       = list(object({
+      ranges = optional(list(string))
+      allow = list(object({
         protocol = string
-        ports    = optional(list(string))
+        ports = optional(list(string))
       }))
       deny = list(object({
         protocol = string
-        ports    = optional(list(string))
+        ports = optional(list(string))
       }))
       log_config = optional(object({
         metadata = string
@@ -194,7 +194,7 @@ variable "f5xc_ce_slo_firewall" {
     }))
   })
   validation {
-    condition     = alltrue([for elem in var.f5xc_ce_slo_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
+    condition = alltrue([for elem in var.f5xc_ce_slo_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
     error_message = "Invalid firewall rule direction"
   }
   default = {
@@ -210,14 +210,14 @@ variable "f5xc_ce_sli_firewall" {
       description = string
       direction   = string
       target_tags = optional(list(string))
-      ranges      = optional(list(string))
-      allow       = list(object({
+      ranges = optional(list(string))
+      allow = list(object({
         protocol = string
-        ports    = optional(list(string))
+        ports = optional(list(string))
       }))
       deny = list(object({
         protocol = string
-        ports    = optional(list(string))
+        ports = optional(list(string))
       }))
       log_config = optional(object({
         metadata = string
@@ -225,7 +225,7 @@ variable "f5xc_ce_sli_firewall" {
     }))
   })
   validation {
-    condition     = alltrue([for elem in var.f5xc_ce_sli_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
+    condition = alltrue([for elem in var.f5xc_ce_sli_firewall.rules : contains(["INGRESS", "EGRESS"], lookup(elem, "direction", null))])
     error_message = "Invalid firewall rule direction"
   }
   default = {
@@ -256,7 +256,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
+    condition = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
   }
 }
@@ -370,35 +370,40 @@ variable "f5xc_ce_performance_enhancement_mode" {
   }
 }
 
+variable "f5xc_cluster_default_blocked_services" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_ip_ranges_Americas_TCP" {
-  type    = list(string)
+  type = list(string)
   default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]
 }
 variable "f5xc_ip_ranges_Americas_UDP" {
-  type    = list(string)
+  type = list(string)
   default = ["23.158.32.0/25", "84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25",]
 }
 variable "f5xc_ip_ranges_Europe_TCP" {
-  type    = list(string)
+  type = list(string)
   default = ["84.54.60.0/25", "185.56.154.0/25", "159.60.162.0/24", "159.60.188.0/24", "5.182.212.0/25", "5.182.214.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25",]
 }
 variable "f5xc_ip_ranges_Europe_UDP" {
-  type    = list(string)
+  type = list(string)
   default = ["5.182.212.0/25", "185.56.154.0/25", "159.60.160.0/24", "5.182.213.0/25", "5.182.213.128/25", "5.182.214.0/25", "84.54.60.0/25", "159.60.162.0/24", "159.60.188.0/24",]
 }
 variable "f5xc_ip_ranges_Asia_TCP" {
-  type    = list(string)
+  type = list(string)
   default = ["103.135.56.0/25", "103.135.56.128/25", "103.135.58.128/25", "159.60.189.0/24", "159.60.166.0/24", "103.135.57.0/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.164.0/24",]
 }
 variable "f5xc_ip_ranges_Asia_UDP" {
-  type    = list(string)
+  type = list(string)
   default = ["103.135.57.0/25", "103.135.56.128/25", "103.135.59.0/25", "103.135.58.0/25", "159.60.166.0/24", "159.60.164.0/24", "103.135.56.0/25", "103.135.58.128/25", "159.60.189.0/24",]
 }
 
 variable "f5xc_ce_egress_ip_ranges" {
-  type        = list(string)
+  type = list(string)
   description = "Egress IP ranges for F5 XC CE"
-  default     = [
+  default = [
     "20.33.0.0/16",
     "74.125.0.0/16",
     "18.64.0.0/10",

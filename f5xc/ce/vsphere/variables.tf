@@ -44,6 +44,11 @@ variable "f5xc_vsphere_site_nodes" {
   }
 }
 
+variable "f5xc_cluster_default_blocked_services" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_cluster_name" {
   type = string
 }

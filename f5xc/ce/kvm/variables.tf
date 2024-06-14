@@ -65,7 +65,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
+    condition = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
   }
 }
@@ -99,6 +99,11 @@ variable "f5xc_kvm_site_nodes" {
   }
 }
 
+variable "f5xc_cluster_default_blocked_services" {
+  type    = bool
+  default = false
+}
+
 variable "kvm_storage_pool" {
   type = string
 }
@@ -122,7 +127,7 @@ variable "kvm_instance_outside_network_name" {
 }
 
 variable "status_check_type" {
-  type = string
+  type    = string
   default = "token"
 }
 

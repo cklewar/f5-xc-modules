@@ -76,8 +76,8 @@ output "f5xc_aws_vpc" {
       } : null
     }
     instance_type       = volterra_aws_vpc_site.site.instance_type
-    workload_subnet_ids = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic && length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload[0].ids : null
     security_group_ids  = data.aws_security_groups.sg.ids
+    workload_subnet_ids = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic && length(data.aws_subnets.workload) > 0 ? data.aws_subnets.workload[0].ids : null
     main_route_table_id = data.aws_vpc.vpc.main_route_table_id
   }
 }

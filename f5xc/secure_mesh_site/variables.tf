@@ -24,7 +24,7 @@ variable "f5xc_cluster_labels" {
 
 variable "f5xc_nodes" {
   type = list(object({
-    name      = string
+    name = string
     public_ip = optional(string)
   }))
 }
@@ -58,10 +58,10 @@ variable "f5xc_ce_performance_enhancement_mode" {
 
 variable "f5xc_site_type_certified_hw" {
   type = object({
-    aws    = map(string)
-    gcp    = map(string)
-    azure  = map(string)
-    kvm    = map(string)
+    aws = map(string)
+    gcp = map(string)
+    azure = map(string)
+    kvm = map(string)
     vmware = map(string)
   })
   default = {
@@ -104,7 +104,7 @@ variable "f5xc_cluster_no_bond_devices" {
 }
 
 variable "f5xc_cluster_default_blocked_services" {
-  type    = bool
+  type = bool
 }
 
 variable "f5xc_cluster_logs_streaming_disabled" {
@@ -118,14 +118,34 @@ variable "f5xc_cluster_default_network_config" {
 }
 
 variable "f5xc_cluster_worker_nodes" {
-  type    = list(string)
+  type = list(string)
   default = []
+}
+
+variable "f5xc_default_os_version" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_operating_system_version" {
+  type    = string
+  default = null
+}
+
+variable "f5xc_default_sw_version" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_volterra_software_version" {
+  type    = string
+  default = null
 }
 
 variable "csp_provider" {
   type = string
   validation {
-    condition     = contains(["aws", "gcp", "azure", "vmware", "kvm"], var.csp_provider)
+    condition = contains(["aws", "gcp", "azure", "vmware", "kvm"], var.csp_provider)
     error_message = format("Valid values for csp_provider: aws, gcp, azure, vmware, kvm")
   }
 }

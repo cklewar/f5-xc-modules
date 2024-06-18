@@ -9,6 +9,16 @@ resource "volterra_securemesh_site" "secure_mesh_site" {
   logs_streaming_disabled  = var.f5xc_cluster_logs_streaming_disabled
   default_blocked_services = var.f5xc_cluster_default_blocked_services
 
+  os {
+    default_os_version       = var.f5xc_default_os_version
+    operating_system_version = !var.f5xc_default_os_version ? var.f5xc_operating_system_version : null
+  }
+
+  sw {
+    default_sw_version        = var.f5xc_default_sw_version
+    volterra_software_version = !var.f5xc_default_sw_version ? var.f5xc_volterra_software_version : null
+  }
+
   /*dynamic "bond_device_list" {
   }*/
 

@@ -94,12 +94,17 @@ variable "azure_virtual_machine_cloud_init_template_data" {
   default = {}
 }
 
+variable "azure_enable_accelerated_networking" {
+  type    = bool
+  default = false
+}
+
 variable "azure_network_interfaces" {
   type = list(object({
     name = string
     ip_configuration = object({
       subnet_id                     = string
-      private_ip_address            = optional(string)
+      private_ip_address = optional(string)
       create_public_ip_address      = bool
       private_ip_address_allocation = string
     })

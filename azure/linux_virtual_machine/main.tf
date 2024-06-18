@@ -11,13 +11,14 @@ resource "azurerm_public_ip" "ip" {
 
 resource "azurerm_network_interface" "network_interface" {
   count = length(var.azure_network_interfaces)
-  tags                = var.azure_network_interfaces[count.index].tags
-  name                = var.azure_network_interfaces[count.index].name
-  location            = var.azure_region
-  resource_group_name = var.azure_resource_group_name
+  tags                          = var.azure_network_interfaces[count.index].tags
+  name                          = var.azure_network_interfaces[count.index].name
+  location                      = var.azure_region
+  resource_group_name           = var.azure_resource_group_name
+  enable_accelerated_networking = var.azure_enable_accelerated_networking
 
   ip_configuration {
-    name                          = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
+    name = format("%s-ip-cfg", var.azure_network_interfaces[count.index].name)
     subnet_id                     = var.azure_network_interfaces[count.index].ip_configuration.subnet_id
     private_ip_address            = var.azure_network_interfaces[count.index].ip_configuration.private_ip_address_allocation == "Static" ? var.azure_network_interfaces[count.index].ip_configuration.private_ip_address : null
     public_ip_address_id          = contains(keys(azurerm_public_ip.ip), var.azure_network_interfaces[count.index].name) ? azurerm_public_ip.ip[var.azure_network_interfaces[count.index].name].id : null

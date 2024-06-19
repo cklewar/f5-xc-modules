@@ -2,10 +2,13 @@ resource "volterra_aws_vpc_site" "site" {
   tags                    = var.custom_tags
   name                    = var.f5xc_aws_vpc_site_name
   labels                  = var.f5xc_labels
+  disk_size               = var.f5xc_aws_vpc_ce_instance_disk_size
   namespace               = var.f5xc_namespace
   aws_region              = var.f5xc_aws_region
+  instance_type           = var.f5xc_aws_vpc_ce_instance_type
   enable_internet_vip     = var.f5xc_aws_vpc_enable_internet_vip
   disable_internet_vip    = var.f5xc_aws_vpc_enable_internet_vip ? false : true
+  logs_streaming_disabled = var.f5xc_aws_vpc_logs_streaming_disabled
   direct_connect_disabled = var.f5xc_aws_vpc_direct_connect_disabled
 
   aws_cred {
@@ -49,10 +52,6 @@ resource "volterra_aws_vpc_site" "site" {
       vpc_id = var.f5xc_aws_vpc_existing_id
     }
   }
-
-  disk_size               = var.f5xc_aws_vpc_ce_instance_disk_size
-  instance_type           = var.f5xc_aws_vpc_ce_instance_type
-  logs_streaming_disabled = var.f5xc_aws_vpc_logs_streaming_disabled
 
   os {
     default_os_version       = var.f5xc_aws_default_ce_os_version

@@ -94,6 +94,10 @@ variable "f5xc_aws_ce_certified_hw" {
   }
 }
 
+variable "f5xc_aws_instance_type" {
+  type = string
+}
+
 variable "f5xc_aws_vpc_global_network_name" {
   type    = list(string)
   default = []

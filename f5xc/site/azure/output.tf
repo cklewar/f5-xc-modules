@@ -5,8 +5,8 @@ output "vnet" {
     region         = volterra_azure_vnet_site.site.azure_region
     params         = volterra_tf_params_action.azure_vnet_action
     machine_type   = volterra_azure_vnet_site.site.machine_type
-    resource_group = volterra_azure_vnet_site.site.resource_group
     service_vnet   = var.f5xc_azure_existing_vnet_name == "" ? data.azurerm_virtual_network.service[0] : null
+    resource_group = volterra_azure_vnet_site.site.resource_group
     nodes = {
       master-0 = {
         interfaces = {

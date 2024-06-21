@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "slo" {
   name                          = "${var.f5xc_node_name}-slo"
   location                      = var.azurerm_region
   resource_group_name           = var.azurerm_resource_group_name
-  enable_ip_forwarding          = var.enable_ip_forwarding
+  ip_forwarding_enabled         = var.enable_ip_forwarding
   enable_accelerated_networking = var.enable_accelerated_networking
 
   ip_configuration {

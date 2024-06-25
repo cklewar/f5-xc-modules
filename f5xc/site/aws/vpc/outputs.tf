@@ -44,6 +44,7 @@ output "f5xc_aws_vpc" {
             public_ip        = data.aws_network_interface.master-1-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-1-slo.*.association[0][0].public_dns_name
             subnet_id        = data.aws_network_interface.master-1-slo.*.subnet_id[0]
+            route_table_id   = data.aws_route_table.master-1-slo-rt.*.id[0]
           },
           sli = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? {
             id               = data.aws_network_interface.master-1-sli.*.id[0]
@@ -65,6 +66,7 @@ output "f5xc_aws_vpc" {
             public_ip        = data.aws_network_interface.master-2-slo.*.association[0][0].public_ip
             public_dns_name  = data.aws_network_interface.master-2-slo.*.association[0][0].public_dns_name
             subnet_id        = data.aws_network_interface.master-2-slo.*.subnet_id
+            route_table_id   = data.aws_route_table.master-2-slo-rt.*.id[0]
           },
           sli = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? {
             id               = data.aws_network_interface.master-2-sli.*.id[0]

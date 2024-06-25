@@ -199,6 +199,18 @@ data "aws_route_table" "master-0-slo-rt" {
   subnet_id  = data.aws_network_interface.master-0-slo[0].subnet_id
 }
 
+data "aws_route_table" "master-1-slo-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-1-slo[0].subnet_id
+}
+
+data "aws_route_table" "master-2-slo-rt" {
+  depends_on = [module.site_wait_for_online]
+  count      = length(var.f5xc_aws_vpc_az_nodes) >= 2 ? 1 : 0
+  subnet_id  = data.aws_network_interface.master-2-slo[0].subnet_id
+}
+
 data "aws_route_table" "master-0-sli-rt" {
   depends_on = [module.site_wait_for_online]
   count      = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0

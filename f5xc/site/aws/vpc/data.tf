@@ -194,6 +194,11 @@ data "aws_network_interface" "master-2-sli" {
   }
 }
 
+data "aws_route_table" "master-0-slo-rt" {
+  depends_on = [module.site_wait_for_online]
+  subnet_id  = data.aws_network_interface.master-0-slo[0].subnet_id
+}
+
 data "aws_route_table" "master-0-sli-rt" {
   depends_on = [module.site_wait_for_online]
   count      = var.f5xc_aws_ce_gw_type == var.f5xc_nic_type_multi_nic ? 1 : 0

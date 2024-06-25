@@ -46,6 +46,10 @@ variable "aws_sli_subnet_rt_id" {
   type = string
 }
 
+variable "aws_slo_static_ips" {
+  type = list(string)
+}
+
 variable "node_name" {
   type = string
 }

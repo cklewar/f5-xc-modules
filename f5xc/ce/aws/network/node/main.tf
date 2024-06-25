@@ -18,8 +18,9 @@ module "network_interface_slo" {
   source                          = "../../../../../aws/network_interface"
   aws_interface_subnet_id         = local.aws_subnet_slo_id
   aws_interface_create_eip        = var.f5xc_is_secure_or_private_cloud_ce ? false : var.has_public_ip
+  aws_interface_private_ips       = length(var.aws_slo_static_ips) > 0 ? var.aws_slo_static_ips : null
   aws_interface_security_groups   = var.aws_sg_slo_ids
-  aws_interface_source_dest_check = true
+  aws_interface_source_dest_check = false
   custom_tags                     = merge(var.common_tags, {
     "ves.io/interface-type" = "site-local-outside"
     "ves-io-eni-type"       = "outside-network"

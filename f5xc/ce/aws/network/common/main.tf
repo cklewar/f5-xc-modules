@@ -1,6 +1,6 @@
 resource "aws_vpc" "vpc" {
   count                = var.create_new_aws_vpc  ? 1 : 0
-  tags                 = var.common_tags
+  tags                 = merge({Name = var.f5xc_cluster_name}, var.common_tags)
   cidr_block           = var.aws_vpc_cidr_block
   enable_dns_support   = var.aws_vpc_enable_dns_support
   enable_dns_hostnames = var.aws_vp_enable_dns_hostnames

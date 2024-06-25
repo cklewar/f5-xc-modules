@@ -196,7 +196,7 @@ data "aws_network_interface" "master-2-sli" {
 
 data "aws_route_table" "master-0-slo-rt" {
   depends_on = [module.site_wait_for_online]
-  subnet_id  = data.aws_network_interface.master-0-slo[0].subnet_id
+  subnet_id  = data.aws_network_interface.master-0-slo.subnet_id
 }
 
 data "aws_route_table" "master-1-slo-rt" {

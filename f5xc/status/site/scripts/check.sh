@@ -5,7 +5,7 @@ set -e
 counter=0
 sleep_first_step=1
 sleep_second_step=30
-is_verbose=false
+is_verbose=true
 
 url=$1
 tenant=$3

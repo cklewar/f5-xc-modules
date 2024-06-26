@@ -18,12 +18,6 @@ variable "has_public_ip" {
   default     = true
 }
 
-variable "instance_type" {
-  description = "AWS EC2 instance flavour"
-  type        = string
-  default     = "t3.xlarge"
-}
-
 variable "owner_tag" {
   description = "set a tag called owner"
   type        = string
@@ -98,6 +92,11 @@ variable "ssh_public_key" {
   description = "New EC2 instance assigned public ssh key"
   type        = string
   default     = null
+}
+
+variable "aws_instance_type" {
+  description = "AWS EC2 instance flavour"
+  type        = string
 }
 
 variable "aws_existing_key_pair_id" {

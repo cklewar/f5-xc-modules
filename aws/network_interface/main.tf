@@ -1,6 +1,8 @@
 resource "aws_network_interface" "interface" {
   tags                    = var.custom_tags
   subnet_id               = var.aws_interface_subnet_id
+  private_ip              = null
+  private_ips_count       = null
   private_ip_list         = length(var.aws_interface_private_ips) > 0 ? var.aws_interface_private_ips : null
   security_groups         = var.aws_interface_security_groups
   source_dest_check       = var.aws_interface_source_dest_check

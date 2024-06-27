@@ -13,8 +13,8 @@ resource "libvirt_volume" "volume" {
 resource "libvirt_cloudinit_disk" "cloudinit" {
   name      = "${var.f5xc_node_name}-cloud-init.iso"
   pool      = var.kvm_storage_pool
-  user_data = data.template_file.user_data.rendered
-  meta_data = data.template_file.meta_data.rendered
+  user_data = local.user_data
+  meta_data = local.meta_data
 }
 
 resource "libvirt_domain" "vm" {
@@ -56,7 +56,6 @@ resource "volterra_registration_approval" "ce" {
   hostname     = var.f5xc_node_name
   cluster_name = var.f5xc_cluster_name
   cluster_size = length(var.f5xc_kvm_site_nodes)
-
   retry        = var.f5xc_registration_retry
   wait_time    = var.f5xc_registration_wait_time
 }
@@ -66,7 +65,6 @@ resource "volterra_site_state" "decommission_when_delete" {
   name       = var.f5xc_cluster_name
   when       = "delete"
   state      = "DECOMMISSIONING"
-
   retry      = var.f5xc_registration_retry
   wait_time  = var.f5xc_registration_wait_time
 }

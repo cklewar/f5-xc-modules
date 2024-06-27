@@ -22,11 +22,6 @@ variable "f5xc_node_name" {
   type = string
 }
 
-variable "f5xc_reg_url" {
-  type    = string
-  default = "ves.volterra.io"
-}
-
 variable "f5xc_namespace" {
   type = string
 }
@@ -108,5 +103,13 @@ variable "kvm_instance_outside_network_name" {
 }
 
 variable "kvm_instance_inside_network_name" {
+  type = string
+}
+
+variable "maurice_endpoint" {
+  type = string
+}
+
+variable "maurice_mtls_endpoint" {
   type = string
 }

@@ -6,10 +6,6 @@ variable "f5xc_api_url" {
   type = string
 }
 
-variable "f5xc_api_url" {
-  type = string
-}
-
 variable "f5xc_api_token" {
   type = string
 }
@@ -45,10 +41,6 @@ variable "f5xc_certified_hardware" {
 }
 
 variable "f5xc_qcow2_image" {
-  type = string
-}
-
-variable "f5xc_reg_url" {
   type = string
 }
 

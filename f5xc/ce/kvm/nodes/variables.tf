@@ -39,7 +39,7 @@ variable "f5xc_cluster_longitude" {
 }
 
 variable "f5xc_certified_hardware" {
-  type    = map(string)
+  type = map(string)
   default = {
     ingress_gateway        = "kvm-voltmesh"
     ingress_egress_gateway = "kvm-regular-nic-voltmesh"
@@ -59,7 +59,7 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
 variable "f5xc_ce_gateway_type" {
   type = string
   validation {
-    condition     = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
+    condition = contains(["ingress_egress_gateway", "ingress_gateway"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway")
   }
 }
@@ -83,22 +83,27 @@ variable "f5xc_registration_retry" {
 }
 
 variable "kvm_storage_pool" {
-  type = string
+  type    = string
   default = "default"
 }
 
 variable "kvm_instance_cpu_count" {
-  type = number
+  type    = number
   default = 4
 }
 
 variable "kvm_instance_memory_size" {
-  type = number
-  default = 16384  
+  type    = number
+  default = 16384
+}
+
+variable "libvirt_domain_cpu_mode" {
+  type    = string
+  default = "host-passthrough"
 }
 
 variable "kvm_instance_outside_network_name" {
-  type = string
+  type    = string
   default = "default"
 }
 

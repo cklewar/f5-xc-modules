@@ -1,5 +1,6 @@
 output "aws_ec2_instance" {
   value = {
+    cloud_init_content = local.cloud_init_content
     id                 = aws_instance.instance.id
     public_ip          = aws_instance.instance.public_ip
     subnet_id          = aws_instance.instance.subnet_id

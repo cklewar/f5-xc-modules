@@ -24,8 +24,8 @@ variable "aws_ec2_instance_script_template" {
 }
 
 variable "aws_ec2_instance_cloud_init_template_data" {
-  type = map(string)
-  default = {}
+  type = any
+  default = null
 }
 
 variable "aws_ec2_instance_cloud_init_template" {

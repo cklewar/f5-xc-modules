@@ -80,11 +80,11 @@ variable "f5xc_cluster_name" {
   type = string
 }
 
-variable "f5xc_site_latitude" {
+variable "f5xc_cluster_latitude" {
   type = number
 }
 
-variable "f5xc_site_longitude" {
+variable "f5xc_cluster_longitude" {
   type = number
 }
 
@@ -172,5 +172,5 @@ variable "vsphere_cluster" {
 
 variable "vsphere_virtual_machine_disk_size" {
   type    = number
-  default = 40
+  default = 80
 }

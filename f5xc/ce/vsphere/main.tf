@@ -2,7 +2,7 @@ module "secure_mesh_site" {
   count                                  = var.f5xc_site_type_is_secure_mesh_site ? 1 : 0
   source                                 = "../../secure_mesh_site"
   csp_provider                           = "vmware"
-  f5xc_nodes                             = [for k in keys(var.f5xc_vsphere_site_nodes) : { name = k }]
+  f5xc_nodes                             = [for k in keys(var.f5xc_vsphere_site_nodes) : { name = format("%s-%s", var.f5xc_cluster_name, k) }]
   f5xc_tenant                            = var.f5xc_tenant
   f5xc_api_url                           = var.f5xc_api_url
   f5xc_namespace                         = var.f5xc_namespace
@@ -20,7 +20,7 @@ module "secure_mesh_site" {
 module "node" {
   depends_on                                         = [module.secure_mesh_site]
   source                                             = "./nodes"
-  for_each                                           = {for k, v in var.f5xc_vsphere_site_nodes : k => v}
+  for_each                                           = { for k, v in var.f5xc_vsphere_site_nodes : k => v }
   is_multi_nic                                       = local.is_multi_nic
   is_multi_node                                      = local.is_multi_node
   f5xc_tenant                                        = var.f5xc_tenant
@@ -29,12 +29,13 @@ module "node" {
   f5xc_namespace                                     = var.f5xc_namespace
   f5xc_node_name                                     = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_cluster_name                                  = var.f5xc_cluster_name
-  f5xc_site_latitude                                 = var.f5xc_site_latitude
-  f5xc_site_longitude                                = var.f5xc_site_longitude
+  f5xc_reg_url                                       = var.f5xc_reg_url
+  f5xc_cluster_latitude                              = var.f5xc_cluster_latitude
+  f5xc_cluster_longitude                             = var.f5xc_cluster_longitude
   f5xc_ce_gateway_type                               = var.f5xc_ce_gateway_type
   f5xc_vsphere_site_nodes                            = var.f5xc_vsphere_site_nodes
-  f5xc_certified_hardware                            = var.f5xc_certified_hardware
   f5xc_vsphere_instance_template                     = var.f5xc_vsphere_instance_template
+  f5xc_ova_image                                     = var.f5xc_ova_image
   vsphere_host                                       = each.value["host"]
   vsphere_cluster                                    = var.vsphere_cluster
   vsphere_datastore                                  = each.value["datastore"]

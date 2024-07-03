@@ -21,7 +21,7 @@ resource "vsphere_virtual_machine" "vm" {
   dynamic "network_interface" {
     for_each = var.is_multi_nic ? [1] : []
     content {
-      network_id   = data.vsphere_network.inside.id
+      network_id   = data.vsphere_network.inside[0].id
       adapter_type = var.vsphere_instance_network_adapter_type
     }
   }
@@ -41,7 +41,7 @@ resource "vsphere_virtual_machine" "vm" {
       disk_provisioning         = "thick"
       ovf_network_map           = var.is_multi_nic ? {
         OUTSIDE = data.vsphere_network.outside.id
-        REGULAR = data.vsphere_network.inside.id
+        REGULAR = data.vsphere_network.inside[0].id
       } : {
         OUTSIDE = data.vsphere_network.outside.id
       }
@@ -69,8 +69,8 @@ resource "vsphere_virtual_machine" "vm" {
       "guestinfo.ves.regurl"                      = var.f5xc_reg_url,
       "guestinfo.hostname"                        = var.f5xc_node_name
       "guestinfo.ves.clustername"                 = var.f5xc_cluster_name,
-      "guestinfo.ves.latitude"                    = var.f5xc_site_latitude,
-      "guestinfo.ves.longitude"                   = var.f5xc_site_longitude,
+      "guestinfo.ves.latitude"                    = var.f5xc_cluster_latitude,
+      "guestinfo.ves.longitude"                   = var.f5xc_cluster_longitude,
       "guestinfo.ves.adminpassword"               = var.vsphere_instance_admin_password,
       "guestinfo.ves.token"                       = volterra_token.token.id
     }

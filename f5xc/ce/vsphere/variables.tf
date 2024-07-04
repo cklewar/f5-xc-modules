@@ -46,19 +46,20 @@ variable "f5xc_vsphere_site_nodes" {
 
 variable "f5xc_cluster_default_blocked_services" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "f5xc_cluster_name" {
   type = string
 }
 
-variable "f5xc_site_latitude" {
-  type = number
+variable "f5xc_reg_url" {
+  type    = string
+  default = "ves.volterra.io"
 }
 
-variable "f5xc_site_longitude" {
-  type = number
+variable "f5xc_ova_image" {
+  type = string
 }
 
 variable "f5xc_certified_hardware" {

@@ -1,13 +1,13 @@
 resource "volterra_gcp_vpc_site" "site" {
   name                     = var.f5xc_gcp_site_name
+  labels                   = var.f5xc_labels
   namespace                = var.f5xc_namespace
+  gcp_labels               = var.f5xc_gcp_labels
   description              = var.f5xc_gcp_description
   gcp_region               = var.f5xc_gcp_region
   instance_type            = var.f5xc_gcp_ce_instance_type
   logs_streaming_disabled  = var.f5xc_gcp_logs_streaming_disabled
   default_blocked_services = var.f5xc_gcp_default_blocked_services
-  labels                   = var.f5xc_labels
-  gcp_labels               = var.f5xc_gcp_labels
 
   cloud_credentials {
     name      = var.f5xc_gcp_cred
@@ -32,9 +32,7 @@ resource "volterra_gcp_vpc_site" "site" {
       gcp_certified_hw = var.f5xc_gcp_ce_certified_hw[var.f5xc_gcp_ce_gw_type]
 
       dynamic "local_network" {
-        for_each = var.f5xc_gcp_local_network_name != "" || (var.f5xc_gcp_local_network_name == "" && var.f5xc_gcp_new_network_autogenerate == true) || var.f5xc_gcp_existing_local_network_name != "" ? [
-          1
-        ] : []
+        for_each = var.f5xc_gcp_local_network_name != "" || (var.f5xc_gcp_local_network_name == "" && var.f5xc_gcp_new_network_autogenerate == true) || var.f5xc_gcp_existing_local_network_name != "" ? [1] : []
         content {
           dynamic "new_network" {
             for_each = var.f5xc_gcp_local_primary_ipv4 != "" && var.f5xc_gcp_local_network_name != "" ? [1] : []

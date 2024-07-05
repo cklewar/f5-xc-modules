@@ -72,8 +72,8 @@ variable "template_input_dir_path" {
 }
 
 variable "gcp_compute_instance_cloud_init_template_data" {
-  type = map(string)
-  default = {}
+  type    = any
+  default = null
 }
 
 variable "gcp_compute_instance_cloud_init_template" {

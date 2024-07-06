@@ -33,7 +33,7 @@ variable "f5xc_cluster_name" {
 }
 
 variable "f5xc_cluster_labels" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }
 
@@ -103,6 +103,11 @@ variable "gcp_access_config_nat_ip" {
 
 variable "gcp_instance_serial_port_enable" {
   type = bool
+}
+
+variable "gcp_instance_can_ip_forward" {
+  type    = bool
+  default = true
 }
 
 variable "ssh_public_key" {

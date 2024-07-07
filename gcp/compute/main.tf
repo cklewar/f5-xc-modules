@@ -1,8 +1,10 @@
 data "cloudinit_config" "config" {
   gzip          = false
   base64_encode = false
+
   part {
     content      = local.cloud_init_content
+    filename     = "config.yaml"
     content_type = "text/cloud-config"
   }
 }

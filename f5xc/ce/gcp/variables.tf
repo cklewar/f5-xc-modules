@@ -43,7 +43,7 @@ variable "gcp_project_id" {
 
 variable "gcp_instance_serial_port_enable" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "gcp_existing_network_slo" {

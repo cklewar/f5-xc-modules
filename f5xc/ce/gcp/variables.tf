@@ -104,6 +104,11 @@ variable "gcp_instance_group_manager_base_instance_name" {
   default = "node"
 }
 
+variable "gcp_instance_can_ip_forward" {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_ce_hosts_public_name" {
   type    = string
   default = "vip"

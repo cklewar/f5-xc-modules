@@ -99,6 +99,7 @@ module "node" {
   gcp_access_config_nat_ip                             = var.gcp_access_config_nat_ip
   gcp_service_account_email                            = var.gcp_service_account_email
   gcp_service_account_scopes                           = var.gcp_service_account_scopes
+  gcp_instance_can_ip_forward                          = var.gcp_instance_can_ip_forward
   gcp_instance_serial_port_enable                      = var.gcp_instance_serial_port_enable
   gcp_instance_template_description                    = var.gcp_instance_template_description
   gcp_instance_template_create_timeout                 = var.gcp_instance_template_create_timeout

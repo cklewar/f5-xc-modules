@@ -107,7 +107,6 @@ variable "gcp_instance_serial_port_enable" {
 
 variable "gcp_instance_can_ip_forward" {
   type    = bool
-  default = true
 }
 
 variable "ssh_public_key" {

@@ -41,6 +41,6 @@ resource "google_compute_instance" "compute" {
   metadata_startup_script = var.gcp_compute_instance_metadata_startup_script != null ? var.gcp_compute_instance_metadata_startup_script : null
   metadata = {
     ssh-keys  = var.ssh_public_key
-    user-data = var.gcp_compute_instance_userdata != null ? data.cloudinit_config.config.rendered : null
+    user-data = var.gcp_compute_instance_cloud_init_template_data != null ? data.cloudinit_config.config.rendered : null
   }
 }

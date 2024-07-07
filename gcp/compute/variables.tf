@@ -39,11 +39,6 @@ variable "gcp_compute_instance_machine_name" {
   type = string
 }
 
-variable "gcp_compute_instance_userdata" {
-  type    = string
-  default = null
-}
-
 variable "gcp_google_compute_instance_image" {
   type    = string
   default = "ubuntu-os-cloud/ubuntu-2204-lts"

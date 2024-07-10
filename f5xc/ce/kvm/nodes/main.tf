@@ -34,13 +34,13 @@ resource "libvirt_domain" "vm" {
   cloudinit = libvirt_cloudinit_disk.cloudinit.id
 
   network_interface {
-    network_name = var.kvm_instance_outside_network_name
+    passthrough = var.kvm_instance_outside_network_name
   }
 
   dynamic "network_interface" {
     for_each = var.is_multi_nic ? [1] : []
     content {
-      network_name = var.kvm_instance_inside_network_name
+      passthrough = var.kvm_instance_inside_network_name
     }
   }
 

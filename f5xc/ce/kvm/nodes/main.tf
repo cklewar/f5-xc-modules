@@ -20,7 +20,7 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
 resource "libvirt_domain" "vm" {
   depends_on = [libvirt_volume.volume, libvirt_cloudinit_disk.cloudinit]
   vcpu   = var.kvm_instance_cpu_count
-  name   = var.f5xc_node_name
+  name = var.f5xc_node_name
   memory = var.kvm_instance_memory_size
 
   disk {

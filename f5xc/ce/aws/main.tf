@@ -55,7 +55,7 @@ module "network_node" {
   aws_vpc_id                         = var.aws_existing_vpc_id != "" ? var.aws_existing_vpc_id : module.network_common.common["vpc"]["id"]
   aws_sg_sli_ids                     = local.is_multi_nic ? length(var.aws_existing_sg_sli_ids) > 0 ? var.aws_existing_sg_sli_ids : module.network_common.common["sg_sli_ids"] : []
   aws_sg_slo_ids                     = length(var.aws_existing_sg_slo_ids) > 0 ? var.aws_existing_sg_slo_ids : module.network_common.common["sg_slo_ids"]
-  aws_slo_static_ips                 = contains(keys(var.f5xc_aws_vpc_az_nodes[each.key]), "aws_slo_static_ips") ? var.f5xc_aws_vpc_az_nodes[each.key]["aws_slo_static_ips"] : []
+  aws_slo_static_ips                 = contains(keys(var.f5xc_aws_vpc_az_nodes[each.key]), "aws_slo_static_ips") ? [var.f5xc_aws_vpc_az_nodes[each.key]["aws_slo_static_ips"]] : []
   aws_subnet_slo_cidr                = contains(keys(var.f5xc_aws_vpc_az_nodes[each.key]), "aws_vpc_slo_subnet") ? var.f5xc_aws_vpc_az_nodes[each.key]["aws_vpc_slo_subnet"] : null
   aws_subnet_sli_cidr                = local.is_multi_nic && contains(keys(var.f5xc_aws_vpc_az_nodes[each.key]), "aws_vpc_sli_subnet") ? var.f5xc_aws_vpc_az_nodes[each.key]["aws_vpc_sli_subnet"] : null
   aws_slo_subnet_rt_id               = var.create_new_aws_slo_rt ? module.network_common.common["slo_subnet_rt"]["id"] : null

@@ -424,12 +424,6 @@ variable "f5xc_site_type_is_secure_mesh_site" {
   default = true
 }
 
-variable "f5xc_ce_slo_static_ips" {
-  description = "Used to initialise static IPs on SLO interface"
-  type = list(string)
-  default = []
-}
-
 variable "f5xc_ce_machine_image" {
   type = object({
     ingress_gateway = object({

@@ -42,7 +42,7 @@ variable "f5xc_certified_hardware" {
   type = map(string)
   default = {
     ingress_gateway        = "kvm-voltmesh"
-    ingress_egress_gateway = "kvm-multi-nic-voltmesh"
+    ingress_egress_gateway = "kvm-regular-nic-voltmesh"
   }
 }
 

@@ -37,7 +37,7 @@ variable "f5xc_cluster_labels" {
 
 variable "f5xc_certified_hardware" {
   type    = string
-  default = "kvm-regular-nic-voltmesh"
+  default = "kvm-multi-nic-voltmesh"
 }
 
 variable "f5xc_qcow2_image" {

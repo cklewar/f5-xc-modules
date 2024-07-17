@@ -79,7 +79,7 @@ variable "f5xc_site_type_certified_hw" {
     }
     kvm = {
       ingress_gateway        = "kvm-voltmesh"
-      ingress_egress_gateway = "kvm-regular-nic-voltmesh"
+      ingress_egress_gateway = "kvm-multi-nic-voltmesh"
     }
     vmware = {
       ingress_gateway        = "vmware-voltmesh"

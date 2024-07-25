@@ -82,7 +82,7 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
 }
 
 resource "volterra_registration_approval" "nodes" {
-  count = length(local.node_names)
+  count        = length(local.node_names)
   retry        = var.f5xc_registration_retry
   hostname     = local.node_names[count.index]
   wait_time    = var.f5xc_registration_wait_time

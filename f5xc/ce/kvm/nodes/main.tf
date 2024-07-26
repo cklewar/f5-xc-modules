@@ -4,14 +4,14 @@ resource "volterra_token" "token" {
 }
 
 resource "libvirt_volume" "volume" {
-  name   = "${var.f5xc_cluster_name}-${var.f5xc_node_name}.qcow2"
+  name   = "${var.f5xc_node_name}.qcow2"
   pool   = var.kvm_storage_pool
   source = var.f5xc_qcow2_image
   format = "qcow2"
 }
 
 resource "libvirt_cloudinit_disk" "cloudinit" {
-  name      = "${var.f5xc_cluster_name}-${var.f5xc_node_name}-cloud-init.iso"
+  name      = "${var.f5xc_node_name}-cloud-init.iso"
   pool      = var.kvm_storage_pool
   user_data = local.user_data
   meta_data = local.meta_data
@@ -19,9 +19,9 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
 
 resource "libvirt_domain" "vm" {
   depends_on = [libvirt_volume.volume, libvirt_cloudinit_disk.cloudinit]
-  name   = "${var.f5xc_cluster_name}-${var.f5xc_node_name}"
-  memory = var.kvm_instance_memory_size
   vcpu   = var.kvm_instance_cpu_count
+  name   = var.f5xc_node_name
+  memory = var.kvm_instance_memory_size
 
   disk {
     volume_id = libvirt_volume.volume.id

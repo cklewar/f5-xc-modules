@@ -100,6 +100,7 @@ resource "volterra_voltstack_site" "site" {
     operating_system_version = var.f5xc_operating_system_version
   }
   sw {
+    default_sw_version        = var.f5xc_default_software_version
     volterra_software_version = var.f5xc_software_version
   }
 }

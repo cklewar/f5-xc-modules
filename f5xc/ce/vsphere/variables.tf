@@ -64,7 +64,7 @@ variable "f5xc_ova_image" {
 
 variable "f5xc_certified_hardware" {
   type    = string
-  default = "vmware-voltmesh"
+  default = "vmware-regular-nic-voltmesh"
 }
 
 variable "f5xc_vsphere_instance_template" {

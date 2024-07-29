@@ -90,7 +90,7 @@ variable "f5xc_cluster_longitude" {
 
 variable "f5xc_certified_hardware" {
   type    = string
-  default = "vmware-voltmesh"
+  default = "vmware-regular-nic-voltmesh"
 }
 
 variable "vsphere_host" {

@@ -32,6 +32,7 @@ module "node" {
   f5xc_reg_url                                       = var.f5xc_reg_url
   f5xc_cluster_latitude                              = var.f5xc_cluster_latitude
   f5xc_cluster_longitude                             = var.f5xc_cluster_longitude
+  f5xc_certified_hardware                            = var.f5xc_certified_hardware
   f5xc_ce_gateway_type                               = var.f5xc_ce_gateway_type
   f5xc_vsphere_site_nodes                            = var.f5xc_vsphere_site_nodes
   f5xc_vsphere_instance_template                     = var.f5xc_vsphere_instance_template

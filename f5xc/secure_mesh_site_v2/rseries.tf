@@ -1,5 +1,5 @@
 locals {
-  spec_rseries = var.provider_name == "rseries" ? jsonencode({
+  spec_rseries = var.f5xc_sms_provider_name == "rseries" ? jsonencode({
     not_managed = {
       node_list = [
         {

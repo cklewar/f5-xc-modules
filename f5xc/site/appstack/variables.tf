@@ -60,6 +60,15 @@ variable "f5xc_operating_system_version" {
   type = string
 }
 
+variable "f5xc_software_version" {
+  type = string
+}
+
+variable f5xc_default_software_version {
+  type    = bool
+  default = true
+}
+
 variable "f5xc_certified_hardware_profile" {
   type = string
 }

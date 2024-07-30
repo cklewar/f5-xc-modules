@@ -16,7 +16,7 @@ locals {
         priority    = 65534
         description = "DEFAULT SLO INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = ["0.0.0.0/0"]
         allow       = [
           {
@@ -39,7 +39,7 @@ locals {
         priority    = 65534
         description = "DEFAULT SLI INGRESS ALLOW ALL RULE"
         direction   = "INGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = ["0.0.0.0/0"]
         allow       = [
           {
@@ -62,7 +62,7 @@ locals {
         priority    = 1000
         description = "Allow SLO INGRESS HTTPS and NAT-T"
         direction   = "INGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = toset(local.f5xc_ip_ranges_all)
         allow       = [
           {
@@ -84,7 +84,7 @@ locals {
         priority    = 1001
         description = "Allow SLO EGRESS HTTPS and NAT-T"
         direction   = "EGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = local.f5xc_ip_ranges_all
         allow       = [
           {
@@ -106,7 +106,7 @@ locals {
         priority    = 1002
         description = "Allow SLO EGRESS HTTP/HTTPS"
         direction   = "EGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = var.f5xc_ce_egress_ip_ranges
         allow       = [
           {
@@ -124,7 +124,7 @@ locals {
         priority    = 1003
         description = "Allow SLO EGRESS NTP"
         direction   = "EGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = ["0.0.0.0/0"]
         allow       = [
           {
@@ -143,7 +143,7 @@ locals {
         description = "Allow SLO INGRESS SSH and IAP"
         direction   = "INGRESS"
         ranges      = local.f5xc_ip_ranges_all
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         allow       = [
           {
             protocol = "tcp"
@@ -161,7 +161,7 @@ locals {
         description = "Deny SLO EGRESS ALL"
         direction   = "EGRESS"
         ranges      = ["0.0.0.0/0"]
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         allow       = []
         deny        = [
           {
@@ -183,7 +183,7 @@ locals {
         priority    = 65534
         description = "Allow SLO EGRESS NTP"
         direction   = "EGRESS"
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         ranges      = ["0.0.0.0/0"]
         allow       = [
           {
@@ -202,7 +202,7 @@ locals {
         description = "Deny SLI EGRESS ALL"
         direction   = "EGRESS"
         ranges      = ["0.0.0.0/0"]
-        target_tags = []
+        target_tags = var.gcp_instance_tags
         allow       = []
         deny        = [
           {

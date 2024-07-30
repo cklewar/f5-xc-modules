@@ -42,7 +42,6 @@ module "firewall" {
   is_multi_nic         = local.is_multi_nic
   gcp_network_slo      = module.network_common.common["slo_network"]["name"]
   gcp_network_sli      = local.is_multi_nic ? module.network_common.common["sli_network"]["name"] : null
-  gcp_target_tags      = var.gcp_instance_tags
   f5xc_ce_gateway_type = var.f5xc_ce_gateway_type
   f5xc_ce_slo_firewall = var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_slo_firewall : var.f5xc_ce_slo_enable_secure_sg ? local.f5xc_secure_ce_slo_firewall : (length(var.f5xc_ce_slo_firewall.rules) > 0 ? var.f5xc_ce_slo_firewall : local.f5xc_secure_ce_slo_firewall_default)
   f5xc_ce_sli_firewall = local.is_multi_nic ? (var.f5xc_is_secure_cloud_ce ? local.f5xc_secure_ce_sli_firewall : (length(var.f5xc_ce_sli_firewall.rules) > 0 ? var.f5xc_ce_sli_firewall : local.f5xc_secure_ce_sli_firewall_default)) : {

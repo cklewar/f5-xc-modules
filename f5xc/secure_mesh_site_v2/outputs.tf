@@ -1,3 +1,3 @@
 output "secure_mesh_site" {
-  value = ""
+  value = restapi_object.secure_mesh_site
 }

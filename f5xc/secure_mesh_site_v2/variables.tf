@@ -1,24 +1,14 @@
-variable "restapi_write_returns_object" {
-  type    = bool
-  default = true
-}
-
-variable "restapi_debug" {
-  type    = bool
-  default = false
-}
-
-variable "f5xc_api_schema" {
-  type    = string
-  default = "https"
-}
-
 variable "f5xc_api_url" {
   type = string
 }
 
 variable "f5xc_api_token" {
   type = string
+}
+
+variable "f5xc_token_base_uri" {
+  type    = string
+  default = "/register/namespaces/system/tokens"
 }
 
 variable "f5xc_sms_base_uri" {

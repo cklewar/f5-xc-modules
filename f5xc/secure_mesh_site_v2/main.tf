@@ -1,5 +1,19 @@
+resource "restapi_object" "token" {
+  id_attribute = "metadata/name"
+  path         = var.f5xc_token_base_uri
+  data = jsonencode({
+    metadata = {
+      name      = var.f5xc_sms_name
+      namespace = var.f5xc_namespace
+    }
+    spec = {
+      type      = "JWT"
+      site_name = var.f5xc_sms_name
+    }
+  })
+}
+
 resource restapi_object "secure_mesh_site" {
-  provider     = restapi.f5xc
   path         = var.f5xc_sms_base_uri
   id_attribute = "metadata/name"
   data = jsonencode({

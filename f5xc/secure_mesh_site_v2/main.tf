@@ -12,7 +12,9 @@ resource restapi_object "secure_mesh_site" {
       description = var.f5xc_sms_description
     }
     spec = {
-      rseries                                                             = var.f5xc_sms_provider_name == "rseries" ? local.spec_rseries : null
+      (var.f5xc_sms_provider_name) = {
+        not_managed = true
+      }
       re_select                                                           = var.f5xc_sms_re_select
       tunnel_type                                                         = var.f5xc_sms_tunnel_type
       no_forward_proxy                                                    = var.f5xc_sms_no_forward_proxy

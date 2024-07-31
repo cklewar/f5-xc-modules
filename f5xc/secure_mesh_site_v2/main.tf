@@ -1,6 +1,7 @@
 resource restapi_object "secure_mesh_site" {
-  provider = restapi.f5xc
-  path     = "metadata/name"
+  provider     = restapi.f5xc
+  path         = var.f5xc_sms_base_uri
+  id_attribute = "metadata/name"
   data = jsonencode({
     metadata = {
       name        = var.f5xc_sms_name
@@ -22,7 +23,7 @@ resource restapi_object "secure_mesh_site" {
         }
       }
       re_select  = var.f5xc_sms_re_select
-      disable_ha = var.f5xc_sms_disable_ha
+      (var.f5xc_sms_master_nodes_count == 1 ? "disable_ha" : "enable_ha") = true
       offline_survivability_mode = {
         no_offline_survivability_mode = {}
         enable_offline_survivability_mode = {}

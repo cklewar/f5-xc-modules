@@ -32,13 +32,14 @@ variable "f5xc_sms_provider_name" {
   }
 }
 
-variable "f5xc_sms_performance_enhancement_mode" {
-  type = object({
-    perf_mode_l7_enhanced = bool
-    perf_mode_l3_enhanced = optional(object({
-      jumbo = bool
-    }))
-  })
+variable "f5xc_sms_perf_mode_l7_enhanced" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_sms_perf_mode_l3_enhanced_jumbo" {
+  type    = bool
+  default = false
 }
 
 variable "f5xc_sms_enable_offline_survivability_mode" {
@@ -74,25 +75,24 @@ variable "f5xc_sms_name" {
   type = string
 }
 
-variable "f5xc_sms_software_settings" {
-  type = object({
-    sw = object({
-      default_sw_version = bool
-      volterra_software_version = optional(string)
-    })
-    os = object({
-      default_os_version = bool
-      operating_system_version = optional(string)
-    })
-  })
-  default = {
-    sw = {
-      default_sw_version = true
-    }
-    os = {
-      default_os_version = true
-    }
-  }
+variable "f5xc_sms_default_sw_version" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_sms_default_os_version" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_sms_operating_system_version" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_sms_volterra_software_version" {
+  type    = string
+  default = ""
 }
 
 variable "f5xc_sms_block_all_services" {

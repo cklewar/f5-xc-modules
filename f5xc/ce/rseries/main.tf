@@ -1,6 +1,20 @@
+module "sms" {
+  source                         = "../../secure_mesh_site_v2"
+  f5xc_api_url                   = var.f5xc_api_url
+  f5xc_api_token                 = var.f5xc_api_token
+  f5xc_namespace                 = var.f5xc_namespace
+  f5xc_sms_name                  = var.f5xc_site_name
+  f5xc_sms_provider_name         = var.f5xc_sms_provider_name
+  f5xc_sms_master_nodes_count    = var.f5xc_sms_master_nodes_count
+  f5xc_sms_perf_mode_l7_enhanced = var.f5xc_sms_perf_mode_l7_enhanced
+  providers = {
+    restapi = restapi.f5xc
+  }
+}
+
 resource "restapi_object" "f5os_tenant" {
-  provider     = restapi.f5os
   path         = "/f5-tenants=tenants"
+  provider     = restapi.f5os
   id_attribute = "tenant/name"
   data = jsonencode(
     {

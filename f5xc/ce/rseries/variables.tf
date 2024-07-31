@@ -1,39 +1,3 @@
-variable "restapi_write_returns_object" {
-  type    = bool
-  default = true
-}
-
-variable "restapi_debug" {
-  type    = bool
-  default = false
-}
-
-variable "f5os_api_schema" {
-  type    = string
-  default = "https"
-}
-
-variable "f5os_api_port" {
-  type = number
-}
-
-variable "f5os_api_address" {
-  type = string
-}
-
-variable "f5os_api_base_uri" {
-  type    = string
-  default = "restconf/data"
-}
-
-variable "f5os_api_username" {
-  type = string
-}
-
-variable "f5os_api_password" {
-  type = string
-}
-
 variable "f5os_tenant" {
   type = string
 }
@@ -101,10 +65,30 @@ variable "f5xc_api_schema" {
   default = "https"
 }
 
+variable "f5xc_namespace" {
+  type = string
+}
+
 variable "f5xc_api_url" {
   type = string
 }
 
 variable "f5xc_api_token" {
   type = string
+}
+
+variable "f5xc_site_name" {
+  type = string
+}
+
+variable "f5xc_sms_provider_name" {
+  type = string
+}
+
+variable "f5xc_sms_master_nodes_count" {
+  type = number
+}
+
+variable "f5xc_sms_perf_mode_l7_enhanced" {
+  type = bool
 }

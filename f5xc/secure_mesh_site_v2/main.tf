@@ -1,6 +1,6 @@
 resource "restapi_object" "token" {
-  id_attribute = "metadata/name"
   path         = var.f5xc_token_base_uri
+  id_attribute = "metadata/name"
   data = jsonencode({
     metadata = {
       name      = var.f5xc_sms_name
@@ -27,21 +27,46 @@ resource restapi_object "secure_mesh_site" {
     }
     spec = {
       (var.f5xc_sms_provider_name) = {
-        not_managed = true
+        not_managed = {}
       }
-      re_select                                                           = var.f5xc_sms_re_select
-      tunnel_type                                                         = var.f5xc_sms_tunnel_type
-      no_forward_proxy                                                    = var.f5xc_sms_no_forward_proxy
-      no_network_policy                                                   = var.f5xc_sms_no_network_policy
-      software_settings                                                   = var.f5xc_sms_software_settings
-      block_all_services                                                  = var.f5xc_sms_block_all_services
-      tunnel_dead_timeout                                                 = var.f5xc_sms_tunnel_dead_timeout
-      logs_streaming_disabled                                             = var.f5xc_sms_logs_streaming_disabled
-      performance_enhancement_mode                                        = var.f5xc_sms_performance_enhancement_mode
-      (var.f5xc_sms_master_nodes_count == 1 ? "disable_ha" : "enable_ha") = true
+      performance_enhancement_mode = local.performance_enhancement_mode
+      software_settings = var.f5xc_sms_default_sw_version && var.f5xc_sms_default_os_version ? {
+        sw = { default_sw_version = {} }
+        os = { default_os_version = {} }
+      } : null /*var.f5xc_sms_default_sw_version && !var.f5xc_sms_default_os_version ? {
+        sw = { default_sw_version = true }
+        os = {
+          default_os_version       = false
+          operating_system_version = var.f5xc_sms_operating_system_version
+        }
+      } : !var.f5xc_sms_default_sw_version && var.f5xc_sms_default_os_version ? {
+        sw = {
+          default_sw_version        = false
+          volterra_software_version = var.f5xc_sms_volterra_software_version
+        }
+        os = { default_os_version = true }
+      } : !var.f5xc_sms_default_sw_version && !var.f5xc_sms_default_os_version ? {
+        sw = {
+          default_sw_version        = false
+          volterra_software_version = var.f5xc_sms_volterra_software_version
+        }
+        os = {
+          default_os_version       = false
+          operating_system_version = var.f5xc_sms_operating_system_version
+        }
+      } : null*/
+      re_select = {
+        geo_proximity = {}
+      }
+      tunnel_type             = var.f5xc_sms_tunnel_type
+      no_forward_proxy        = var.f5xc_sms_no_forward_proxy ? {} : null
+      no_network_policy       = var.f5xc_sms_no_network_policy ? {} : null
+      block_all_services      = var.f5xc_sms_block_all_services ? {} : null
+      tunnel_dead_timeout     = var.f5xc_sms_tunnel_dead_timeout
+      logs_streaming_disabled = var.f5xc_sms_logs_streaming_disabled ? {} : null
+      enable_ha = var.f5xc_sms_master_nodes_count == 1 ? null : {}
       offline_survivability_mode = {
-        no_offline_survivability_mode     = !var.f5xc_sms_enable_offline_survivability_mode ? true : false
-        enable_offline_survivability_mode = var.f5xc_sms_enable_offline_survivability_mode ? false : true
+        enable_offline_survivability_mode = var.f5xc_sms_enable_offline_survivability_mode ? {} : null
       }
     }
   })

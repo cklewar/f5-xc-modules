@@ -10,6 +10,7 @@ terraform {
     restapi = {
       source = "Mastercard/restapi"
       version = ">= 1.19.1"
+      configuration_aliases = [ restapi.f5xc, restapi.f5os ]
     }
 
     local = ">= 2.2.3"

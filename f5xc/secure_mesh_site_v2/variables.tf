@@ -29,7 +29,7 @@ variable "f5xc_sms_base_uri" {
 variable "f5xc_sms_master_nodes_count" {
   type = number
   validation {
-    condition = var.f5xc_sms_master_nodes_count == 1 || var.f5xc_sms_master_nodes_count == 3
+    condition     = var.f5xc_sms_master_nodes_count == 1 || var.f5xc_sms_master_nodes_count == 3
     error_message = "Master node counter must be 1 or 3"
   }
 }
@@ -40,6 +40,20 @@ variable "f5xc_sms_provider_name" {
     condition = contains(["rseries"], var.f5xc_sms_provider_name)
     error_message = format("Valid values for provider_name: rseries")
   }
+}
+
+variable "f5xc_sms_performance_enhancement_mode" {
+  type = object({
+    perf_mode_l7_enhanced = bool
+    perf_mode_l3_enhanced = optional(object({
+      jumbo = bool
+    }))
+  })
+}
+
+variable "f5xc_sms_enable_offline_survivability_mode" {
+  type    = bool
+  default = false
 }
 
 variable "f5xc_sms_disable" {

@@ -34,7 +34,8 @@ variable "f5os_tenant_config_vcpu_cores_per_node" {
 }
 
 variable "f5os_tenant_config_memory" {
-  type = number
+  type    = number
+  default = 0
 }
 
 variable "f5os_tenant_config_storage_size" {
@@ -91,4 +92,36 @@ variable "f5xc_sms_master_nodes_count" {
 
 variable "f5xc_sms_perf_mode_l7_enhanced" {
   type = bool
+}
+
+variable "f5xc_tenant" {
+  description = "F5 XC tenant"
+  type        = string
+}
+
+variable "f5xc_api_p12_file" {
+  description = "F5 XC api ca cert"
+  type        = string
+  default     = ""
+}
+
+variable "f5xc_api_p12_cert_password" {
+  description = "XC API cert file password used later in status module to retrieve site status"
+  type        = string
+  default     = ""
+}
+
+variable "status_check_type" {
+  type    = string
+  default = "token"
+  validation {
+    condition = contains(["token", "cert"], var.status_check_type)
+    error_message = format("Valid values for status_check_type: token or cert")
+  }
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
 }

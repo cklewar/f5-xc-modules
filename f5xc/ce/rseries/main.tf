@@ -13,9 +13,10 @@ module "sms" {
 }
 
 resource "restapi_object" "f5os_tenant" {
-  path         = "/f5-tenants=tenants"
+  path         = "/f5-tenants:tenants"
   provider     = restapi.f5os
-  id_attribute = "tenant/name"
+  object_id    = var.f5os_tenant
+  id_attribute = var.f5os_tenant #"tenant/name"
   data = jsonencode(
     {
       tenant = [
@@ -26,22 +27,36 @@ resource "restapi_object" "f5os_tenant" {
             image                         = var.f5os_tenant_config_image
             nodes                         = var.f5os_tenant_config_nodes
             vlans                         = var.f5os_tenant_config_vlans
-            memory                        = var.f5os_tenant_config_memory
+            memory                        = var.f5os_tenant_config_memory == 0 ? (3.5 * 1024 * var.f5os_tenant_config_vcpu_cores_per_node) : var.f5os_tenant_config_memory
             cryptos                       = var.f5os_tenant_config_cryptos
             dhcp-enabled                  = var.f5os_tenant_config_dhcp_enabled
             running-state                 = var.f5os_tenant_config_running_state
             dag-ipv6-prefix-length        = var.f5os_tenant_config_dag_ipv6_prefix_length
-            "f5-tenant-metadata=metadata" = var.f5os_tenant_config_metadata
+            "f5-tenant-metadata:metadata" = var.f5os_tenant_config_metadata
             vcpu-cores-per-node           = var.f5os_tenant_config_vcpu_cores_per_node
             storage = {
               size = var.f5os_tenant_config_storage_size
             }
             mac-data = {
-              "f5-tenant-l2-inline=mac-block-size" = var.f5os_tenant_config_l2_inline_mac_block_size
+              "f5-tenant-l2-inline:mac-block-size" = var.f5os_tenant_config_l2_inline_mac_block_size
             }
           }
         }
       ]
     }
   )
+}
+
+module "site_wait_for_online" {
+  depends_on = [restapi_object.f5os_tenant]
+  source                     = "../../status/site"
+  is_sensitive               = var.is_sensitive
+  f5xc_tenant                = var.f5xc_tenant
+  f5xc_api_url               = var.f5xc_api_url
+  f5xc_api_token             = var.f5xc_api_token
+  f5xc_site_name             = var.f5xc_site_name
+  f5xc_namespace             = var.f5xc_namespace
+  f5xc_api_p12_file          = var.f5xc_api_p12_file
+  status_check_type          = var.status_check_type
+  f5xc_api_p12_cert_password = var.f5xc_api_p12_cert_password
 }

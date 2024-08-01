@@ -9,7 +9,7 @@ Vpm:
   %{~ if length(cluster_labels) > 0 ~}
   Labels:
     %{~ for k, v in cluster_labels ~}
-    ${k}: ${v}
+    - ${k}: ${v}
     %{~ endfor ~}
   %{~ else ~}
   Labels:

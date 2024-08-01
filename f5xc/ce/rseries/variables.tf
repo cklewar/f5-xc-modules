@@ -61,6 +61,11 @@ variable "f5os_tenant_config_metadata" {
   type = list(string)
 }
 
+variable "f5os_tenant_base_uri" {
+  type = string
+  default = "/f5-tenants:tenants"
+}
+
 variable "f5xc_api_schema" {
   type    = string
   default = "https"

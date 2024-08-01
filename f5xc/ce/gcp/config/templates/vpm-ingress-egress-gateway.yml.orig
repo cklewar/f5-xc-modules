@@ -1,9 +1,7 @@
----
 Vpm:
   ClusterName: ${cluster_name}
   ClusterType: ${cluster_type}
   Token: ${cluster_token}
-  PrivateNIC: ${private_nic}
   Latitude: ${cluster_latitude}
   Longitude: ${cluster_longitude}
   MauricePrivateEndpoint: ${maurice_mtls_endpoint}
@@ -21,5 +19,6 @@ Vpm:
   PrivateNetworkName: ${name ~}
   %{ endfor }
 Kubernetes:
+  CloudProvider: ""
   EtcdUseTLS: True
   Server: ${service_ip}

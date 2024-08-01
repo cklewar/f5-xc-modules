@@ -6,14 +6,6 @@ Vpm:
   Longitude: ${cluster_longitude}
   MauricePrivateEndpoint: ${maurice_mtls_endpoint}
   MauriceEndpoint: ${maurice_endpoint}
-  %{~ if length(cluster_labels) > 0 ~}
-  Labels:
-    %{~ for k, v in cluster_labels ~}
-    - ${k}: ${v}
-    %{~ endfor ~}
-  %{~ else ~}
-  Labels:
-  %{~ endif ~}
   CertifiedHardwareEndpoint: ${certified_hardware_endpoint}
   %{~ for key, name in  private_network ~}
   PrivateNetworkName: ${name ~}

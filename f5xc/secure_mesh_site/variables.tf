@@ -120,7 +120,7 @@ variable "f5xc_cluster_default_network_config" {
 
 variable "f5xc_cluster_worker_nodes" {
   type    = list(string)
-  default = []
+  default = null
 }
 
 variable "f5xc_default_os_version" {

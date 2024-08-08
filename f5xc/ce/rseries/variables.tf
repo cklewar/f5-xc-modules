@@ -66,6 +66,11 @@ variable "f5os_tenant_base_uri" {
   default = "/f5-tenants:tenants"
 }
 
+variable "f5os_tenant_delete_path" {
+  type = string
+  default = "/tenant="
+}
+
 variable "f5xc_api_schema" {
   type    = string
   default = "https"

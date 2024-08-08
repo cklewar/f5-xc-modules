@@ -18,6 +18,9 @@ resource "restapi_object" "f5os_tenant" {
   object_id    = var.f5os_tenant
   id_attribute = var.f5os_tenant
   destroy_path = "${var.f5os_tenant_delete_path}${var.f5os_tenant}"
+  lifecycle {
+    ignore_changes = [data]
+  }
   data = jsonencode(
     {
       tenant = [

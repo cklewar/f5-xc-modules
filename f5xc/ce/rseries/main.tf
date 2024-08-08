@@ -50,7 +50,7 @@ resource "restapi_object" "f5os_tenant" {
   )
 }
 
-/*module "site_wait_for_online" {
+module "site_wait_for_online" {
   depends_on                 = [restapi_object.f5os_tenant]
   source                     = "../../status/site"
   is_sensitive               = var.is_sensitive
@@ -62,4 +62,4 @@ resource "restapi_object" "f5os_tenant" {
   f5xc_api_p12_file          = var.f5xc_api_p12_file
   status_check_type          = var.status_check_type
   f5xc_api_p12_cert_password = var.f5xc_api_p12_cert_password
-}*/
+}

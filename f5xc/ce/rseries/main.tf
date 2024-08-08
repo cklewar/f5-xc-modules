@@ -16,8 +16,9 @@ resource "restapi_object" "f5os_tenant" {
   path         = var.f5os_tenant_base_uri
   provider     = restapi.f5os
   object_id    = var.f5os_tenant
-  id_attribute = var.f5os_tenant
-  destroy_path = "${var.f5os_tenant_delete_path}${var.f5os_tenant}"
+  id_attribute = "tenant"
+  read_path    = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
+  destroy_path = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
 
   data = jsonencode(
     {
@@ -49,8 +50,8 @@ resource "restapi_object" "f5os_tenant" {
   )
 }
 
-module "site_wait_for_online" {
-  depends_on = [restapi_object.f5os_tenant]
+/*module "site_wait_for_online" {
+  depends_on                 = [restapi_object.f5os_tenant]
   source                     = "../../status/site"
   is_sensitive               = var.is_sensitive
   f5xc_tenant                = var.f5xc_tenant
@@ -61,4 +62,4 @@ module "site_wait_for_online" {
   f5xc_api_p12_file          = var.f5xc_api_p12_file
   status_check_type          = var.status_check_type
   f5xc_api_p12_cert_password = var.f5xc_api_p12_cert_password
-}
+}*/

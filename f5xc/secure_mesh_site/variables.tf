@@ -24,7 +24,7 @@ variable "f5xc_cluster_labels" {
 
 variable "f5xc_nodes" {
   type = list(object({
-    name      = string
+    name = string
     public_ip = optional(string)
   }))
 }
@@ -38,7 +38,7 @@ variable "f5xc_cluster_longitude" {
 }
 
 variable "f5xc_annotations" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }
 
@@ -56,12 +56,37 @@ variable "f5xc_ce_performance_enhancement_mode" {
   })
 }
 
+variable "f5xc_ce_custom_network_config" {
+  type = object({
+    default_config     = bool
+    default_sli_config = bool
+    interfaces = list(object({
+      dc_cluster_group_connectivity_interface_disabled = bool
+      ethernet_interface = object({
+        mtu                       = number
+        device                    = string
+        cluster                   = bool
+        untagged                  = bool
+        priority                  = number
+        is_primary                = bool
+        not_primary               = bool
+        dhcp_client               = bool
+        no_ipv6_address           = bool
+        monitor_disabled          = bool
+        site_local_network        = bool
+        site_local_inside_network = bool
+      })
+    }))
+  })
+  default = null
+}
+
 variable "f5xc_site_type_certified_hw" {
   type = object({
-    aws    = map(string)
-    gcp    = map(string)
-    azure  = map(string)
-    kvm    = map(string)
+    aws = map(string)
+    gcp = map(string)
+    azure = map(string)
+    kvm = map(string)
     vmware = map(string)
   })
   default = {
@@ -119,7 +144,7 @@ variable "f5xc_cluster_default_network_config" {
 }
 
 variable "f5xc_cluster_worker_nodes" {
-  type    = list(string)
+  type = list(string)
   default = null
 }
 
@@ -146,7 +171,7 @@ variable "f5xc_volterra_software_version" {
 variable "csp_provider" {
   type = string
   validation {
-    condition     = contains(["aws", "gcp", "azure", "vmware", "kvm"], var.csp_provider)
+    condition = contains(["aws", "gcp", "azure", "vmware", "kvm"], var.csp_provider)
     error_message = format("Valid values for csp_provider: aws, gcp, azure, vmware, kvm")
   }
 }

@@ -19,8 +19,36 @@ resource "volterra_securemesh_site" "secure_mesh_site" {
     volterra_software_version = !var.f5xc_default_sw_version ? var.f5xc_volterra_software_version : null
   }
 
-  /*dynamic "bond_device_list" {
-  }*/
+  dynamic "custom_network_config" {
+    for_each = var.f5xc_ce_custom_network_config != null ? [1] : []
+    content {
+      default_config     = var.f5xc_ce_custom_network_config.default_config
+      default_sli_config = var.f5xc_ce_custom_network_config.default_sli_config
+
+      interface_list {
+        dynamic "interfaces" {
+          for_each = var.f5xc_ce_custom_network_config.interfaces
+          content {
+            dc_cluster_group_connectivity_interface_disabled = interfaces.value.dc_cluster_group_connectivity_interface_disabled
+            ethernet_interface {
+              mtu                       = interfaces.value.ethernet_interface.mtu
+              device                    = interfaces.value.ethernet_interface.device
+              cluster                   = interfaces.value.ethernet_interface.cluster
+              untagged                  = interfaces.value.ethernet_interface.untagged
+              priority                  = interfaces.value.ethernet_interface.priority
+              is_primary                = interfaces.value.ethernet_interface.is_primary
+              not_primary               = interfaces.value.ethernet_interface.not_primary
+              dhcp_client               = interfaces.value.ethernet_interface.dhcp_client
+              no_ipv6_address           = interfaces.value.ethernet_interface.no_ipv6_address
+              monitor_disabled          = interfaces.value.ethernet_interface.monitor_disabled
+              site_local_network        = interfaces.value.ethernet_interface.site_local_network
+              site_local_inside_network = interfaces.value.ethernet_interface.site_local_inside_network
+            }
+          }
+        }
+      }
+    }
+  }
 
   offline_survivability_mode {
     no_offline_survivability_mode     = var.f5xc_enable_offline_survivability_mode == false ? true : false

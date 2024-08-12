@@ -1,5 +1,5 @@
 variable "f5xc_tenant" {
-  type      = string
+  type = string
 }
 
 variable "f5xc_namespace" {
@@ -21,6 +21,16 @@ variable "f5xc_site_name" {
 variable "f5xc_bgp_network_type" {
   type    = string
   default = "VIRTUAL_NETWORK_SITE_LOCAL"
+}
+
+variable "f5xc_bgp_peer_passive_mode_disabled" {
+  type    = bool
+  default = true
+}
+
+variable "f5xc_bgp_site_disable_internet_vip" {
+  type    = bool
+  default = true
 }
 
 variable "f5xc_bgp_description" {

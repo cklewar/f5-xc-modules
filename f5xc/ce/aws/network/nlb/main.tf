@@ -1,6 +1,6 @@
 resource "aws_lb" "nlb" {
   tags                             = var.common_tags
-  name                             = format("%s-nlb", var.f5xc_cluster_name)
+  name                             = format("%s", var.f5xc_cluster_name)
   subnets                          = var.aws_nlb_subnets
   internal                         = true
   load_balancer_type               = "network"
@@ -14,7 +14,7 @@ resource "aws_lb" "nlb" {
 
 resource "aws_lb_target_group" "controllers" {
   tags        = var.common_tags
-  name        = format("%s-lb-ctl", var.f5xc_cluster_name)
+  name        = format("%s", var.f5xc_cluster_name)
   vpc_id      = var.aws_vpc_id
   target_type = "instance"
   protocol    = "TCP"

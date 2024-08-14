@@ -11,6 +11,5 @@ Vpm:
   PrivateNetworkName: ${name ~}
   %{ endfor }
 Kubernetes:
-  CloudProvider: ""
   EtcdUseTLS: True
   Server: ${service_ip}

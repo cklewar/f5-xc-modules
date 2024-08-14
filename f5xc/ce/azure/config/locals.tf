@@ -37,9 +37,8 @@ locals {
       CertifiedHardwareEndpoint : var.f5xc_certified_hardware_endpoint,
     }
     Kubernetes : {
-      CloudProvider : ""
-      EtcdUseTLS : true
       Server : var.f5xc_ce_hosts_public_name
+      EtcdUseTLS : true
     }
   })
 

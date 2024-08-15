@@ -15,17 +15,17 @@ resource "aws_lb" "nlb" {
 resource "aws_lb_target_group" "controllers" {
   tags        = var.common_tags
   name        = format("%s", var.f5xc_cluster_name)
-  vpc_id      = var.aws_vpc_id
-  target_type = "instance"
-  protocol    = "TCP"
   port        = 6443
+  vpc_id      = var.aws_vpc_id
+  protocol    = "TCP"
+  target_type = "instance"
 
   health_check {
-    protocol            = "TCP"
     port                = 6443
+    protocol            = "TCP"
+    interval            = 10
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    interval            = 10
   }
 }
 

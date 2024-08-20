@@ -83,10 +83,7 @@ resource "vsphere_virtual_machine" "vm" {
       disk[1].io_share_count,
       disk[2].io_share_count,
       vapp[0].properties,
-      ovf_deploy,
-      ovf_network_map,
-      OUTSIDE,
-      REGULAR
+      ovf_deploy
     ]
   }
 }

@@ -4,6 +4,9 @@ resource "volterra_token" "token" {
 }
 
 resource "vsphere_virtual_machine" "vm" {
+  lifecycle {
+    ignore_changes = ["ovf_deploy", "ovf_network_map", "OUTSIDE", "REGULAR"]
+  }
   name             = var.f5xc_node_name
   memory           = var.vsphere_instance_memory_size
   num_cpus         = var.vsphere_instance_cpu_count

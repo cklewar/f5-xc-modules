@@ -4,9 +4,6 @@ resource "volterra_token" "token" {
 }
 
 resource "vsphere_virtual_machine" "vm" {
-  lifecycle {
-    ignore_changes = ["ovf_deploy", "ovf_network_map", "OUTSIDE", "REGULAR"]
-  }
   name             = var.f5xc_node_name
   memory           = var.vsphere_instance_memory_size
   num_cpus         = var.vsphere_instance_cpu_count
@@ -86,12 +83,16 @@ resource "vsphere_virtual_machine" "vm" {
       disk[1].io_share_count,
       disk[2].io_share_count,
       vapp[0].properties,
+      "ovf_deploy",
+      "ovf_network_map",
+      "OUTSIDE",
+      "REGULAR"
     ]
   }
 }
 
 resource "volterra_registration_approval" "ce" {
-  depends_on   = [vsphere_virtual_machine.vm]
+  depends_on = [vsphere_virtual_machine.vm]
   retry        = var.f5xc_registration_retry
   hostname     = var.f5xc_node_name
   wait_time    = var.f5xc_registration_wait_time
@@ -101,9 +102,9 @@ resource "volterra_registration_approval" "ce" {
 
 resource "volterra_site_state" "decommission_when_delete" {
   depends_on = [volterra_registration_approval.ce]
-  name       = var.f5xc_cluster_name
-  when       = "delete"
-  state      = "DECOMMISSIONING"
-  retry      = var.f5xc_registration_retry
-  wait_time  = var.f5xc_registration_wait_time
+  name      = var.f5xc_cluster_name
+  when      = "delete"
+  state     = "DECOMMISSIONING"
+  retry     = var.f5xc_registration_retry
+  wait_time = var.f5xc_registration_wait_time
 }

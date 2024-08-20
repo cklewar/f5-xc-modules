@@ -72,6 +72,30 @@ variable "f5xc_vsphere_instance_template" {
   default = ""
 }
 
+variable "f5xc_ce_custom_network_config" {
+  type = object({
+    default_config     = bool
+    default_sli_config = bool
+    interfaces = list(object({
+      dc_cluster_group_connectivity_interface_disabled = bool
+      ethernet_interface = object({
+        mtu                       = number
+        device                    = string
+        cluster                   = bool
+        untagged                  = bool
+        priority                  = number
+        is_primary                = bool
+        not_primary               = bool
+        dhcp_client               = bool
+        no_ipv6_address           = bool
+        monitor_disabled          = bool
+        site_local_network        = bool
+        site_local_inside_network = bool
+      })
+    }))
+  })
+}
+
 variable "vsphere_instance_cpu_count" {
   type    = number
   default = 4

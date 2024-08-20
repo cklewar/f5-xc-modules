@@ -12,6 +12,7 @@ module "secure_mesh_site" {
   f5xc_ce_gateway_type                   = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude                  = var.f5xc_cluster_latitude
   f5xc_cluster_longitude                 = var.f5xc_cluster_longitude
+  f5xc_ce_custom_network_config          = var.f5xc_ce_custom_network_config
   f5xc_ce_performance_enhancement_mode   = var.f5xc_ce_performance_enhancement_mode
   f5xc_cluster_default_blocked_services  = var.f5xc_cluster_default_blocked_services
   f5xc_enable_offline_survivability_mode = var.f5xc_enable_offline_survivability_mode

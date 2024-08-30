@@ -10,7 +10,7 @@ resource "azurerm_virtual_network" "vnet" {
     for_each = length(var.azure_vnet_subnets) > 0 ? var.azure_vnet_subnets : []
     content {
       name           = subnet.value.name
-      address_prefixes = subnet.value.address_prefix
+      address_prefix = subnet.value.address_prefix
       security_group = subnet.value.security_group
     }
   }

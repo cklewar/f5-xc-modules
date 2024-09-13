@@ -64,7 +64,7 @@ resource restapi_object "secure_mesh_site" {
       block_all_services      = var.f5xc_sms_block_all_services ? {} : null
       tunnel_dead_timeout     = var.f5xc_sms_tunnel_dead_timeout
       logs_streaming_disabled = var.f5xc_sms_logs_streaming_disabled ? {} : null
-      enable_ha = var.f5xc_sms_master_nodes_count == 1 ? null : {}
+      enable_ha               = var.f5xc_sms_master_nodes_count == 1 ? null : {}
       offline_survivability_mode = {
         enable_offline_survivability_mode = var.f5xc_sms_enable_offline_survivability_mode ? {} : null
       }

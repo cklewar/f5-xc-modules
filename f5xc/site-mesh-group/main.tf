@@ -19,8 +19,6 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
   dynamic "hub_mesh" {
     for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_hub_mesh ? [1] : []
     content {
-      #control_and_data_plane_mesh = var.f5xc_site_mesh_group_hub_mesh_control_and_data_plane_mesh
-      #data_plane_mesh             = var.f5xc_site_mesh_group_hub_mesh_data_plane_mesh
     }
   }
 

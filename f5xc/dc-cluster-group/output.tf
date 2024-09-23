@@ -1,6 +1,7 @@
-output "dc-cluster-group" {
+output "dc_cluster_group" {
   value = {
-    "name" = volterra_dc_cluster_group.dc_cluster_group.name
-    "id"   = volterra_dc_cluster_group.dc_cluster_group.id
+    id   = volterra_dc_cluster_group.dc_cluster_group.id
+    name = volterra_dc_cluster_group.dc_cluster_group.name
+
   }
 }

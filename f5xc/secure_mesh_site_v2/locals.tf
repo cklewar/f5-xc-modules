@@ -8,11 +8,11 @@ locals {
       }
     }
   ][var.f5xc_sms_perf_mode_l7_enhanced ? 0 : 1]
-  /*dc_cluster_group_slo = [
+  dc_cluster_group_slo = [
     {
-      name      = var.f5xc_dc_cluster_group_slo
+      name      = var.f5xc_dc_cluster_group_slo_name
       tenant    = var.f5xc_tenant
       namespace = var.f5xc_namespace
-    }
-  ][var.f5xc_dc_cluster_group_slo != "" ? 0 : 1]*/
+    }, {}
+  ][var.f5xc_dc_cluster_group_slo_name != null ? 0 : 1]
 }

@@ -62,12 +62,12 @@ variable "f5os_tenant_config_metadata" {
 }
 
 variable "f5os_tenant_base_uri" {
-  type = string
+  type    = string
   default = "/f5-tenants:tenants"
 }
 
 variable "f5os_tenant_delete_path" {
-  type = string
+  type    = string
   default = "/tenant="
 }
 
@@ -119,6 +119,11 @@ variable "f5xc_api_p12_cert_password" {
   description = "XC API cert file password used later in status module to retrieve site status"
   type        = string
   default     = ""
+}
+
+variable "f5xc_sms_labels" {
+  type = map(string)
+  default = {}
 }
 
 variable "status_check_type" {

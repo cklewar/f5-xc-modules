@@ -4,6 +4,7 @@ module "sms" {
   f5xc_api_token                 = var.f5xc_api_token
   f5xc_namespace                 = var.f5xc_namespace
   f5xc_sms_name                  = var.f5xc_site_name
+  f5xc_sms_labels                = var.f5xc_sms_labels
   f5xc_sms_provider_name         = var.f5xc_sms_provider_name
   f5xc_sms_master_nodes_count    = var.f5xc_sms_master_nodes_count
   f5xc_sms_perf_mode_l7_enhanced = var.f5xc_sms_perf_mode_l7_enhanced

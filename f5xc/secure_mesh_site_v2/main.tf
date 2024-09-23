@@ -25,38 +25,12 @@ resource restapi_object "secure_mesh_site" {
       annotations = var.f5xc_sms_annotations
       description = var.f5xc_sms_description
     }
-    spec = {
+    spec = merge({
       (var.f5xc_sms_provider_name) = {
         not_managed = {}
       }
       performance_enhancement_mode = local.performance_enhancement_mode
-      dc_cluster_group_slo = local.dc_cluster_group_slo
-      dc_cluster_group_sli = local.dc_cluster_group_sli
-      software_settings = var.f5xc_sms_default_sw_version && var.f5xc_sms_default_os_version ? {
-        sw = { default_sw_version = {} }
-        os = { default_os_version = {} }
-      } : null /*var.f5xc_sms_default_sw_version && !var.f5xc_sms_default_os_version ? {
-        sw = { default_sw_version = true }
-        os = {
-          default_os_version       = false
-          operating_system_version = var.f5xc_sms_operating_system_version
-        }
-      } : !var.f5xc_sms_default_sw_version && var.f5xc_sms_default_os_version ? {
-        sw = {
-          default_sw_version        = false
-          volterra_software_version = var.f5xc_sms_volterra_software_version
-        }
-        os = { default_os_version = true }
-      } : !var.f5xc_sms_default_sw_version && !var.f5xc_sms_default_os_version ? {
-        sw = {
-          default_sw_version        = false
-          volterra_software_version = var.f5xc_sms_volterra_software_version
-        }
-        os = {
-          default_os_version       = false
-          operating_system_version = var.f5xc_sms_operating_system_version
-        }
-      } : null*/
+      software_settings = local.software_settings
       re_select = {
         geo_proximity = {}
       }
@@ -70,6 +44,8 @@ resource restapi_object "secure_mesh_site" {
       offline_survivability_mode = {
         enable_offline_survivability_mode = var.f5xc_sms_enable_offline_survivability_mode ? {} : null
       }
-    }
+    },
+     local.spec
+    )
   })
 }

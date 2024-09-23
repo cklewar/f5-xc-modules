@@ -136,12 +136,7 @@ variable "f5xc_sms_logs_streaming_disabled" {
 
 variable "f5xc_dc_cluster_group_slo" {
   type    = string
-  default = ""
-}
-
-variable "f5xc_dc_cluster_group_sli" {
-  type    = string
-  default = ""
+  default = null
 }
 
 variable "f5xc_tenant" {

@@ -15,4 +15,11 @@ locals {
       namespace = var.f5xc_namespace
     }, {}
   ][var.f5xc_dc_cluster_group_slo_name != null ? 0 : 1]
+  dc_cluster_group_sli = [
+    {
+      name      = var.f5xc_dc_cluster_group_sli_name
+      tenant    = var.f5xc_tenant
+      namespace = var.f5xc_namespace
+    }, {}
+  ][var.f5xc_dc_cluster_group_sli_name != null ? 0 : 1]
 }

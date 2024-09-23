@@ -126,6 +126,11 @@ variable "f5xc_sms_labels" {
   default = {}
 }
 
+variable "f5xc_dc_cluster_group_slo_name" {
+  type    = string
+  default = null
+}
+
 variable "status_check_type" {
   type    = string
   default = "token"

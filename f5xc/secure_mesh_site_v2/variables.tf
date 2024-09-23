@@ -139,6 +139,11 @@ variable "f5xc_dc_cluster_group_slo_name" {
   default = null
 }
 
-variable "f5xc_tenant" {
+variable "f5xc_dc_cluster_group_sli_name" {
   type    = string
+  default = null
+}
+
+variable "f5xc_tenant" {
+  type = string
 }

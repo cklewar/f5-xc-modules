@@ -31,6 +31,7 @@ resource restapi_object "secure_mesh_site" {
       }
       performance_enhancement_mode = local.performance_enhancement_mode
       dc_cluster_group_slo = local.dc_cluster_group_slo
+      dc_cluster_group_sli = local.dc_cluster_group_sli
       software_settings = var.f5xc_sms_default_sw_version && var.f5xc_sms_default_os_version ? {
         sw = { default_sw_version = {} }
         os = { default_os_version = {} }

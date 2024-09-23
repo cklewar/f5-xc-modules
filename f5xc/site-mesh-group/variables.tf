@@ -16,7 +16,7 @@ variable "f5xc_site_2_site_connection_type" {
   type = string
 
   validation {
-    condition     = contains(["hub_mesh", "spoke_mesh", "full_mesh"], var.f5xc_site_2_site_connection_type)
+    condition = contains(["hub_mesh", "spoke_mesh", "full_mesh"], var.f5xc_site_2_site_connection_type)
     error_message = format("Valid values for f5xc_site_2_site_connection_type: hub_mesh, spoke_mesh, full_mesh")
   }
 }
@@ -72,7 +72,7 @@ variable "f5xc_site_mesh_group_hub_mesh" {
 }
 
 variable "f5xc_labels" {
-  type    = map(string)
+  type = map(string)
   default = {}
 }
 
@@ -93,4 +93,9 @@ variable "f5xc_virtual_site_selector_expression" {
 variable "f5xc_virtual_site_description" {
   type    = string
   default = ""
+}
+
+variable "f5xc_data_plane_mesh" {
+  type    = bool
+  default = true
 }

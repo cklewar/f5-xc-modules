@@ -13,7 +13,6 @@ module "virtual_site" {
 
 resource "volterra_site_mesh_group" "site_mesh_group" {
   name        = var.f5xc_site_mesh_group_name
-  type        = var.f5xc_site_2_site_connection_type
   namespace   = var.f5xc_namespace
   description = var.f5xc_site_mesh_group_description
 
@@ -27,7 +26,10 @@ resource "volterra_site_mesh_group" "site_mesh_group" {
 
   dynamic "full_mesh" {
     for_each = var.f5xc_site_2_site_connection_type == var.f5xc_site_2_site_connection_type_full_mesh ? [1] : []
-    content {}
+    content {
+      data_plane_mesh             = var.f5xc_data_plane_mesh
+      control_and_data_plane_mesh = !var.f5xc_data_plane_mesh ? true : false
+    }
   }
 
   dynamic "spoke_mesh" {

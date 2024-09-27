@@ -7,6 +7,7 @@ resource "vsphere_virtual_machine" "vm" {
   name             = var.f5xc_node_name
   memory           = var.vsphere_instance_memory_size
   num_cpus         = var.vsphere_instance_cpu_count
+  num_cores_per_socket = var.vsphere_instance_cpu_count
   guest_id         = var.vsphere_instance_guest_type
   datastore_id     = data.vsphere_datastore.ds.id
   datacenter_id    = var.f5xc_ova_image != "" ? data.vsphere_datacenter.dc.id : null

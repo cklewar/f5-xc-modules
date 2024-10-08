@@ -4,12 +4,12 @@ terraform {
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
-      version = ">= 0.11.32"
+      version = "= 0.11.37"
     }
 
-    restapi = {
-      source  = "Mastercard/restapi"
-      version = ">= 1.19.1"
+    restful = {
+      source  = "magodo/restful"
+      version = ">= 0.16.1"
     }
 
     local = ">= 2.2.3"

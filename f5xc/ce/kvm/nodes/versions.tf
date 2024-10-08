@@ -6,7 +6,7 @@ terraform {
 
     volterra = {
       source  = "volterraedge/volterra"
-      version = "= 0.11.32"
+      version = "= 0.11.37"
     }
 
     local = ">= 2.2.3"

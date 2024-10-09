@@ -1,0 +1,3 @@
+[submodule "f5xc/secure_mesh_site_v2/modules"]
+	path = f5xc/secure_mesh_site_v2/modules
+	url = https://github.com/f5devcentral/f5-xc-tf-modules

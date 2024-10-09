@@ -115,7 +115,7 @@ module "config" {
   for_each                     = {for k, v in var.f5xc_aws_vpc_az_nodes : k => v}
   owner_tag                    = var.owner_tag
   ssh_public_key               = var.ssh_public_key != null ? aws_key_pair.aws_key.0.public_key : data.aws_key_pair.existing_aws_key.0.public_key
-  f5xc_site_token              = var.f5xc_secure_mesh_site_version == 1 ? volterra_token.site.id : module.secure_mesh_site_v2.secure_mesh_site.token.key
+  f5xc_site_token              = var.f5xc_secure_mesh_site_version == 1 ? volterra_token.site.id : module.secure_mesh_site_v2.0.secure_mesh_site.token.key
   f5xc_cluster_name            = var.f5xc_cluster_name
   f5xc_server_roles            = local.server_roles[each.key]
   f5xc_cluster_labels = {} # var.f5xc_cluster_labels

@@ -168,11 +168,6 @@ variable "f5xc_tenant" {
   type = string
 }
 
-variable "log_receiver" {
-  type = map(string)
-  default = {}
-}
-
 variable "f5xc_ce_interface_list" {
   type = list(object({
     mtu         = string
@@ -181,4 +176,5 @@ variable "f5xc_ce_interface_list" {
     priority    = string
     description = string
   }))
+  default = []
 }

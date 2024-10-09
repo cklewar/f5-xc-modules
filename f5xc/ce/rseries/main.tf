@@ -7,12 +7,15 @@ module "sms" {
   f5xc_sms_name                  = var.f5xc_site_name
   f5xc_sms_labels                = var.f5xc_sms_labels
   f5xc_sms_provider_name         = var.f5xc_sms_provider_name
+  f5xc_sms_master_nodes_count    = var.f5xc_sms_master_nodes_count
   f5xc_sms_perf_mode_l7_enhanced = var.f5xc_sms_perf_mode_l7_enhanced
   f5xc_dc_cluster_group_slo_name = var.f5xc_dc_cluster_group_slo_name
   f5xc_dc_cluster_group_sli_name = var.f5xc_dc_cluster_group_sli_name
   providers = {
     restapi = restapi.f5xc
   }
+  f5xc_api_p12_file = ""
+
 }
 
 resource "restapi_object" "f5os_tenant" {

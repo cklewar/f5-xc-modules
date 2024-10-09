@@ -1,6 +1,6 @@
 output "secure_mesh_site" {
   value = {
-    # site = volterra_securemesh_site_v2.site
+    site = restful_resource.site.output
     token = {
       key       = restful_resource.token.output.spec.content
       type      = restful_resource.token.output.spec.type

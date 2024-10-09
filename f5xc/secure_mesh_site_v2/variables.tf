@@ -23,7 +23,17 @@ variable "f5xc_token_delete_uri" {
 
 variable "f5xc_sms_base_uri" {
   type    = string
-  default = "/config/namespaces/system/securemesh_site_v2s"
+  default = "/config/namespaces/%s/securemesh_site_v2s"
+}
+
+variable "f5xc_sms_read_uri" {
+  type    = string
+  default = "/config/namespaces/%s/securemesh_site_v2s/%s"
+}
+
+variable "f5xc_sms_delete_uri" {
+  type    = string
+  default = "/config/namespaces/%s/securemesh_site_v2s/%s"
 }
 
 variable "f5xc_sms_provider_name" {
@@ -31,6 +41,14 @@ variable "f5xc_sms_provider_name" {
   validation {
     condition = contains(["rseries"], var.f5xc_sms_provider_name)
     error_message = format("Valid values for provider_name: rseries")
+  }
+}
+
+variable "f5xc_sms_master_nodes_count" {
+  type = number
+  validation {
+    condition     = var.f5xc_sms_master_nodes_count == 1 || var.f5xc_sms_master_nodes_count == 3
+    error_message = "Master node counter must be 1 or 3"
   }
 }
 
@@ -148,6 +166,11 @@ variable "f5xc_dc_cluster_group_sli_name" {
 
 variable "f5xc_tenant" {
   type = string
+}
+
+variable "log_receiver" {
+  type = map(string)
+  default = {}
 }
 
 variable "f5xc_ce_interface_list" {

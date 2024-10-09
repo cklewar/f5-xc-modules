@@ -39,7 +39,7 @@ variable "f5xc_sms_delete_uri" {
 variable "f5xc_sms_provider_name" {
   type = string
   validation {
-    condition = contains(["rseries"], var.f5xc_sms_provider_name)
+    condition = contains(["rseries", "aws", "gcp", "azure", "kvm", "vmware", "baremetal"], var.f5xc_sms_provider_name)
     error_message = format("Valid values for provider_name: rseries")
   }
 }

@@ -1,7 +1,7 @@
 resource "restful_resource" "token" {
   path = format(var.f5xc_token_base_uri, var.f5xc_namespace)
   read_path = format(var.f5xc_token_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
-  delete_path = format(var.f5xc_token_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
+  delete_path = format(var.f5xc_token_delete_uri, var.f5xc_namespace, var.f5xc_sms_name)
   header = {
     Content-Type = "application/json"
   }
@@ -20,7 +20,7 @@ resource "restful_resource" "token" {
 resource "restful_resource" "site" {
   path = format(var.f5xc_sms_base_uri, var.f5xc_namespace)
   read_path = format(var.f5xc_sms_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
-  delete_path = format(var.f5xc_sms_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
+  delete_path = format(var.f5xc_sms_delete_uri, var.f5xc_namespace, var.f5xc_sms_name)
   header = {
     Content-Type = "application/json"
   }

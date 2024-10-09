@@ -37,8 +37,8 @@ resource "restful_resource" "site" {
       (var.f5xc_sms_provider_name) = {
         not_managed = {}
       }
-      performance_enhancement_mode = local.performance_enhancement_mode
       software_settings            = local.software_settings
+      performance_enhancement_mode = local.performance_enhancement_mode
       re_select = {
         geo_proximity = {}
       }

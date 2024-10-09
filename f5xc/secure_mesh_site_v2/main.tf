@@ -1,5 +1,4 @@
 resource "restful_resource" "token" {
-  provider = restful.default
   path = format(var.f5xc_token_base_uri, var.f5xc_namespace)
   read_path = format(var.f5xc_token_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
   delete_path = format(var.f5xc_token_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
@@ -19,7 +18,6 @@ resource "restful_resource" "token" {
 }
 
 resource "restful_resource" "site" {
-  provider = restful.default
   path = format(var.f5xc_sms_base_uri, var.f5xc_namespace)
   read_path = format(var.f5xc_sms_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
   delete_path = format(var.f5xc_sms_read_uri, var.f5xc_namespace, var.f5xc_sms_name)

@@ -7,6 +7,11 @@ terraform {
       version = "= 0.11.37"
     }
 
+    restful = {
+      source  = "magodo/restful"
+      version = ">= 0.16.1"
+    }
+
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.59.0"

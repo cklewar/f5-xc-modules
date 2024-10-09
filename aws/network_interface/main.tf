@@ -6,7 +6,7 @@ resource "aws_network_interface" "interface" {
   private_ip_list         = var.aws_interface_private_ips != null ? var.aws_interface_private_ips : null
   security_groups         = var.aws_interface_security_groups
   source_dest_check       = var.aws_interface_source_dest_check
-  private_ip_list_enabled = length(var.aws_interface_private_ips) > 0 ? true : false
+  private_ip_list_enabled = var.aws_interface_private_ips != null ? true : false
 
   lifecycle {
     ignore_changes = [

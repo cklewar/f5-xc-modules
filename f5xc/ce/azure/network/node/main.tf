@@ -14,16 +14,16 @@ resource "azurerm_public_ip" "ip" {
 
 resource "azurerm_subnet" "slo" {
   count                = var.azurerm_existing_subnet_name_slo == null && var.azurerm_subnet_slo_address_prefix != null ? 1 : 0
-  name                 = format("%s-subnet-slo", var.f5xc_node_name)
-  address_prefixes     = [var.azurerm_subnet_slo_address_prefix]
+  name = format("%s-subnet-slo", var.f5xc_node_name)
+  address_prefixes = [var.azurerm_subnet_slo_address_prefix]
   resource_group_name  = var.azurerm_resource_group_name
   virtual_network_name = var.azurerm_vnet_name
 }
 
 resource "azurerm_subnet" "sli" {
   count                = var.is_multi_nic && var.azurerm_existing_subnet_name_sli == null && var.azurerm_subnet_sli_address_prefix != null ? 1 : 0
-  name                 = format("%s-subnet-sli", var.f5xc_node_name)
-  address_prefixes     = [var.azurerm_subnet_sli_address_prefix]
+  name = format("%s-subnet-sli", var.f5xc_node_name)
+  address_prefixes = [var.azurerm_subnet_sli_address_prefix]
   resource_group_name  = var.azurerm_resource_group_name
   virtual_network_name = var.azurerm_vnet_name
 
@@ -38,10 +38,8 @@ resource "azurerm_network_interface" "slo" {
   name                           = "${var.f5xc_node_name}-slo"
   location                       = var.azurerm_region
   resource_group_name            = var.azurerm_resource_group_name
-  # ip_forwarding_enabled         = var.enable_ip_forwarding
-  enable_ip_forwarding           = var.enable_ip_forwarding
-  enable_accelerated_networking  = var.enable_accelerated_networking
-  # accelerated_networking_enabled = var.enable_accelerated_networking
+  ip_forwarding_enabled          = var.enable_ip_forwarding
+  accelerated_networking_enabled = var.enable_accelerated_networking
 
   ip_configuration {
     name                          = "slo"
@@ -67,8 +65,8 @@ resource "azurerm_network_interface" "sli" {
   name                          = "${var.f5xc_node_name}-sli"
   location                      = var.azurerm_region
   resource_group_name           = var.azurerm_resource_group_name
-  enable_ip_forwarding          = var.enable_ip_forwarding
-  enable_accelerated_networking = var.enable_accelerated_networking
+  ip_forwarding_enabled          = var.enable_ip_forwarding
+  accelerated_networking_enabled = var.enable_accelerated_networking
 
   ip_configuration {
     name                          = "sli"

@@ -108,6 +108,18 @@ module "nlb_node" {
   azurerm_backend_address_pool_id_sli = local.is_multi_nic ? module.nlb_common.0.common["backend_address_pool_sli"]["id"] : null
 }*/
 
+module "secure_mesh_site_v2" {
+  count                       = var.f5xc_secure_mesh_site_version == 2 && var.f5xc_sms_provider_name != null ? 1 : 0
+  source                      = "../../secure_mesh_site_v2"
+  f5xc_tenant                 = var.f5xc_tenant
+  f5xc_api_url                = var.f5xc_api_url
+  f5xc_sms_name               = var.f5xc_cluster_name
+  f5xc_api_token              = var.f5xc_api_token
+  f5xc_namespace              = var.f5xc_namespace
+  f5xc_sms_provider_name      = var.f5xc_sms_provider_name
+  f5xc_sms_master_nodes_count = var.f5xc_sms_master_nodes_count
+}
+
 module "config" {
   source                          = "./config"
   for_each                        = {for k, v in var.f5xc_cluster_nodes : k => v}
@@ -120,7 +132,7 @@ module "config" {
   f5xc_cluster_labels             = var.f5xc_cluster_labels
   f5xc_cluster_latitude           = var.f5xc_cluster_latitude
   f5xc_cluster_longitude          = var.f5xc_cluster_longitude
-  f5xc_registration_token         = volterra_token.token.id
+  f5xc_registration_token         = var.f5xc_secure_mesh_site_version == 1 ? volterra_token.token.id : module.secure_mesh_site_v2.0.secure_mesh_site.token.key
   f5xc_ce_hosts_public_name       = var.f5xc_ce_hosts_public_name
   azurerm_region                  = var.azurerm_region
   azurerm_vnet_name               = var.azurerm_existing_vnet_name != "" ? var.azurerm_existing_vnet_name : format("%s-vnet", var.f5xc_cluster_name)
@@ -135,7 +147,7 @@ module "config" {
 }
 
 module "secure_mesh_site" {
-  count                                  = var.f5xc_site_type_is_secure_mesh_site ? 1 : 0
+  count                                  = var.f5xc_secure_mesh_site_version == 1 ? 1 : 0
   source                                 = "../../secure_mesh_site"
   csp_provider                           = "azure"
   f5xc_nodes                             = [for k in keys(var.f5xc_cluster_nodes) : { name = k }]

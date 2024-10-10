@@ -173,11 +173,6 @@ variable "f5xc_is_private_cloud_ce" {
   default = false
 }
 
-variable "f5xc_site_type_is_secure_mesh_site" {
-  type    = bool
-  default = true
-}
-
 variable "f5xc_enable_offline_survivability_mode" {
   type    = bool
   default = false
@@ -375,6 +370,25 @@ variable "f5xc_api_p12_cert_password" {
   description = "XC API cert file password used later in status module to retrieve site status"
   type        = string
   default     = ""
+}
+
+variable "f5xc_secure_mesh_site_version" {
+  type    = number
+  default = 2
+  validation {
+    condition = contains([1, 2], var.f5xc_secure_mesh_site_version)
+    error_message = "f5xc_secure_mesh_site_version must be 1 or 2"
+  }
+}
+
+variable "f5xc_sms_provider_name" {
+  type    = string
+  default = null
+}
+
+variable "f5xc_sms_master_nodes_count" {
+  type    = number
+  default = 1
 }
 
 variable "f5xc_ip_ranges_Americas_TCP" {

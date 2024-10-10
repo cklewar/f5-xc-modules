@@ -7,7 +7,9 @@ variable "ssh_public_key" {
 }
 
 variable "has_public_ip" {
-  type = bool
+  description = "whether the CE gets a public IP assigned to SLO"
+  type        = bool
+  default     = true
 }
 
 variable "owner_tag" {

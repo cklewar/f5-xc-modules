@@ -7,6 +7,11 @@ terraform {
       version = "= 0.11.37"
     }
 
+    restful = {
+      source  = "magodo/restful"
+      version = ">= 0.16.1"
+    }
+
     azurerm = {
       source  = "hashicorp/azurerm"
       version = ">= 3.109.0"

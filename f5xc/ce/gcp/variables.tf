@@ -380,6 +380,25 @@ variable "f5xc_cluster_default_blocked_services" {
   default = false
 }
 
+variable "f5xc_secure_mesh_site_version" {
+  type    = number
+  default = 2
+  validation {
+    condition = contains([1, 2], var.f5xc_secure_mesh_site_version)
+    error_message = "f5xc_secure_mesh_site_version must be 1 or 2"
+  }
+}
+
+variable "f5xc_sms_provider_name" {
+  type    = string
+  default = null
+}
+
+variable "f5xc_sms_master_nodes_count" {
+  type    = number
+  default = 1
+}
+
 variable "f5xc_ip_ranges_Americas_TCP" {
   type = list(string)
   default = ["84.54.62.0/25", "185.94.142.0/25", "185.94.143.0/25", "159.60.190.0/24", "5.182.215.0/25", "84.54.61.0/25", "23.158.32.0/25",]

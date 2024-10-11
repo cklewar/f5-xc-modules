@@ -1,4 +1,4 @@
-resource "volterra_token" "site" {
+resource "volterra_token" "token" {
   name      = var.f5xc_token_name
   namespace = var.f5xc_namespace
 }
@@ -49,10 +49,22 @@ module "firewall" {
   }
 }
 
+module "secure_mesh_site_v2" {
+  count                       = var.f5xc_secure_mesh_site_version == 2 && var.f5xc_sms_provider_name != null ? 1 : 0
+  source                      = "../../secure_mesh_site_v2"
+  f5xc_tenant                 = var.f5xc_tenant
+  f5xc_api_url                = var.f5xc_api_url
+  f5xc_sms_name               = var.f5xc_cluster_name
+  f5xc_api_token              = var.f5xc_api_token
+  f5xc_namespace              = var.f5xc_namespace
+  f5xc_sms_provider_name      = var.f5xc_sms_provider_name
+  f5xc_sms_master_nodes_count = var.f5xc_sms_master_nodes_count
+}
+
 module "config" {
   source                       = "./config"
   cluster_name                 = var.f5xc_cluster_name
-  cluster_token                = volterra_token.site.id
+  cluster_token                = var.f5xc_secure_mesh_site_version == 1 ? volterra_token.token.id : module.secure_mesh_site_v2.0.secure_mesh_site.token.key
   cluster_labels               = var.f5xc_cluster_labels
   ssh_public_key               = var.ssh_public_key
   maurice_endpoint             = module.maurice.endpoints.maurice

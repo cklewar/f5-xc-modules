@@ -159,11 +159,6 @@ variable "gcp_access_config_nat_ip" {
   default = ""
 }
 
-variable "f5xc_site_type_is_secure_mesh_site" {
-  type    = bool
-  default = true
-}
-
 variable "f5xc_private_ce_nat_name" {
   type        = string
   default     = null

@@ -128,6 +128,7 @@ module "config" {
   ssh_public_key                  = var.ssh_public_key
   maurice_endpoint                = module.maurice.endpoints.maurice
   maurice_mtls_endpoint           = module.maurice.endpoints.maurice_mtls
+  f5xc_is_legacy_ce               = var.f5xc_is_legacy_ce
   f5xc_cluster_name               = var.f5xc_cluster_name
   f5xc_cluster_labels             = var.f5xc_cluster_labels
   f5xc_cluster_latitude           = var.f5xc_cluster_latitude

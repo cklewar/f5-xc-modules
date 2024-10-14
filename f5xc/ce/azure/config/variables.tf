@@ -15,6 +15,12 @@ variable "maurice_mtls_endpoint" {
   type = string
 }
 
+
+variable "f5xc_is_legacy_ce" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_registration_token" {
   type = string
 }

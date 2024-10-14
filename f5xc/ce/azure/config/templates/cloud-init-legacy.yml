@@ -5,6 +5,11 @@ users:
 ssh-authorized-keys:
   - ${user_pubkey}
 write_files:
+  - path: /etc/kubernetes/azure.json
+    content: ${azure_config}
+    permissions: "0644"
+    owner: root
+    encoding: b64
   - path: /etc/vpm/config.yaml
     permissions: "0644"
     owner: root

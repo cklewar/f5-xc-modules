@@ -42,14 +42,22 @@ locals {
     }
   })
 
-  cloud_config = templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
+  cloud_config = var.f5xc_is_legacy_ce ? templatefile("${path.module}/${var.templates_dir}/cloud-init-legacy.yml",
     {
-      ntp_servers       = var.ntp_servers
-      user_pubkey       = var.ssh_public_key
-      azure_config      = base64encode(local.azure_config)
-      hosts_context     = base64encode(local.hosts_context_node)
-      admin_username    = var.azurerm_instance_admin_username
-      reboot_strategy   = var.reboot_strategy_node
+      ntp_servers     = var.ntp_servers
+      user_pubkey     = var.ssh_public_key
+      azure_config = base64encode(local.azure_config)
+      hosts_context = base64encode(local.hosts_context_node)
+      admin_username  = var.azurerm_instance_admin_username
+      reboot_strategy = var.reboot_strategy_node
+      vp_manager_config = base64encode(local.vpm_config)
+    }) : templatefile("${path.module}/${var.templates_dir}/cloud-init.yml",
+    {
+      ntp_servers     = var.ntp_servers
+      user_pubkey     = var.ssh_public_key
+      hosts_context = base64encode(local.hosts_context_node)
+      admin_username  = var.azurerm_instance_admin_username
+      reboot_strategy = var.reboot_strategy_node
       vp_manager_config = base64encode(local.vpm_config)
     })
 }

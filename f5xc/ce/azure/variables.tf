@@ -391,6 +391,11 @@ variable "f5xc_sms_master_nodes_count" {
   default = 1
 }
 
+variable "f5xc_is_legacy_ce" {
+  type    = bool
+  default = false
+}
+
 variable "f5xc_ip_ranges_Americas_TCP" {
   type = list(string)
   default = [

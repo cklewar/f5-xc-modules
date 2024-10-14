@@ -36,7 +36,7 @@ variable "azurerm_vnet_address_space" {
 }
 
 variable "azurerm_instance_vm_size" {
-  type    = string
+  type = string
 }
 
 variable "azurerm_instance_disk_size" {
@@ -331,6 +331,11 @@ variable "f5xc_ce_gateway_type" {
     condition = contains(["ingress_egress_gateway", "ingress_gateway", "voltstack_gateway"], var.f5xc_ce_gateway_type)
     error_message = format("Valid values for gateway_type: ingress_egress_gateway, ingress_gateway, voltstack_gateway")
   }
+}
+
+variable "f5xc_ce_sli_interface" {
+  type    = string
+  default = "enp2s0"
 }
 
 variable "f5xc_ce_to_re_tunnel_type" {

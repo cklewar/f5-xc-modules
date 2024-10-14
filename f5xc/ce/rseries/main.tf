@@ -80,7 +80,7 @@ module "update_interface" {
   merge_data = jsonencode([
     {
       mtu           = 1500
-      name = format("%s_%s", var.f5xc_ce_sli_interface, "")
+      name = format("%s_%s", var.f5xc_ce_sli_interface, var.f5os_tenant_config_vlans[1])
       labels = {}
       is_primary    = false
       dhcp_client = {}
@@ -90,7 +90,7 @@ module "update_interface" {
       },
       vlan_interface = {
         device  = var.f5xc_ce_sli_interface
-        vlan_id = 400
+        vlan_id = var.f5os_tenant_config_vlans[1]
       }
     }
   ])

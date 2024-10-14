@@ -136,6 +136,20 @@ variable "f5xc_dc_cluster_group_sli_name" {
   default = null
 }
 
+variable "f5xc_ce_sli_interface" {
+  type    = string
+  default = ""
+}
+
+variable "f5xc_ce_gw_type" {
+  type = string
+}
+
+variable "f5xc_ce_gateway_type_ingress_egress" {
+  type    = string
+  default = "ingress_egress_gateway"
+}
+
 variable "status_check_type" {
   type    = string
   default = "token"

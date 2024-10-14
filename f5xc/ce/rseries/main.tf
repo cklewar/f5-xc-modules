@@ -69,3 +69,35 @@ module "site_wait_for_online" {
   status_check_type          = var.status_check_type
   f5xc_api_p12_cert_password = var.f5xc_api_p12_cert_password
 }
+
+module "update_interface" {
+  depends_on = [module.site_wait_for_online]
+  # for_each = {for k, v in var.f5xc_cluster_nodes : k => v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress}
+  count = var.f5xc_ce_gw_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  source    = "../../../utils/update"
+  del_key   = ""
+  merge_key = "rseries.not_managed.node_list[0].interface_list"
+  merge_data = jsonencode([
+    {
+      mtu           = 1500
+      name = format("%s_%s", var.f5xc_ce_sli_interface, "")
+      labels = {}
+      is_primary    = false
+      dhcp_client = {}
+      is_management = false
+      network_option = {
+        site_local_inside_network = {}
+      },
+      vlan_interface = {
+        device  = var.f5xc_ce_sli_interface
+        vlan_id = 400
+      }
+    }
+  ])
+  f5xc_tenant         = var.f5xc_tenant
+  f5xc_api_url        = var.f5xc_api_url
+  f5xc_namespace      = var.f5xc_namespace
+  f5xc_api_token      = var.f5xc_api_token
+  f5xc_api_get_uri    = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_cluster_name}"
+  f5xc_api_update_uri = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_cluster_name}"
+}

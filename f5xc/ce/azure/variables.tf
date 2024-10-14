@@ -333,11 +333,6 @@ variable "f5xc_ce_gateway_type" {
   }
 }
 
-variable "f5xc_ce_sli_interface" {
-  type    = string
-  default = "enp2s0"
-}
-
 variable "f5xc_ce_to_re_tunnel_type" {
   description = "CE to RE tunnel type"
   type        = string

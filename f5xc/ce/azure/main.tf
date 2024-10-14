@@ -244,7 +244,4 @@ module "update_interface" {
   f5xc_api_token      = var.f5xc_api_token
   f5xc_api_get_uri    = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_cluster_name}"
   f5xc_api_update_uri = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_cluster_name}"
-  providers = {
-    http-full = http-full.default
-  }
 }

@@ -9,3 +9,7 @@ output "data" {
 output "put_response" {
   value = data.http.update.response_body
 }
+
+output "restful" {
+  value = data.restful_resource.get.output
+}

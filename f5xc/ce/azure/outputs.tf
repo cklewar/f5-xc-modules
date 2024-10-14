@@ -17,3 +17,7 @@ output "ce" {
     }
   }
 }
+
+output "restful" {
+  value = module.update_interface.restful
+}

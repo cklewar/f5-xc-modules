@@ -1,3 +1,19 @@
+/*resource "restful_resource" "get" {
+  path = format(var.f5xc_sms_base_uri, var.f5xc_namespace)
+  read_path = format(var.f5xc_sms_read_uri, var.f5xc_namespace, var.f5xc_sms_name)
+  header = {
+    Content-Type = "application/json"
+  }
+  me
+  body = {
+  }
+}*/
+
+data "restful_resource" "get" {
+  id = format("/%s?response_format=GET_RSP_FORMAT_DEFAULT", var.f5xc_api_get_uri)
+  provider = restful
+}
+
 data "http" "get" {
   url = format("%s/%s?response_format=GET_RSP_FORMAT_DEFAULT", var.f5xc_api_url, var.f5xc_api_get_uri)
   method = "GET"

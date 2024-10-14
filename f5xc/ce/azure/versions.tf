@@ -12,6 +12,11 @@ terraform {
       version = ">= 0.16.1"
     }
 
+    http-full = {
+      source  = "salrashid123/http-full"
+      version = ">= 1.3.1"
+    }
+
     azurerm = {
       source  = "hashicorp/azurerm"
       version = ">= 3.109.0"

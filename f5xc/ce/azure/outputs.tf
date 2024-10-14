@@ -18,6 +18,6 @@ output "ce" {
   }
 }
 
-output "restful" {
+/*output "restful" {
   value = module.update_interface.restful
-}
+}*/

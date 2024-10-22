@@ -4,7 +4,6 @@ resource "azurerm_linux_virtual_machine" "instance" {
   size                            = var.azurerm_instance_vm_size
   zone                            = var.azurerm_az != null ? var.azurerm_az : null
   location                        = var.azurerm_region
-
   custom_data                     = base64encode(var.f5xc_instance_config)
   computer_name                   = var.f5xc_node_name
   admin_username                  = var.azurerm_instance_admin_username

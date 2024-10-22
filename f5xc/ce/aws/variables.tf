@@ -3,6 +3,12 @@ variable "is_sensitive" {
   type        = bool
 }
 
+variable "wait_for_online" {
+  type        = bool
+  default     = true
+  description = "enable wait_for_online status check. This will wait till CE fully operational"
+}
+
 variable "status_check_type" {
   type    = string
   default = "token"

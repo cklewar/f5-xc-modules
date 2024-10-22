@@ -176,6 +176,7 @@ module "node" {
 module "site_wait_for_online" {
   depends_on = [module.node]
   source                     = "../../status/site"
+  count                      = var.wait_for_online ? 1 : 0
   is_sensitive               = var.is_sensitive
   f5xc_api_token             = var.f5xc_api_token
   f5xc_tenant                = var.f5xc_tenant

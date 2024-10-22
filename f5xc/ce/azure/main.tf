@@ -5,7 +5,7 @@ resource "volterra_token" "token" {
 
 resource "azurerm_resource_group" "rg" {
   count    = var.azurerm_existing_resource_group_name != "" ? 0 : 1
-  name     = format("%s-rg", var.f5xc_cluster_name)
+  name = format("%s-rg", var.f5xc_cluster_name)
   location = var.azurerm_region
 }
 
@@ -45,7 +45,7 @@ module "network_node" {
   for_each                          = var.f5xc_cluster_nodes
   is_multi_nic                      = local.is_multi_nic
   has_public_ip                     = var.has_public_ip
-  f5xc_node_name                    = format("%s-%s", var.f5xc_cluster_name, each.key)
+  f5xc_node_name = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_ce_slo_secondary_ips         = var.f5xc_ce_slo_secondary_ips
   azurerm_zone                      = var.azurerm_availability_set_id == "" ? each.value["az"] : ""
   azurerm_region                    = var.azurerm_region
@@ -157,7 +157,7 @@ module "secure_mesh_site" {
   f5xc_namespace                         = var.f5xc_namespace
   f5xc_api_token                         = var.f5xc_api_token
   f5xc_cluster_name                      = var.f5xc_cluster_name
-  f5xc_cluster_labels                    = {} # var.f5xc_cluster_labels
+  f5xc_cluster_labels = {} # var.f5xc_cluster_labels
   f5xc_ce_gateway_type                   = var.f5xc_ce_gateway_type
   f5xc_cluster_latitude                  = var.f5xc_cluster_latitude
   f5xc_cluster_longitude                 = var.f5xc_cluster_longitude
@@ -192,17 +192,18 @@ module "node" {
   f5xc_api_url                            = var.f5xc_api_url
   f5xc_namespace                          = var.f5xc_namespace
   f5xc_api_token                          = var.f5xc_api_token
-  f5xc_node_name                          = format("%s-%s", var.f5xc_cluster_name, each.key)
+  f5xc_node_name = format("%s-%s", var.f5xc_cluster_name, each.key)
   f5xc_cluster_name                       = var.f5xc_cluster_name
-  f5xc_cluster_size                       = length(var.f5xc_cluster_nodes)
+  f5xc_cluster_size = length(var.f5xc_cluster_nodes)
   f5xc_instance_config                    = module.config[each.key].ce["user_data"]
   f5xc_registration_retry                 = var.f5xc_registration_retry
   f5xc_registration_wait_time             = var.f5xc_registration_wait_time
 }
 
 module "site_wait_for_online" {
-  depends_on                 = [module.node]
+  depends_on = [module.node]
   source                     = "../../status/site"
+  count                      = var.wait_for_online ? 1 : 0
   is_sensitive               = var.is_sensitive
   f5xc_api_token             = var.f5xc_api_token
   f5xc_tenant                = var.f5xc_tenant

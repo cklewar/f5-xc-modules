@@ -167,14 +167,3 @@ variable "f5xc_dc_cluster_group_sli_name" {
 variable "f5xc_tenant" {
   type = string
 }
-
-variable "f5xc_ce_interface_list" {
-  type = list(object({
-    mtu         = string
-    name        = string
-    monitor = string #optional(string, "Disabled")
-    priority    = string
-    description = string
-  }))
-  default = []
-}

@@ -1,3 +1,24 @@
+variable "status_check_type" {
+  type    = string
+  default = "token"
+  validation {
+    condition = contains(["token", "cert"], var.status_check_type)
+    error_message = format("Valid values for status_check_type: token or cert")
+  }
+}
+
+variable "is_sensitive" {
+  type        = bool
+  default     = false
+  description = "Whether to mask sensitive data in output or not"
+}
+
+variable "wait_for_online" {
+  type        = bool
+  default     = true
+  description = "enable wait_for_online status check. This will wait till CE fully operational"
+}
+
 variable "f5os_tenant" {
   type = string
 }
@@ -136,11 +157,6 @@ variable "f5xc_dc_cluster_group_sli_name" {
   default = null
 }
 
-variable "f5xc_ce_sli_interface" {
-  type    = string
-  default = ""
-}
-
 variable "f5xc_ce_gw_type" {
   type = string
 }
@@ -150,17 +166,24 @@ variable "f5xc_ce_gateway_type_ingress_egress" {
   default = "ingress_egress_gateway"
 }
 
-variable "status_check_type" {
-  type    = string
-  default = "token"
-  validation {
-    condition = contains(["token", "cert"], var.status_check_type)
-    error_message = format("Valid values for status_check_type: token or cert")
-  }
-}
-
-variable "is_sensitive" {
-  type        = bool
-  default     = false
-  description = "Whether to mask sensitive data in output or not"
+variable "f5xc_ce_interface_list" {
+  type = list(object({
+    mtu           = string
+    name          = string
+    labels        = map(string)
+    monitor       = optional(string, "Disabled")
+    priority      = number
+    is_primary    = bool
+    dhcp_client   = bool
+    description   = string
+    is_management = bool
+    network_option = object({
+      site_local_inside_network = bool
+    })
+    vlan_interface = object({
+      device  = string
+      vlan_id = string
+    })
+  }))
+  default = []
 }

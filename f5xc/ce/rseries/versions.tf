@@ -7,10 +7,15 @@ terraform {
       version = "= 0.11.37"
     }
 
-    restapi = {
-      source = "Mastercard/restapi"
-      version = ">= 1.19.1"
+    restful = {
+      source  = "magodo/restful"
+      version = ">= 0.16.1"
       configuration_aliases = [ restapi.f5xc, restapi.f5os ]
+    }
+
+    http-full = {
+      source  = "salrashid123/http-full"
+      version = ">= 1.3.1"
     }
 
     local = ">= 2.2.3"

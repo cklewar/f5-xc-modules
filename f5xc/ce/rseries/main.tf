@@ -14,19 +14,17 @@ module "sms" {
   providers = {
     restapi = restapi.f5xc
   }
-  f5xc_api_p12_file = ""
-
 }
 
-resource "restapi_object" "f5os_tenant" {
-  path         = var.f5os_tenant_base_uri
-  provider     = restapi.f5os
-  object_id    = var.f5os_tenant
-  read_path    = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
-  destroy_path = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
-  id_attribute = "tenant"
-
-  data = jsonencode(
+resource "restful_resource" "f5os_tenant" {
+  path        = var.f5os_tenant_base_uri
+  provider    = restapi.f5os
+  read_path   = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
+  delete_path = "${var.f5os_tenant_base_uri}${var.f5os_tenant_delete_path}${var.f5os_tenant}"
+  header = {
+    Content-Type = "application/json"
+  }
+  body = jsonencode(
     {
       tenant = [
         {
@@ -57,8 +55,9 @@ resource "restapi_object" "f5os_tenant" {
 }
 
 module "site_wait_for_online" {
-  depends_on = [restapi_object.f5os_tenant]
+  depends_on = [restful_resource.f5os_tenant]
   source                     = "../../status/site"
+  count                      = var.wait_for_online ? 1 : 0
   is_sensitive               = var.is_sensitive
   f5xc_tenant                = var.f5xc_tenant
   f5xc_api_url               = var.f5xc_api_url
@@ -72,32 +71,18 @@ module "site_wait_for_online" {
 
 module "update_interface" {
   depends_on = [module.site_wait_for_online]
-  # for_each = {for k, v in var.f5xc_cluster_nodes : k => v if var.f5xc_ce_gateway_type == var.f5xc_ce_gateway_type_ingress_egress}
-  count = var.f5xc_ce_gw_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
-  source    = "../../../utils/update"
-  del_key   = ""
-  merge_key = "rseries.not_managed.node_list[0].interface_list"
-  merge_data = jsonencode([
-    {
-      mtu           = 1500
-      name = format("%s_%s", var.f5xc_ce_sli_interface, var.f5os_tenant_config_vlans[1])
-      labels = {}
-      is_primary    = false
-      dhcp_client = {}
-      is_management = false
-      network_option = {
-        site_local_inside_network = {}
-      },
-      vlan_interface = {
-        device  = var.f5xc_ce_sli_interface
-        vlan_id = var.f5os_tenant_config_vlans[1]
-      }
-    }
-  ])
+  count               = var.f5xc_ce_gw_type == var.f5xc_ce_gateway_type_ingress_egress ? 1 : 0
+  source              = "../../../utils/update"
+  del_key             = ""
+  merge_key           = "rseries.not_managed.node_list[0].interface_list"
+  merge_data          = jsonencode(var.f5xc_ce_interface_list)
   f5xc_tenant         = var.f5xc_tenant
   f5xc_api_url        = var.f5xc_api_url
   f5xc_namespace      = var.f5xc_namespace
   f5xc_api_token      = var.f5xc_api_token
   f5xc_api_get_uri    = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_site_name}"
   f5xc_api_update_uri = "config/namespaces/${var.f5xc_namespace}/securemesh_site_v2s/${var.f5xc_site_name}"
+  providers = {
+    http-full = http-full.default
+  }
 }
